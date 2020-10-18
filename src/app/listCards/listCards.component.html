@@ -1,0 +1,15 @@
+<div class="container">
+  <div *ngIf="listCard$ | async as cards" class="d-flex flex-wrap">
+    <div *ngFor="let card of cards" class="ml-5 mt-4">
+      <div class="card" style="width: 20rem;">
+        <img class="card-img-top" src="{{card.img}}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{card.title}}</h5>
+          <p class="card-text">{{card.desc}}</p>
+          <button (click)="getList(card)" class="btn btn-primary">Get List</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

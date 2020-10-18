@@ -1,0 +1,30 @@
+<div class="container">
+    <div *ngIf="listDetails$ | async as listDetails" >
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+              <h1 class="display-4">{{ listDetails.list.title }}</h1>
+              <p class="lead">{{ listDetails.list.desc }}</p>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Score</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Sector</th>
+                    <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let listRow of listDetails.list.list" class="table-row" (click)="getSymbolDetails(listRow)">
+                    <td>{{listRow.symbol}}</td>
+                    <td>{{listRow.confidence}}</td>
+                    <td>{{listRow.companyName}}</td>
+                    <td>{{listRow.sector}}</td>
+                    <td>{{listRow.price}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+{
+  "name": "liste-ai-skyland",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "build": "npm run env -s && ng build --prod",
+    "start": "npm run env -s && ng serve --proxy-config proxy.conf.js",
+    "serve:sw": "npm run build -s && npx http-server ./dist -p 4200",
+    "lint": "ng lint && stylelint \"src/**/*.scss\" --syntax scss && htmlhint \"src\" --config .htmlhintrc",
+    "test": "npm run env -s && ng test",
+    "test:ci": "npm run env -s && npm run lint -s && ng test --configuration=ci",
+    "e2e": "npm run env -s && ng e2e",
+    "translations:extract": "ngx-translate-extract --input ./src --output ./src/translations/template.json --format=json --clean --sort",
+    "docs": "hads ./docs -o",
+    "env": "ngx-scripts env npm_package_version",
+    "prettier": "prettier --write \"./{src,e2e}/**/*.{ts,js,html,scss}\"",
+    "prettier:check": "prettier --list-different \"./{src,e2e}/**/*.{ts,js,html,scss}\"",
+    "postinstall": "npm run prettier -s",
+    "generate": "ng generate"
+  },
+  "dependencies": {
+    "@angular/animations": "^10.0.14",
+    "@angular/common": "^10.0.14",
+    "@angular/compiler": "^10.0.14",
+    "@angular/core": "^10.0.14",
+    "@angular/forms": "^10.0.14",
+    "@angular/localize": "^10.0.14",
+    "@angular/platform-browser": "^10.0.14",
+    "@angular/platform-browser-dynamic": "^10.0.14",
+    "@angular/router": "^10.0.14",
+    "@angular/service-worker": "^10.0.14",
+    "@fortawesome/fontawesome-free": "^5.14.0",
+    "@ng-bootstrap/ng-bootstrap": "^7.0.0",
+    "@ngx-translate/core": "^13.0.0",
+    "angular-popper": "^2.0.1",
+    "bootstrap": "^4.5.2",
+    "jquery": "^3.5.1",
+    "ng2-file-upload": "^1.4.0",
+    "popper.js": "^1.16.1",
+    "rxjs": "^6.6.2",
+    "tslib": "^2.0.1",
+    "zone.js": "~0.10.3"
+  },
+  "devDependencies": {
+    "@angular-builders/jest": "^10.0.0",
+    "@angular/cli": "~10.0.8",
+    "@angular/compiler-cli": "^10.0.14",
+    "@angular/language-service": "^10.0.14",
+    "@angular-devkit/build-angular": "^0.1000.8",
+    "@angularclass/hmr": "^3.0.0",
+    "@biesbjerg/ngx-translate-extract": "^7.0.2",
+    "@biesbjerg/ngx-translate-extract-marker": "^1.0.0",
+    "@ngx-rocket/scripts": "^4.0.0",
+    "@types/jasmine": "^3.5.14",
+    "@types/jasminewd2": "^2.0.8",
+    "@types/jest": "^26.0.12",
+    "@types/node": "^12.12.54",
+    "codelyzer": "^6.0.0",
+    "hads": "^2.1.0",
+    "htmlhint": "^0.14.1",
+    "https-proxy-agent": "^5.0.0",
+    "jasmine-core": "~3.6.0",
+    "jasmine-spec-reporter": "~5.0.1",
+    "jest": "^26.4.2",
+    "prettier": "^2.1.1",
+    "tslint-config-prettier": "^1.18.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "pretty-quick": "^3.0.0",
+    "husky": "^4.2.5",
+    "protractor": "~7.0.0",
+    "stylelint": "~13.6.1",
+    "stylelint-config-recommended-scss": "~4.2.0",
+    "stylelint-config-standard": "~20.0.0",
+    "stylelint-scss": "~3.18.0",
+    "ts-node": "^9.0.0",
+    "tslint": "~6.1.0",
+    "typescript": "~3.9.5"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.scss",
+        "options": {
+          "singleQuote": false
+        }
+      }
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
