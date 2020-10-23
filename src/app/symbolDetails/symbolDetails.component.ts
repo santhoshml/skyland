@@ -1,9 +1,10 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
 import { SymbolDetailsService } from './symbolDetails.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 declare const TradingView: any;
 
@@ -50,6 +51,7 @@ export class SymbolDetailsComponent implements OnInit {
 
   
   constructor(private symbolDetailsService: SymbolDetailsService
+    , private router: Router
     , private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -66,7 +68,16 @@ export class SymbolDetailsComponent implements OnInit {
       let userId = 2;
       let symbol = params['symbol'];
       console.log(`In symbolDetails, userId:${userId}, symbol:${symbol}`);
-      this.symbolDetailsResp$ = this.symbolDetailsService.getListDetails(userId, symbol);
+      this.symbolDetailsResp$ = this.symbolDetailsService.getListDetails(userId, symbol).pipe(
+        map((body: any, headers: any)=> body),
+        catchError((err) => {
+          if(err.status === 401){
+            this.router.navigate(['/login', {errMsg: 'Session expired. Login please.'}], { replaceUrl: true });
+          } else {
+            return of()
+          }
+        })
+      );
 
       // init InfoWidget
       let symbolInfoWidgetOptions = {

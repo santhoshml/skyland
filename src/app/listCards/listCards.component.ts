@@ -3,7 +3,8 @@ import { finalize } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
 import { ListCardsService } from './listCards.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 export interface ListCard {
   key: string;
@@ -28,7 +29,21 @@ export class ListCardsComponent implements OnInit {
     private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.listCard$ = this.listCardsService.getAllCards();
+    this.listCard$ = this.listCardsService.getAllCards().pipe(
+      map((body: any, headers:any)=>{
+        console.log(`body: ${JSON.stringify(body)}`);
+        console.log(`headers: ${JSON.stringify(headers)}`);
+        return body;
+      }),
+      catchError((err) => {
+        if(err.status === 401){
+          this.router.navigate(['/login', {errMsg: 'Session expired. Login please.'}], { replaceUrl: true });
+        } else {
+          return of()
+        }
+      })
+    )
+
   }
 
   getList(selectedCard : ListCard){

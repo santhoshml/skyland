@@ -1,9 +1,9 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { finalize } from 'rxjs/operators';
+import { finalize, map, catchError } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
 import { ListDetailsService } from './listDetails.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 export interface ListDetails {
   success: boolean;
@@ -52,7 +52,17 @@ export class ListDetailsComponent implements OnInit {
       console.log(`this.listId : ${this.listId}`);
 
       // get the list from BE
-      this.listDetails$ = this.listDetailsService.getListDetails(this.userId, this.listId);
+      this.listDetails$ = this.listDetailsService.getListDetails(this.userId, this.listId).pipe(
+        map((body:any, headers: any)=> body),
+        catchError((err) => {
+          if(err.status === 401){
+            this.router.navigate(['/login', {errMsg: 'Session expired. Login please.'}], { replaceUrl: true });
+          } else {
+            return of()
+          }
+        })
+      )
+        
    })
   }
 

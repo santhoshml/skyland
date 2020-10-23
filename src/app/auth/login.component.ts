@@ -16,8 +16,15 @@ const log = new Logger('Login');
 })
 export class LoginComponent implements OnInit, OnDestroy {
   version: string | null = environment.version;
-  error: string | undefined;
-  loginForm!: FormGroup;
+  
+  loginError: string | undefined;
+  createAccountError: string | undefined;
+  forgotError: string | undefined;
+
+  accountForm!: FormGroup;
+
+  activeTab: string;
+  
   isLoading = false;
 
   constructor(
@@ -26,41 +33,80 @@ export class LoginComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService
   ) {
-    this.createForm();
+    this.activeTab = 'login';
+    this.initForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.params.subscribe(params=>{
+      console.log(`params : ${JSON.stringify(params)}`);
+      this.loginError = params['errMsg'];
+    });
+  }
 
   ngOnDestroy() {}
 
   login() {
     this.isLoading = true;
-    const login$ = this.authenticationService.login(this.loginForm.value);
+    const login$ = this.authenticationService.login(this.accountForm.value);
     login$
       .pipe(
         finalize(() => {
-          this.loginForm.markAsPristine();
+          this.accountForm.markAsPristine();
           this.isLoading = false;
         }),
         untilDestroyed(this)
       )
       .subscribe(
         (credentials) => {
-          log.debug(`${credentials.username} successfully logged in`);
-          this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
+          log.debug(`${credentials.email} successfully logged in`);
+          this.router.navigate(['/listCards'], { replaceUrl: true });
+          // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
         },
         (error) => {
           log.debug(`Login error: ${error}`);
-          this.error = error;
+          this.loginError = `Email or password incorrect.`;
         }
       );
   }
 
-  private createForm() {
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      remember: true,
-    });
+  createAccount() {
+
+  }
+
+  forgotPassword() {
+
+  }
+
+  setActiveTab(val: string){
+    this.activeTab = val;
+    this.initForm();
+  }
+
+  private initForm() {
+    switch (this.activeTab) {
+      case 'login':
+        this.accountForm = this.formBuilder.group({
+          email: ['', Validators.required],
+          password: ['', Validators.required],
+          displayName: [''],
+          phone: [''],
+          remember: true,
+        });            
+        break;
+      case 'createAccount':
+        this.accountForm = this.formBuilder.group({
+          email: ['', Validators.required],
+          password: ['', Validators.required],
+          displayName: ['', Validators.required],
+          phone: [''],
+          remember: true,
+        });            
+        break;
+    
+      default:
+        break;
+    }
+
   }
 }

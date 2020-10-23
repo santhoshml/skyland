@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 export interface Credentials {
   // Customize received credentials here
-  username: string;
+  email: string;
   token: string;
 }
 
@@ -39,6 +39,17 @@ export class CredentialsService {
    */
   get credentials(): Credentials | null {
     return this._credentials;
+  }
+
+  /**
+   * Gets token
+   * @return The user access_token or null if the user is not authenticated.
+   */
+  getToken(): string | null {
+    if(this._credentials){
+      return this._credentials.token;
+    }
+    return null;
   }
 
   /**
