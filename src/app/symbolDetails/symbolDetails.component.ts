@@ -69,7 +69,10 @@ export class SymbolDetailsComponent implements OnInit {
       let symbol = params['symbol'];
       console.log(`In symbolDetails, userId:${userId}, symbol:${symbol}`);
       this.symbolDetailsResp$ = this.symbolDetailsService.getListDetails(userId, symbol).pipe(
-        map((body: any, headers: any)=> body),
+        map((body: any, headers: any)=> {
+          console.log(body);
+          return body;
+        }),
         catchError((err) => {
           if(err.status === 401){
             this.router.navigate(['/login', {errMsg: 'Session expired. Login please.'}], { replaceUrl: true });
