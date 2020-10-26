@@ -5,7 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { SymbolDetailsResp, TagDetails } from './symbolDetails.component';
 
 const routes = {
-  listDetails: (userId : number, symbol : string) => `/user/${userId}/symbol/${symbol}/details`,
+  listDetails: (symbol : string) => `/symbol/${symbol}/details`,
   tagDetails: () => `/data/tags`,
 };
 
@@ -15,8 +15,8 @@ const routes = {
 export class SymbolDetailsService {
   constructor(private httpClient: HttpClient) {}
 
-  getListDetails(userId:number, symbol: string): Observable<SymbolDetailsResp | string> {
-    return this.httpClient.get(routes.listDetails(2, symbol)).pipe(
+  getListDetails(symbol: string): Observable<SymbolDetailsResp | string> {
+    return this.httpClient.get(routes.listDetails(symbol)).pipe(
       map((body: SymbolDetailsResp) => body),
       catchError(() => of('Error, could not GET list details :-('))
     );

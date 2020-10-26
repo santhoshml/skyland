@@ -5,7 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { ListDetails } from './listDetails.component';
 
 const routes = {
-  listDetails: (userId : number, key : number) => `/user/${userId}/predictions/${key}`,
+  listDetails: (key : number) => `/predictions/${key}`,
 };
 
 export interface RandomQuoteContext {
@@ -20,7 +20,7 @@ export class ListDetailsService {
   constructor(private httpClient: HttpClient) {}
 
   getListDetails(userId:number, key: number): Observable<ListDetails[] | string> {
-    return this.httpClient.get(routes.listDetails(2, key)).pipe(
+    return this.httpClient.get(routes.listDetails(key)).pipe(
       map((body: ListDetails[]) => body),
       catchError(() => of('Error, could not GET list details :-('))
     );

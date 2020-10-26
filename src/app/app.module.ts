@@ -18,6 +18,7 @@ import { ListCardsModule } from './listCards/listCards.module';
 import { ListDetailsModule } from './listDetails/listDetails.module';
 import { SymbolDetailsModule } from './symbolDetails/symbolDetails.module';
 import { DefinitionsModule } from './definitions/definitions.module';
+import { PageNotFoundModule } from './pageNotFound/pageNotFound.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -40,6 +41,7 @@ import { AppRoutingModule } from './app-routing.module';
     ListDetailsModule,
     SymbolDetailsModule,
     DefinitionsModule,
+    PageNotFoundModule,
     AppRoutingModule, // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],

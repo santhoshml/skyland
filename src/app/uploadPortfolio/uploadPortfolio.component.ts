@@ -15,12 +15,9 @@ export class UploadPortfolioComponent implements OnInit {
   hideEtradeInstr = true;
   hideTSInstr = true;
   hideIBInstr = true;
-  
 
-
-  private URL = `http://localhost:8080/user/2/brokerage/${this.selectedPlatform}/portfolio`;
   public uploader: FileUploader = new FileUploader({
-    url: `http://localhost:8080/user/2/brokerage/${this.selectedPlatform}/portfolio`,
+    url: `${environment.serverUrl}/brokerage/${this.selectedPlatform}/portfolio`,
     disableMultipart: false,
     autoUpload: false,
     method: 'post',

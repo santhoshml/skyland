@@ -38,9 +38,22 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log(`In login ngOnInit`);
     this.route.params.subscribe(params=>{
-      console.log(`params : ${JSON.stringify(params)}`);
+      console.log(`params in params: ${JSON.stringify(params)}`);
       this.loginError = params['errMsg'];
+    });
+
+    // redirected from oauth
+    this.route.queryParams.subscribe(params => {
+        console.log(`params in queryParams : ${JSON.stringify(params)}`);
+        let token = params['token'];
+        let email = params['email'];
+        let id = params['id'];
+        if(token){
+          this.authenticationService.saveCredentianls(id, email, token);
+          this.router.navigate(['/listCards'], { replaceUrl: true });
+        }
     });
   }
 
@@ -71,7 +84,27 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   createAccount() {
-
+    this.isLoading = true;
+    const login$ = this.authenticationService.createAccount(this.accountForm.value);
+    login$
+      .pipe(
+        finalize(() => {
+          this.accountForm.markAsPristine();
+          this.isLoading = false;
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(
+        (credentials) => {
+          log.debug(`${credentials.email} successfully logged in`);
+          this.router.navigate(['/listCards'], { replaceUrl: true });
+          // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
+        },
+        (error) => {
+          log.debug(`Login error: ${error}`);
+          this.loginError = `Email or password incorrect.`;
+        }
+      );
   }
 
   forgotPassword() {

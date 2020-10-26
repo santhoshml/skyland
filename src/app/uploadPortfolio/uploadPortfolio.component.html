@@ -27,20 +27,115 @@
   </div>
 
 
-  <div class="mt-5">
+  <div class="mt-3">
     <div [hidden]="hideSchwabInstr" class="jumbotron">
-      <h2> Instructions to get history from schwab.com</h2>
-      <p><i class="far fa-bookmark"></i> <span translate>Version</span> {{ version }}</p>
+      <div class="mb-3">
+        <h2> Instructions to get transaction history from Charles Schwab</h2>
+      </div>
+      <p>
+        1. Log in to <a target="_blank" href="https://schwab.com">Schwab</a>
+      </p>
+      <p>
+        2. Goto <span class="font-weight-bold">Account</span> -> <span class="font-weight-bold">History</span>
+          <img src="/assets/schwab_step_2.png" alt="Click on Account" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        3. Select the desired account # from the <span class="font-weight-bold">dropdown</span>(on the top-left)
+        <img src="/assets/schwab_step_3.png" alt="Select Account" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        4. Select <span class="font-weight-bold">All</span> in the <span class="font-weight-bold">Date Range</span> dropdown
+        <img src="/assets/schwab_step_4.png" alt="Select All transactions" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        5. Click on <span class="font-weight-bold">Export</span> on top right corner (this will open a disclaimer in a pop-up)
+        <img src="/assets/schwab_step_5.png" alt="Click on Export" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        6. Click <span class="font-weight-bold">OK</span> on the disclaimer notice
+        <img src="/assets/schwab_step_6.png" alt="Accept disclaimer" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        7. This will open a window, click <span class="font-weight-bold">save</span>(make sure it is in comma-separated/csv format)
+      </p>
+      <p>
+        8. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span>
+      </p>
     </div>
 
     <div [hidden]="hideEtradeInstr" class="jumbotron">
-      <h2> Instructions to get history from etrade.com</h2>
-      <p><i class="far fa-bookmark"></i> <span translate>Version</span> {{ version }}</p>
+      <div class="mb-3">
+        <h2> Instructions to get transaction history from E-TRADE</h2>
+      </div>
+      <p>
+        1. Log in to <a target="_blank" href="https://etrade.com">E-TRADE</a>
+      </p>
+      <p>
+        2. Goto <span class="font-weight-bold">Accounts</span> -> <span class="font-weight-bold">Transactions</span>
+          <img src="/assets/etrade_step_2.png" alt="Click on Account" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        3. Click on the download icon on the top-right corner
+        <img src="/assets/etrade_step_3.png" alt="Select Account" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        4. Select
+            <span style="display: block; margin-left: 50px; font-size: 14px;">a) Account # from the select <span class="font-weight-bold">Account dropdown</span></span>
+            <span style="display: block; margin-left: 50px; font-size: 14px;">b) Spredsheet Format including Microsoft Excel for the <span class="font-weight-bold">data format dropdown</span></span>
+            <span style="display: block; margin-left: 50px; font-size: 14px;">
+              c) E-Trade allows only to download past <span class="font-weight-bold"><u>16 months</u></span> of data, select From data appropriately
+            </span>
+        <img src="/assets/etrade_step_4.png" alt="Select Account" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        5. Click <span class="font-weight-bold">Download</span>
+      </p>
+      <p>
+        6. This will open a window, click <span class="font-weight-bold">save</span>
+      </p>
+      <p>
+        7. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span>
+      </p>
     </div>
 
     <div [hidden]="hideTSInstr" class="jumbotron">
-      <h2> Instructions to get history from tradestation.com</h2>
-      <p><i class="far fa-bookmark"></i> <span translate>Version</span> {{ version }}</p>
+      <div class="mb-3">
+        <h2> Instructions to get transaction history from TradeStation</h2>
+      </div>
+      <p>
+        1. Log in to <a target="_blank" href="https://clientcenter.tradestation.com/">TradeStation Client Center</a>
+      </p>
+      <p>
+        2. Click on <span class="font-weight-bold">Account</span>
+          <img src="/assets/ts_step_2.png" alt="Click on Account" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        3. Click on <span class="font-weight-bold">Equities Accounts</span>(on the left)
+        <img src="/assets/ts_step_3.png" alt="Select Account" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        4. Click on <span class="font-weight-bold">Trades & Other Transactions</span>
+        <img src="/assets/ts_step_4.png" alt="Select All transactions" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        5. Select 
+        <span style="display: block; margin-left: 50px; font-size: 14px;">a) Account # from the select <span class="font-weight-bold">Account dropdown</span></span>
+        <span style="display: block; margin-left: 50px; font-size: 14px;">b) Date Range, Tradestation allows only to download past <span class="font-weight-bold"><u>3 months</u></span> of data at a time</span>
+        <span style="display: block; margin-left: 50px; font-size: 14px;">c) <span class="font-weight-bold">Microsoft Excel</span> for the format </span>
+        <span style="display: block; margin-left: 50px; font-size: 14px;">d) <span class="font-weight-bold">Trades</span> for the Transaction Type </span>
+        <span style="display: block; margin-left: 50px; font-size: 14px;">e) <span class="font-weight-bold">All</span> for Symbol </span>
+        <span style="display: block; margin-left: 50px; font-size: 14px;">f) <span class="font-weight-bold">All Trades</span> </span>
+        <img src="/assets/ts_step_5.png" alt="Click on Export" style="max-width:500px; max-height: 110px;"/>
+      </p>
+      <p>
+        6. Click <span class="font-weight-bold">View/Download</span>
+      </p>
+      <p>
+        7. This will open a window, click <span class="font-weight-bold">save</span>
+      </p>
+      <p>
+        8. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span>
+      </p>
     </div>
 
     <div [hidden]="hideIBInstr" class="jumbotron">
@@ -48,6 +143,4 @@
       <p><i class="far fa-bookmark"></i> <span translate>Version</span> {{ version }}</p>
     </div>
   </div>
-
-
 </div>

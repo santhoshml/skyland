@@ -1,8 +1,10 @@
 {
-  "APP_NAME": "ngX-Rocket",
+  "APP_NAME": "Liste.AI",
   "About": "About",
   "Hello world !": "Hello world !",
   "Home": "Home",
+  "Upload_history": "Upload Old Transactions",
+  "Ideas": "Ideas",
   "Logged in as": "Logged in as",
   "Login": "Login",
   "Forgot Password" : "Forgot Password",

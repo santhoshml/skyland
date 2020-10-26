@@ -39,7 +39,7 @@ export class ListCardsComponent implements OnInit {
         if(err.status === 401){
           this.router.navigate(['/login', {errMsg: 'Session expired. Login please.'}], { replaceUrl: true });
         } else {
-          return of()
+          return of(false)
         }
       })
     )

@@ -31,9 +31,4 @@ export class ListCardsService {
       })
     );
   }
-
-  getAccessToken(OuthToken: string, oauth_verifier: string) {
-    let oAuth_consumer_key = 'YG3PKk3xIuX5m3ufbrhPEKPaR';
-
-  }
 }

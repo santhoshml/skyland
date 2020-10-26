@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthenticationService, CredentialsService } from '@app/auth';
 
@@ -10,14 +11,17 @@ import { AuthenticationService, CredentialsService } from '@app/auth';
 })
 export class HeaderComponent implements OnInit {
   menuHidden = true;
-
+  searchForm!: FormGroup;
   constructor(
     private router: Router,
+    private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
     private credentialsService: CredentialsService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.initForm();
+  }
 
   toggleMenu() {
     this.menuHidden = !this.menuHidden;
@@ -30,5 +34,18 @@ export class HeaderComponent implements OnInit {
   get email(): string | null {
     const credentials = this.credentialsService.credentials;
     return credentials ? credentials.email : null;
+  }
+
+  onSubmit(){
+    console.log(`symbol: ${this.searchForm.value.symbol}`);
+    if(this.searchForm.value.symbol){
+      this.router.navigate(['/symbolDetails', this.searchForm.value.symbol], { replaceUrl: true });
+    }
+  }
+
+  private initForm() {
+    this.searchForm = this.formBuilder.group({
+      symbol: ['', Validators.required]
+      });            
   }
 }

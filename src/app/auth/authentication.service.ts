@@ -7,12 +7,20 @@ import { Credentials, CredentialsService } from './credentials.service';
 
 const routes = {
   login: () => `/login`,
+  createAccount: () => `/signup`
 };
 
 export interface LoginContext {
   email: string;
   password: string;
   remember?: boolean;
+}
+
+export interface CreateAccountContext {
+  email: string;
+  password: string;
+  phone: string;
+  displayName: string;
 }
 
 /**
@@ -25,6 +33,14 @@ export interface LoginContext {
 export class AuthenticationService {
   constructor(private httpClient: HttpClient, 
     private credentialsService: CredentialsService) {}
+
+  saveCredentianls(id:string, email:string, token:string) : void {
+    this.credentialsService.setCredentials({
+      email: email,
+      token: token,
+      id: id
+    }, true);
+  }  
 
   /**
    * Authenticates the user.
@@ -46,6 +62,32 @@ export class AuthenticationService {
       map((body: any)=>{
         console.log(`body: ${JSON.stringify(body)}`);
       this.credentialsService.setCredentials(body, context.remember);
+      return of(body);
+      }),
+      catchError((err)=> {
+        console.log(`err: ${JSON.stringify(err)}`);
+        return throwError(err)
+      })
+    );
+  }
+
+  /**
+   * Create Account for the user.
+   * @param context The CreateAccountContext parameters.
+   * @return The user credentials.
+   */
+  createAccount(context: CreateAccountContext): Observable<Credentials | any> {
+    // Replace by proper authentication call
+    let createAccountData = {
+      email: context.email,
+      password: context.password,
+      displayName: context.displayName,
+      phone: context.phone
+    };
+    return this.httpClient.post(routes.createAccount(), createAccountData).pipe(
+      map((body: any)=>{
+        console.log(`body: ${JSON.stringify(body)}`);
+      this.credentialsService.setCredentials(body, false);
       return of(body);
       }),
       catchError((err)=> {

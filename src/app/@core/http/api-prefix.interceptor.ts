@@ -20,7 +20,8 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
     if (savedCredentials) {
       let _credentials = JSON.parse(savedCredentials);
-      let accessToken: any = _credentials.token;
+      let accessToken: string = _credentials.token;
+      let userId: string = _credentials.id;
 
       // add token to the request
       request = request.clone({
@@ -28,6 +29,7 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
           'Content-Type' : 'application/json; charset=utf-8',
           'Accept'       : 'application/json',
           'Authorization': `Bearer ${accessToken}`,
+          'user-id'       : userId
         },
       });
     }
