@@ -2,52 +2,47 @@
     <div class="tradingview-widget-container" id="symbolInfoWidget">
         <div class="tradingview-widget-container__widget"></div>
     </div>
-
-
     <div *ngIf="symbolDetailsResp$ | async as symbolDetailsResp" >
-        <div class="card-group">
+        <div class="row card-group">
             <div *ngIf="symbolDetailsResp.gain_flag === 1" class="card ml-2">
-                <img class="card-img-top" src="assets/gain.png" alt="Card image cap">
-                <div class="card-body p-0">
+                <img class="card-img-top" src="assets/gain.png" style="height: 150px;" alt="Card image cap">
+                <div class="card-body mb-5">
                     <h5 class="card-title p-3">Prediction - GAIN</h5>
-                    <p class="card-text text-muted p-3">
+                    <div class="card-text text-muted p-3">
                         Based on your historical trades and current market behaviour of {{symbolDetailsResp.symbol}}, if you go long, you will make money.
-                    </p>
-                    <div class="card-footer text-muted">
-                        <small>**based on the analysis after the market close on {{symbolDetailsResp.date}}</small>
                     </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <small>**based on the analysis after the market close on {{symbolDetailsResp.date}}</small>
                 </div>
             </div>
             <div *ngIf="symbolDetailsResp.gain_flag === 0" class="card">
-                <img class="card-img-top" src="assets/loss.png" alt="Card image cap">
-                <div class="card-body p-0">
+                <img class="card-img-top" src="assets/loss.png" style="height: 150px;" alt="Card image cap">
+                <div class="card-body mb-5">
                     <h5 class="card-title p-3">Prediction - LOSS</h5>
-                    <p class="card-text text-muted p-3">
+                    <div class="card-text text-muted p-3">
                             Based on your historical trades and current market behaviour of {{symbolDetailsResp.symbol}}, this is not a good time to buy {{symbolDetailsResp.symbol}}.
-                    </p>
-                    <div class="card-footer text-muted">
-                        <small>**based on the analysis after the market close on {{symbolDetailsResp.date}}</small>
                     </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <small>**based on the analysis after the market close on {{symbolDetailsResp.date}}</small>
                 </div>
             </div>
             <div class="card ml-2 mr-2">
-                <div class="card-body p-0">
+                <table style="height: 150px;">
+                    <tbody>
+                        <tr>
+                            <td class="text-center align-middle h1">{{symbolDetailsResp.confidence | percent: '1.0-2'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="card-body mb-5">
                     <h5 class="card-title p-3">Matching Score</h5>
-                    <h1 class="card-subtitle text-center mt-3 mb-3 p-3">{{symbolDetailsResp.confidence | percent: '1.0-2'}}</h1>
-                    <p class="card-text mt-3 p-3 text-muted">Percent match of {{symbolDetailsResp.symbol}}'s today pattern with your past succesful transactions</p>
-                    <div class="card-footer text-muted">
-                        <small>**based on the analysis after the market close on {{symbolDetailsResp.date}}</small>
-                    </div>
+                    <!-- <h1 class="card-subtitle text-center mt-3 mb-3 p-3">{{symbolDetailsResp.confidence | percent: '1.0-2'}}</h1> -->
+                    <p class="card-text p-3 text-muted">Percent match of {{symbolDetailsResp.symbol}}'s today pattern with your past succesful transactions</p>
                 </div>
-            </div>
-            <div class="card mr-2">
-                <div class="card-body p-0">
-                    <h5 class="card-title p-3">Accuracy</h5>
-                    <h1 class="card-subtitle text-center mt-3 mb-3 p-3">{{symbolDetailsResp.accuracy | percent: '1.0-2'}}</h1>
-                    <p class="card-text mt-3 p-3 text-muted">Accuracy of the model constructed based on your previous history</p>
-                    <div class="card-footer text-muted">
-                        <small>**based on the analysis after the market close on {{symbolDetailsResp.date}}</small>
-                    </div>
+                <div class="card-footer text-muted">
+                    <small>**based on the analysis after the market close on {{symbolDetailsResp.date}}</small>
                 </div>
             </div>
         </div>
@@ -56,10 +51,13 @@
         <div class="col-md-6 col-lg-6">
             <div class="card" *ngIf="symbolDetailsResp$ | async as symbolDetailsResp">
                 <div class="card-body" *ngIf="symbolDetailsResp">
-                  <h5 class="card-title">Tags</h5>
+                  <h5 class="card-title">Features</h5>
                   <div *ngIf="symbolDetailsResp && symbolDetailsResp.tags">
                       <span class="m-2" *ngFor="let tag of getArray(symbolDetailsResp.tags)">
-                      <a role="button" (click)="gotoTagLink(tag)" class="badge badge-pill badge-light">
+                        <a *ngIf="isExistInUserProfile(tag)" role="button" (click)="gotoTagLink(tag)" class="badge badge-pill badge-primary">
+                                {{ getTagDisplayText(tag) }}
+                        </a>
+                        <a *ngIf="!isExistInUserProfile(tag)" role="button" (click)="gotoTagLink(tag)" class="badge badge-pill badge-light">
                             {{ getTagDisplayText(tag) }}
                         </a>
                       </span>

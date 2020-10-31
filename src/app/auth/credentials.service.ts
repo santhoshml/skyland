@@ -7,7 +7,18 @@ export interface Credentials {
   token: string;
 }
 
+export interface UserProfileModel {
+  numOfRecords: number;
+  accuracy: number;
+  precision: number;
+  recall: number;
+  f1_score: number;
+  support: number;
+  selected_params : string[];
+}
+
 const credentialsKey = 'credentials';
+const userProfileModelKey = 'userProfileModel';
 
 /**
  * Provides storage for authentication credentials.
@@ -18,11 +29,17 @@ const credentialsKey = 'credentials';
 })
 export class CredentialsService {
   private _credentials: Credentials | null = null;
+  private _userProfileModel: UserProfileModel | null = null;
 
   constructor() {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
+    const savedUserProfileModel = sessionStorage.getItem(userProfileModelKey);
     if (savedCredentials) {
       this._credentials = JSON.parse(savedCredentials);
+    }
+
+    if(savedUserProfileModel) {
+      this._userProfileModel = JSON.parse(savedUserProfileModel);
     }
   }
 
@@ -40,6 +57,10 @@ export class CredentialsService {
    */
   get credentials(): Credentials | null {
     return this._credentials;
+  }
+
+  get userProfileModel(): UserProfileModel | null {
+    return this._userProfileModel;
   }
 
   /**
@@ -69,6 +90,24 @@ export class CredentialsService {
     } else {
       sessionStorage.removeItem(credentialsKey);
       localStorage.removeItem(credentialsKey);
+    }
+  }
+
+  /**
+   * Sets the user profile.
+   * The userProfileModel may be persisted across sessions
+   * Otherwise, the credentials are only persisted for the current session.
+   * @param userProfileModel The user ProfileModel.
+   */
+  setUserProfile(userProfileModel?: UserProfileModel) {
+    this._userProfileModel = userProfileModel || null;
+
+    if (userProfileModel) {
+      const storage = sessionStorage;
+      storage.setItem(userProfileModelKey, JSON.stringify(userProfileModel));
+    } else {
+      sessionStorage.removeItem(userProfileModelKey);
+      localStorage.removeItem(userProfileModelKey);
     }
   }
 }

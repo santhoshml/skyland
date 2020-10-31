@@ -31,10 +31,23 @@
     width: 100%
 }
 
+.card-body {
+    padding: 0px;
+}
+
 .card-footer{
       bottom:0;
       width:100%;
-    }
+      position: absolute;
+}
+
+.card-title {
+    padding-bottom: 0px !important;
+}
+
+.card-text {
+    padding-top: 0px !important;
+}
 
 .card-img-top {
     /*height: 11vw;*/

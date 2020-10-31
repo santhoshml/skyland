@@ -6,6 +6,8 @@ import { SymbolDetailsService } from './symbolDetails.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
+import { Credentials, CredentialsService } from './../auth/credentials.service';
+
 declare const TradingView: any;
 
 export interface SymbolDetailsResp {
@@ -47,12 +49,13 @@ export class SymbolDetailsComponent implements OnInit {
   private sub: any;
   tagDetailsMap: Map<string, TagDetails[]> = new Map<string, TagDetails[]>();
   tagDetailsArr: TagDetails[] = [];
-
+  userModelTags:string[];
 
   
   constructor(private symbolDetailsService: SymbolDetailsService
     , private router: Router
-    , private route: ActivatedRoute) {}
+    , private route: ActivatedRoute
+    , private credentialsService: CredentialsService) {}
 
   ngOnInit() {
     // get tag details
@@ -99,6 +102,9 @@ export class SymbolDetailsComponent implements OnInit {
       // load chart
       this.loadChart(symbol);
    })
+
+   // load tags from userModelProfile
+   this.userModelTags = this.credentialsService.userProfileModel.selected_params;
   }
 
   loadChart(symbol:string) {
@@ -138,5 +144,11 @@ export class SymbolDetailsComponent implements OnInit {
     let ele:TagDetails = this.tagDetailsArr.find((element: TagDetails)=> element.key === str);
     let retVal = ele ? ele.link: '#';
     window.open(retVal, "_blank");
+  }
+
+  isExistInUserProfile(tag:string) {
+    if(this.userModelTags.find(str=> str === tag))
+      return true;
+    return false;
   }
 }

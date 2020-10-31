@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import { Observable, of } from 'rxjs';
 import { AuthenticationService, CredentialsService } from '@app/auth';
+import { map, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,8 @@ import { AuthenticationService, CredentialsService } from '@app/auth';
 export class HeaderComponent implements OnInit {
   menuHidden = true;
   searchForm!: FormGroup;
+  userModelProfile$: Observable<any>;
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -21,6 +24,17 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    this.userModelProfile$ = this.authenticationService.getUserModelProfile().pipe(
+      map((body: any, headers:any)=>{
+        console.log(`body from headerComponent, body: ${JSON.stringify(body)}`);
+        this.credentialsService.setUserProfile(body);
+        return body;
+      }),
+      catchError((err)=>{
+        console.log(`Error when getting userModel profile: ${JSON.stringify(err)}`);
+        return of(false);
+      })
+    )
   }
 
   toggleMenu() {

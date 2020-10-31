@@ -7,7 +7,8 @@ import { Credentials, CredentialsService } from './credentials.service';
 
 const routes = {
   login: () => `/login`,
-  createAccount: () => `/signup`
+  createAccount: () => `/signup`,
+  userModelStats: () => `/model/info` 
 };
 
 export interface LoginContext {
@@ -106,4 +107,32 @@ export class AuthenticationService {
     this.credentialsService.setCredentials();
     return of(true);
   }
+
+  /**
+   * Authenticates the user.
+   * @param context The login parameters.
+   * @return The user credentials.
+   */
+  getUserModelProfile(): Observable<any> {
+    // Replace by proper authentication call
+    let headers = {
+      contentType: 'application/json'
+    };
+    return this.httpClient.get(routes.userModelStats(), {
+      headers: headers
+    });
+    
+    // .pipe(
+    //   map((body: any)=>{
+    //     console.log(`getUserModelProfile body: ${JSON.stringify(body)}`);
+    //     return of(body);
+    //   }),
+    //   catchError((err)=> {
+    //     console.log(`err: ${JSON.stringify(err)}`);
+    //     return throwError(err)
+    //   })
+    // );
+
+
+  }  
 }
