@@ -72,7 +72,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (credentials) => {
-          log.debug(`${credentials.email} successfully logged in`);
+          log.debug(`successfully logged in`);
+
+          // get favorites for the user
+          this.authenticationService.getFavorites().subscribe();
+
           this.router.navigate(['/listCards'], { replaceUrl: true });
           // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
         },

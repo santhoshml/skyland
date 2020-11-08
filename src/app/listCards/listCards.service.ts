@@ -4,8 +4,9 @@ import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { ListCard } from './listCards.component';
 
+// quote: () => `/data/prediction/groups`,
 const routes = {
-  quote: () => `/data/prediction/groups`,
+  quote: () => `/predictions/group/count`,
 };
 
 export interface RandomQuoteContext {

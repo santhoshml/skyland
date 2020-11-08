@@ -5,6 +5,7 @@ import { environment } from '@env/environment';
 import { SymbolDetailsService } from './symbolDetails.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import {NgbModal,  ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import { Credentials, CredentialsService } from './../auth/credentials.service';
 
@@ -50,12 +51,18 @@ export class SymbolDetailsComponent implements OnInit {
   tagDetailsMap: Map<string, TagDetails[]> = new Map<string, TagDetails[]>();
   tagDetailsArr: TagDetails[] = [];
   userModelTags:string[];
+  activeSymbol:string;
+  isFavorite=false;
+  closeResult: string;
+  title = 'appBootstrap';
+  userNotes:string;
 
   
   constructor(private symbolDetailsService: SymbolDetailsService
     , private router: Router
     , private route: ActivatedRoute
-    , private credentialsService: CredentialsService) {}
+    , private credentialsService: CredentialsService
+    , private modalService: NgbModal) {}
 
   ngOnInit() {
     // get tag details
@@ -70,7 +77,9 @@ export class SymbolDetailsComponent implements OnInit {
       console.log(`params : ${JSON.stringify(params)}`);
       let userId = 2;
       let symbol = params['symbol'];
+      this.activeSymbol = symbol;
       console.log(`In symbolDetails, userId:${userId}, symbol:${symbol}`);
+
       this.symbolDetailsResp$ = this.symbolDetailsService.getListDetails(symbol).pipe(
         map((body: any, headers: any)=> {
           console.log(body);
@@ -89,6 +98,15 @@ export class SymbolDetailsComponent implements OnInit {
         })
       );
 
+      // set Favorite flag
+      this.isFavorite = this.symbolDetailsService.isFavorite(this.activeSymbol);
+
+      // get notes
+      this.symbolDetailsService.getUserNotes(this.activeSymbol).subscribe(data=>{
+        console.log(`userNotes : ${JSON.stringify(data)}`);
+        this.userNotes = data.notes;
+      });
+
       // init InfoWidget
       let symbolInfoWidgetOptions = {
         "symbol": symbol,
@@ -105,6 +123,38 @@ export class SymbolDetailsComponent implements OnInit {
 
    // load tags from userModelProfile
    this.userModelTags = this.credentialsService.userProfileModel.selected_params;
+  }
+
+  open(content:any) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      console.log(this.closeResult);
+      console.log(`userNotes: ${this.userNotes}`);
+      this.symbolDetailsService.saveUserNotes(this.activeSymbol, this.userNotes).subscribe();
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      console.log(this.closeResult);
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+
+  addToFavorites(){
+    this.isFavorite=true;
+    this.symbolDetailsService.addToFavorites(this.activeSymbol).subscribe();
+  }
+
+  removeFromFavorites(){
+    this.isFavorite=false;
+    this.symbolDetailsService.removeFromFavorites(this.activeSymbol).subscribe();
   }
 
   loadChart(symbol:string) {

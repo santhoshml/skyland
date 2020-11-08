@@ -14,15 +14,15 @@
           </h4>
 
           <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" (click)="setActiveTab('login')" role="tab" aria-controls="login" aria-selected="true">Login</a>
+            <li class="nav-item mr-3">
+              <a class="nav-link active pr-5" id="login-tab" data-toggle="tab" href="#login" (click)="setActiveTab('login')" role="tab" aria-controls="login" aria-selected="true">Sign In</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" id="createAccount-tab" data-toggle="tab" href="#createAccount" (click)="setActiveTab('createAccount')" role="tab" aria-controls="createAccount" aria-selected="true">Create Account</a>
+              <a class="nav-link" id="createAccount-tab" data-toggle="tab" href="#createAccount" (click)="setActiveTab('createAccount')" role="tab" aria-controls="createAccount" aria-selected="true">Create an account</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" id="forgotPassword-tab" data-toggle="tab" href="#forgotPassword" (click)="setActiveTab('forgotPassword')" role="tab" aria-controls="forgotPassword" aria-selected="true">Forgot Password</a>
-            </li>
+            </li> -->
           </ul>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
@@ -30,7 +30,7 @@
                 <div class="alert alert-danger" [hidden]="!loginError || isLoading" translate>
                   {{loginError}}
                 </div>
-                <div class="form-group">
+                <div class="form-group mt-3">
                   <label class="d-block">
                     <input
                       type="text"
@@ -39,16 +39,16 @@
                       autocomplete="email"
                       [placeholder]="'Email' | translate"
                     />
-                    <span hidden translate>Email</span>
+                    <span hidden translate>Email address</span>
                     <small
                       [hidden]="accountForm.controls.email.valid || accountForm.controls.email.untouched"
                       class="text-danger"
                       translate
                     >
-                    Email is required
+                    Email address is required
                     </small>
                   </label>
-                  <label class="d-block">
+                  <label class="d-block mt-3">
                     <input
                       type="password"
                       class="form-control"
@@ -66,7 +66,7 @@
                       Password is required
                     </small>
                   </label>
-                  <div class="form-check">
+                  <div class="form-check mt-3">
                     <label class="form-check-label">
                       <input type="checkbox" class="form-check-input" formControlName="remember" />
                       <span translate>Remember me</span>
@@ -75,8 +75,12 @@
                 </div>
                 <button class="btn btn-primary w-100" type="submit" [disabled]="accountForm.invalid || isLoading">
                   <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
+                  <i class="fas fa-lock"></i>
                   <span translate>Login</span>
                 </button>
+                <p class="agree-tos">By clicking Sign In, you agree to our 
+                  <a href="https://www.liste.ai/terms.html" target="_blank">Terms</a> and have read and acknowledge our 
+                  <a href="https://www.liste.ai/privacy.html" target="_blank">US Privacy Statement</a>.</p>
                 <!-- <a class="btn btn-primary w-100 mt-3" href="http://localhost:8080/auth/twitter">
                   <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
                   <span translate>Use Twitter</span>
@@ -95,24 +99,7 @@
                   Something seems not correct, please check again !
                 </div>
                 <div class="form-group">
-                  <label class="d-block">
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="displayName"
-                      autocomplete="displayName"
-                      [placeholder]="'DisplayName' | translate"
-                    />
-                    <span hidden translate>Display Name</span>
-                    <small
-                      [hidden]="accountForm.controls.displayName.valid || accountForm.controls.displayName.untouched"
-                      class="text-danger"
-                      translate
-                    >
-                    Display Name is required
-                    </small>
-                  </label>
-                  <label class="d-block">
+                  <label class="d-block mt-3">
                     <input
                       type="text"
                       class="form-control"
@@ -129,7 +116,7 @@
                     Email is required
                     </small>
                   </label>
-                  <label class="d-block">
+                  <label class="d-block mt-3">
                     <input
                       type="text"
                       class="form-control"
@@ -137,9 +124,10 @@
                       autocomplete="phone"
                       [placeholder]="'Phone' | translate"
                     />
+                    <p class="std-msg-text">Standard call, messaging or data rates may apply.</p>
                     <span hidden translate>Phone</span>
                   </label>
-                  <label class="d-block">
+                  <label class="d-block mt-3">
                     <input
                       type="password"
                       class="form-control"
@@ -160,11 +148,15 @@
                 </div>
                 <button class="btn btn-primary w-100" type="submit" [disabled]="accountForm.invalid || isLoading">
                   <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
+                  <i class="fas fa-lock"></i>
                   <span translate>Create Account</span>
                 </button>
+                <p class="agree-tos">By clicking Create account, you agree to our 
+                  <a href="https://www.liste.ai/terms.html" target="_blank">Terms</a> and have read and acknowledge our 
+                  <a href="https://www.liste.ai/privacy.html" target="_blank">US Privacy Statement</a>.</p>
               </form>
             </div>
-            <div class="tab-pane fade" id="forgotPassword" role="tabpanel" aria-labelledby="forgotPassword-tab">
+            <!-- <div class="tab-pane fade" id="forgotPassword" role="tabpanel" aria-labelledby="forgotPassword-tab">
               <form (ngSubmit)="forgotPassword()" [formGroup]="accountForm" novalidate> 
                 <div class="alert alert-danger" [hidden]="!forgotError || isLoading" translate>
                   Email incorrect.
@@ -193,10 +185,17 @@
                   <span translate>Forgot Password</span>
                 </button>
               </form>
-            </div>
+            </div> -->
           </div>
+        </div>
+        <hr style="margin: 0px;">
+        <div class="recaptcha-div">
+          <span class="recaptcha-text">Invisible reCAPTCHA by Google 
+            <a href="https://www.google.com/intl/en/policies/privacy/" target="_blank">Privacy Policy</a> and 
+            <a href="https://www.google.com/intl/en/policies/terms/" target="_blank">Terms of Use</a>.</span>
         </div>
       </div>
     </div>
   </div>
 </div>
+

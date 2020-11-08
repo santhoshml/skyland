@@ -19,6 +19,8 @@ export interface UserProfileModel {
 
 const credentialsKey = 'credentials';
 const userProfileModelKey = 'userProfileModel';
+const userFavoritesKey = 'favorites';
+const userNotesKey = 'userNotes';
 
 /**
  * Provides storage for authentication credentials.
@@ -30,6 +32,8 @@ const userProfileModelKey = 'userProfileModel';
 export class CredentialsService {
   private _credentials: Credentials | null = null;
   private _userProfileModel: UserProfileModel | null = null;
+  private _favorites: string[] = [];
+  private _userNotes: string;
 
   constructor() {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
@@ -61,6 +65,14 @@ export class CredentialsService {
 
   get userProfileModel(): UserProfileModel | null {
     return this._userProfileModel;
+  }
+
+  get userFavorites(): string[] | null {
+    return this._favorites;
+  }
+
+  get userNotes(): string | null {
+    return this._userNotes;
   }
 
   /**
@@ -108,6 +120,36 @@ export class CredentialsService {
     } else {
       sessionStorage.removeItem(userProfileModelKey);
       localStorage.removeItem(userProfileModelKey);
+    }
+  }
+
+  /**
+   * Sets the user favorites.
+   */
+  setFavorites(favArr?: string[]) {
+    this._favorites = favArr || null;
+
+    if (favArr) {
+      const storage = localStorage;
+      localStorage.setItem(userFavoritesKey, JSON.stringify(favArr));
+    } else {
+      sessionStorage.removeItem(userFavoritesKey);
+      localStorage.removeItem(userFavoritesKey);
+    }
+  }
+
+  /**
+   * Sets the user notes.
+   */
+  setUserNotes(userNotes?: string) {
+    this._userNotes = userNotes || null;
+
+    if (userNotes) {
+      const storage = localStorage;
+      localStorage.setItem(userNotesKey, userNotes);
+    } else {
+      sessionStorage.removeItem(userNotesKey);
+      localStorage.removeItem(userNotesKey);
     }
   }
 }

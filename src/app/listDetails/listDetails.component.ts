@@ -20,6 +20,7 @@ export interface ListTable {
 export interface ListRow {
   symbol: string;
   confidence : string;
+  raw_confidence : number;
   companyName : string;
   sector : string;
   price : string;

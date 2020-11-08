@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
+import { TruncateModule } from '@yellowspot/ng-truncate';
 
 import { ListCardsRoutingModule } from './listCards-routing.module';
 import { ListCardsComponent } from './listCards.component';
@@ -15,6 +16,7 @@ import { ListCardsComponent } from './listCards.component';
     ListCardsRoutingModule, 
     BrowserModule, 
     NgbModule,
+    TruncateModule,
     FileUploadModule],
   declarations: [ListCardsComponent],
 })

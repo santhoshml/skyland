@@ -1,12 +1,35 @@
-<div class="container">
+<div class="container mb-5">
+  <div class="card ml-5">
+    <div class="card-body">
+      <h5 class="card-title">Trading Ideas</h5>
+      <p class="card-text">List of Trading ideas grouped in its own category.
+        This helps traders find the best stock suited to there trading style in the current market.
+      </p>
+      <ul class="pl-0 mb-5">
+        <li style="list-style-type: lower-alpha;" class="ml-3 mb-3">
+          <span class="card-text step-text">Each Trading ideas has list of stocks personalized for you.</span>
+        </li>
+        <li style="list-style-type: lower-alpha;" class="ml-3 mb-3">
+          <span class="card-text step-text">Lists only the stocks which are predicted to be a GAIN.</span>
+        </li>
+        <li style="list-style-type: lower-alpha;" class="ml-3 mb-3">
+          <span class="card-text step-text">Displays matching score of the stock with your trading style in the current market.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
   <div *ngIf="listCard$ | async as cards" class="d-flex flex-wrap">
     <div *ngFor="let card of cards" class="ml-5 mt-4">
       <div class="card" style="width: 20rem;">
-        <img class="card-img-top" src="{{card.img}}" alt="Card image cap">
+        <img class="card-img-top" width="300px"  height="200" src="{{card.img}}" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">{{card.title}}</h5>
-          <p class="card-text">{{card.desc}}</p>
-          <button (click)="getList(card)" class="btn btn-primary">Get List</button>
+          <p class="card-text" [innerHTML]="card.desc | truncate:90" ></p>
+          <button (click)="getList(card)" class="btn btn-primary">Get List - {{card.count}}</button>
+        </div>
+        <div class="card-footer text-muted">
+          <span class="normal-card-footer text-info" *ngIf="card.count > 0"><span class="font-weight-bold">{{card.count}}</span> stocks match this idea and your trading style. Click the above button to see the list.</span>
+          <span class="normal-card-footer text-warning" *ngIf="card.count == 0"><span class="font-weight-bold">No</span> stocks match this idea and your trading style with the current market.</span>
         </div>
       </div>
 

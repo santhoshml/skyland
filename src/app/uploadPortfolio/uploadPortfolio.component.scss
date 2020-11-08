@@ -9,3 +9,43 @@
 .zero-padding {
     padding: 0 !important;
 }
+
+.heading {
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 200;
+    line-height: 31.64px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.desc-text {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+}
+
+.ver-line {
+    border-left: 1px solid #333;
+}
+
+.easy-steps-text {
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    margin-block-end: 15px;
+    color: #333;
+}
+
+.step-text {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    padding-left: 9px;
+    text-align: left;
+    color: #999;
+}

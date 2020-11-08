@@ -8,7 +8,8 @@ import { Credentials, CredentialsService } from './credentials.service';
 const routes = {
   login: () => `/login`,
   createAccount: () => `/signup`,
-  userModelStats: () => `/model/info` 
+  userModelStats: () => `/model/info`,
+  getFavorites: () => `/favorites`,
 };
 
 export interface LoginContext {
@@ -71,6 +72,22 @@ export class AuthenticationService {
       })
     );
   }
+
+  getFavorites() {
+    console.log(`In getFavorites`);
+    return this.httpClient.get(routes.getFavorites()).pipe(
+      map((body: any)=>{
+        console.log(`getFavorites body: ${JSON.stringify(body)}`);
+        this.credentialsService.setFavorites(body);
+        // this.credentialsService.setCredentials(body, context.remember);
+      }),
+      catchError((err)=> {
+        console.log(`err: ${JSON.stringify(err)}`);
+        return of(null);
+      })
+    );
+  }
+
 
   /**
    * Create Account for the user.

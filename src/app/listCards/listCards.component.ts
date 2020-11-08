@@ -31,8 +31,8 @@ export class ListCardsComponent implements OnInit {
   ngOnInit() {
     this.listCard$ = this.listCardsService.getAllCards().pipe(
       map((body: any, headers:any)=>{
-        console.log(`body: ${JSON.stringify(body)}`);
-        console.log(`headers: ${JSON.stringify(headers)}`);
+        // console.log(`body: ${JSON.stringify(body)}`);
+        // console.log(`headers: ${JSON.stringify(headers)}`);
         return body;
       }),
       catchError((err) => {
@@ -47,8 +47,8 @@ export class ListCardsComponent implements OnInit {
   }
 
   getList(selectedCard : ListCard){
-    console.log(`In getList, selectedCard : ${JSON.stringify(selectedCard)} `);
-    console.log(`target URL: listDetails/${selectedCard.key}`);
+    // console.log(`In getList, selectedCard : ${JSON.stringify(selectedCard)} `);
+    // console.log(`target URL: listDetails/${selectedCard.key}`);
     this.router.navigate([`listDetails`, selectedCard.key], { replaceUrl: true });
   }
 

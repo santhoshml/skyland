@@ -2,12 +2,50 @@
     <div class="tradingview-widget-container" id="symbolInfoWidget">
         <div class="tradingview-widget-container__widget"></div>
     </div>
+    <div class="btn-group mt-3 mb-3">
+        <label>Actions : </label>
+        <div class="dropdown show ml-2">
+            <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Buy with your trading platform
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="https://schwab.com" target="_blank">Schwab</a>
+              <a class="dropdown-item" href="https://etrade.com" target="_blank">E-Trade</a>
+              <a class="dropdown-item" href="https://webtrading.tradestation.com" target="_blank">Trade Station</a>
+              <a class="dropdown-item" href="https://ndcdyn.interactivebrokers.com/sso/Login?RL=1" target="_blank">Interactive Brokers</a>
+            </div>
+          </div>
+            <button *ngIf="!isFavorite" type="button" class="ml-2 btn btn-secondary" (click)="addToFavorites()">
+                <i class="fas fa-heart"></i>
+                Add to Favorite List & track everyday
+            </button>
+            <button *ngIf="isFavorite" type="button" class="ml-2 btn btn-secondary" (click)="removeFromFavorites()">
+                <i class="far fa-heart"></i>
+                Remove from Favorite List
+            </button>            
+            <button type="button" class="ml-2 btn btn-secondary" (click)="open(mymodal)">
+                <i class="fas fa-sticky-note"></i>
+                Add Notes
+                </button>
+    </div>
     <div *ngIf="symbolDetailsResp$ | async as symbolDetailsResp" >
         <div class="row card-group">
-            <div *ngIf="symbolDetailsResp.gain_flag === 1" class="card ml-2">
+            <div *ngIf="symbolDetailsResp.gain_flag === 1 && symbolDetailsResp.confidence >= 0.75" class="card ml-2">
                 <img class="card-img-top" src="assets/gain.png" style="height: 150px;" alt="Card image cap">
                 <div class="card-body mb-5">
                     <h5 class="card-title p-3">Prediction - GAIN</h5>
+                    <div class="card-text text-muted p-3">
+                        Based on your historical trades and current market behaviour of {{symbolDetailsResp.symbol}}, if you go long, you will make money.
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <small>**based on the analysis after the market close on {{symbolDetailsResp.date}}</small>
+                </div>
+            </div>
+            <div *ngIf="symbolDetailsResp.gain_flag === 1 && symbolDetailsResp.confidence <= 0.75" class="card ml-2">
+                <img class="card-img-top" src="assets/confused.png" style="height: 150px;" alt="Card image cap">
+                <div class="card-body mb-5">
+                    <h5 class="card-title p-3">Prediction - Neutral/Confused</h5>
                     <div class="card-text text-muted p-3">
                         Based on your historical trades and current market behaviour of {{symbolDetailsResp.symbol}}, if you go long, you will make money.
                     </div>
@@ -70,3 +108,18 @@
           </div>
     </div>    
 </div>
+
+<ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Comments for {{activeSymbol}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <textarea class="form-control" rows="5" [(ngModel)]="userNotes" type="text"  placeholder="Add notes here ..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Update</button>
+    </div>
+  </ng-template>

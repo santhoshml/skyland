@@ -12,13 +12,13 @@
   "Logout": "Logout",
   "Password": "Password",
   "Password is required": "Password is required",
-  "Email": "Email",
-  "Email is required": "Email is required",
-  "Email or password incorrect.": "Email or password incorrect.",
+  "Email": "Email address",
+  "Email is required": "Email address is required",
+  "Email or password incorrect.": "Email address or password incorrect.",
   "Display Name": "Display Name",
   "DisplayName": "Display Name",
   "Display Name is required": "Display Name is required",
-  "Phone": "Phone",
+  "Phone": "Phone (recommeded)",
   "Remember me": "Remember me",
   "Version": "Version"
 }
