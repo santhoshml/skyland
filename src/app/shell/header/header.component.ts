@@ -41,6 +41,10 @@ export class HeaderComponent implements OnInit {
     this.menuHidden = !this.menuHidden;
   }
 
+  distributions() {
+    this.router.navigate(['/distribution'], { replaceUrl: true });
+  }
+
   logout() {
     this.authenticationService.logout().subscribe(() => this.router.navigate(['/login'], { replaceUrl: true }));
   }

@@ -1,0 +1,99 @@
+<div class="container mb-5" style="display: grid;">
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">ROI Distribution</h5>
+          <p class="card-text">Below is the bar graph of the ROI for all your previous trades
+              <span *ngIf="roiData"> - {{roiData.length}} in total </span>. 
+              ROI is calculated with end of day price based on the buy date and sell date for each Symbol.
+            </p>
+
+            <div *ngIf="txnStats">
+                <label>ROI Stats based on hostorical trades</label>
+                <dl class="row active">
+                    <dt class="col">Gain / Loss ration</dt>
+                    <dd class="col">{{txnStats.gain_ratio | percent: '1.0-2'}}</dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col">Avg. ROI %</dt>
+                    <dd class="col">{{txnStats.avg_roi}}%</dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col">Avg. positive ROI %</dt>
+                    <dd class="col">{{txnStats.avg_positive_roi}}%</dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col">Avg. negitive ROI %</dt>
+                    <dd class="col">{{txnStats.avg_negative_roi}}%</dd>
+                </dl>
+            </div>
+
+          <p class="card-text text-muted bottom-notes">All the values in the below graph are in percentages based on the buy price.</p>
+          <p class="card-text text-muted bottom-notes">Ideally higher the ROI the better, but it also depends on the quantity bought and sold, this is the best approximation with having quantity value.</p>
+          <!-- <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a> -->
+        </div>
+    </div>
+    <div class="mt-5">
+        <ngx-charts-bar-vertical *ngIf="roiData"
+            [view]="[1000,400]"
+            [results]="roiData"
+            [xAxisLabel]="'Symbols / Tickers'"
+            [yAxisLabel]="'ROI %'"
+            [showXAxisLabel]="false"
+            [showYAxisLabel]="true"
+            [xAxis]="false"
+            [yAxis]="true"
+            [gradient]="true">
+        </ngx-charts-bar-vertical>
+        <div class="spinner-border" role="status" *ngIf="!roiData">
+            <span class="sr-only">Loading...</span>
+          </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Distribution of # of days in each trade</h5>
+          <p class="card-text">Below is the bar graph of the number of days in each of your 
+            <span *ngIf="holdDaysData">{{holdDaysData.length}}</span>
+            previous trades. 
+              Each bar in below graph correspond to the bar from the above ROI chart.
+            </p>
+
+            <div *ngIf="txnStats">
+                <label>Stats based on hostorical trades</label>
+                <dl class="row">
+                    <dt class="col">Avg. # of Holding days</dt>
+                    <dd class="col">{{txnStats.avg_days}} days</dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col">Avg. # of holding days in positive ROI trades</dt>
+                    <dd class="col">{{txnStats.avg_positve_days}} days</dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col">Avg. # of holding days in negitive ROI trades</dt>
+                    <dd class="col">{{txnStats.avg_negative_days}} days</dd>
+                </dl>
+            </div>
+
+          <p class="card-text text-muted bottom-notes">All the values in the below graph are rounded to a day based on the buy date and sell date.</p>
+          <!-- <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a> -->
+        </div>
+    </div>
+    <div class="mt-5">
+        <ngx-charts-bar-vertical 
+            [view]="[1000,400]" *ngIf="holdDaysData"
+            [results]="holdDaysData"
+            [xAxisLabel]="'Symbols / Tickers'"
+            [yAxisLabel]="'# of Days in a Trade'"
+            [showXAxisLabel]="false"
+            [showYAxisLabel]="true"
+            [xAxis]="false"
+            [yAxis]="true"
+            [gradient]="true">
+        </ngx-charts-bar-vertical>
+        <div class="spinner-border" role="status" *ngIf="!holdDaysData">
+            <span class="sr-only">Loading...</span>
+          </div>
+    </div>
+</div>

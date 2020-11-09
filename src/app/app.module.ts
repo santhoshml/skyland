@@ -6,6 +6,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+
 import { environment } from '@env/environment';
 import { CoreModule } from '@core';
 import { SharedModule } from '@shared';
@@ -22,6 +23,9 @@ import { PageNotFoundModule } from './pageNotFound/pageNotFound.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TruncateModule } from '@yellowspot/ng-truncate';
+import { RoiDistributionModule } from './roiDistribution/roiDistribution.module';
+import { NgxChartsModule }from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -43,6 +47,9 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
     SymbolDetailsModule,
     DefinitionsModule,
     PageNotFoundModule,
+    RoiDistributionModule,
+    BrowserAnimationsModule,
+    NgxChartsModule,
     TruncateModule,
     AppRoutingModule, // must be imported as the last module as it contains the fallback route
   ],
