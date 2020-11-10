@@ -38,6 +38,11 @@ export interface TagDetails {
   link: string;
 }
 
+export interface TagCategories {
+  display_title: string;
+  tags : string[];
+}
+
 @Component({
   selector: 'app-symbolDetails',
   templateUrl: './symbolDetails.component.html',
@@ -56,7 +61,17 @@ export class SymbolDetailsComponent implements OnInit {
   closeResult: string;
   title = 'appBootstrap';
   userNotes:string;
+  tagCategories: TagCategories[];
+  priceVolCategoryArr:string[];
+  classificationCategoryArr:string[];
+  technicalCategoryArr:string[];
 
+  typesMap = [
+    {
+      displayTitle : 'Price/Volume',
+      tags: ['PRICE', 'PRICE_GAP', 'PRICE_GAP_DIR', 'AFTER_PULLBACK', 'NEAR_ROUND_NUMBER', 'ILLIQUID_STOCKS', 'WEEK_52', 'VOLUME']
+    }
+  ];
   
   constructor(private symbolDetailsService: SymbolDetailsService
     , private router: Router
@@ -65,6 +80,15 @@ export class SymbolDetailsComponent implements OnInit {
     , private modalService: NgbModal) {}
 
   ngOnInit() {
+    // get tag categories
+    this.symbolDetailsService.getTagCategories().subscribe((data: TagCategories[])=>{
+      console.log(`TagCategories data : ${JSON.stringify(data)} `);
+      this.tagCategories = data;
+      this.priceVolCategoryArr = data[0].tags;
+      this.classificationCategoryArr = data[1].tags;
+      this.technicalCategoryArr = data[2].tags;
+    });
+
     // get tag details
     this.symbolDetailsService.getTagDetails().subscribe((data: Map<string, TagDetails[]>)=>{
       this.tagDetailsMap = data;
@@ -82,7 +106,7 @@ export class SymbolDetailsComponent implements OnInit {
 
       this.symbolDetailsResp$ = this.symbolDetailsService.getListDetails(symbol).pipe(
         map((body: any, headers: any)=> {
-          console.log(body);
+          console.log('symbolDetailsResp:'+JSON.stringify(body));
           if(!body.symbol){
             this.router.navigate(['/pageNotFound'], { replaceUrl: true });
           } else {
@@ -172,7 +196,7 @@ export class SymbolDetailsComponent implements OnInit {
       hide_top_toolbar: true,
       hide_legend: false,
       save_image: false,
-      details: true,
+      details: false,
       container_id: 'tradingview_73abe'
     });
   }
@@ -182,7 +206,9 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   getArray(str:string){
-    return JSON.parse(str);
+    let sortedArr = JSON.parse(str).sort((a:string, b:string)=> a.length - b.length);
+    // console.log(`sortedArr : ${JSON.stringify(sortedArr)}`);
+    return sortedArr;
   }
 
   getTagDisplayText(str:string){
@@ -200,5 +226,39 @@ export class SymbolDetailsComponent implements OnInit {
     if(this.userModelTags.find(str=> str === tag))
       return true;
     return false;
+  }
+
+  isExistsInPriceVol(val:string): boolean {
+    for(let tag of this.priceVolCategoryArr){
+      if(tag.toLowerCase() == val.toLowerCase()){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isExistsInClassification(val:string): boolean {
+    for(let tag of this.classificationCategoryArr){
+      if(tag.toLowerCase() == val.toLowerCase()){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isExistsInTechnical(val:string): boolean {
+    for(let tag of this.technicalCategoryArr){
+      if(tag.toLowerCase() == val.toLowerCase()){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getClassForPills(tag:string): string {
+    if(this.userModelTags.find(str=> str === tag)) {
+      return 'badge badge-pill badge-primary';
+    }
+    return 'badge badge-pill badge-light';
   }
 }

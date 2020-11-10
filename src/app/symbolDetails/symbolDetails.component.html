@@ -3,7 +3,6 @@
         <div class="tradingview-widget-container__widget"></div>
     </div>
     <div class="btn-group mt-3 mb-3">
-        <label>Actions : </label>
         <div class="dropdown show ml-2">
             <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Buy with your trading platform
@@ -28,8 +27,8 @@
                 Add Notes
                 </button>
     </div>
-    <div *ngIf="symbolDetailsResp$ | async as symbolDetailsResp" >
-        <div class="row card-group">
+    <div *ngIf="symbolDetailsResp$ | async as symbolDetailsResp" class="mb-3">
+        <div class="card-group">
             <div *ngIf="symbolDetailsResp.gain_flag === 1 && symbolDetailsResp.confidence >= 0.75" class="card ml-2">
                 <img class="card-img-top" src="assets/gain.png" style="height: 150px;" alt="Card image cap">
                 <div class="card-body mb-5">
@@ -85,28 +84,56 @@
             </div>
         </div>
     </div>
-    <div class="row mt-3" >
-        <div class="col-md-6 col-lg-6">
-            <div class="card" *ngIf="symbolDetailsResp$ | async as symbolDetailsResp">
-                <div class="card-body" *ngIf="symbolDetailsResp">
-                  <h5 class="card-title">Features</h5>
-                  <div *ngIf="symbolDetailsResp && symbolDetailsResp.tags">
-                      <span class="m-2" *ngFor="let tag of getArray(symbolDetailsResp.tags)">
-                        <a *ngIf="isExistInUserProfile(tag)" role="button" (click)="gotoTagLink(tag)" class="badge badge-pill badge-primary">
+    <div class="mt-5">
+        <hr>
+        <div class="mb-2">
+            <label class="h5">Technical / Fundamental Features for this Symbol</label>
+        </div>
+        <div class="card-group" *ngIf="symbolDetailsResp$ | async as symbolDetailsResp">
+            <div class="card" style="max-width: 20%;">
+                <div class="card-body">
+                    <h6 class="p-2 mb-3 card-title text-center">Price/Volume</h6>
+                    <ng-container *ngFor="let tag of getArray(symbolDetailsResp.tags)">
+                        <div class="card-text m-2 text-center" *ngIf="isExistsInPriceVol(tag)">
+                            <a role="button" (click)="gotoTagLink(tag)" [ngClass]="getClassForPills(tag)">
                                 {{ getTagDisplayText(tag) }}
-                        </a>
-                        <a *ngIf="!isExistInUserProfile(tag)" role="button" (click)="gotoTagLink(tag)" class="badge badge-pill badge-light">
-                            {{ getTagDisplayText(tag) }}
-                        </a>
-                      </span>
-                  </div>
+                            </a>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="card" style="max-width: 20%;">
+                <div class="card-body">
+                    <h6 class="card-title mb-3 text-center p-2">Classification</h6>
+                    <ng-container *ngFor="let tag of getArray(symbolDetailsResp.tags)">
+                        <div class="card-text m-2 text-center" *ngIf="isExistsInClassification(tag)">
+                            <a role="button" (click)="gotoTagLink(tag)" [ngClass]="getClassForPills(tag)">
+                                {{ getTagDisplayText(tag) }}
+                            </a>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="card" style="max-width: 80%;">
+                <div class="card-body mb-5">
+                    <h6 class="m-2 card-title text-center">Technical</h6>
+                    <ng-container *ngFor="let tag of getArray(symbolDetailsResp.tags)">
+                        <span class="card-text m-2 text-center" *ngIf="isExistsInTechnical(tag)">
+                            <a role="button" (click)="gotoTagLink(tag)" [ngClass]="getClassForPills(tag)">
+                                {{ getTagDisplayText(tag) }}
+                            </a>
+                        </span>
+                    </ng-container>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-6">
-            <div id="tradingview_73abe"></div>
-          </div>
-    </div>    
+        <div >
+            <small class="text-muted">** Highlighted features where user showed substantial gains in the past </small>
+        </div>
+    </div>
+    <div class="mt-3 col-md-12 col-lg-12">
+        <div id="tradingview_73abe"></div>
+    </div>
 </div>
 
 <ng-template #mymodal let-modal>

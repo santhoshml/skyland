@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { SymbolDetailsResp, TagDetails } from './symbolDetails.component';
+import { SymbolDetailsResp, TagDetails, TagCategories } from './symbolDetails.component';
 import { CredentialsService } from '@app/auth';
 
 const routes = {
   listDetails: (symbol : string) => `/symbol/${symbol}/details`,
   tagDetails: () => `/data/tags`,
   addToFavorites: (symbol : string) => `/favorites/symbol/${symbol}`,
-  userNotes: (symbol : string) => `/userNotes/symbol/${symbol}`
+  userNotes: (symbol : string) => `/userNotes/symbol/${symbol}`,
+  tagCategories: () => `/data/tagCategories`
 };
 
 @Injectable({
@@ -18,6 +19,13 @@ const routes = {
 export class SymbolDetailsService {
   constructor(private httpClient: HttpClient,
     private credentialsService : CredentialsService) {}
+
+  getTagCategories(): Observable<TagCategories[]| string>{
+    return this.httpClient.get(routes.tagCategories()).pipe(
+      map((body: TagCategories[]) => body),
+      catchError(() => of('Error, could not GET tag details :-('))
+    );
+  }
 
   getListDetails(symbol: string): Observable<SymbolDetailsResp | string> {
     return this.httpClient.get(routes.listDetails(symbol)).pipe(
