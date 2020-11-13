@@ -3,11 +3,11 @@
     <div class="card-body">
       <h5 class="card-title">Trading Ideas</h5>
       <p class="card-text">List of Trading ideas grouped in its own category.
-        This helps traders find the best stock suited to there trading style in the current market.
+        This helps traders find the best stock suited to their trading style in the current market.
       </p>
       <ul class="pl-0 mb-5">
         <li style="list-style-type: lower-alpha;" class="ml-3 mb-3">
-          <span class="card-text step-text">Each Trading ideas has list of stocks personalized for you.</span>
+          <span class="card-text step-text">Each Trading idea has a list of stocks personalized for you.</span>
         </li>
         <li style="list-style-type: lower-alpha;" class="ml-3 mb-3">
           <span class="card-text step-text">Lists only the stocks which are predicted to be a GAIN.</span>
@@ -28,8 +28,8 @@
           <button (click)="getList(card)" class="btn btn-primary">Get List - {{card.count}}</button>
         </div>
         <div class="card-footer text-muted">
-          <span class="normal-card-footer text-info" *ngIf="card.count > 0"><span class="font-weight-bold">{{card.count}}</span> stocks match this idea and your trading style. Click the above button to see the list.</span>
-          <span class="normal-card-footer text-warning" *ngIf="card.count == 0"><span class="font-weight-bold">No</span> stocks match this idea and your trading style with the current market.</span>
+          <span class="normal-card-footer text-primary" *ngIf="card.count > 0"><span class="font-weight-bold">{{card.count}}</span> stocks match this idea and your trading style. Click the above button to see the list.</span>
+          <span class="normal-card-footer text-danger" *ngIf="card.count == 0"><span class="font-weight-bold">No</span> stocks match this idea and your trading style with the current market.</span>
         </div>
       </div>
 

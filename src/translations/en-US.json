@@ -3,7 +3,7 @@
   "About": "About",
   "Hello world !": "Hello world !",
   "Home": "Home",
-  "Upload_history": "Upload Old Transactions",
+  "Upload_history": "Transactions",
   "Ideas": "Ideas",
   "Logged in as": "Logged in as",
   "Login": "Login",
@@ -18,7 +18,7 @@
   "Display Name": "Display Name",
   "DisplayName": "Display Name",
   "Display Name is required": "Display Name is required",
-  "Phone": "Phone (recommeded)",
+  "Phone": "Phone (recommended)",
   "Remember me": "Remember me",
   "Version": "Version"
 }

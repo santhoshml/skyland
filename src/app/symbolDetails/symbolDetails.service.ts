@@ -126,7 +126,14 @@ export class SymbolDetailsService {
     );
   }
 
-  loadTradingViewScript(containerId: string, widgetOptions:any, widgetType:string){
+  loadTradingViewScript(containerId: string, symbol:string, widgetType:string){
+    let widgetOptions = {
+      "symbol": symbol,
+      "width": "100%",
+      "locale": "en",
+      "colorTheme": "light",
+      "isTransparent": true
+    };
     const container: HTMLElement = document.getElementById(containerId);
     if(container){
       const script = document.createElement('script');

@@ -1,34 +1,38 @@
 <div class="container mb-5" style="display: grid;">
     <div class="card">
         <div class="card-body">
-          <h5 class="card-title">ROI Distribution</h5>
-          <p class="card-text">Below is the bar graph of the ROI for all your previous trades
-              <span *ngIf="roiData"> - {{roiData.length}} in total </span>. 
+          <h5 class="card-title">Return on Capital Invested (ROI) Distribution</h5>
+          <p class="card-text">Bar graph of your rate of returns of the all your past investments at a glance
+              <span *ngIf="roiData"> - {{roiData.length}} trades in total </span>. 
               ROI is calculated with end of day price based on the buy date and sell date for each Symbol.
             </p>
 
             <div *ngIf="txnStats">
-                <label>ROI Stats based on hostorical trades</label>
                 <dl class="row active">
-                    <dt class="col">Gain / Loss ration</dt>
+                    <dt class="col">
+                        Profit/Loss Ratio
+                        <a href="https://www.investopedia.com/terms/p/profit_loss_ratio.asp" target="_blank"><i class="far fa-question-circle"></i></a>
+                    </dt>
                     <dd class="col">{{txnStats.gain_ratio | percent: '1.0-2'}}</dd>
                 </dl>
                 <dl class="row">
-                    <dt class="col">Avg. ROI %</dt>
+                    <dt class="col">Average Return on Capital Invested(ROI) %
+                        <a href="https://www.investopedia.com/articles/basics/10/guide-to-calculating-roi.asp" target="_blank"><i class="far fa-question-circle"></i></a>
+                    </dt>
                     <dd class="col">{{txnStats.avg_roi}}%</dd>
                 </dl>
                 <dl class="row">
-                    <dt class="col">Avg. positive ROI %</dt>
+                    <dt class="col">Average ROI% on winning trades</dt>
                     <dd class="col">{{txnStats.avg_positive_roi}}%</dd>
                 </dl>
                 <dl class="row">
-                    <dt class="col">Avg. negitive ROI %</dt>
+                    <dt class="col">Average ROI% on loosing trades</dt>
                     <dd class="col">{{txnStats.avg_negative_roi}}%</dd>
                 </dl>
             </div>
 
-          <p class="card-text text-muted bottom-notes">All the values in the below graph are in percentages based on end of day price of Buy Date and Sell Date.</p>
-          <p class="card-text text-muted bottom-notes">Ideally higher the ROI the better, but it also depends on the quantity bought and sold, this is the best approximation with having quantity value.</p>
+          <p class="card-text text-muted bottom-notes">All the values in the graph are in percentages based on end of day price on buy date and sell date.</p>
+          <p class="card-text text-muted bottom-notes">Ideally, higher the ROI the better, but it also depends on the quantity bought and sold, this is the best approximation without having quantity value.</p>
           <!-- <a href="#" class="card-link">Card link</a>
           <a href="#" class="card-link">Another link</a> -->
         </div>
@@ -37,13 +41,13 @@
         <ngx-charts-bar-vertical *ngIf="roiData"
             [view]="[1000,400]"
             [results]="roiData"
-            [xAxisLabel]="'Symbols / Tickers'"
+            [xAxisLabel]="'Each investment/trade'"
             [yAxisLabel]="'ROI %'"
-            [showXAxisLabel]="false"
+            [showXAxisLabel]="true"
             [showYAxisLabel]="true"
             [xAxis]="false"
             [yAxis]="true"
-            [gradient]="true">
+            [gradient]="false">
         </ngx-charts-bar-vertical>
         <div class="spinner-border" role="status" *ngIf="!roiData">
             <span class="sr-only">Loading...</span>
@@ -52,45 +56,50 @@
     <br>
     <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Distribution of # of days in each trade</h5>
-          <p class="card-text">Below is the bar graph of the number of days in each of your 
-            <span *ngIf="holdDaysData">{{holdDaysData.length}}</span>
-            previous trades. 
-              Each bar in below graph correspond to the bar from the above ROI chart.
-            </p>
+          <h5 class="card-title">Holding Period
+            <a href="https://www.investopedia.com/terms/h/holdingperiod.asp" target="_blank"><i class="far fa-question-circle"></i></a>
+          </h5>
+          <p class="card-text">Bar graph of the holding period (in days)- A holding period is the amount of time the investment is held by an investor,
+               or the period between the purchase and sale of a security
+            <span *ngIf="holdDaysData"> based on {{holdDaysData.length}} of your previous trades.</span>             
+              Each bar in below graph corresponds to the bar from the above ROI chart.
+          </p>
+          <p>The holding period of an investment is used to determine the taxing of capital gains or losses.</p>
+          <p>The holding period is used to calculate Holding Period Return/Yield
+            <a href="https://www.investopedia.com/terms/h/holdingperiodreturn-yield.asp" target="_blank"><i class="far fa-question-circle"></i></a>
+          </p>
 
             <div *ngIf="txnStats">
-                <label>Stats based on hostorical trades</label>
                 <dl class="row">
-                    <dt class="col">Avg. # of Holding days</dt>
+                    <dt class="col">Average Holding days</dt>
                     <dd class="col">{{txnStats.avg_days}} days</dd>
                 </dl>
                 <dl class="row">
-                    <dt class="col">Avg. # of holding days in positive ROI trades</dt>
+                    <dt class="col">Average Holding days on winning trades</dt>
                     <dd class="col">{{txnStats.avg_positve_days}} days</dd>
                 </dl>
                 <dl class="row">
-                    <dt class="col">Avg. # of holding days in negitive ROI trades</dt>
+                    <dt class="col">Average Holding days on loosing trades</dt>
                     <dd class="col">{{txnStats.avg_negative_days}} days</dd>
                 </dl>
             </div>
 
-          <p class="card-text text-muted bottom-notes">All the values in the below graph are rounded to a day based on the buy date and sell date.</p>
+          <p class="card-text text-muted bottom-notes">All the values in the graph are rounded to a day based on the buy date and sell date.</p>
           <!-- <a href="#" class="card-link">Card link</a>
           <a href="#" class="card-link">Another link</a> -->
         </div>
     </div>
-    <div class="mt-5">
+    <div class="mt-5 mb-5">
         <ngx-charts-bar-vertical 
             [view]="[1000,400]" *ngIf="holdDaysData"
             [results]="holdDaysData"
-            [xAxisLabel]="'Symbols / Tickers'"
+            [xAxisLabel]="'Each investment/trade'"
             [yAxisLabel]="'# of Days in a Trade'"
-            [showXAxisLabel]="false"
+            [showXAxisLabel]="true"
             [showYAxisLabel]="true"
             [xAxis]="false"
             [yAxis]="true"
-            [gradient]="true">
+            [gradient]="false">
         </ngx-charts-bar-vertical>
         <div class="spinner-border" role="status" *ngIf="!holdDaysData">
             <span class="sr-only">Loading...</span>

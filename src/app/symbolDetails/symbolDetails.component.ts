@@ -80,9 +80,9 @@ export class SymbolDetailsComponent implements OnInit {
     , private modalService: NgbModal) {}
 
   ngOnInit() {
+    console.log(`I am in ngOnInit`);
     // get tag categories
     this.symbolDetailsService.getTagCategories().subscribe((data: TagCategories[])=>{
-      console.log(`TagCategories data : ${JSON.stringify(data)} `);
       this.tagCategories = data;
       this.priceVolCategoryArr = data[0].tags;
       this.classificationCategoryArr = data[1].tags;
@@ -98,15 +98,12 @@ export class SymbolDetailsComponent implements OnInit {
     });
 
     this.sub = this.route.params.subscribe(params => {
-      console.log(`params : ${JSON.stringify(params)}`);
       let userId = 2;
       let symbol = params['symbol'];
       this.activeSymbol = symbol;
-      console.log(`In symbolDetails, userId:${userId}, symbol:${symbol}`);
 
       this.symbolDetailsResp$ = this.symbolDetailsService.getListDetails(symbol).pipe(
         map((body: any, headers: any)=> {
-          console.log('symbolDetailsResp:'+JSON.stringify(body));
           if(!body.symbol){
             this.router.navigate(['/pageNotFound'], { replaceUrl: true });
           } else {
@@ -127,19 +124,11 @@ export class SymbolDetailsComponent implements OnInit {
 
       // get notes
       this.symbolDetailsService.getUserNotes(this.activeSymbol).subscribe(data=>{
-        console.log(`userNotes : ${JSON.stringify(data)}`);
         this.userNotes = data.notes;
       });
 
       // init InfoWidget
-      let symbolInfoWidgetOptions = {
-        "symbol": symbol,
-        "width": "100%",
-        "locale": "en",
-        "colorTheme": "light",
-        "isTransparent": true
-      };
-      this.symbolDetailsService.loadTradingViewScript('symbolInfoWidget', symbolInfoWidgetOptions, 'embed-widget-symbol-info');
+      this.symbolDetailsService.loadTradingViewScript('symbolInfoWidget', this.activeSymbol, 'embed-widget-symbol-info');
 
       // load chart
       this.loadChart(symbol);
@@ -152,12 +141,9 @@ export class SymbolDetailsComponent implements OnInit {
   open(content:any) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
-      console.log(this.closeResult);
-      console.log(`userNotes: ${this.userNotes}`);
       this.symbolDetailsService.saveUserNotes(this.activeSymbol, this.userNotes).subscribe();
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      console.log(this.closeResult);
     });
   }
 
@@ -182,7 +168,6 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   loadChart(symbol:string) {
-    console.log(`loading chart for ${symbol}`);
     new TradingView.widget({
       symbol: symbol,
       width: '100%',
@@ -207,7 +192,6 @@ export class SymbolDetailsComponent implements OnInit {
 
   getArray(str:string){
     let sortedArr = JSON.parse(str).sort((a:string, b:string)=> a.length - b.length);
-    // console.log(`sortedArr : ${JSON.stringify(sortedArr)}`);
     return sortedArr;
   }
 
