@@ -6,7 +6,7 @@ import { Shell } from '@app/shell/shell.service';
 import { PageNotFoundComponent } from './pageNotFound.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'pageNotFound', component: PageNotFoundComponent, data: { title: marker('PageNotFound') } }]),
+  Shell.childRoutes([{ path: 'pageNotFound', component: PageNotFoundComponent, data: { title: marker('Liste.AI - PageNotFound') } }]),
 ];
 
 @NgModule({

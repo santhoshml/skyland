@@ -24,14 +24,23 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
       let userId: string = _credentials.id;
 
       // add token to the request
-      request = request.clone({
-        setHeaders: {
-          'Content-Type' : 'application/json; charset=utf-8',
-          'Accept'       : 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-          'user-id'       : userId
-        },
-      });
+      if(request.url.endsWith('/portfolio')) {
+        request = request.clone({
+          setHeaders: {
+            'Authorization': `Bearer ${accessToken}`,
+            'user-id'       : userId
+          },
+        });
+      } else {
+        request = request.clone({
+          setHeaders: {
+            'Content-Type' : 'application/json; charset=utf-8',
+            'Accept'       : 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'user-id'       : userId
+          },
+        });
+      }
     }
 
     return next.handle(request);

@@ -1,12 +1,14 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@env/environment';
-import { FileUploader, FileLikeObject } from 'ng2-file-upload';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-uploadPortfolio',
   templateUrl: './uploadPortfolio.component.html',
-  styleUrls: ['./uploadPortfolio.component.scss'],
+  styleUrls: ['./uploadPortfolio.component.scss']
 })
 export class UploadPortfolioComponent implements OnInit {
   version: string | null = environment.version;
@@ -15,15 +17,16 @@ export class UploadPortfolioComponent implements OnInit {
   hideEtradeInstr = true;
   hideTSInstr = true;
   hideIBInstr = true;
+  isPlatformSelected = false;
+  selectedPlatformKey:string;
+  response: string;
+  isUploadSuccess = false;
 
-  public uploader: FileUploader = new FileUploader({
-    url: `${environment.serverUrl}/brokerage/${this.selectedPlatform}/portfolio`,
-    disableMultipart: false,
-    autoUpload: false,
-    method: 'post',
-    itemAlias: 'list',
-    allowedFileType: ['image', 'pdf']
+  myForm = new FormGroup({
+    file: new FormControl('', [Validators.required]),
+    fileSource: new FormControl('', [Validators.required])
   });
+
 
   onlinePlatforms: Object[] = [
     {key: 'schwab', value: 'Charles Schwab'},
@@ -32,12 +35,53 @@ export class UploadPortfolioComponent implements OnInit {
     {key: 'ib', value: 'Interactive Brokers'}
   ];
 
-  constructor() {}
+  constructor(private http: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute,
+) {}
 
   ngOnInit() {}
 
+  get f(){
+    return this.myForm.controls;
+  }
+
+  onFileChange(event:any) {
+    this.isUploadSuccess=false;
+  
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.myForm.patchValue({
+        fileSource: file
+      });
+    }
+  }
+
+  viewDistribution(){
+    console.log(`In viewDistributions`);
+    this.router.navigate(['/distribution'], { replaceUrl: true });
+  }
+
+  submit(){
+    const formData = new FormData();
+    formData.append('list', this.myForm.get('fileSource').value);
+   
+    this.http.post(`${environment.serverUrl}/brokerage/${this.selectedPlatformKey}/portfolio`, formData)
+      .subscribe(res => {
+        console.log(res);
+        this.myForm.reset();
+        this.isUploadSuccess = true;
+        // alert('Uploaded Successfully.');
+      })
+  }
+
+  3(){
+
+  }
+
   onSelectPlatform(selectedPlatform: string){
-    console.log(`selectedPlatform: ${selectedPlatform}`);
+  console.log(`selectedPlatform: ${selectedPlatform}`);
+    this.isPlatformSelected = true;
     this.hideAllInstr();
     this.selectedPlatform = this.getOnlinePlatformValue(selectedPlatform);
     if(selectedPlatform === 'schwab'){
@@ -49,6 +93,22 @@ export class UploadPortfolioComponent implements OnInit {
     } else if(selectedPlatform === 'ib'){
       this.hideIBInstr = false;
     }
+
+    // set the uplaoder
+    // this.uploader = new FileUploader({
+    //   url: `${environment.serverUrl}/brokerage/${this.selectedPlatform}/portfolio`,
+    //   disableMultipart: false,
+    //   autoUpload: true,
+    //   method: 'post',
+    //   itemAlias: 'list',
+    //   allowedFileType: ['csv', 'xls', 'xlsx']
+    // });
+    // console.log(`url : ${environment.serverUrl}/brokerage/${this.selectedPlatformKey}/portfolio`);
+    // this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    // this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+    //      console.log('FileUpload:uploaded:', item, status, response);
+    //      alert('File uploaded successfully');
+    //  };
   }
 
   hideAllInstr(){
@@ -59,17 +119,12 @@ export class UploadPortfolioComponent implements OnInit {
   }
 
   getOnlinePlatformValue(key:string){
+    this.selectedPlatformKey = key;
     for(let plt of this.onlinePlatforms){
       if(plt["key"] === key)
         return plt["value"];
     }
   }
-
-  onFileSelected(event: EventEmitter<File[]>) {
-    const file: File = event[0];
-    console.log(file);
-  }
-
   
 
 }

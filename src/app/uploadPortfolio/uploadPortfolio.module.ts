@@ -4,7 +4,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { UploadPortfolioRoutingModule } from './uploadPortfolio-routing.module';
 import { UploadPortfolioComponent } from './uploadPortfolio.component';
 
@@ -15,6 +16,9 @@ import { UploadPortfolioComponent } from './uploadPortfolio.component';
     UploadPortfolioRoutingModule, 
     BrowserModule, 
     NgbModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     FileUploadModule],
   declarations: [UploadPortfolioComponent],
 })

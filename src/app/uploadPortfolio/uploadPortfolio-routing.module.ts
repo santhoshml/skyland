@@ -6,7 +6,7 @@ import { Shell } from '@app/shell/shell.service';
 import { UploadPortfolioComponent } from './uploadPortfolio.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'uploadPortfolio', component: UploadPortfolioComponent, data: { title: marker('About') } }]),
+  Shell.childRoutes([{ path: 'uploadPortfolio', component: UploadPortfolioComponent, data: { title: marker('Liste.AI - Upload Portfolio') } }]),
 ];
 
 @NgModule({

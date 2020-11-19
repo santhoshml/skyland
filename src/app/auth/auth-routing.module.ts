@@ -7,7 +7,7 @@ import { LoginComponent } from './login.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, data: { title: marker('Login') } },
-  { path: 'login/token/:token', component: LoginComponent, data: { title: marker('Login') } }
+  { path: 'login/token/:token', component: LoginComponent, data: { title: marker('Liste.AI - Login') } }
 ];
 
 @NgModule({
