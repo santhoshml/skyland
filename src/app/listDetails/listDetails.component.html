@@ -1,4 +1,7 @@
 <div class="container">
+    <div class="p-3 mb-2 bg-warning text-dark text-center" *ngIf="!userProfile">
+        We donot have a model built for you yet, so you cannot find any stocks matching your trading style (with a Matching score)
+    </div>
     <div *ngIf="listDetails$ | async as listDetails" >
         <div class="card mb-5">
             <h5 class="card-header">Trading Idea</h5>

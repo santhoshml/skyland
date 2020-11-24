@@ -5,6 +5,8 @@ import { environment } from '@env/environment';
 import { ListCardsService } from './listCards.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { CredentialsService, UserProfileModel } from '@app/auth';
+import { GoogleAnalyticsService } from '@app/@core';
 
 export interface ListCard {
   key: string;
@@ -23,16 +25,21 @@ export class ListCardsComponent implements OnInit {
   cardArr: ListCard[];
   isLoading = false;
   listCard$: Observable<any>;
+  userProfile: UserProfileModel;
   
   constructor(private listCardsService: ListCardsService,
     private router: Router,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute,
+    private credentialsService: CredentialsService,
+    private googleAnalyticsService: GoogleAnalyticsService) {}
 
   ngOnInit() {
+    this.googleAnalyticsService.eventEmitter("listCards-init", "listCards", "init", "listCards", 1,this.credentialsService.credentials.id);
     this.listCard$ = this.listCardsService.getAllCards().pipe(
       map((body: any, headers:any)=>{
         // console.log(`body: ${JSON.stringify(body)}`);
         // console.log(`headers: ${JSON.stringify(headers)}`);
+        this.googleAnalyticsService.eventEmitter("listCards-response", "listCards", "response", "getAllCards", 1,this.credentialsService.credentials.id);
         return body;
       }),
       catchError((err) => {
@@ -44,11 +51,14 @@ export class ListCardsComponent implements OnInit {
       })
     )
 
+    // set user profile
+    this.userProfile=this.credentialsService.userProfileModel;
   }
 
   getList(selectedCard : ListCard){
     // console.log(`In getList, selectedCard : ${JSON.stringify(selectedCard)} `);
     // console.log(`target URL: listDetails/${selectedCard.key}`);
+    this.googleAnalyticsService.eventEmitter("listCards-forwading", "listCards", "forwading", "getList", 1,this.credentialsService.credentials.id);
     this.router.navigate([`listDetails`, selectedCard.key], { replaceUrl: true });
   }
 

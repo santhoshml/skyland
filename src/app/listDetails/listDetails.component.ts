@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
 import { ListDetailsService } from './listDetails.service';
 import { Observable, of } from 'rxjs';
+import { CredentialsService, UserProfileModel } from '@app/auth';
+import { GoogleAnalyticsService } from '@app/@core';
 
 export interface ListDetails {
   success: boolean;
@@ -38,13 +40,17 @@ export class ListDetailsComponent implements OnInit {
   listId: number;
   listDetails$: Observable<any>;
   private sub: any;
-  userId = 2;
+  userProfile: UserProfileModel;
   
   constructor(private listDetailsService: ListDetailsService
     , private router: Router
-    , private route: ActivatedRoute) {}
+    , private route: ActivatedRoute
+    , private credentialsService: CredentialsService
+    , private googleAnalyticsService: GoogleAnalyticsService) {}
 
   ngOnInit() {
+    this.googleAnalyticsService.eventEmitter("listDetails-init", "listDetails", "init", "listDetails", 1,this.credentialsService.credentials.id);
+
     // this.listDetails$ = this.listDetailsService.getListDetails();
     this.sub = this.route.params.subscribe(params => {
       console.log(`params : ${JSON.stringify(params)}`);
@@ -53,8 +59,11 @@ export class ListDetailsComponent implements OnInit {
       console.log(`this.listId : ${this.listId}`);
 
       // get the list from BE
-      this.listDetails$ = this.listDetailsService.getListDetails(this.userId, this.listId).pipe(
-        map((body:any, headers: any)=> body),
+      this.listDetails$ = this.listDetailsService.getListDetails(this.listId).pipe(
+        map((body:any, headers: any)=> {
+          this.googleAnalyticsService.eventEmitter("listDetails-response", "listDetails", "response", "listDetails", 1,this.credentialsService.credentials.id);
+          return body;
+        }),
         catchError((err) => {
           if(err.status === 401){
             this.router.navigate(['/login', {errMsg: 'Session expired. Login please.'}], { replaceUrl: true });
@@ -63,8 +72,10 @@ export class ListDetailsComponent implements OnInit {
           }
         })
       )
-        
-   })
+   });
+
+  // set user profile
+  this.userProfile=this.credentialsService.userProfileModel;
   }
 
   ngOnDestroy() {
@@ -73,6 +84,7 @@ export class ListDetailsComponent implements OnInit {
 
   getSymbolDetails(listRow: ListRow){
     console.log(`navigate to SymbolDetails, ${JSON.stringify(listRow)}`);
+    this.googleAnalyticsService.eventEmitter("symbolDetails-forwading", "symbolDetails", "forwading", "symbolDetails", 1,this.credentialsService.credentials.id);
     this.router.navigate([`symbolDetails`, listRow.symbol], { replaceUrl: true });
   }
 

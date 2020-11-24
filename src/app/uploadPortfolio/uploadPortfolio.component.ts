@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@env/environment';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CredentialsService } from '@app/auth';
+import { GoogleAnalyticsService } from '@app/@core';
 
 @Component({
   selector: 'app-uploadPortfolio',
@@ -27,7 +29,6 @@ export class UploadPortfolioComponent implements OnInit {
     fileSource: new FormControl('', [Validators.required])
   });
 
-
   onlinePlatforms: Object[] = [
     {key: 'schwab', value: 'Charles Schwab'},
     {key: 'etrade', value: 'E-Trade'},
@@ -38,16 +39,22 @@ export class UploadPortfolioComponent implements OnInit {
   constructor(private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
+    private credentialsService: CredentialsService,
+    private googleAnalyticsService: GoogleAnalyticsService
 ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.googleAnalyticsService.eventEmitter("uploadPortfolio", "uploadPortfolio", "init", "init", 1,this.credentialsService.credentials.id);
+  }
 
   get f(){
     return this.myForm.controls;
   }
 
-  onFileChange(event:any) {
+  onFileChange(event:any) {    
     this.isUploadSuccess=false;
+
+    this.googleAnalyticsService.eventEmitter("uploadPortfolio", "uploadPortfolio", "onFileChange", "onFileChange", 1,this.credentialsService.credentials.id);
   
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -59,6 +66,7 @@ export class UploadPortfolioComponent implements OnInit {
 
   viewDistribution(){
     console.log(`In viewDistributions`);
+    this.googleAnalyticsService.eventEmitter("uploadPortfolio", "uploadPortfolio", "viewDistribution", "viewDistribution", 1,this.credentialsService.credentials.id);
     this.router.navigate(['/distribution'], { replaceUrl: true });
   }
 
@@ -69,18 +77,17 @@ export class UploadPortfolioComponent implements OnInit {
     this.http.post(`${environment.serverUrl}/brokerage/${this.selectedPlatformKey}/portfolio`, formData)
       .subscribe(res => {
         console.log(res);
+        this.googleAnalyticsService.eventEmitter("uploadPortfolio", "uploadPortfolio-submit", "submit", "submit", 1,this.credentialsService.credentials.id);
         this.myForm.reset();
         this.isUploadSuccess = true;
         // alert('Uploaded Successfully.');
       })
   }
 
-  3(){
-
-  }
-
   onSelectPlatform(selectedPlatform: string){
   console.log(`selectedPlatform: ${selectedPlatform}`);
+  this.googleAnalyticsService.eventEmitter("uploadPortfolio", "onSelectPlatform-selected", "onSelectPlatform-selected", selectedPlatform, 1,this.credentialsService.credentials.id);
+
     this.isPlatformSelected = true;
     this.hideAllInstr();
     this.selectedPlatform = this.getOnlinePlatformValue(selectedPlatform);

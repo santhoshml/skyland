@@ -6,8 +6,8 @@ import { SymbolDetailsService } from './symbolDetails.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import {NgbModal,  ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-
-import { Credentials, CredentialsService } from './../auth/credentials.service';
+import { CredentialsService, UserProfileModel } from '@app/auth';
+import { GoogleAnalyticsService } from '@app/@core';
 
 declare const TradingView: any;
 
@@ -65,6 +65,7 @@ export class SymbolDetailsComponent implements OnInit {
   priceVolCategoryArr:string[];
   classificationCategoryArr:string[];
   technicalCategoryArr:string[];
+  userProfile: UserProfileModel;
 
   typesMap = [
     {
@@ -77,12 +78,16 @@ export class SymbolDetailsComponent implements OnInit {
     , private router: Router
     , private route: ActivatedRoute
     , private credentialsService: CredentialsService
-    , private modalService: NgbModal) {}
+    , private modalService: NgbModal
+    , private googleAnalyticsService: GoogleAnalyticsService) {}
 
   ngOnInit() {
     console.log(`I am in ngOnInit`);
+    this.googleAnalyticsService.eventEmitter("symbolDetails-init", "symbolDetails", "init", "init", 1,this.credentialsService.credentials.id);
+
     // get tag categories
     this.symbolDetailsService.getTagCategories().subscribe((data: TagCategories[])=>{
+      this.googleAnalyticsService.eventEmitter("symbolDetails-init", "symbolDetails", "init", "getTagCategories", 1,this.credentialsService.credentials.id);
       this.tagCategories = data;
       this.priceVolCategoryArr = data[0].tags;
       this.classificationCategoryArr = data[1].tags;
@@ -91,6 +96,7 @@ export class SymbolDetailsComponent implements OnInit {
 
     // get tag details
     this.symbolDetailsService.getTagDetails().subscribe((data: Map<string, TagDetails[]>)=>{
+      this.googleAnalyticsService.eventEmitter("symbolDetails-init", "symbolDetails", "init", "getTagDetails", 1,this.credentialsService.credentials.id);
       this.tagDetailsMap = data;
       for (const [key, value] of Object.entries(this.tagDetailsMap)) { 
         this.tagDetailsArr = this.tagDetailsArr.concat(value)
@@ -98,12 +104,12 @@ export class SymbolDetailsComponent implements OnInit {
     });
 
     this.sub = this.route.params.subscribe(params => {
-      let userId = 2;
       let symbol = params['symbol'];
       this.activeSymbol = symbol;
 
       this.symbolDetailsResp$ = this.symbolDetailsService.getListDetails(symbol).pipe(
         map((body: any, headers: any)=> {
+          this.googleAnalyticsService.eventEmitter("symbolDetails-init", "symbolDetails", "init", "getListDetails", 1,this.credentialsService.credentials.id);
           if(!body.symbol){
             this.router.navigate(['/pageNotFound'], { replaceUrl: true });
           } else {
@@ -124,6 +130,7 @@ export class SymbolDetailsComponent implements OnInit {
 
       // get notes
       this.symbolDetailsService.getUserNotes(this.activeSymbol).subscribe(data=>{
+        this.googleAnalyticsService.eventEmitter("symbolDetails-init", "symbolDetails", "init", "getUserNotes", 1,this.credentialsService.credentials.id);
         this.userNotes = data.notes;
       });
 
@@ -135,14 +142,19 @@ export class SymbolDetailsComponent implements OnInit {
    })
 
    // load tags from userModelProfile
-   this.userModelTags = this.credentialsService.userProfileModel.selected_params;
+   this.userModelTags = this.credentialsService.userProfileModel ? this.credentialsService.userProfileModel.selected_params : [];
+
+    // set user profile
+    this.userProfile=this.credentialsService.userProfileModel;
   }
 
   open(content:any) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.googleAnalyticsService.eventEmitter("symbolDetails", "modalService.open", "modalService-closed", result, 0,this.credentialsService.credentials.id);
       this.closeResult = `Closed with: ${result}`;
       this.symbolDetailsService.saveUserNotes(this.activeSymbol, this.userNotes).subscribe();
     }, (reason) => {
+      this.googleAnalyticsService.eventEmitter("symbolDetails", "modalService.open", "modalService-closed", reason, 0,this.credentialsService.credentials.id);
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
@@ -158,16 +170,19 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   addToFavorites(){
+    this.googleAnalyticsService.eventEmitter("symbolDetails", "favorites", "addToFavorites", "addToFavorites", 1,this.credentialsService.credentials.id);
     this.isFavorite=true;
     this.symbolDetailsService.addToFavorites(this.activeSymbol).subscribe();
   }
 
   removeFromFavorites(){
+    this.googleAnalyticsService.eventEmitter("symbolDetails", "favorites", "removeFromFavorites", "removeFromFavorites", 0,this.credentialsService.credentials.id);
     this.isFavorite=false;
     this.symbolDetailsService.removeFromFavorites(this.activeSymbol).subscribe();
   }
 
   loadChart(symbol:string) {
+    this.googleAnalyticsService.eventEmitter("symbolDetails", "chart", "loadChart", symbol, 1,this.credentialsService.credentials.id);
     new TradingView.widget({
       symbol: symbol,
       width: '100%',

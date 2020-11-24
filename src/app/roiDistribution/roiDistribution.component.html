@@ -13,23 +13,27 @@
                         Profit/Loss Ratio
                         <a href="https://www.investopedia.com/terms/p/profit_loss_ratio.asp" target="_blank"><i class="far fa-question-circle"></i></a>
                     </dt>
-                    <dd class="col">{{txnStats.gain_ratio | percent: '1.0-2'}}</dd>
+                    <dd *ngIf="txnStats.gain_ratio; else naComment" class="col">{{txnStats.gain_ratio | percent: '1.0-2'}}</dd>
                 </dl>
                 <dl class="row">
-                    <dt class="col">Average Return on Capital Invested(ROI) %
+                    <dt class="col">Average Return on Capital Invested(ROI)
                         <a href="https://www.investopedia.com/articles/basics/10/guide-to-calculating-roi.asp" target="_blank"><i class="far fa-question-circle"></i></a>
                     </dt>
-                    <dd class="col">{{txnStats.avg_roi}}%</dd>
+                    <dd *ngIf="txnStats.avg_roi; else naComment" class="col">{{txnStats.avg_roi}}%</dd>
                 </dl>
                 <dl class="row">
                     <dt class="col">Average ROI% on winning trades</dt>
-                    <dd class="col">{{txnStats.avg_positive_roi}}%</dd>
+                    <dd *ngIf="txnStats.avg_positive_roi; else naComment" class="col">{{txnStats.avg_positive_roi}}%</dd>
                 </dl>
                 <dl class="row">
                     <dt class="col">Average ROI% on loosing trades</dt>
-                    <dd class="col">{{txnStats.avg_negative_roi}}%</dd>
+                    <dd *ngIf="txnStats.avg_negative_roi; else naComment" class="col">{{txnStats.avg_negative_roi}}%</dd>
                 </dl>
             </div>
+
+            <ng-template #naComment>
+                <dd class="col">N/A</dd>
+            </ng-template>
 
           <p class="card-text text-muted bottom-notes">All the values in the graph are in percentages based on end of day price on buy date and sell date.</p>
           <p class="card-text text-muted bottom-notes">Ideally, higher the ROI the better, but it also depends on the quantity bought and sold, this is the best approximation without having quantity value.</p>
@@ -72,15 +76,15 @@
             <div *ngIf="txnStats">
                 <dl class="row">
                     <dt class="col">Average Holding days</dt>
-                    <dd class="col">{{txnStats.avg_days}} days</dd>
+                    <dd *ngIf="txnStats.avg_days; else naComment" class="col">{{txnStats.avg_days}} days</dd>
                 </dl>
                 <dl class="row">
                     <dt class="col">Average Holding days on winning trades</dt>
-                    <dd class="col">{{txnStats.avg_positve_days}} days</dd>
+                    <dd *ngIf="txnStats.avg_positve_days; else naComment" class="col">{{txnStats.avg_positve_days}} days</dd>
                 </dl>
                 <dl class="row">
                     <dt class="col">Average Holding days on loosing trades</dt>
-                    <dd class="col">{{txnStats.avg_negative_days}} days</dd>
+                    <dd *ngIf="txnStats.avg_negative_days; else naComment" class="col">{{txnStats.avg_negative_days}} days</dd>
                 </dl>
             </div>
 
@@ -99,6 +103,7 @@
             [showYAxisLabel]="true"
             [xAxis]="false"
             [yAxis]="true"
+            [scheme]=""
             [gradient]="false">
         </ngx-charts-bar-vertical>
         <div class="spinner-border" role="status" *ngIf="!holdDaysData">

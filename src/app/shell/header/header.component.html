@@ -23,10 +23,17 @@
       </div>
 
       <div class="navbar-nav ml-auto">
-        <div *ngIf="userModelProfile$ | async as userModel" class="navbar-brand">
-          Accuracy : <span class="badge badge-secondary accuracy-label">{{ userModel.accuracy | percent: '1.0-2' }}</span>
+        <div *ngIf="userModelProfile$ | async as userModel; else naComment" class="navbar-brand">
+          Accuracy : 
+          <span *ngIf="userModel.accuracy" class="badge badge-secondary accuracy-label">{{ userModel.accuracy | percent: '1.0-2' }}</span>
         </div>
-  
+
+        <ng-template #naComment>
+          <div class="navbar-brand">
+            Accuracy : <span class="badge badge-secondary accuracy-label">N/A</span>            
+          </div>
+        </ng-template>
+        
         <!-- <app-language-selector inNavbar="true" menuClass="dropdown-menu dropdown-menu-right"></app-language-selector> -->
         <div class="nav-item" ngbDropdown>
           <a id="user-dropdown" class="nav-link" ngbDropdownToggle>

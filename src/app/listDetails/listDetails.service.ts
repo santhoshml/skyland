@@ -19,7 +19,7 @@ export interface RandomQuoteContext {
 export class ListDetailsService {
   constructor(private httpClient: HttpClient) {}
 
-  getListDetails(userId:number, key: number): Observable<ListDetails[] | string> {
+  getListDetails(key: number): Observable<ListDetails[] | string> {
     return this.httpClient.get(routes.listDetails(key)).pipe(
       map((body: ListDetails[]) => body),
       catchError(() => of('Error, could not GET list details :-('))

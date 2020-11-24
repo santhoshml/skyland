@@ -4,8 +4,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
-import { Logger, untilDestroyed } from '@core';
+import { Logger, untilDestroyed, GoogleAnalyticsService } from '@core';
 import { AuthenticationService } from './authentication.service';
+import { Credentials } from './credentials.service';
 
 const log = new Logger('Login');
 
@@ -31,7 +32,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private googleAnalyticsService: GoogleAnalyticsService
   ) {
     this.activeTab = 'login';
     this.initForm();
@@ -52,6 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         let id = params['id'];
         if(token){
           this.authenticationService.saveCredentianls(id, email, token);
+          this.googleAnalyticsService.eventEmitter("redirectedt-login", "login", "redirected", "redirected", 1, id);
           this.router.navigate(['/listCards'], { replaceUrl: true });
         }
     });
@@ -71,8 +74,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         untilDestroyed(this)
       )
       .subscribe(
-        (credentials) => {
-          log.debug(`successfully logged in`);
+        (credentials: any) => {
+          this.googleAnalyticsService.eventEmitter("login-successful", "login", "login-response", "login", 1, credentials.id);
 
           // get favorites for the user
           this.authenticationService.getFavorites().subscribe();
@@ -88,6 +91,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   createAccount() {
+    this.googleAnalyticsService.eventEmitter("createAccount-called", "createAccount", "click", "createAccount", 1, null);
+
     this.isLoading = true;
     const login$ = this.authenticationService.createAccount(this.accountForm.value);
     login$
@@ -99,9 +104,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         untilDestroyed(this)
       )
       .subscribe(
-        (credentials) => {
+        (credentials: Credentials) => {
           log.debug(`${credentials.email} successfully logged in`);
-          this.router.navigate(['/listCards'], { replaceUrl: true });
+          this.googleAnalyticsService.eventEmitter("createAccount-successful", "createAccount", "createAccount-response", "createAccount", 1, credentials.id);
+          this.router.navigate(['/uploadPortfolio'], { replaceUrl: true });
           // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
         },
         (error) => {

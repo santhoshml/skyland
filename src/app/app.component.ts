@@ -11,6 +11,9 @@ import { I18nService } from '@app/i18n';
 
 const log = new Logger('App');
 
+//declare gives Angular app access to ga function
+declare let gtag: Function;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -23,7 +26,15 @@ export class AppComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private translateService: TranslateService,
     private i18nService: I18nService
-  ) {}
+  ) {
+    this.router.events.subscribe(event => {
+      if(event instanceof NavigationEnd){
+
+        console.log(event.urlAfterRedirects);
+        gtag('config', 'UA-177829863-1', {'page_path': event.urlAfterRedirects});
+      }
+    })
+  }
 
   ngOnInit() {
     // Setup logger
