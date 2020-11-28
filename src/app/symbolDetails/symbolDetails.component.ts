@@ -28,6 +28,7 @@ export interface SymbolDetails {
   company_name: string;
   tags: string;
   accuracy: number;
+  gain_type: number;
 }
 
 export interface TagDetails {

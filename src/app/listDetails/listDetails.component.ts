@@ -26,6 +26,8 @@ export interface ListRow {
   companyName : string;
   sector : string;
   price : string;
+  tags: string[];
+  gain_type: number;
 }
 
 @Component({

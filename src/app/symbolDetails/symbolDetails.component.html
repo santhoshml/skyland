@@ -32,7 +32,7 @@
     </div>
     <div *ngIf="symbolDetailsResp$ | async as symbolDetailsResp" class="mb-3">
         <div class="card-group">
-            <div *ngIf="symbolDetailsResp.gain_flag === 1 && symbolDetailsResp.confidence >= 0.75" class="card ml-2">
+            <div *ngIf="symbolDetailsResp.gain_flag === 1 && symbolDetailsResp.gain_type == 1" class="card ml-2">
                 <img class="card-img-top" src="assets/gain.png" style="height: 150px;" alt="Card image cap">
                 <div class="card-body mb-5">
                     <h5 class="card-title p-3">Prediction - GAIN</h5>
@@ -44,7 +44,7 @@
                     <small>**based on the analysis after the market close on {{symbolDetailsResp.date}}</small>
                 </div>
             </div>
-            <div *ngIf="symbolDetailsResp.gain_flag === 1 && symbolDetailsResp.confidence <= 0.75" class="card ml-2">
+            <div *ngIf="symbolDetailsResp.gain_flag === 1 && symbolDetailsResp.gain_type == 0" class="card ml-2">
                 <img class="card-img-top" src="assets/confused.png" style="height: 150px;" alt="Card image cap">
                 <div class="card-body mb-5">
                     <h5 class="card-title p-3">Prediction - Neutral/Confused</h5>

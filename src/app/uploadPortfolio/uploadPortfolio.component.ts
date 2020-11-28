@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
@@ -6,6 +6,8 @@ import { environment } from '@env/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CredentialsService } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
+
+import { UploadPortfolioService } from './uploadPortfolio.services';
 
 @Component({
   selector: 'app-uploadPortfolio',
@@ -23,7 +25,7 @@ export class UploadPortfolioComponent implements OnInit {
   selectedPlatformKey:string;
   response: string;
   isUploadSuccess = false;
-
+  
   myForm = new FormGroup({
     file: new FormControl('', [Validators.required]),
     fileSource: new FormControl('', [Validators.required])
@@ -40,7 +42,8 @@ export class UploadPortfolioComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private credentialsService: CredentialsService,
-    private googleAnalyticsService: GoogleAnalyticsService
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private uploadPortfolioService: UploadPortfolioService
 ) {}
 
   ngOnInit() {
@@ -67,6 +70,7 @@ export class UploadPortfolioComponent implements OnInit {
   viewDistribution(){
     console.log(`In viewDistributions`);
     this.googleAnalyticsService.eventEmitter("uploadPortfolio", "uploadPortfolio", "viewDistribution", "viewDistribution", 1,this.credentialsService.credentials.id);
+
     this.router.navigate(['/distribution'], { replaceUrl: true });
   }
 
@@ -134,4 +138,9 @@ export class UploadPortfolioComponent implements OnInit {
   }
   
 
+  openModal(){
+    // user clicked done with uploading all the files 
+    // fire the function to create the file
+    this.uploadPortfolioService.startUserAnalysis().subscribe();
+  }
 }
