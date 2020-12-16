@@ -21,6 +21,7 @@ const credentialsKey = 'credentials';
 const userProfileModelKey = 'userProfileModel';
 const userFavoritesKey = 'favorites';
 const userNotesKey = 'userNotes';
+const webDisplayDateKey = 'webDisplayDate';
 
 /**
  * Provides storage for authentication credentials.
@@ -34,6 +35,7 @@ export class CredentialsService {
   private _userProfileModel: UserProfileModel | null = null;
   private _favorites: string[] = [];
   private _userNotes: string;
+  private _webDisplayDate: string;
 
   constructor() {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
@@ -45,6 +47,9 @@ export class CredentialsService {
     if(savedUserProfileModel) {
       this._userProfileModel = JSON.parse(savedUserProfileModel);
     }
+
+    this._webDisplayDate = sessionStorage.getItem(webDisplayDateKey) || localStorage.getItem(webDisplayDateKey);
+
   }
 
   /**
@@ -73,6 +78,10 @@ export class CredentialsService {
 
   get userNotes(): string | null {
     return this._userNotes;
+  }
+
+  get webDisplayDate(): string | null {
+    return this._webDisplayDate;
   }
 
   /**
@@ -150,6 +159,21 @@ export class CredentialsService {
     } else {
       sessionStorage.removeItem(userNotesKey);
       localStorage.removeItem(userNotesKey);
+    }
+  }
+
+  /**
+   * Sets Web Display Date
+   */
+  setWebDisplayDate(value?: string) {
+    this._webDisplayDate = value || null;
+
+    if (value) {
+      const storage = localStorage;
+      localStorage.setItem(webDisplayDateKey, value);
+    } else {
+      sessionStorage.removeItem(webDisplayDateKey);
+      localStorage.removeItem(webDisplayDateKey);
     }
   }
 }

@@ -8,6 +8,8 @@ import { map, catchError } from 'rxjs/operators';
 import {NgbModal,  ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 declare const TradingView: any;
 
@@ -68,19 +70,66 @@ export class SymbolDetailsComponent implements OnInit {
   technicalCategoryArr:string[];
   userProfile: UserProfileModel;
 
+  view: any[] = [350, 400];
+  // options
+  pieGradient: boolean = true;
+  pieShowLegend: boolean = true;
+  pieShowLabels: boolean = true;
+  isDoughnut: boolean = false;
+  legendPosition: string = 'below';//right
+  analystList:any[] = [
+    {
+      "name": "Buy",
+      "value": 8
+    },
+    {
+      "name": "Sell",
+      "value": 2
+    },
+    {
+      "name": "Hold",
+      "value": 5
+    }
+  ];
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+
+
   typesMap = [
     {
       displayTitle : 'Price/Volume',
       tags: ['PRICE', 'PRICE_GAP', 'PRICE_GAP_DIR', 'AFTER_PULLBACK', 'NEAR_ROUND_NUMBER', 'ILLIQUID_STOCKS', 'WEEK_52', 'VOLUME']
     }
   ];
+
+  // dial guage
+  public canvasWidth = 350
+  public needleValue = 65
+  public centralLabel = ''
+  public name = 'Social Sentiment'
+  public bottomLabel = '65'
+  public options = {
+      hasNeedle: true,
+      needleColor: 'gray',
+      needleUpdateSpeed: 1000,
+      arcColors: ['rgb(44, 151, 222)', 'lightgray'],
+      arcDelimiters: [50],
+      rangeLabel: ['Bearish', 'Bullish'],
+      needleStartValue: 50,
+  };
   
   constructor(private symbolDetailsService: SymbolDetailsService
     , private router: Router
     , private route: ActivatedRoute
     , private credentialsService: CredentialsService
     , private modalService: NgbModal
-    , private googleAnalyticsService: GoogleAnalyticsService) {}
+    , private googleAnalyticsService: GoogleAnalyticsService) {
+
+
+
+      
+    }
 
   ngOnInit() {
     console.log(`I am in ngOnInit`);
@@ -136,10 +185,30 @@ export class SymbolDetailsComponent implements OnInit {
       });
 
       // init InfoWidget
-      this.symbolDetailsService.loadTradingViewScript('symbolInfoWidget', this.activeSymbol, 'embed-widget-symbol-info');
+      let infoWidgetOptions = {
+        "symbol": this.activeSymbol,
+        "width": "100%",
+        "locale": "en",
+        "colorTheme": "light",
+        "isTransparent": true
+      };  
+      this.symbolDetailsService.loadTradingViewScript('symbolInfoWidget', 'embed-widget-symbol-info', infoWidgetOptions);
 
       // load chart
       this.loadChart(symbol);
+
+      // technical info widget
+      let technicalsInfoWIdget = {
+        "interval": "1D",
+        "width": 370,
+        "isTransparent": true,
+        "height": 510,
+        "symbol": this.activeSymbol,
+        "showIntervalTabs": true,
+        "locale": "en",
+        "colorTheme": "light"
+      };
+      this.symbolDetailsService.loadTradingViewScript('symbolTechnicalsWidget', 'embed-widget-technical-analysis', technicalsInfoWIdget);
    })
 
    // load tags from userModelProfile
@@ -229,28 +298,34 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   isExistsInPriceVol(val:string): boolean {
-    for(let tag of this.priceVolCategoryArr){
-      if(tag.toLowerCase() == val.toLowerCase()){
-        return true;
-      }
+    if(this.priceVolCategoryArr){
+      for(let tag of this.priceVolCategoryArr){
+        if(tag.toLowerCase() == val.toLowerCase()){
+          return true;
+        }
+      }  
     }
     return false;
   }
 
   isExistsInClassification(val:string): boolean {
-    for(let tag of this.classificationCategoryArr){
-      if(tag.toLowerCase() == val.toLowerCase()){
-        return true;
-      }
+    if(this.classificationCategoryArr){
+      for(let tag of this.classificationCategoryArr){
+        if(tag.toLowerCase() == val.toLowerCase()){
+          return true;
+        }
+      }  
     }
     return false;
   }
 
   isExistsInTechnical(val:string): boolean {
-    for(let tag of this.technicalCategoryArr){
-      if(tag.toLowerCase() == val.toLowerCase()){
-        return true;
-      }
+    if(this.technicalCategoryArr){
+      for(let tag of this.technicalCategoryArr){
+        if(tag.toLowerCase() == val.toLowerCase()){
+          return true;
+        }
+      }  
     }
     return false;
   }
@@ -260,5 +335,17 @@ export class SymbolDetailsComponent implements OnInit {
       return 'badge badge-pill badge-primary';
     }
     return 'badge badge-pill badge-light';
+  }
+
+  onSelect(data:any): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data:any): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data:any): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 }

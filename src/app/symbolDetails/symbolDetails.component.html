@@ -1,7 +1,7 @@
 <div class="container">
     <div class="p-3 mb-2 bg-warning text-dark text-center" *ngIf="!userProfile">
         We donot have a model built for you yet, so you cannot find any stocks matching your trading style (with a Matching score)
-    </div>    
+    </div>
     <div class="tradingview-widget-container" id="symbolInfoWidget">
         <div class="tradingview-widget-container__widget"></div>
     </div>
@@ -30,6 +30,7 @@
                 Add Notes
                 </button>
     </div>
+
     <div *ngIf="symbolDetailsResp$ | async as symbolDetailsResp" class="mb-3">
         <div class="card-group">
             <div *ngIf="symbolDetailsResp.gain_flag === 1 && symbolDetailsResp.gain_type == 1" class="card ml-2">
@@ -87,6 +88,68 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="column card">
+            <div class="card-body">
+                <div class="card-title analyst-label">Analyst Analysis</div>
+                <ngx-charts-pie-chart
+                [view]="view"
+                [scheme]="colorScheme"
+                [results]="analystList"
+                [gradient]="pieGradient"
+                [legend]="pieShowLegend"
+                [legendPosition]="legendPosition"
+                [labels]="pieShowLabels"
+                [doughnut]="isDoughnut"
+                (select)="onSelect($event)"
+                (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)">
+                </ngx-charts-pie-chart>    
+            </div>
+        </div>
+        <div class="column card">
+            <div class="card-body">
+                <div class="card-title mb-6 analyst-label">Social Sentiment</div>
+                <div style="margin-top: 50px;">
+                    <rg-gauge-chart
+                    [canvasWidth]="canvasWidth"
+                    [needleValue]="needleValue"
+                    [centralLabel]="centralLabel"
+                    [options]="options"
+                    [bottomLabel]="bottomLabel"></rg-gauge-chart>
+                </div>
+            </div>
+        </div>
+        <div class="column card">
+            <div class="tradingview-widget-container card-body" id="symbolTechnicalsWidget">
+                <div class="tradingview-widget-container__widget"></div>
+            </div>
+        </div>
+      </div>
+
+    <div class="mt-5">
+        <!-- <ngx-charts-pie-chart
+            [view]="view"
+            [scheme]="colorScheme"
+            [results]="analystList"
+            [gradient]="pieGradient"
+            [legend]="pieShowLegend"
+            [legendPosition]="legendPosition"
+            [labels]="pieShowLabels"
+            [doughnut]="isDoughnut"
+            (select)="onSelect($event)"
+            (activate)="onActivate($event)"
+            (deactivate)="onDeactivate($event)"
+            >
+        </ngx-charts-pie-chart> -->
+        <!-- <div class="spinner-border" role="status" >
+            <span class="sr-only">Loading...</span>
+          </div> -->
+    </div>
+
+
+   
     <div class="mt-5">
         <hr>
         <div class="mb-2">

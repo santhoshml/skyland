@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
   menuHidden = true;
   searchForm!: FormGroup;
   userModelProfile$: Observable<any>;
+  webDisplayDate$: Observable<string>;
 
   constructor(
     private router: Router,
@@ -24,17 +25,32 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.userModelProfile$ = this.authenticationService.getUserModelProfile().pipe(
-      map((body: any, headers:any)=>{
-        console.log(`body from headerComponent, body: ${JSON.stringify(body)}`);
-        this.credentialsService.setUserProfile(body);
+    
+    // get UserModelProfile
+    this.authenticationService.getUserModelProfile().subscribe();
+
+    // get date from config 
+    this.webDisplayDate$ = this.authenticationService
+    .getConfigValue('web_data_display_date')
+    .pipe(
+      map((body: any)=>{
+        console.log(`getConfigValue body: ${JSON.stringify(body)}`);
+        this.credentialsService.setWebDisplayDate(body.value_str);
         return body;
       }),
-      catchError((err)=>{
-        console.log(`Error when getting userModel profile: ${JSON.stringify(err)}`);
-        return of(false);
+      catchError((err)=> {
+        console.log(`err: ${JSON.stringify(err)}`);
+        return of(null);
       })
-    )
+    );
+
+    // .pipe(
+    //   map(())
+    // )
+    // .subscribe(data=>{
+    //   console.log(`web_data_display_date, ${JSON.stringify(data)}`);
+    //   this.webDisplayDate = data.value_str;
+    // });
   }
 
   toggleMenu() {
@@ -65,5 +81,9 @@ export class HeaderComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       symbol: ['', Validators.required]
       });            
+  }
+
+  getJSONValue(obj:any){
+    return JSON.stringify(obj);
   }
 }

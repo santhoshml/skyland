@@ -19,6 +19,7 @@ import { ListCardsModule } from './listCards/listCards.module';
 import { ListDetailsModule } from './listDetails/listDetails.module';
 import { SymbolDetailsModule } from './symbolDetails/symbolDetails.module';
 import { DefinitionsModule } from './definitions/definitions.module';
+import { UserProfileModule } from './userProfile/userProfile.module';
 import { PageNotFoundModule } from './pageNotFound/pageNotFound.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +27,8 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { RoiDistributionModule } from './roiDistribution/roiDistribution.module';
 import { NgxChartsModule }from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { GaugeChartModule } from 'angular-gauge-chart';
 
 @NgModule({
   imports: [
@@ -46,12 +49,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ListCardsModule,
     ListDetailsModule,
     SymbolDetailsModule,
+    UserProfileModule,
     DefinitionsModule,
     PageNotFoundModule,
     RoiDistributionModule,
     BrowserAnimationsModule,
     NgxChartsModule,
     TruncateModule,
+    GaugeChartModule,
     AppRoutingModule, // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],
