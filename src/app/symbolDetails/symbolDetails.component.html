@@ -77,42 +77,44 @@
                     <div class="card-body">
                         <div class="card-title analyst-label">Analyst Analysis</div>
                         <div *ngIf="analystReccomendationResp$ | async as anaReccoResp">
-                            <ngx-charts-pie-chart
-                            [view]="view"
-                            [scheme]="colorScheme"
-                            [results]="anaReccoResp"
-                            [gradient]="pieGradient"
-                            [legend]="pieShowLegend"
-                            [legendPosition]="legendPosition"
-                            [labels]="pieShowLabels"
-                            [doughnut]="isDoughnut"
-                            (select)="onSelect($event)"
-                            (activate)="onActivate($event)"
-                            (deactivate)="onDeactivate($event)">
-                            </ngx-charts-pie-chart>
-                            <div>
-                                <ul class="pie-legend">
-                                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                                      Buy
-                                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Buy') }}</span>
-                                    </li>
-                                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                                        Overweight
-                                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Overweight') }}</span>
-                                    </li>
-                                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                                        Hold
-                                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Hold') }}</span>
-                                    </li>
-                                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                                        Underweight
-                                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Underweight') }}</span>
-                                    </li>
-                                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                                        Sell
-                                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Sell') }}</span>
-                                    </li>
-                                  </ul>
+                            <div *ngIf="anaReccoResp.length > 0; else noDataDiv">
+                                <ngx-charts-pie-chart
+                                [view]="view"
+                                [scheme]="colorScheme"
+                                [results]="anaReccoResp"
+                                [gradient]="pieGradient"
+                                [legend]="pieShowLegend"
+                                [legendPosition]="legendPosition"
+                                [labels]="pieShowLabels"
+                                [doughnut]="isDoughnut"
+                                (select)="onSelect($event)"
+                                (activate)="onActivate($event)"
+                                (deactivate)="onDeactivate($event)">
+                                </ngx-charts-pie-chart>
+                                <div>
+                                    <ul class="pie-legend">
+                                        <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
+                                        Buy
+                                        <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Buy') }}</span>
+                                        </li>
+                                        <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
+                                            Overweight
+                                        <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Overweight') }}</span>
+                                        </li>
+                                        <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
+                                            Hold
+                                        <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Hold') }}</span>
+                                        </li>
+                                        <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
+                                            Underweight
+                                        <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Underweight') }}</span>
+                                        </li>
+                                        <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
+                                            Sell
+                                        <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Sell') }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -120,25 +122,26 @@
                 <div class="column card">
                     <div class="card-body">
                         <div class="card-title mb-6 analyst-label">Social Sentiment</div>
-                        <div style="margin-top: 80px;" *ngIf="sentimentResp$ | async as sentimentResp">
-                            <rg-gauge-chart
-                            [canvasWidth]="canvasWidth"
-                            [needleValue]=sentimentResp.value
-                            [centralLabel]="centralLabel"
-                            [options]="options"
-                            [bottomLabel]=sentimentResp.value></rg-gauge-chart>
-                        
-                            <div style="margin-top: 125px;">
-                                <ul class="pie-legend">
-                                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                                    Positive
-                                    <span class="badge badge-primary badge-pill">{{ sentimentResp.positive | percent }}</span>
-                                    </li>
-                                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                                        Negative
-                                    <span class="badge badge-primary badge-pill">{{ sentimentResp.negative | percent }}</span>
-                                    </li>
-                                </ul>
+                        <div *ngIf="sentimentResp$ | async as sentimentResp">
+                            <div style="margin-top: 80px;" *ngIf="sentimentResp.value; else noDataDiv">
+                                <rg-gauge-chart
+                                [canvasWidth]="canvasWidth"
+                                [needleValue]=sentimentResp.value
+                                [centralLabel]="centralLabel"
+                                [options]="options"
+                                [bottomLabel]=sentimentResp.value></rg-gauge-chart>
+                                <div style="margin-top: 125px;">
+                                    <ul class="pie-legend">
+                                        <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
+                                        Positive
+                                        <span class="badge badge-primary badge-pill">{{ sentimentResp.positive | percent }}</span>
+                                        </li>
+                                        <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
+                                            Negative
+                                        <span class="badge badge-primary badge-pill">{{ sentimentResp.negative | percent }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -155,6 +158,11 @@
                         <a class="btn btn-warning d-block" href="/uploadPortfolio" role="button">
                             Upload Transactions
                         </a>
+                    </div>
+                </ng-template>
+                <ng-template #noDataDiv>
+                    <div class="ml-2 mt-5 div-noData">
+                        <p class="p-noModel">No data available for {{activeSymbol}}</p>
                     </div>
                 </ng-template>
             </div>        

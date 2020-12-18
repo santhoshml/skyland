@@ -162,7 +162,7 @@ export class SymbolDetailsComponent implements OnInit {
     });
 
     this.sub = this.route.params.subscribe(params => {
-      this.activeSymbol = params['symbol'];
+      this.activeSymbol = params['symbol'].toUpperCase();
       this.completeSymbol=this.activeSymbol;
 
       //get exchange data
@@ -200,8 +200,11 @@ export class SymbolDetailsComponent implements OnInit {
       // AnalystReccomendation data
       this.analystReccomendationResp$ = this.symbolDetailsService.getAnalystReccomendationData(this.activeSymbol)
       .pipe(map((body:AnalystReccomendationResp)=>{
-        this.analystReccomendationList = body.data;
-        return body.data;
+        if(body){
+          this.analystReccomendationList = body.data;
+          return body.data;  
+        }
+        return [];
       }))
 
       // get notes

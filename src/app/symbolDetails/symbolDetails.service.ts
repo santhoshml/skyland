@@ -152,14 +152,8 @@ export class SymbolDetailsService {
   }
 
   loadTradingViewScript(containerId: string, widgetType:string, widgetOptions:any){
-    // let widgetOptions = {
-    //   "symbol": symbol,
-    //   "width": "100%",
-    //   "locale": "en",
-    //   "colorTheme": "light",
-    //   "isTransparent": true
-    // };
     const container: HTMLElement = document.getElementById(containerId);
+    container.innerHTML="";
     if(container){
       const script = document.createElement('script');
       script.innerHTML = JSON.stringify(widgetOptions);
@@ -167,12 +161,17 @@ export class SymbolDetailsService {
       script.async = true;
       script.defer = true;
   
-      // replace the widget node
-      if(container.childElementCount === 1){
-        container.appendChild(script);
-      } else {
-        container.replaceChild(script, container.childNodes[0]);
-      }
+      container.appendChild(script);
+      // replace the widget node      
+      // if(container.childElementCount === 1){
+      //   console.log(`appending the child node`);
+      //   container.appendChild(script);
+      // } else {
+      //     // container.firstChild.remove();
+      //     console.log(`replacing the child node`);
+      //     console.log(container.childNodes[0]);
+      //   container.replaceChild(script, container.childNodes[0]);
+      // }
     }    
   }
 
