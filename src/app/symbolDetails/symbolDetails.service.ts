@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { SymbolDetailsResp, TagDetails, TagCategories } from './symbolDetails.component';
+import { SymbolDetailsResp, TagDetails, TagCategories, SentimentResp, AnalystReccomendationResp, ExchangeResp } from './symbolDetails.component';
 import { CredentialsService } from '@app/auth';
 
 const routes = {
@@ -10,7 +10,10 @@ const routes = {
   tagDetails: () => `/data/tags`,
   addToFavorites: (symbol : string) => `/favorites/symbol/${symbol}`,
   userNotes: (symbol : string) => `/userNotes/symbol/${symbol}`,
-  tagCategories: () => `/data/tagCategories`
+  tagCategories: () => `/data/tagCategories`,
+  analystReccomendations: (symbol: string)=> `/analystReccomendation/symbol/${symbol}`,
+  sentimentData: (symbol: string)=> `/sentiment/symbol/${symbol}`,
+  exchangeData: (symbol: string)=> `/exchange/symbol/${symbol}`
 };
 
 @Injectable({
@@ -19,6 +22,28 @@ const routes = {
 export class SymbolDetailsService {
   constructor(private httpClient: HttpClient,
     private credentialsService : CredentialsService) {}
+
+  getExchangeData(symbol: string): Observable<ExchangeResp | string>{
+    return this.httpClient.get(routes.exchangeData(symbol)).pipe(
+      map((body: ExchangeResp) => body),
+      catchError(() => of('Error, could not GET exchange details :-('))
+    );
+  }
+  
+  
+  getSentimentData(symbol: string): Observable<SentimentResp | string>{
+    return this.httpClient.get(routes.sentimentData(symbol)).pipe(
+      map((body: SentimentResp) => body),
+      catchError(() => of('Error, could not GET sentiment details :-('))
+    );
+  }
+
+  getAnalystReccomendationData(symbol: string): Observable<AnalystReccomendationResp | string>{
+    return this.httpClient.get(routes.analystReccomendations(symbol)).pipe(
+      map((body: AnalystReccomendationResp) => body),
+      catchError(() => of('Error, could not GET sentiment details :-('))
+    );
+  }
 
   getTagCategories(): Observable<TagCategories[]| string>{
     return this.httpClient.get(routes.tagCategories()).pipe(

@@ -76,17 +76,34 @@
   }
   
   .column {
-    flex: 33.33%;
-    padding: 5px;
+    flex: 25%;
+    // padding: 5px;
   }
   
   .analyst-label {
     margin-top: 25px;
     line-height: 34.5px;
-    margin-bottom: 6px;
+    margin-bottom: 0px;
     font-size: 20px;
     color: #131722;
     letter-spacing: .3px;
     font-weight: 400;
     text-align: center;
+  }
+
+  .pie-legend{
+    padding: 0px;
+  }
+
+  .p-noModel {
+    font-size: small;
+    font-weight: bold;
+    letter-spacing: 1px;
+    word-spacing: 2px;
+    font-family: ui-monospace;
+  }
+
+  .div-noModel {
+    vertical-align: middle;
+    display: inline-table;
   }

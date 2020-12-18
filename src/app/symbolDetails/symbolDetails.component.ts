@@ -13,6 +13,28 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 declare const TradingView: any;
 
+export interface ExchangeResp {
+  exchange: string;
+}
+
+export interface SentimentResp {
+  sentiment: number;
+  totalScores: number;
+  positive: number;
+  negative: number;
+  minute: string;
+  value: number;
+}
+
+export interface AnalystRatingRecord {
+  name: string;
+  value: number;
+}
+
+export interface AnalystReccomendationResp {
+  data: AnalystRatingRecord[];
+}
+
 export interface SymbolDetailsResp {
   status: string;
   data: SymbolDetails;
@@ -55,6 +77,9 @@ export class SymbolDetailsComponent implements OnInit {
   version: string | null = environment.version;
   isLoading = false;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
+  sentimentResp$: Observable<SentimentResp | string>;
+  analystReccomendationResp$: Observable<AnalystRatingRecord[] | string>;
+  analystReccomendationList: AnalystRatingRecord[];
   private sub: any;
   tagDetailsMap: Map<string, TagDetails[]> = new Map<string, TagDetails[]>();
   tagDetailsArr: TagDetails[] = [];
@@ -69,30 +94,18 @@ export class SymbolDetailsComponent implements OnInit {
   classificationCategoryArr:string[];
   technicalCategoryArr:string[];
   userProfile: UserProfileModel;
+  enableStockFeatures = false;
+  completeSymbol:string=null;
 
-  view: any[] = [350, 400];
+  view: any[] = [270, 400];
   // options
   pieGradient: boolean = true;
-  pieShowLegend: boolean = true;
+  pieShowLegend: boolean = false;
   pieShowLabels: boolean = true;
   isDoughnut: boolean = false;
   legendPosition: string = 'below';//right
-  analystList:any[] = [
-    {
-      "name": "Buy",
-      "value": 8
-    },
-    {
-      "name": "Sell",
-      "value": 2
-    },
-    {
-      "name": "Hold",
-      "value": 5
-    }
-  ];
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#KKKKKK']
   };
 
 
@@ -104,7 +117,7 @@ export class SymbolDetailsComponent implements OnInit {
   ];
 
   // dial guage
-  public canvasWidth = 350
+  public canvasWidth = 270
   public needleValue = 65
   public centralLabel = ''
   public name = 'Social Sentiment'
@@ -124,12 +137,7 @@ export class SymbolDetailsComponent implements OnInit {
     , private route: ActivatedRoute
     , private credentialsService: CredentialsService
     , private modalService: NgbModal
-    , private googleAnalyticsService: GoogleAnalyticsService) {
-
-
-
-      
-    }
+    , private googleAnalyticsService: GoogleAnalyticsService) {}
 
   ngOnInit() {
     console.log(`I am in ngOnInit`);
@@ -154,17 +162,25 @@ export class SymbolDetailsComponent implements OnInit {
     });
 
     this.sub = this.route.params.subscribe(params => {
-      let symbol = params['symbol'];
-      this.activeSymbol = symbol;
+      this.activeSymbol = params['symbol'];
+      this.completeSymbol=this.activeSymbol;
 
-      this.symbolDetailsResp$ = this.symbolDetailsService.getListDetails(symbol).pipe(
+      //get exchange data
+      this.symbolDetailsService.getExchangeData(this.activeSymbol).subscribe(data=>{
+        this.googleAnalyticsService.eventEmitter("symbolDetails-init", "symbolDetails", "init", "getExchangeData", 1,this.credentialsService.credentials.id);
+        let exchange=data['exchange'];
+        if(exchange){
+          this.completeSymbol=`${exchange}:${this.activeSymbol}`;
+        }
+      });
+
+      this.symbolDetailsResp$ = this.symbolDetailsService.getListDetails(this.activeSymbol).pipe(
         map((body: any, headers: any)=> {
           this.googleAnalyticsService.eventEmitter("symbolDetails-init", "symbolDetails", "init", "getListDetails", 1,this.credentialsService.credentials.id);
-          if(!body.symbol){
-            this.router.navigate(['/pageNotFound'], { replaceUrl: true });
-          } else {
-            return body;
+          if(body.symbol){
+            this.enableStockFeatures = true;
           }
+          return body;
         }),
         catchError((err) => {
           if(err.status === 401){
@@ -178,6 +194,16 @@ export class SymbolDetailsComponent implements OnInit {
       // set Favorite flag
       this.isFavorite = this.symbolDetailsService.isFavorite(this.activeSymbol);
 
+      // getSentiment data
+      this.sentimentResp$ = this.symbolDetailsService.getSentimentData(this.activeSymbol);
+
+      // AnalystReccomendation data
+      this.analystReccomendationResp$ = this.symbolDetailsService.getAnalystReccomendationData(this.activeSymbol)
+      .pipe(map((body:AnalystReccomendationResp)=>{
+        this.analystReccomendationList = body.data;
+        return body.data;
+      }))
+
       // get notes
       this.symbolDetailsService.getUserNotes(this.activeSymbol).subscribe(data=>{
         this.googleAnalyticsService.eventEmitter("symbolDetails-init", "symbolDetails", "init", "getUserNotes", 1,this.credentialsService.credentials.id);
@@ -186,7 +212,7 @@ export class SymbolDetailsComponent implements OnInit {
 
       // init InfoWidget
       let infoWidgetOptions = {
-        "symbol": this.activeSymbol,
+        "symbol": this.completeSymbol,
         "width": "100%",
         "locale": "en",
         "colorTheme": "light",
@@ -195,15 +221,15 @@ export class SymbolDetailsComponent implements OnInit {
       this.symbolDetailsService.loadTradingViewScript('symbolInfoWidget', 'embed-widget-symbol-info', infoWidgetOptions);
 
       // load chart
-      this.loadChart(symbol);
+      this.loadChart(this.completeSymbol);
 
       // technical info widget
       let technicalsInfoWIdget = {
         "interval": "1D",
-        "width": 370,
+        "width": 270,
         "isTransparent": true,
         "height": 510,
-        "symbol": this.activeSymbol,
+        "symbol": this.completeSymbol,
         "showIntervalTabs": true,
         "locale": "en",
         "colorTheme": "light"
@@ -216,6 +242,17 @@ export class SymbolDetailsComponent implements OnInit {
 
     // set user profile
     this.userProfile=this.credentialsService.userProfileModel;
+  }
+
+  getAnalystReccomendationValue(name:string) {
+    if(this.analystReccomendationList && this.analystReccomendationList.length>0){
+      for(let ele of this.analystReccomendationList){
+        if(ele.name.toUpperCase() == name.toUpperCase()){
+          return ele.value;
+        }
+      }
+    }
+    return 0;
   }
 
   open(content:any) {
@@ -254,7 +291,7 @@ export class SymbolDetailsComponent implements OnInit {
   loadChart(symbol:string) {
     this.googleAnalyticsService.eventEmitter("symbolDetails", "chart", "loadChart", symbol, 1,this.credentialsService.credentials.id);
     new TradingView.widget({
-      symbol: symbol,
+      symbol: this.activeSymbol,
       width: '100%',
       interval: 'D',
       timezone: 'Etc/UTC',
@@ -276,8 +313,12 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   getArray(str:string){
-    let sortedArr = JSON.parse(str).sort((a:string, b:string)=> a.length - b.length);
-    return sortedArr;
+    if(str){
+      let sortedArr = JSON.parse(str).sort((a:string, b:string)=> a.length - b.length);
+      return sortedArr;
+    }
+    return [];
+
   }
 
   getTagDisplayText(str:string){
