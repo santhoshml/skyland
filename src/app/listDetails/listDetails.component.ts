@@ -28,6 +28,7 @@ export interface ListRow {
   price : string;
   tags: string[];
   gain_type: number;
+  gain_flag: number;
 }
 
 @Component({
