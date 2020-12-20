@@ -64,8 +64,9 @@ export class AuthenticationService {
     }).pipe(
       map((body: any)=>{
         console.log(`body: ${JSON.stringify(body)}`);
-      this.credentialsService.setCredentials(body, context.remember);
-      return of(body);
+        this.credentialsService.setCredentials(body, context.remember);
+        this.getUserModelProfile().subscribe();
+        return of(body);
       }),
       catchError((err)=> {
         console.log(`err: ${JSON.stringify(err)}`);
@@ -118,8 +119,9 @@ export class AuthenticationService {
     return this.httpClient.post(routes.createAccount(), createAccountData).pipe(
       map((body: any)=>{
         console.log(`body: ${JSON.stringify(body)}`);
-      this.credentialsService.setCredentials(body, false);
-      return of(body);
+        this.credentialsService.setCredentials(body, false);
+        this.getUserModelProfile().subscribe();
+        return of(body);
       }),
       catchError((err)=> {
         console.log(`err: ${JSON.stringify(err)}`);

@@ -35,6 +35,10 @@ export class ListCardsComponent implements OnInit {
 
   ngOnInit() {
     this.googleAnalyticsService.eventEmitter("listCards-init", "listCards", "init", "listCards", 1,this.credentialsService.credentials.id);
+    
+    // set user profile
+    this.userProfile=this.credentialsService.userProfileModel;
+
     this.listCard$ = this.listCardsService.getAllCards().pipe(
       map((body: any, headers:any)=>{
         // console.log(`body: ${JSON.stringify(body)}`);
@@ -50,9 +54,6 @@ export class ListCardsComponent implements OnInit {
         }
       })
     )
-
-    // set user profile
-    this.userProfile=this.credentialsService.userProfileModel;
   }
 
   getList(selectedCard : ListCard){

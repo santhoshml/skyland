@@ -57,7 +57,7 @@
                     <td>
                         <span class="badge badge-pill badge-primary" *ngIf="listRow.gain_flag==1 && listRow.gain_type == 1">Gain</span>
                         <span class="badge badge-pill badge-info" *ngIf="listRow.gain_flag==1 && listRow.gain_type == 0">Neutral</span>
-                        <span class="badge badge-pill badge-info" *ngIf="listRow.gain_flag==0">Loss</span>
+                        <span class="badge badge-pill badge-danger" *ngIf="listRow.gain_flag==0">Loss</span>
                     </td>
                 </tr>
             </tbody>
