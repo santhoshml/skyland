@@ -43,7 +43,7 @@
                 <div class="column card" *ngIf="symbolDetailsResp$ | async as symbolDetailsResp">
                     <div class="card-body">
                         <div class="card-title analyst-label">Investing style</div>
-                        <div *ngIf="symbolDetailsResp.gain_flag; else noModelDiv">
+                        <div *ngIf="symbolDetailsResp.symbol; else noModelDiv">
                             <div *ngIf="symbolDetailsResp.gain_flag === 1 && symbolDetailsResp.gain_type == 1" class="ml-2">
                                 <img class="card-img-top" src="assets/gain.png" style="height: 150px;" alt="Card image cap">
                                 <div class="card-body mb-5">
