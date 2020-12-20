@@ -5,7 +5,7 @@ import { environment } from '@env/environment';
 import { ListCardsService } from './listCards.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { CredentialsService, UserProfileModel } from '@app/auth';
+import { AuthenticationService, CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 
 export interface ListCard {
@@ -25,19 +25,25 @@ export class ListCardsComponent implements OnInit {
   cardArr: ListCard[];
   isLoading = false;
   listCard$: Observable<any>;
-  userProfile: UserProfileModel;
+  userProfile$: Observable<any>;
   
   constructor(private listCardsService: ListCardsService,
     private router: Router,
     private route: ActivatedRoute,
     private credentialsService: CredentialsService,
+    private authenticationService: AuthenticationService,
     private googleAnalyticsService: GoogleAnalyticsService) {}
 
   ngOnInit() {
     this.googleAnalyticsService.eventEmitter("listCards-init", "listCards", "init", "listCards", 1,this.credentialsService.credentials.id);
     
     // set user profile
-    this.userProfile=this.credentialsService.userProfileModel;
+    this.userProfile$=this.authenticationService.getUserModelProfile().pipe(
+      map(body=>{
+        this.credentialsService.setUserProfile(body);
+        return body;
+      })
+    )
 
     this.listCard$ = this.listCardsService.getAllCards().pipe(
       map((body: any, headers:any)=>{
