@@ -15,12 +15,12 @@
                     </dt>
                     <dd *ngIf="txnStats.gain_ratio; else naComment" class="col">{{txnStats.gain_ratio | percent: '1.0-2'}}</dd>
                 </dl>
-                <dl class="row">
+                <!-- <dl class="row">
                     <dt class="col">Average Return on Capital Invested(ROI)
                         <a href="https://www.investopedia.com/articles/basics/10/guide-to-calculating-roi.asp" target="_blank"><i class="far fa-question-circle"></i></a>
                     </dt>
                     <dd *ngIf="txnStats.avg_roi; else naComment" class="col">{{txnStats.avg_roi}}%</dd>
-                </dl>
+                </dl> -->
                 <dl class="row">
                     <dt class="col">Average ROI% on winning trades</dt>
                     <dd *ngIf="txnStats.avg_positive_roi; else naComment" class="col">{{txnStats.avg_positive_roi}}%</dd>

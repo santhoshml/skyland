@@ -2,13 +2,158 @@
   <div class="p-3 mb-2 bg-warning text-dark text-center" *ngIf="!userProfile$">
     We donot have a model built for you yet, so you cannot find any stocks matching your trading style (with a Matching score)
   </div>
-  <div class="card ml-5">
+
+  <nav mt-5>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-topStocks-tab" data-toggle="tab" href="#nav-topStocks" role="tab" aria-controls="nav-topStocks" aria-selected="true">Top Stocks</a>
+      <a class="nav-item nav-link" id="nav-yourBest-tab" data-toggle="tab" href="#nav-yourBest" role="tab" aria-controls="nav-yourBest" aria-selected="false">Your Best Stocks</a>
+      <a class="nav-item nav-link disabled" id="nav-sellSuggestions-tab" data-toggle="tab" href="#nav-sellSuggestions" role="tab" aria-controls="nav-sellSuggestions" aria-selected="false">Open Positions - Best time to sell</a>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active card" id="nav-topStocks" role="tabpanel" aria-labelledby="nav-topStocks-tab">
+      <div class="card-body">
+        <div class="card-subtitle">Stocks in uptrend and ready to enter/start a position.</div>
+      </div>
+    <div *ngIf="topStocks$ | async as topStocks">
+      <table *ngIf="hasConfidenceScore" class="mt-20 table table-striped table-hover table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center" scope="col">Symbol</th>
+            <th class="text-center" scope="col">Price</th>
+            <th class="text-center" scope="col">Gain/Loss</th>
+            <th class="text-center" scope="col">Matching Score</th>
+            <th class="text-center" scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let topStock of topStocks" class="table-row">
+            <td class="text-center">
+              <a href="/symbolDetails/{{topStock.symbol}}">{{topStock.symbol}}</a>
+            </td>
+            <td class="text-center">{{topStock.price | currency}}</td>
+            <td *ngIf="(topStock.gain_flag && topStock.confidence >= 0.75)== 1 then gain; else ((topStock.gain_flag && topStock.confidence < 0.75) && confused) || (topStock.gain_flag == 0 && loss) || (noDataDiv)"></td>
+            <td class="text-center" *ngIf="topStock.confidence; else noDataDiv">{{topStock.confidence | percent: '1.0-2'}}</td>
+            <td class="text-center">
+              <button type="button" class="ml-2 btn" (click)="thumbsUp(topStock.symbol)">
+                <i class="far fa-thumbs-up"></i>
+              </button>
+              <button type="button" class="ml-2 btn" (click)="thumbsDown(topStock.symbol)">
+                <i class="far fa-thumbs-down"></i>
+              </button>
+              <button type="button" *ngIf="!isFavorite(topStock.symbol)" class="ml-2 btn" (click)="addToFavorites(topStock.symbol)">
+                <i class="fas fa-heart"></i>
+              </button>
+              <button type="button" *ngIf="isFavorite(topStock.symbol)" class="ml-2 btn" (click)="removeFromFavorites(topStock.symbol)">
+                <i class="far fa-heart"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table *ngIf="!hasConfidenceScore" class="mt-20 table table-striped table-hover table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center" scope="col">Symbol</th>
+            <th class="text-center" scope="col">Price</th>
+            <th class="text-center" scope="col">Gain/Loss</th>
+            <th class="text-center" scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let topStock of topStocks" class="table-row">
+            <td class="text-center">
+              <a href="/symbolDetails/{{topStock.symbol}}">{{topStock.symbol}}</a>
+            </td>
+            <td class="text-center">{{topStock.price | currency}}</td>
+            <td class="text-center small">
+              <a href="/uploadPortfolio">Upload transactions</a> so we can compute this value.
+              <p>you are 1-step away from it.</p>
+            </td>
+            <td class="text-center">
+              <button type="button" class="ml-2 btn" (click)="thumbsUp(topStock.symbol)">
+                <i class="far fa-thumbs-up"></i>
+              </button>
+              <button type="button" class="ml-2 btn" (click)="thumbsDown(topStock.symbol)">
+                <i class="far fa-thumbs-down"></i>
+              </button>
+              <button type="button" *ngIf="!isFavorite(topStock.symbol)" class="ml-2 btn" (click)="addToFavorites(topStock.symbol)">
+                <i class="fas fa-heart"></i>
+              </button>
+              <button type="button" *ngIf="isFavorite(topStock.symbol)" class="ml-2 btn" (click)="removeFromFavorites(topStock.symbol)">
+                <i class="far fa-heart"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>      
+    </div>
+    </div>
+    <div class="tab-pane fade card" id="nav-yourBest" role="tabpanel" aria-labelledby="nav-yourBest-tab">
+      <div class="card-body">
+        <div class="card-subtitle">Best Stocks that match your investing style.</div>
+      </div>
+      <div *ngIf="yourBestStocks$ | async as yourBestStocks">
+        <table *ngIf="yourBestStocks.length > 0; else noDataDiv" class="mt-20 table table-striped table-hover table-bordered">
+          <thead>
+            <tr>
+              <th class="text-center" scope="col">Company Name</th>
+              <th class="text-center" scope="col">Sector</th>
+              <th class="text-center" scope="col">Symbol</th>
+              <th class="text-center" scope="col">Price</th>
+              <th class="text-center" scope="col">Gain/Loss</th>
+              <th class="text-center" scope="col">Matching Score</th>
+              <th class="text-center" scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bestStock of yourBestStocks" class="table-row">
+              <td class="text-center">{{bestStock.companyName}}</td>
+              <td class="text-center">
+                {{bestStock.sector}}
+                <p class="small" *ngIf="bestStock.sector == 'Finance'">Best perfoming sector (+0.5%)</p>
+                <p class="small" *ngIf="bestStock.sector == 'Utilities'">2nd Best perfoming sector (+0.27%)</p>
+                <p class="small" *ngIf="bestStock.sector == 'Industrial Services'">3rd Best perfoming sector (+0.12%)</p>
+                <p class="small" *ngIf="bestStock.sector == 'Process Industries'">-0.37%</p>
+                <p class="small" *ngIf="bestStock.sector == 'Producer Manufacturing'">-1.1%</p>
+              </td>
+              <td class="text-center">
+                <a href="/symbolDetails/{{bestStock.symbol}}">{{bestStock.symbol}}</a>
+              </td>
+              <td class="text-center">{{bestStock.price}}</td>
+              <td *ngIf="(bestStock.gain_flag && bestStock.raw_confidence >= 0.75)== 1 then gain; else ((bestStock.gain_flag && bestStock.raw_confidence < 0.75) && confused) || (bestStock.gain_flag == 0 && loss) || (noDataDiv)"></td>
+              <td class="text-center" *ngIf="bestStock.confidence; else noDataDiv">{{bestStock.confidence}}</td>
+              <td class="text-center">
+                <button type="button" class="ml-2 btn" (click)="thumbsUp(bestStock.symbol)">
+                  <i class="far fa-thumbs-up"></i>
+                </button>
+                <button type="button" class="ml-2 btn" (click)="thumbsDown(bestStock.symbol)">
+                  <i class="far fa-thumbs-down"></i>
+                </button>
+                <button type="button" *ngIf="!isFavorite(bestStock.symbol)" class="ml-2 btn" (click)="addToFavorites(bestStock.symbol)">
+                  <i class="fas fa-heart"></i>
+                </button>
+                <button type="button" *ngIf="isFavorite(bestStock.symbol)" class="ml-2 btn" (click)="removeFromFavorites(bestStock.symbol)">
+                  <i class="far fa-heart"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="nav-sellSuggestions" role="tabpanel" aria-labelledby="nav-sellSuggestions-tab">
+
+    </div>
+  </div>
+
+  <div class="card mt-3">
     <div class="card-body">
       <h5 class="card-title">Trading Ideas</h5>
       <p class="card-text">List of Trading ideas grouped in its own category.
         This helps traders find the best stock suited to their trading style in the current market.
       </p>
-      <ul class="pl-0 mb-5">
+      <ul class="pl-0">
         <li style="list-style-type: lower-alpha;" class="ml-3 mb-3">
           <span class="card-text step-text">Each Trading idea has a list of stocks personalized for you.</span>
         </li>
@@ -21,8 +166,9 @@
       </ul>
     </div>
   </div>
-  <div *ngIf="listCard$ | async as cards" class="d-flex flex-wrap">
-    <div *ngFor="let card of cards" class="ml-5 mt-4">
+
+  <div *ngIf="listCard$ | async as cards" class="d-flex flex-wrap mt-3">
+    <div *ngFor="let card of cards" class="mr-5 mt-4">
       <div class="card" style="width: 20rem;">
         <img class="card-img-top" width="300px"  height="200" src="{{card.img}}" alt="Card image cap">
         <div class="card-body">
@@ -38,4 +184,27 @@
 
     </div>
   </div>
+
+
+  <ng-template #noDataDiv>
+    <div class="text-center mb-2">
+      <a href="/uploadPortfolio">Upload transactions</a> so we can compute this value. You are 1-step away from it.
+    </div>
+  </ng-template>
+  <ng-template #gain>
+    <div class="text-center">
+      <img class="card-img-top" src="assets/gain.png" style="height: 40px; width: 40px;" alt="Card image cap">
+    </div>
+  </ng-template>
+  <ng-template #confused>
+    <div class="text-center">
+      <img class="card-img-top" src="assets/confused.png" style="height: 40px; width: 40px;" alt="Card image cap">
+    </div>
+  </ng-template>
+  <ng-template #loss>
+    <div class="text-center">
+      <img class="card-img-top" src="assets/loss.png" style="height: 40px; width: 40px;" alt="Card image cap">
+    </div>
+  </ng-template>    
+
 </div>
