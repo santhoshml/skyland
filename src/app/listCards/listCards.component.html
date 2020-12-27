@@ -31,9 +31,9 @@
             <td class="text-center">
               <a href="/symbolDetails/{{topStock.symbol}}">{{topStock.symbol}}</a>
             </td>
-            <td class="text-center">{{topStock.price | currency}}</td>
-            <td *ngIf="(topStock.gain_flag && topStock.confidence >= 0.75)== 1 then gain; else ((topStock.gain_flag && topStock.confidence < 0.75) && confused) || (topStock.gain_flag == 0 && loss) || (noDataDiv)"></td>
-            <td class="text-center" *ngIf="topStock.confidence; else noDataDiv">{{topStock.confidence | percent: '1.0-2'}}</td>
+            <td class="text-center">{{ topStock.price }}</td>
+            <td *ngIf="(topStock.gain_flag == 1 && topStock.gain_type == 1) then gain; else ((topStock.gain_flag == 1 && topStock.gain_type == 0) && confused) || (topStock.gain_flag == 0 && loss) || (noDataDiv)"></td>
+            <td class="text-center" *ngIf="topStock.confidence; else noDataDiv">{{ topStock.confidence }}</td>
             <td class="text-center">
               <button type="button" class="ml-2 btn" (click)="thumbsUp(topStock.symbol)">
                 <i class="far fa-thumbs-up"></i>
@@ -108,7 +108,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let bestStock of yourBestStocks" class="table-row">
-              <td class="text-center">{{bestStock.companyName}}</td>
+              <td class="text-center">
+                <p class="card-text" [innerHTML]="bestStock.companyName | truncate:20" ></p>
+              </td>
               <td class="text-center">
                 {{bestStock.sector}}
                 <p class="small" *ngIf="bestStock.sector == 'Finance'">Best perfoming sector (+0.5%)</p>
@@ -121,7 +123,7 @@
                 <a href="/symbolDetails/{{bestStock.symbol}}">{{bestStock.symbol}}</a>
               </td>
               <td class="text-center">{{bestStock.price}}</td>
-              <td *ngIf="(bestStock.gain_flag && bestStock.raw_confidence >= 0.75)== 1 then gain; else ((bestStock.gain_flag && bestStock.raw_confidence < 0.75) && confused) || (bestStock.gain_flag == 0 && loss) || (noDataDiv)"></td>
+              <td *ngIf="(bestStock.gain_flag == 1 && bestStock.gain_type == 1) then gain; else ((bestStock.gain_flag == 1 && bestStock.gain_type == 0) && confused) || (bestStock.gain_flag == 0 && loss) || (noDataDiv)"></td>
               <td class="text-center" *ngIf="bestStock.confidence; else noDataDiv">{{bestStock.confidence}}</td>
               <td class="text-center">
                 <button type="button" class="ml-2 btn" (click)="thumbsUp(bestStock.symbol)">
