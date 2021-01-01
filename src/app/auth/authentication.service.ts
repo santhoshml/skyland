@@ -24,6 +24,7 @@ export interface CreateAccountContext {
   password: string;
   phone: string;
   displayName: string;
+  code: string;
 }
 
 /**
@@ -114,7 +115,8 @@ export class AuthenticationService {
       email: context.email,
       password: context.password,
       displayName: context.displayName,
-      phone: context.phone
+      phone: context.phone,
+      code: context.code
     };
     return this.httpClient.post(routes.createAccount(), createAccountData).pipe(
       map((body: any)=>{

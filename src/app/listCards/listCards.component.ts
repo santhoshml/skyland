@@ -68,10 +68,11 @@ export class ListCardsComponent implements OnInit {
 
     this.topStocks$ = this.listCardsService.getTopStocks().pipe(
       map(body=>{
-        console.log(`topStocks : ${JSON.stringify(body)}`);
-        if(body[0].confidence){
+        console.log(`topStocks : ${JSON.stringify(body)}`);        
+        if(body && body.length> 0 && body[0].confidence){
           this.hasConfidenceScore = true;
         }
+        console.log(`this.hasConfidenceScore : ${this.hasConfidenceScore}`);
         return body;
       })
     );

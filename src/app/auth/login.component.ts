@@ -8,7 +8,43 @@ import { Logger, untilDestroyed, GoogleAnalyticsService } from '@core';
 import { AuthenticationService } from './authentication.service';
 import { Credentials } from './credentials.service';
 
+import {SymbolDetailsService} from '../symbolDetails/symbolDetails.service';
+
 const log = new Logger('Login');
+
+let infoWidgetOptions = {
+  "symbols": [
+    {
+      "proName": "FOREXCOM:SPXUSD",
+      "title": "S&P 500"
+    },
+    {
+      "proName": "FOREXCOM:NSXUSD",
+      "title": "Nasdaq 100"
+    },
+    {
+      "description": "DowJones",
+      "proName": "FOREXCOM:DJI"
+    },
+    {
+      "description": "TSLA",
+      "proName": "NASDAQ:TSLA"
+    },
+    {
+      "description": "MSFT",
+      "proName": "NASDAQ:MSFT"
+    },
+    {
+      "description": "FB",
+      "proName": "FB"
+    }
+  ],
+  "showSymbolLogo": true,
+  "colorTheme": "light",
+  "isTransparent": false,
+  "displayMode": "adaptive",
+  "locale": "en"
+};
 
 @Component({
   selector: 'app-login',
@@ -33,7 +69,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
-    private googleAnalyticsService: GoogleAnalyticsService
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private symbolDetailsService: SymbolDetailsService
   ) {
     this.activeTab = 'login';
     this.initForm();
@@ -41,6 +78,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log(`In login ngOnInit`);
+
+    this.symbolDetailsService.loadTradingViewScript('tickerTapeWidget', 'embed-widget-ticker-tape', infoWidgetOptions);
+
     this.route.params.subscribe(params=>{
       console.log(`params in params: ${JSON.stringify(params)}`);
       this.loginError = params['errMsg'];
@@ -111,8 +151,13 @@ export class LoginComponent implements OnInit, OnDestroy {
           // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
         },
         (error) => {
-          log.debug(`Login error: ${error}`);
-          this.loginError = `Email or password incorrect.`;
+          log.debug(`Login error: ${JSON.stringify(error)}`);
+          if(error.error && error.error.errors) {
+            this.createAccountError = error.error.errors
+          } else {
+            this.createAccountError = `Code or Email or password incorrect.`;
+          }
+          console.log(`createAccountError : ${this.createAccountError}`);
         }
       );
   }
@@ -130,6 +175,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     switch (this.activeTab) {
       case 'login':
         this.accountForm = this.formBuilder.group({
+          code: ['test', Validators.required],
           email: ['', Validators.required],
           password: ['', Validators.required],
           phone: [''],
@@ -138,6 +184,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         break;
       case 'createAccount':
         this.accountForm = this.formBuilder.group({
+          code: ['', Validators.required],
           email: ['', Validators.required],
           password: ['', Validators.required],
           phone: [''],
