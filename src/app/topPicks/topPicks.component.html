@@ -97,7 +97,7 @@
             <tbody>
               <tr *ngFor="let topStock of topStocks" class="table-row">
                 <td class="text-center">
-                  <p [innerHTML]="topStock.company_name | truncate:20" ></p>
+                  <p [innerHTML]="topStock.companyName | truncate:20" ></p>
                 </td>
                 <td class="text-center">
                   <a href="/symbolDetails/{{topStock.symbol}}">{{topStock.symbol}}</a>
