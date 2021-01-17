@@ -126,7 +126,7 @@ export class SymbolDetailsComponent implements OnInit {
       hasNeedle: true,
       needleColor: 'gray',
       needleUpdateSpeed: 1000,
-      arcColors: ['rgb(44, 151, 222)', 'lightgray'],
+      arcColors: ['rgb(255,99,71)', 'rgb(123,104,238)'],
       arcDelimiters: [50],
       rangeLabel: ['Bearish', 'Bullish'],
       needleStartValue: 50,

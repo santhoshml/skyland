@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { ListCard } from './listCards.component';
 
-// quote: () => `/data/prediction/groups`,
 const routes = {
-  quote: () => `/tradingIdeas/summary`,
-  subSector:()=> `/subsectors/summary`
+  topStocks: () => `/stocks/top`,
+  yourBest: ()=>`/predictions/2/addLimit/1`
 };
 
 export interface RandomQuoteContext {
@@ -18,28 +16,28 @@ export interface RandomQuoteContext {
 @Injectable({
   providedIn: 'root',
 })
-export class ListCardsService {
+export class TopPicksService {
   constructor(private httpClient: HttpClient) {}
 
-  getAllCards(): Observable<ListCard[] | string> {
-    return this.httpClient.get(routes.quote(), 
+  getTopStocks(): Observable<any> {
+    return this.httpClient.get(routes.topStocks(), 
     {
       withCredentials: true
     }).pipe(
-      map((body: ListCard[]) => body),
+      map((body: any) => body),
       catchError((err) => {
         console.log(`err: ${JSON.stringify(err)}`);
         return throwError(err);
       })
     );
   }
-  
-  getSubSectorList(): Observable<any[] | string> {
-    return this.httpClient.get(routes.subSector(), 
+
+  getYourBestStocks(): Observable<any> {
+    return this.httpClient.get(routes.yourBest(), 
     {
       withCredentials: true
     }).pipe(
-      map((body: ListCard[]) => body),
+      map((body: any) => body),
       catchError((err) => {
         console.log(`err: ${JSON.stringify(err)}`);
         return throwError(err);

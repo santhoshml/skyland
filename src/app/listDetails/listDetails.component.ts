@@ -44,6 +44,7 @@ export class ListDetailsComponent implements OnInit {
   listDetails$: Observable<any>;
   private sub: any;
   userProfile: UserProfileModel;
+  type:string;
   
   constructor(private listDetailsService: ListDetailsService
     , private router: Router
@@ -58,11 +59,12 @@ export class ListDetailsComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       console.log(`params : ${JSON.stringify(params)}`);
       this.listId = +params['listId']; // (+) converts string 'listId' to a number
+      this.type = params['type'];
 
       console.log(`this.listId : ${this.listId}`);
 
       // get the list from BE
-      this.listDetails$ = this.listDetailsService.getListDetails(this.listId).pipe(
+      this.listDetails$ = this.listDetailsService.getListDetails(this.listId, this.type).pipe(
         map((body:any, headers: any)=> {
           this.googleAnalyticsService.eventEmitter("listDetails-response", "listDetails", "response", "listDetails", 1,this.credentialsService.credentials.id);
           return body;

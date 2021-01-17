@@ -3,10 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { marker } from '@biesbjerg/ngx-translate-extract-marker';
 
 import { Shell } from '@app/shell/shell.service';
-import { ListDetailsComponent } from './listDetails.component';
+import { TopPicksComponent } from './topPicks.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'listDetails/:type/:listId', component: ListDetailsComponent, data: { title: marker('Liste.AI - List Details') } }]),
+  Shell.childRoutes([{ path: 'topPicks', component: TopPicksComponent, data: { title: marker('Liste.AI - Top Picks') } }]),
 ];
 
 @NgModule({
@@ -14,4 +14,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [],
 })
-export class ListDetailsRoutingModule {}
+export class TopPicksRoutingModule {}

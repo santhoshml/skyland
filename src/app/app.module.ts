@@ -21,6 +21,7 @@ import { SymbolDetailsModule } from './symbolDetails/symbolDetails.module';
 import { DefinitionsModule } from './definitions/definitions.module';
 import { UserProfileModule } from './userProfile/userProfile.module';
 import { PageNotFoundModule } from './pageNotFound/pageNotFound.module';
+import { TopPicksModule } from './topPicks/topPicks.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TruncateModule } from '@yellowspot/ng-truncate';
@@ -52,6 +53,7 @@ import { GaugeChartModule } from 'angular-gauge-chart';
     UserProfileModule,
     DefinitionsModule,
     PageNotFoundModule,
+    TopPicksModule,
     RoiDistributionModule,
     BrowserAnimationsModule,
     NgxChartsModule,

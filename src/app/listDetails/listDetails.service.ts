@@ -5,7 +5,9 @@ import { map, catchError } from 'rxjs/operators';
 import { ListDetails } from './listDetails.component';
 
 const routes = {
-  listDetails: (key : number) => `/predictions/${key}`,
+  // listDetails: (key : number) => `/predictions/${key}`,
+  listDetails: (key : number) => `/tradingIdeas/${key}`,
+  listDetailsFavorites: (key : number) => `/tradingIdeas/favorites`,
 };
 
 export interface RandomQuoteContext {
@@ -19,8 +21,27 @@ export interface RandomQuoteContext {
 export class ListDetailsService {
   constructor(private httpClient: HttpClient) {}
 
-  getListDetails(key: number): Observable<ListDetails[] | string> {
+  getListDetails(key: number, type: string): Observable<ListDetails[] | string> {
+    if(type == 'subsector'){
+      return this.getFavoritesListDetails(key);
+    } else {
+      if(key === 1002){
+        return this.getFavoritesListDetails(key);
+      } else {
+        return this.getListDetailsForTradingIdea(key);
+      }
+    }
+  }
+
+  getListDetailsForTradingIdea(key: number): Observable<ListDetails[] | string> {
     return this.httpClient.get(routes.listDetails(key)).pipe(
+      map((body: ListDetails[]) => body),
+      catchError(() => of('Error, could not GET list details :-('))
+    );
+  }
+
+  getFavoritesListDetails(key: number): Observable<ListDetails[] | string> {
+    return this.httpClient.get(routes.listDetailsFavorites(key)).pipe(
       map((body: ListDetails[]) => body),
       catchError(() => of('Error, could not GET list details :-('))
     );
