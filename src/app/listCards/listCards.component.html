@@ -67,7 +67,11 @@
           <thead>
             <tr>
               <th class="text-center" scope="col">Sub-Sector Title</th>
-              <th class="text-center" scope="col">Change</th>
+              <th class="text-center" scope="col">1-Day Change</th>
+              <th class="text-center" scope="col">1-Month Change</th>
+              <th class="text-center" scope="col">3-Month Change</th>
+              <th class="text-center" scope="col">1-Year Change</th>
+              <th class="text-center" scope="col">YTD Change</th>
             </tr>
           </thead>
           <tbody>
@@ -76,19 +80,19 @@
                 <a routerLink="/listDetails/subsector/{{subSector.tag}}">{{subSector.title}}</a>
               </td>
               <td class="text-center">
-                <div *ngIf="subSector.day_change > 0">
-                  <i class="fas fa-arrow-up"></i>
-                  {{subSector.day_change/100 | percent: '1.0-2'}}
-                </div>
-                <div *ngIf="subSector.day_change < 0">
-                  <i class="fas fa-arrow-down"></i>
-                  {{subSector.day_change/100 | percent: '1.0-2'}}
-                </div>
-                <div *ngIf="subSector.day_change == 0">
-                  <i class="fas fa-arrow-right"></i>
-                  {{subSector.day_change/100 | percent: '1.0-2'}}
-                </div>
-                
+                  {{subSector.day_change}}
+              </td>
+              <td class="text-center">
+                {{subSector.one_month_change}}
+              </td>
+              <td class="text-center">
+                {{subSector.three_month_change}}
+              </td>
+              <td class="text-center">
+                {{subSector.one_year_change}}
+              </td>
+              <td class="text-center">
+                {{subSector.ytd_change}}
               </td>
             </tr>
           </tbody>

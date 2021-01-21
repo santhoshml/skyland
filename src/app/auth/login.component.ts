@@ -120,7 +120,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           // get favorites for the user
           this.authenticationService.getFavorites().subscribe();
 
-          this.router.navigate(['/listCards'], { replaceUrl: true });
+          this.router.navigate(['/topPicks'], { replaceUrl: true });
           // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
         },
         (error) => {
@@ -147,7 +147,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         (credentials: Credentials) => {
           log.debug(`${credentials.email} successfully logged in`);
           this.googleAnalyticsService.eventEmitter("createAccount-successful", "createAccount", "createAccount-response", "createAccount", 1, credentials.id);
-          this.router.navigate(['/uploadPortfolio'], { replaceUrl: true });
+          this.router.navigate(['/topPicks'], { replaceUrl: true });
           // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
         },
         (error) => {
