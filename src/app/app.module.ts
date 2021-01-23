@@ -17,6 +17,7 @@ import { AboutModule } from './about/about.module';
 import { UploadPortfolioModule } from './uploadPortfolio/uploadPortfolio.module';
 import { ListCardsModule } from './listCards/listCards.module';
 import { ListDetailsModule } from './listDetails/listDetails.module';
+import { SubSectorDetailsModule } from './subSectorDetails/subSectorDetails.module';
 import { SymbolDetailsModule } from './symbolDetails/symbolDetails.module';
 import { DefinitionsModule } from './definitions/definitions.module';
 import { UserProfileModule } from './userProfile/userProfile.module';
@@ -54,6 +55,7 @@ import { GaugeChartModule } from 'angular-gauge-chart';
     DefinitionsModule,
     PageNotFoundModule,
     TopPicksModule,
+    SubSectorDetailsModule,
     RoiDistributionModule,
     BrowserAnimationsModule,
     NgxChartsModule,

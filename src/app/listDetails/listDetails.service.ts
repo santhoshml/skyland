@@ -21,15 +21,11 @@ export interface RandomQuoteContext {
 export class ListDetailsService {
   constructor(private httpClient: HttpClient) {}
 
-  getListDetails(key: number, type: string): Observable<ListDetails[] | string> {
-    if(type == 'subsector'){
+  getListDetails(key: number): Observable<ListDetails[] | string> {
+    if(key === 1002){
       return this.getFavoritesListDetails(key);
     } else {
-      if(key === 1002){
-        return this.getFavoritesListDetails(key);
-      } else {
-        return this.getListDetailsForTradingIdea(key);
-      }
+      return this.getListDetailsForTradingIdea(key);
     }
   }
 

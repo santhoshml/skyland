@@ -87,7 +87,7 @@ export class ListCardsComponent implements OnInit {
     // console.log(`In getList, selectedCard : ${JSON.stringify(selectedCard)} `);
     // console.log(`target URL: listDetails/${selectedCard.key}`);
     this.googleAnalyticsService.eventEmitter("listCards-forwading", "listCards", "forwading", "getList", 1,this.credentialsService.credentials.id);
-    this.router.navigate([`listDetails`, 'stock',selectedCard.id], { replaceUrl: true });
+    this.router.navigate([`listDetails`,selectedCard.id], { replaceUrl: true });
   }
 
 }

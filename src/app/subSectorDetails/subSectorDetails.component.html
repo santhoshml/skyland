@@ -1,0 +1,131 @@
+<div class="container">
+    <div class="p-3 mb-2 bg-warning text-dark text-center" *ngIf="!userProfile">
+        We donot have a model built for you yet, so you cannot find any stocks matching your trading style (with a Matching score)
+    </div>
+    <div *ngIf="subSectorDetailsArr$ | async as ssDetails" >
+        <div class="card mb-5">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-9">
+                    <div><span class="font-weight-bold">Industry :</span> {{ssDetails.title}}</div>
+                    <div class="mt-2 mb-2">List of stocks in the sub-sector / industry. Ordered by price trend (Uptrend, Neutral and Downtrend) and price value.</div>
+                    <br>
+                    <div class="font-weight-bold">Short term - Long term industry performance :</div>
+                    <div class="row">
+                        <div class="col-2">
+                            <div>1-day
+                                <span class="ml-2" *ngIf="ssDetails.day_change > 0">
+                                    <i class="fas fa-arrow-up"></i>
+                                    {{ ssDetails.day_change / 100 | percent:'1.0-2' }}
+                                  </span>
+                                  <span class="ml-2" *ngIf="ssDetails.day_change < 0">
+                                    <i class="fas fa-arrow-down"></i>
+                                    {{ ssDetails.day_change / 100 | percent:'1.0-2'}}
+                                  </span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div>1-Month
+                                <span class="ml-2" *ngIf="ssDetails.one_month_change > 0">
+                                    <i class="fas fa-arrow-up"></i>
+                                    {{ ssDetails.one_month_change / 100 | percent:'1.0-2' }}
+                                  </span>
+                                  <span class="ml-2" *ngIf="ssDetails.one_month_change < 0">
+                                    <i class="fas fa-arrow-down"></i>
+                                    {{ ssDetails.one_month_change / 100 | percent:'1.0-2'}}
+                                  </span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div>3-Months
+                                <span class="ml-2" *ngIf="ssDetails.three_month_change > 0">
+                                    <i class="fas fa-arrow-up"></i>
+                                    {{ ssDetails.three_month_change / 100 | percent:'1.0-2' }}
+                                  </span>
+                                  <span class="ml-2" *ngIf="ssDetails.three_month_change < 0">
+                                    <i class="fas fa-arrow-down"></i>
+                                    {{ ssDetails.three_month_change / 100 | percent:'1.0-2'}}
+                                  </span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div>1-Year
+                                <span class="ml-2" *ngIf="ssDetails.one_year_change > 0">
+                                    <i class="fas fa-arrow-up"></i>
+                                    {{ ssDetails.one_year_change / 100 | percent:'1.0-2' }}
+                                  </span>
+                                  <span class="ml-2" *ngIf="ssDetails.one_year_change < 0">
+                                    <i class="fas fa-arrow-down"></i>
+                                    {{ ssDetails.one_year_change / 100 | percent:'1.0-2'}}
+                                  </span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div>YTD
+                                <span class="ml-2" *ngIf="ssDetails.ytd_change > 0">
+                                    <i class="fas fa-arrow-up"></i>
+                                    {{ ssDetails.ytd_change / 100 | percent:'1.0-2' }}
+                                  </span>
+                                  <span class="ml-2" *ngIf="ssDetails.ytd_change < 0">
+                                    <i class="fas fa-arrow-down"></i>
+                                    {{ ssDetails.ytd_change / 100 | percent:'1.0-2'}}
+                                  </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="ver-line pl-4 pr-2 mb-5">
+                        <ul class="pl-0 mb-5">
+                            <li class="ml-3 mb-3">
+                                <span class="step-text">List of stocks in the Sub-Sector</span>
+                            </li>
+                            <li class="ml-3 mb-3">
+                                <span class="step-text">Sorted by Direction and Price</span>
+                            </li>
+                            <li class="ml-3 mb-3">
+                                <span class="step-text">Click on the symbol to see more details</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <table class="mt-20 table table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Trend</th>
+                    <th scope="col">Volume</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let listRow of ssDetails.list" class="table-row" (click)="getSymbolDetails(listRow)">
+                    <td>{{listRow.companyName}}</td>
+                    <td>
+                        <a routerLink="/symbolDetails/{{listRow.symbol}}">{{listRow.symbol}}</a>
+                    </td>
+                    <td>{{listRow.close | currency}}</td>
+                    <td>
+                        <div *ngIf="listRow.direction === 1">
+                            <i class="fas fa-arrow-up"></i>
+                            Uptrend
+                        </div>
+                        <div *ngIf="listRow.direction === 0">
+                            <i class="fas fa-arrow-right"></i>
+                            Neutral
+                        </div>
+                        <div *ngIf="listRow.direction === -1">
+                            <i class="fas fa-arrow-down"></i>
+                            Downtrend
+                        </div>
+                    </td>
+                    <td>{{listRow.volume | number}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

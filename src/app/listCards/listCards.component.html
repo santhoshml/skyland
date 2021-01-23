@@ -63,7 +63,7 @@
     </div>
     <div class="tab-pane fade card" id="nav-subSector" role="tabpanel" aria-labelledby="nav-subSector-tab">
       <div *ngIf="subSectorList$ | async as subSectorList" class="d-flex flex-wrap mt-3">
-        <table class="table table-striped table-hover table-bordered">
+        <table id="subsectors" class="table table-striped table-hover table-bordered">
           <thead>
             <tr>
               <th class="text-center" scope="col">Sub-Sector Title</th>
@@ -77,22 +77,22 @@
           <tbody>
             <tr *ngFor="let subSector of subSectorList" class="table-row">
               <td class="text-center">
-                <a routerLink="/listDetails/subsector/{{subSector.tag}}">{{subSector.title}}</a>
+                <a routerLink="/subSectorDetails/{{subSector.tag}}">{{subSector.title}}</a>
               </td>
               <td class="text-center">
-                  {{subSector.day_change}}
+                  {{subSector.day_change / 100 | percent:'1.0-2'}}
               </td>
               <td class="text-center">
-                {{subSector.one_month_change}}
+                {{subSector.one_month_change / 100 | percent:'1.0-2'}}
               </td>
               <td class="text-center">
-                {{subSector.three_month_change}}
+                {{subSector.three_month_change / 100 | percent:'1.0-2'}}
               </td>
               <td class="text-center">
-                {{subSector.one_year_change}}
+                {{subSector.one_year_change / 100 | percent:'1.0-2'}}
               </td>
               <td class="text-center">
-                {{subSector.ytd_change}}
+                {{subSector.ytd_change / 100 | percent:'1.0-2'}}
               </td>
             </tr>
           </tbody>
