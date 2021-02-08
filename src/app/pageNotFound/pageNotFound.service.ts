@@ -4,7 +4,6 @@ import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { PageNotFoundComponent } from './pageNotFound.component';
 
-
 export interface RandomQuoteContext {
   // The quote's category: 'dev', 'explicit'...
   category: string;

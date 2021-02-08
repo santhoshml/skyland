@@ -5,7 +5,9 @@ import { map, catchError } from 'rxjs/operators';
 
 const routes = {
   topStocks: () => `/stocks/top`,
-  yourBest: ()=>`/predictions/2/addLimit/1`
+  yourBest: () => `/predictions/2/addLimit/1`,
+  addOpenPositions : () => `/user/txn/open`,
+  getOpenPositions : () => `/user/txn/open`,
 };
 
 export interface RandomQuoteContext {
@@ -19,29 +21,59 @@ export interface RandomQuoteContext {
 export class TopPicksService {
   constructor(private httpClient: HttpClient) {}
 
-  getTopStocks(): Observable<any> {
-    return this.httpClient.get(routes.topStocks(), 
-    {
-      withCredentials: true
-    }).pipe(
-      map((body: any) => body),
-      catchError((err) => {
-        console.log(`err: ${JSON.stringify(err)}`);
-        return throwError(err);
+  getOpenPositions(): Observable<any> {
+    return this.httpClient
+      .get(routes.getOpenPositions(), {
+        withCredentials: true,
       })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
     );
   }
 
-  getYourBestStocks(): Observable<any> {
-    return this.httpClient.get(routes.yourBest(), 
-    {
-      withCredentials: true
-    }).pipe(
-      map((body: any) => body),
-      catchError((err) => {
-        console.log(`err: ${JSON.stringify(err)}`);
-        return throwError(err);
+  addOpenPosition(data:any): Observable<any> {
+    return this.httpClient
+      .post(routes.addOpenPositions(), data, {
+        withCredentials: true,
       })
-    );
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  getTopStocks(): Observable<any> {
+    return this.httpClient
+      .get(routes.topStocks(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  getYourBestStocks(): Observable<any> {
+    return this.httpClient
+      .get(routes.yourBest(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
   }
 }

@@ -6,7 +6,9 @@ import { Shell } from '@app/shell/shell.service';
 import { DefinitionsComponent } from './definitions.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'definitions', component: DefinitionsComponent, data: { title: marker('Liste.AI - Definitions') } }]),
+  Shell.childRoutes([
+    { path: 'definitions', component: DefinitionsComponent, data: { title: marker('Liste.AI - Definitions') } },
+  ]),
 ];
 
 @NgModule({

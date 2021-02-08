@@ -8,6 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { AuthenticationService, CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-listCards',
@@ -20,31 +21,49 @@ export class TopPicksComponent implements OnInit {
   userProfile$: Observable<any>;
   topStocks$: Observable<any>;
   yourBestStocks$: Observable<any>;
+  myOpenPositions$: Observable<any>;
   hasConfidenceScore = false;
-  
-  constructor(private service: TopPicksService,
+  newOpenPositionSymbol:string;
+
+  openPositionsForm!: FormGroup;
+  showOpenPositionSuccess=false;
+
+  constructor(
+    private service: TopPicksService,
     private router: Router,
     private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
     private credentialsService: CredentialsService,
     private authenticationService: AuthenticationService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private symbolDetailsService: SymbolDetailsService) {}
+    private symbolDetailsService: SymbolDetailsService
+  ) {}
 
   ngOnInit() {
-    this.googleAnalyticsService.eventEmitter("listCards-init", "topPicks", "init", "topPicks", 1,this.credentialsService.credentials.id);
-    
+    this.googleAnalyticsService.eventEmitter(
+      'listCards-init',
+      'topPicks',
+      'init',
+      'topPicks',
+      1,
+      this.credentialsService.credentials.id
+    );
+
+    // setup the Add new positions form
+    this.initOpenPositionsForm();
+
     // set user profile
-    this.userProfile$=this.authenticationService.getUserModelProfile().pipe(
-      map(body=>{
+    this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
+      map((body) => {
         this.credentialsService.setUserProfile(body);
         return body;
       })
-    )
+    );
 
     this.topStocks$ = this.service.getTopStocks().pipe(
-      map(body=>{
-        console.log(`topStocks : ${JSON.stringify(body)}`);        
-        if(body && body.length> 0 && body[0].confidence){
+      map((body) => {
+        console.log(`topStocks : ${JSON.stringify(body)}`);
+        if (body && body.length > 0 && body[0].confidence) {
           this.hasConfidenceScore = true;
         }
         console.log(`this.hasConfidenceScore : ${this.hasConfidenceScore}`);
@@ -53,28 +72,43 @@ export class TopPicksComponent implements OnInit {
     );
 
     this.yourBestStocks$ = this.service.getYourBestStocks().pipe(
-      map(body=>{
+      map((body) => {
         console.log(`yourBestStocks: ${JSON.stringify(body)}`);
-        if(body.list && body.list.list){
+        if (body.list && body.list.list) {
           return body.list.list;
         }
       })
     );
+
+    this.myOpenPositions$ = this.service.getOpenPositions().pipe(
+      map((body)=>{
+        console.log(`my open positions : ${JSON.stringify(body)}`);
+        return body;
+      })
+    );
   }
 
-  thumbsUp(symbol: string){
+  private initOpenPositionsForm() {
+    this.openPositionsForm = this.formBuilder.group({
+      symbol: ['', Validators.required],
+      buy_price: ['', Validators.required],
+      buy_date: ['', Validators.required],
+    });
+  }
+
+  thumbsUp(symbol: string) {
     console.log(`thumbsup for ${symbol}`);
   }
 
-  thumbsDown(symbol: string){
+  thumbsDown(symbol: string) {
     console.log(`thumbsdown for ${symbol}`);
   }
 
-  isFavorite(symbol: string){
+  isFavorite(symbol: string) {
     let favList = this.credentialsService.userFavorites;
-    if(favList && favList.length>0){
-      for(let fav of favList){
-        if(symbol.toUpperCase() == fav.toUpperCase()){
+    if (favList && favList.length > 0) {
+      for (let fav of favList) {
+        if (symbol.toUpperCase() == fav.toUpperCase()) {
           return true;
         }
       }
@@ -82,13 +116,54 @@ export class TopPicksComponent implements OnInit {
     return false;
   }
 
-  addToFavorites(symbol:string){
-    this.googleAnalyticsService.eventEmitter("topPicks", "favorites", "addToFavorites", "addToFavorites", 1,this.credentialsService.credentials.id);
+  addToFavorites(symbol: string) {
+    this.googleAnalyticsService.eventEmitter(
+      'topPicks',
+      'favorites',
+      'addToFavorites',
+      'addToFavorites',
+      1,
+      this.credentialsService.credentials.id
+    );
     this.symbolDetailsService.addToFavorites(symbol).subscribe();
   }
 
-  removeFromFavorites(symbol:string){
-    this.googleAnalyticsService.eventEmitter("topPicks", "favorites", "removeFromFavorites", "removeFromFavorites", 0,this.credentialsService.credentials.id);
+  removeFromFavorites(symbol: string) {
+    this.googleAnalyticsService.eventEmitter(
+      'topPicks',
+      'favorites',
+      'removeFromFavorites',
+      'removeFromFavorites',
+      0,
+      this.credentialsService.credentials.id
+    );
     this.symbolDetailsService.removeFromFavorites(symbol).subscribe();
+  }
+
+  addOpenPositions(){
+    let formvalue = this.openPositionsForm.value;
+    // console.log(`formvalue: ${JSON.stringify(formvalue)}`);
+    formvalue.symbol = formvalue.symbol.toUpperCase();
+    this.newOpenPositionSymbol = formvalue.symbol;
+    this.service.addOpenPosition(formvalue).subscribe(
+      (data)=>{
+        console.log(`In addOpenPositions: ${JSON.stringify(data)}`);
+        this.openPositionsForm.markAsPristine();
+        this.showOpenPositionSuccess=true;
+      }
+    );
+  }
+
+  closeOpenPositionAlert(){
+    this.showOpenPositionSuccess=false;
+    this.newOpenPositionSymbol = null;
+  }
+
+  getDataTargetValue(id:number){
+    return `#collapseExample${id}`
+  }
+  
+  closeOpenPosition(){
+    
   }
 }

@@ -1,39 +1,49 @@
 .nav-link.dropdown-toggle {
-    cursor: pointer;
-  }
+  cursor: pointer;
+}
 
 .full-width {
-    width: 100% !important;
+  width: 100% !important;
 }
 
 .zero-padding {
-    padding: 0 !important;
+  padding: 0 !important;
 }
 
 .flex-cont {
-    display: flex;
+  display: flex;
   flex-wrap: wrap;
 }
 
-.flex-cont>div {
-    flex: 0 50%;
+.flex-cont > div {
+  flex: 0 50%;
 }
 
 .item {
-    width: 100%
+  width: 100%;
 }
 
 .step-text {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px;
-    padding-left: 9px;
-    text-align: left;
-    color: #999;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  padding-left: 9px;
+  text-align: left;
+  color: #999;
 }
 
 .normal-card-footer {
-    font-size: 14px;
-    font-family: sans-serif;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+#close_price::-webkit-input-placeholder {
+  font-size: 10px;
+  line-height: 3;
+}
+
+#close_date::-webkit-input-placeholder {
+  font-size: 10px;
+  line-height: 3;
 }

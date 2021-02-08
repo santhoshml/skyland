@@ -12,7 +12,7 @@ import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 export interface ListCard {
   id: number;
   key: string;
-  tags : string[];
+  tags: string[];
   desc: string;
   title: string;
 }
@@ -30,64 +30,93 @@ export class ListCardsComponent implements OnInit {
   subSectorList$: Observable<any>;
   userProfile$: Observable<any>;
   hasConfidenceScore = false;
-  
-  constructor(private listCardsService: ListCardsService,
+
+  constructor(
+    private listCardsService: ListCardsService,
     private router: Router,
     private route: ActivatedRoute,
     private credentialsService: CredentialsService,
     private authenticationService: AuthenticationService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private symbolDetailsService: SymbolDetailsService) {}
+    private symbolDetailsService: SymbolDetailsService
+  ) {}
 
   ngOnInit() {
-    this.googleAnalyticsService.eventEmitter("listCards-init", "listCards", "init", "listCards", 1,this.credentialsService.credentials.id);
-    
+    this.googleAnalyticsService.eventEmitter(
+      'listCards-init',
+      'listCards',
+      'init',
+      'listCards',
+      1,
+      this.credentialsService.credentials.id
+    );
+
     // set user profile
-    this.userProfile$=this.authenticationService.getUserModelProfile().pipe(
-      map(body=>{
+    this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
+      map((body) => {
         this.credentialsService.setUserProfile(body);
         return body;
       })
-    )
+    );
 
     this.listCard$ = this.listCardsService.getAllCards().pipe(
-      map((body: any, headers:any)=>{
+      map((body: any, headers: any) => {
         // console.log(`body: ${JSON.stringify(body)}`);
         // console.log(`headers: ${JSON.stringify(headers)}`);
-        this.googleAnalyticsService.eventEmitter("listCards-response", "listCards", "response", "getAllCards", 1,this.credentialsService.credentials.id);
+        this.googleAnalyticsService.eventEmitter(
+          'listCards-response',
+          'listCards',
+          'response',
+          'getAllCards',
+          1,
+          this.credentialsService.credentials.id
+        );
         return body;
       }),
       catchError((err) => {
-        if(err.status === 401){
-          this.router.navigate(['/login', {errMsg: 'Session expired. Login please.'}], { replaceUrl: true });
+        if (err.status === 401) {
+          this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
         } else {
-          return of(false)
+          return of(false);
         }
       })
     );
 
     this.subSectorList$ = this.listCardsService.getSubSectorList().pipe(
-      map((body: any, headers:any)=>{
+      map((body: any, headers: any) => {
         // console.log(`body: ${JSON.stringify(body)}`);
         // console.log(`headers: ${JSON.stringify(headers)}`);
-        this.googleAnalyticsService.eventEmitter("listCards-response", "listCards", "response", "getSubSectorList", 1,this.credentialsService.credentials.id);
+        this.googleAnalyticsService.eventEmitter(
+          'listCards-response',
+          'listCards',
+          'response',
+          'getSubSectorList',
+          1,
+          this.credentialsService.credentials.id
+        );
         return body;
       }),
       catchError((err) => {
-        if(err.status === 401){
-          this.router.navigate(['/login', {errMsg: 'Session expired. Login please.'}], { replaceUrl: true });
+        if (err.status === 401) {
+          this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
         } else {
-          return of(false)
+          return of(false);
         }
       })
     );
   }
 
-  getList(selectedCard : ListCard){
+  getList(selectedCard: ListCard) {
     // console.log(`In getList, selectedCard : ${JSON.stringify(selectedCard)} `);
     // console.log(`target URL: listDetails/${selectedCard.key}`);
-    this.googleAnalyticsService.eventEmitter("listCards-forwading", "listCards", "forwading", "getList", 1,this.credentialsService.credentials.id);
-    this.router.navigate([`listDetails`,selectedCard.id], { replaceUrl: true });
+    this.googleAnalyticsService.eventEmitter(
+      'listCards-forwading',
+      'listCards',
+      'forwading',
+      'getList',
+      1,
+      this.credentialsService.credentials.id
+    );
+    this.router.navigate([`listDetails`, selectedCard.id], { replaceUrl: true });
   }
-
 }

@@ -13,21 +13,19 @@ const routes = {
   providedIn: 'root',
 })
 export class UserProfileService {
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(private httpClient: HttpClient){}
-
-  getTagCategories(): Observable<TagCategories[]| string>{
+  getTagCategories(): Observable<TagCategories[] | string> {
     return this.httpClient.get(routes.tagCategories()).pipe(
       map((body: TagCategories[]) => body),
       catchError(() => of('Error, could not GET tag details :-('))
     );
   }
 
-  getTagDetails(){
+  getTagDetails() {
     return this.httpClient.get(routes.tagDetails()).pipe(
       map((body: Map<string, TagDetails[]>) => body),
       catchError(() => of('Error, could not GET tag details :-('))
     );
   }
-    
 }

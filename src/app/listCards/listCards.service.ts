@@ -7,7 +7,7 @@ import { ListCard } from './listCards.component';
 // quote: () => `/data/prediction/groups`,
 const routes = {
   quote: () => `/tradingIdeas/summary`,
-  subSector:()=> `/subsectors/summary`
+  subSector: () => `/subsectors/summary`,
 };
 
 export interface RandomQuoteContext {
@@ -22,28 +22,30 @@ export class ListCardsService {
   constructor(private httpClient: HttpClient) {}
 
   getAllCards(): Observable<ListCard[] | string> {
-    return this.httpClient.get(routes.quote(), 
-    {
-      withCredentials: true
-    }).pipe(
-      map((body: ListCard[]) => body),
-      catchError((err) => {
-        console.log(`err: ${JSON.stringify(err)}`);
-        return throwError(err);
+    return this.httpClient
+      .get(routes.quote(), {
+        withCredentials: true,
       })
-    );
+      .pipe(
+        map((body: ListCard[]) => body),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
   }
-  
+
   getSubSectorList(): Observable<any[] | string> {
-    return this.httpClient.get(routes.subSector(), 
-    {
-      withCredentials: true
-    }).pipe(
-      map((body: ListCard[]) => body),
-      catchError((err) => {
-        console.log(`err: ${JSON.stringify(err)}`);
-        return throwError(err);
+    return this.httpClient
+      .get(routes.subSector(), {
+        withCredentials: true,
       })
-    );
+      .pipe(
+        map((body: ListCard[]) => body),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
   }
 }

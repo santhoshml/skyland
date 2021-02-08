@@ -6,8 +6,8 @@ import { ListDetails } from './listDetails.component';
 
 const routes = {
   // listDetails: (key : number) => `/predictions/${key}`,
-  listDetails: (key : number) => `/tradingIdeas/${key}`,
-  listDetailsFavorites: (key : number) => `/tradingIdeas/favorites`,
+  listDetails: (key: number) => `/tradingIdeas/${key}`,
+  listDetailsFavorites: (key: number) => `/tradingIdeas/favorites`,
 };
 
 export interface RandomQuoteContext {
@@ -22,7 +22,7 @@ export class ListDetailsService {
   constructor(private httpClient: HttpClient) {}
 
   getListDetails(key: number): Observable<ListDetails[] | string> {
-    if(key === 1002){
+    if (key === 1002) {
       return this.getFavoritesListDetails(key);
     } else {
       return this.getListDetailsForTradingIdea(key);

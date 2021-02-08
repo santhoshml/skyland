@@ -11,15 +11,16 @@ import { UploadPortfolioComponent } from './uploadPortfolio.component';
 
 @NgModule({
   imports: [
-    CommonModule, 
-    TranslateModule, 
-    UploadPortfolioRoutingModule, 
-    BrowserModule, 
+    CommonModule,
+    TranslateModule,
+    UploadPortfolioRoutingModule,
+    BrowserModule,
     NgbModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    FileUploadModule],
+    FileUploadModule,
+  ],
   declarations: [UploadPortfolioComponent],
 })
 export class UploadPortfolioModule {}

@@ -6,7 +6,13 @@ import { Shell } from '@app/shell/shell.service';
 import { ListDetailsComponent } from './listDetails.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'listDetails/:listId', component: ListDetailsComponent, data: { title: marker('Liste.AI - List Details') } }]),
+  Shell.childRoutes([
+    {
+      path: 'listDetails/:listId',
+      component: ListDetailsComponent,
+      data: { title: marker('Liste.AI - List Details') },
+    },
+  ]),
 ];
 
 @NgModule({

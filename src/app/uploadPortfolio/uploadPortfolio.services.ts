@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-
 // quote: () => `/data/prediction/groups`,
 const routes = {
   startAnalysis: () => `/datafile`,
@@ -16,9 +15,8 @@ export class UploadPortfolioService {
   constructor(private httpClient: HttpClient) {}
 
   startUserAnalysis(): Observable<any> {
-    return this.httpClient.post(routes.startAnalysis(), 
-    {
-      withCredentials: true
+    return this.httpClient.post(routes.startAnalysis(), {
+      withCredentials: true,
     });
   }
 }

@@ -6,7 +6,13 @@ import { Shell } from '@app/shell/shell.service';
 import { SubSectorDetailsComponent } from './subSectorDetails.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'subSectorDetails/:key', component: SubSectorDetailsComponent, data: { title: marker('Liste.AI - Sub-Sector Details') } }]),
+  Shell.childRoutes([
+    {
+      path: 'subSectorDetails/:key',
+      component: SubSectorDetailsComponent,
+      data: { title: marker('Liste.AI - Sub-Sector Details') },
+    },
+  ]),
 ];
 
 @NgModule({

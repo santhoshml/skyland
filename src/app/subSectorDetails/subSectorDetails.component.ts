@@ -10,21 +10,23 @@ import { GoogleAnalyticsService } from '@app/@core';
 export interface SubSectorDetailsTable {
   id: number;
   tag: string;
-  title : string;
-  day_change : string;
-  one_month_change : string;
-  three_month_change : string;
-  ytd_change : string;
-  one_year_change : string;
-  list : SubSectorDetailsRow[];
+  title: string;
+  change: string;
+  perf_week: string;
+  perf_month: string;
+  perf_quart: string;
+  perf_half: string;
+  perf_year: string;
+  perf_ytd: string;
+  list: SubSectorDetailsRow[];
 }
 
 export interface SubSectorDetailsRow {
   symbol: string;
-  companyName : string;
-  close : number;
-  volume : number;
-  direction : number;
+  companyName: string;
+  close: number;
+  volume: number;
+  direction: number;
 }
 
 @Component({
@@ -38,25 +40,34 @@ export class SubSectorDetailsComponent implements OnInit {
   subSectorDetailsArr$: Observable<any>;
   private sub: any;
   userProfile: UserProfileModel;
-  change_map:Map<string, string> = new Map([
+  change_map: Map<string, string> = new Map([
     ['day_change', '1-day'],
     ['one_month_change', '1-Month'],
     ['three_month_change', '3-Months'],
     ['one_year_change', '1-Year'],
-    ['ytd_change', 'YTD']
+    ['ytd_change', 'YTD'],
   ]);
 
-  constructor(private subSectorDetailsService: SubSectorDetailsService
-    , private router: Router
-    , private route: ActivatedRoute
-    , private credentialsService: CredentialsService
-    , private googleAnalyticsService: GoogleAnalyticsService) {}
+  constructor(
+    private subSectorDetailsService: SubSectorDetailsService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private credentialsService: CredentialsService,
+    private googleAnalyticsService: GoogleAnalyticsService
+  ) {}
 
   ngOnInit() {
-    this.googleAnalyticsService.eventEmitter("subSectorDetails-init", "subSectorDetails", "init", "subSectorDetails", 1,this.credentialsService.credentials.id);
+    this.googleAnalyticsService.eventEmitter(
+      'subSectorDetails-init',
+      'subSectorDetails',
+      'init',
+      'subSectorDetails',
+      1,
+      this.credentialsService.credentials.id
+    );
 
     // this.listDetails$ = this.listDetailsService.getListDetails();
-    this.sub = this.route.params.subscribe(params => {
+    this.sub = this.route.params.subscribe((params) => {
       console.log(`params : ${JSON.stringify(params)}`);
       let key = params['key']; // (+) converts string 'listId' to a number
 
@@ -64,37 +75,51 @@ export class SubSectorDetailsComponent implements OnInit {
 
       // get the list from BE
       this.subSectorDetailsArr$ = this.subSectorDetailsService.getSubSectorDetails(key).pipe(
-        map((body:any, headers: any)=> {
-          this.googleAnalyticsService.eventEmitter("subSectorDetails-response", "subSectorDetails", "response", "subSectorDetails", 1,this.credentialsService.credentials.id);
+        map((body: any, headers: any) => {
+          this.googleAnalyticsService.eventEmitter(
+            'subSectorDetails-response',
+            'subSectorDetails',
+            'response',
+            'subSectorDetails',
+            1,
+            this.credentialsService.credentials.id
+          );
           console.log(`I am in body: ${JSON.stringify(body)}`);
           return body;
         }),
         catchError((err) => {
           console.log(`I am catchError`);
-          if(err.status === 401){
-            this.router.navigate(['/login', {errMsg: 'Session expired. Login please.'}], { replaceUrl: true });
+          if (err.status === 401) {
+            this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
           } else {
-            return of()
+            return of();
           }
         })
-      )
-   });
+      );
+    });
 
-  // set user profile
-  this.userProfile=this.credentialsService.userProfileModel;
+    // set user profile
+    this.userProfile = this.credentialsService.userProfileModel;
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  getSymbolDetails(row: SubSectorDetailsRow){
+  getSymbolDetails(row: SubSectorDetailsRow) {
     console.log(`navigate to SymbolDetails, ${JSON.stringify(row)}`);
-    this.googleAnalyticsService.eventEmitter("symbolDetails-forwading", "symbolDetails", "forwading", "symbolDetails", 1,this.credentialsService.credentials.id);
+    this.googleAnalyticsService.eventEmitter(
+      'symbolDetails-forwading',
+      'symbolDetails',
+      'forwading',
+      'symbolDetails',
+      1,
+      this.credentialsService.credentials.id
+    );
     this.router.navigate([`symbolDetails`, row.symbol], { replaceUrl: true });
   }
 
-  printObject(obj: any){
+  printObject(obj: any) {
     return JSON.stringify(obj);
   }
 }

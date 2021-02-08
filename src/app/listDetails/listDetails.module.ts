@@ -9,13 +9,7 @@ import { ListDetailsRoutingModule } from './listDetails-routing.module';
 import { ListDetailsComponent } from './listDetails.component';
 
 @NgModule({
-  imports: [
-    CommonModule, 
-    TranslateModule, 
-    ListDetailsRoutingModule, 
-    BrowserModule, 
-    NgbModule,
-    FileUploadModule],
+  imports: [CommonModule, TranslateModule, ListDetailsRoutingModule, BrowserModule, NgbModule, FileUploadModule],
   declarations: [ListDetailsComponent],
 })
 export class ListDetailsModule {}

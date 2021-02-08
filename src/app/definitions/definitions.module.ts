@@ -9,13 +9,7 @@ import { DefinitionsRoutingModule } from './definitions-routing.module';
 import { DefinitionsComponent } from './definitions.component';
 
 @NgModule({
-  imports: [
-    CommonModule, 
-    TranslateModule, 
-    DefinitionsRoutingModule, 
-    BrowserModule, 
-    NgbModule,
-    FileUploadModule],
+  imports: [CommonModule, TranslateModule, DefinitionsRoutingModule, BrowserModule, NgbModule, FileUploadModule],
   declarations: [DefinitionsComponent],
 })
 export class DefinitionsModule {}

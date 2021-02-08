@@ -1,60 +1,59 @@
 .table {
-    table-layout: fixed;
+  table-layout: fixed;
 }
 
-.table-row{
-    cursor : pointer;
+.table-row {
+  cursor: pointer;
 }
 
 .nav-link.dropdown-toggle {
-    cursor: pointer;
-  }
+  cursor: pointer;
+}
 
 .full-width {
-    width: 100% !important;
+  width: 100% !important;
 }
 
 .zero-padding {
-    padding: 0 !important;
+  padding: 0 !important;
 }
 
 .flex-cont {
-    display: flex;
+  display: flex;
   flex-wrap: wrap;
 }
 
-.flex-cont>div {
-    flex: 0 50%;
+.flex-cont > div {
+  flex: 0 50%;
 }
 
 .item {
-    width: 100%
+  width: 100%;
 }
 
 .desc-text {
-    font-weight: 400;
-
+  font-weight: 400;
 }
 
 .ver-line {
-    border-left: 1px solid #333;
+  border-left: 1px solid #333;
 }
 
 .easy-steps-text {
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px;
-    margin-block-end: 15px;
-    color: #333;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  margin-block-end: 15px;
+  color: #333;
 }
 
 .step-text {
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px;
-    padding-left: 9px;
-    text-align: left;
-    color: #999;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  padding-left: 9px;
+  text-align: left;
+  color: #999;
 }

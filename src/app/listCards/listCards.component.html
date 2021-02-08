@@ -1,63 +1,89 @@
 <div class="container mb-5">
   <div class="p-3 mb-2 bg-warning text-dark text-center" *ngIf="!userProfile$">
-    We donot have a model built for you yet, so you cannot find any stocks matching your trading style (with a Matching score)
+    We donot have a model built for you yet, so you cannot find any stocks matching your trading style (with a Matching
+    score)
   </div>
 
   <nav mt-5>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <a class="nav-item nav-link active" style="background-color: #99ecff;" id="nav-tradingIdeas-tab" data-toggle="tab" href="#nav-tradingIdeas" role="tab" aria-controls="nav-tradingIdeas" aria-selected="true">Trading Ideas</a>
-      <a class="nav-item nav-link" style="background-color: #f7b94f;" id="nav-subSector-tab" data-toggle="tab" href="#nav-subSector" role="tab" aria-controls="nav-subSector" aria-selected="false">Grouped by Sub-Sectors</a>
+      <a
+        class="nav-item nav-link active"
+        style="background-color: #99ecff"
+        id="nav-tradingIdeas-tab"
+        data-toggle="tab"
+        href="#nav-tradingIdeas"
+        role="tab"
+        aria-controls="nav-tradingIdeas"
+        aria-selected="true"
+        >Trading Ideas</a
+      >
+      <a
+        class="nav-item nav-link"
+        style="background-color: #f7b94f"
+        id="nav-subSector-tab"
+        data-toggle="tab"
+        href="#nav-subSector"
+        role="tab"
+        aria-controls="nav-subSector"
+        aria-selected="false"
+        >Grouped by Sub-Sectors</a
+      >
     </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active card" id="nav-tradingIdeas" role="tabpanel" aria-labelledby="nav-tradingIdeas-tab">
+    <div
+      class="tab-pane fade show active card"
+      id="nav-tradingIdeas"
+      role="tabpanel"
+      aria-labelledby="nav-tradingIdeas-tab"
+    >
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Trading Ideas</h5>
-          <p class="card-text">List of Trading ideas grouped in its own category.
-            This helps traders find the best stock suited to their trading style in the current market.
+          <p class="card-text">
+            List of Trading ideas grouped in its own category. This helps traders find the best stock suited to their
+            trading style in the current market.
           </p>
           <ul class="pl-0">
-            <li style="list-style-type: lower-alpha;" class="ml-3 mb-3">
+            <li style="list-style-type: lower-alpha" class="ml-3 mb-3">
               <span class="card-text step-text">Each Trading idea has a list of stocks personalized for you.</span>
             </li>
-            <li style="list-style-type: lower-alpha;" class="ml-3 mb-3">
+            <li style="list-style-type: lower-alpha" class="ml-3 mb-3">
               <span class="card-text step-text">Lists only the stocks which are predicted to be a GAIN.</span>
             </li>
-            <li style="list-style-type: lower-alpha;" class="ml-3 mb-3">
-              <span class="card-text step-text">Displays matching score of the stock with your trading style in the current market.</span>
+            <li style="list-style-type: lower-alpha" class="ml-3 mb-3">
+              <span class="card-text step-text"
+                >Displays matching score of the stock with your trading style in the current market.</span
+              >
             </li>
           </ul>
         </div>
       </div>
-    
+
       <div *ngIf="listCard$ | async as cards" class="d-flex flex-wrap mt-3">
         <div *ngFor="let card of cards" class="mr-5 mt-4">
-          <div class="card" style="width: 20rem;">
-            <img class="card-img-top" width="300px"  height="200" src="{{card.img}}" alt="Card image cap">
+          <div class="card" style="width: 20rem">
+            <img class="card-img-top" width="300px" height="200" src="{{ card.img }}" alt="Card image cap" />
             <div class="card-body">
-              <h5 class="card-title">{{card.title}}</h5>
-              <p class="card-text" [innerHTML]="card.desc | truncate:90" ></p>
+              <h5 class="card-title">{{ card.title }}</h5>
+              <p class="card-text" [innerHTML]="card.desc | truncate: 90"></p>
               <div>
                 <button (click)="getList(card)" class="btn btn-primary float-left">Get List</button>
                 <span class="pull-right" *ngIf="card.day_change && card.day_change > 0">
                   <i class="fas fa-arrow-up"></i>
-                  {{ card.day_change / 100 | percent:'1.0-2' }}
+                  {{ card.day_change / 100 | percent: '1.0-2' }}
                 </span>
                 <span class="float-right" *ngIf="card.day_change && card.day_change < 0">
                   <i class="fas fa-arrow-down"></i>
-                  {{ card.day_change / 100 | percent:'1.0-2'}}
+                  {{ card.day_change / 100 | percent: '1.0-2' }}
                 </span>
               </div>
-              
-              
             </div>
             <!-- <div class="card-footer text-muted">
               <span class="normal-card-footer text-primary" *ngIf="card.count > 0"><span class="font-weight-bold">{{card.count}}</span> stocks match this idea and your trading style. Click the above button to see the list.</span>
               <span class="normal-card-footer text-danger" *ngIf="card.count == 0"><span class="font-weight-bold">No</span> stocks match this idea and your trading style with the current market.</span>
             </div> -->
           </div>
-    
         </div>
       </div>
     </div>
@@ -68,8 +94,10 @@
             <tr>
               <th class="text-center" scope="col">Sub-Sector Title</th>
               <th class="text-center" scope="col">1-Day Change</th>
+              <th class="text-center" scope="col">1-Week Change</th>
               <th class="text-center" scope="col">1-Month Change</th>
-              <th class="text-center" scope="col">3-Month Change</th>
+              <th class="text-center" scope="col">1-Quater Change</th>
+              <th class="text-center" scope="col">6-Month Change</th>
               <th class="text-center" scope="col">1-Year Change</th>
               <th class="text-center" scope="col">YTD Change</th>
             </tr>
@@ -77,22 +105,28 @@
           <tbody>
             <tr *ngFor="let subSector of subSectorList" class="table-row">
               <td class="text-center">
-                <a routerLink="/subSectorDetails/{{subSector.tag}}">{{subSector.title}}</a>
+                <a routerLink="/subSectorDetails/{{ subSector.id }}">{{ subSector.title }}</a>
               </td>
               <td class="text-center">
-                  {{subSector.day_change / 100 | percent:'1.0-2'}}
+                {{ subSector.change }}
               </td>
               <td class="text-center">
-                {{subSector.one_month_change / 100 | percent:'1.0-2'}}
+                {{ subSector.perf_week }}
               </td>
               <td class="text-center">
-                {{subSector.three_month_change / 100 | percent:'1.0-2'}}
+                {{ subSector.perf_month }}
               </td>
               <td class="text-center">
-                {{subSector.one_year_change / 100 | percent:'1.0-2'}}
+                {{ subSector.perf_quart }}
               </td>
               <td class="text-center">
-                {{subSector.ytd_change / 100 | percent:'1.0-2'}}
+                {{ subSector.perf_half }}
+              </td>
+              <td class="text-center">
+                {{ subSector.perf_year }}
+              </td>
+              <td class="text-center">
+                {{ subSector.perf_ytd }}
               </td>
             </tr>
           </tbody>
@@ -101,30 +135,28 @@
     </div>
   </div>
 
-
   <ng-template #noDataDiv>
     <div class="text-center mt-10 mb-2">
-      <br>
-      <br>
+      <br />
+      <br />
       <a href="/uploadPortfolio">Upload transactions</a> so we can compute this value. You are 1-step away from it.
-      <br>
-      <br>
+      <br />
+      <br />
     </div>
   </ng-template>
   <ng-template #gain>
     <div class="text-center">
-      <img class="card-img-top" src="assets/gain.png" style="height: 40px; width: 40px;" alt="Card image cap">
+      <img class="card-img-top" src="assets/gain.png" style="height: 40px; width: 40px" alt="Card image cap" />
     </div>
   </ng-template>
   <ng-template #confused>
     <div class="text-center">
-      <img class="card-img-top" src="assets/confused.png" style="height: 40px; width: 40px;" alt="Card image cap">
+      <img class="card-img-top" src="assets/confused.png" style="height: 40px; width: 40px" alt="Card image cap" />
     </div>
   </ng-template>
   <ng-template #loss>
     <div class="text-center">
-      <img class="card-img-top" src="assets/loss.png" style="height: 40px; width: 40px;" alt="Card image cap">
+      <img class="card-img-top" src="assets/loss.png" style="height: 40px; width: 40px" alt="Card image cap" />
     </div>
-  </ng-template>    
-
+  </ng-template>
 </div>

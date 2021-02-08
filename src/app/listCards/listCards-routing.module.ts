@@ -6,7 +6,9 @@ import { Shell } from '@app/shell/shell.service';
 import { ListCardsComponent } from './listCards.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'listCards', component: ListCardsComponent, data: { title: marker('Liste.AI - List Cards') } }]),
+  Shell.childRoutes([
+    { path: 'listCards', component: ListCardsComponent, data: { title: marker('Liste.AI - List Cards') } },
+  ]),
 ];
 
 @NgModule({

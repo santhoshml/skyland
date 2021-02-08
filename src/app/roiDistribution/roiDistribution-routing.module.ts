@@ -6,13 +6,17 @@ import { Shell } from '@app/shell/shell.service';
 import { RoiDistributionComponent } from './roiDistribution.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'distribution', component: RoiDistributionComponent, data: { title: marker('Liste.AI - ROI distibution') } }]),
+  Shell.childRoutes([
+    {
+      path: 'distribution',
+      component: RoiDistributionComponent,
+      data: { title: marker('Liste.AI - ROI distibution') },
+    },
+  ]),
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes)
-  ],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
   providers: [],
 })

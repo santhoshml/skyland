@@ -9,25 +9,24 @@ import { GoogleAnalyticsService } from '@app/@core';
 
 export interface ListDetails {
   success: boolean;
-  size : number;
+  size: number;
   list: ListTable;
 }
 
 export interface ListTable {
-  title : string;
-  desc : string;
-  list : ListRow[];
+  title: string;
+  desc: string;
+  list: ListRow[];
 }
 
 export interface ListRow {
   symbol: string;
-  confidence : string;
-  raw_confidence : number;
-  companyName : string;
-  sector : string;
-  price : string;
+  confidence: string;
+  raw_confidence: number;
+  companyName: string;
+  sector: string;
+  price: string;
   tags: string[];
-  gain_type: number;
   gain_flag: number;
 }
 
@@ -44,18 +43,27 @@ export class ListDetailsComponent implements OnInit {
   listDetails$: Observable<any>;
   private sub: any;
   userProfile: UserProfileModel;
-  
-  constructor(private listDetailsService: ListDetailsService
-    , private router: Router
-    , private route: ActivatedRoute
-    , private credentialsService: CredentialsService
-    , private googleAnalyticsService: GoogleAnalyticsService) {}
+
+  constructor(
+    private listDetailsService: ListDetailsService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private credentialsService: CredentialsService,
+    private googleAnalyticsService: GoogleAnalyticsService
+  ) {}
 
   ngOnInit() {
-    this.googleAnalyticsService.eventEmitter("listDetails-init", "listDetails", "init", "listDetails", 1,this.credentialsService.credentials.id);
+    this.googleAnalyticsService.eventEmitter(
+      'listDetails-init',
+      'listDetails',
+      'init',
+      'listDetails',
+      1,
+      this.credentialsService.credentials.id
+    );
 
     // this.listDetails$ = this.listDetailsService.getListDetails();
-    this.sub = this.route.params.subscribe(params => {
+    this.sub = this.route.params.subscribe((params) => {
       console.log(`params : ${JSON.stringify(params)}`);
       this.listId = +params['listId']; // (+) converts string 'listId' to a number
 
@@ -63,32 +71,45 @@ export class ListDetailsComponent implements OnInit {
 
       // get the list from BE
       this.listDetails$ = this.listDetailsService.getListDetails(this.listId).pipe(
-        map((body:any, headers: any)=> {
-          this.googleAnalyticsService.eventEmitter("listDetails-response", "listDetails", "response", "listDetails", 1,this.credentialsService.credentials.id);
+        map((body: any, headers: any) => {
+          this.googleAnalyticsService.eventEmitter(
+            'listDetails-response',
+            'listDetails',
+            'response',
+            'listDetails',
+            1,
+            this.credentialsService.credentials.id
+          );
           return body;
         }),
         catchError((err) => {
-          if(err.status === 401){
-            this.router.navigate(['/login', {errMsg: 'Session expired. Login please.'}], { replaceUrl: true });
+          if (err.status === 401) {
+            this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
           } else {
-            return of()
+            return of();
           }
         })
-      )
-   });
+      );
+    });
 
-  // set user profile
-  this.userProfile=this.credentialsService.userProfileModel;
+    // set user profile
+    this.userProfile = this.credentialsService.userProfileModel;
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  getSymbolDetails(listRow: ListRow){
+  getSymbolDetails(listRow: ListRow) {
     console.log(`navigate to SymbolDetails, ${JSON.stringify(listRow)}`);
-    this.googleAnalyticsService.eventEmitter("symbolDetails-forwading", "symbolDetails", "forwading", "symbolDetails", 1,this.credentialsService.credentials.id);
+    this.googleAnalyticsService.eventEmitter(
+      'symbolDetails-forwading',
+      'symbolDetails',
+      'forwading',
+      'symbolDetails',
+      1,
+      this.credentialsService.credentials.id
+    );
     this.router.navigate([`symbolDetails`, listRow.symbol], { replaceUrl: true });
   }
-
 }

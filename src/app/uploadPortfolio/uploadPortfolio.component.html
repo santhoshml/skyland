@@ -3,17 +3,26 @@
     <div class="col-9">
       <div class="mb-5">
         <div class="h2 heading">See all your trades in one place</div>
-        <div class="desc-text">Upload your old trades from all your accounts and brokerages. Select a brokerage and you will see a detailed instructions on how to get your historical transactions from your brokerage.</div>
+        <div class="desc-text">
+          Upload your old trades from all your accounts and brokerages. Select a brokerage and you will see a detailed
+          instructions on how to get your historical transactions from your brokerage.
+        </div>
       </div>
       <div class="row">
         <div class="col">
           <label>Select your online Brokerage </label>
         </div>
-        <div ngbDropdown class="col d-inline-block">      
-          <button class="btn btn-outline-primary full-width" id="dropdownBasic1" ngbDropdownToggle>{{selectedPlatform}}</button>
+        <div ngbDropdown class="col d-inline-block">
+          <button class="btn btn-outline-primary full-width" id="dropdownBasic1" ngbDropdownToggle>
+            {{ selectedPlatform }}
+          </button>
           <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="full-width">
-            <button class="dropdown-item" *ngFor="let onlinePlatform of onlinePlatforms" (click)="onSelectPlatform(onlinePlatform.key)" >
-              {{onlinePlatform.value}}
+            <button
+              class="dropdown-item"
+              *ngFor="let onlinePlatform of onlinePlatforms"
+              (click)="onSelectPlatform(onlinePlatform.key)"
+            >
+              {{ onlinePlatform.value }}
             </button>
           </div>
         </div>
@@ -21,23 +30,39 @@
       <div *ngIf="isPlatformSelected" class="pl-3">
         <form [formGroup]="myForm" (ngSubmit)="submit()">
           <div class="form-group row mt-3">
-            <p>Follow the below instructions to download the file from {{selectedPlatform}} and attach it below to upload</p>
-            <input 
-            formControlName="file"
-            id="file" 
-            type="file" 
-            class="form-control upload-btn-form"
-            (change)="onFileChange($event)" />
+            <p>
+              Follow the below instructions to download the file from {{ selectedPlatform }} and attach it below to
+              upload
+            </p>
+            <input
+              formControlName="file"
+              id="file"
+              type="file"
+              class="form-control upload-btn-form"
+              (change)="onFileChange($event)"
+            />
             <div *ngIf="f.file.touched && f.file.invalid" class="mt-2 alert alert-danger">
               <div *ngIf="f.file.errors.required">File is required.</div>
             </div>
             <div *ngIf="isUploadSuccess" class="mt-2 upload-success-msg">
-              <p class="mb-0">File uploaded succesfully. If you done uploading all the files, Click on <span class="">Done Uploading all Files</span> button below.</p>
+              <p class="mb-0">
+                File uploaded succesfully. If you done uploading all the files, Click on
+                <span class="">Done Uploading all Files</span> button below.
+              </p>
             </div>
           </div>
           <div class="row mt-3 justify-content-center">
             <button class="btn btn-primary" type="submit">Upload</button>
-            <button *ngIf="isUploadSuccess" type="button" class="ml-3 btn btn-info" data-toggle="modal" (click)="openModal()" data-target="#exampleModal">Done Uploading all Files</button>
+            <button
+              *ngIf="isUploadSuccess"
+              type="button"
+              class="ml-3 btn btn-info"
+              data-toggle="modal"
+              (click)="openModal()"
+              data-target="#exampleModal"
+            >
+              Done Uploading all Files
+            </button>
           </div>
         </form>
       </div>
@@ -46,36 +71,42 @@
       <div class="ver-line pl-4 pr-2 mb-5">
         <div class="easy-steps-text mb-3">Three easy steps to get started with Liste.AI</div>
         <ul class="pl-0 mb-5">
-          <li style="list-style-type: none;" class="mb-3">
-            <img src="assets/one.svg" width="29px" height="29px">
+          <li style="list-style-type: none" class="mb-3">
+            <img src="assets/one.svg" width="29px" height="29px" />
             <span class="step-text">Download old transactions from your brokerage</span>
           </li>
-          <li style="list-style-type: none;" class="mb-3">
-            <img src="assets/two.svg" width="29px" height="29px">
+          <li style="list-style-type: none" class="mb-3">
+            <img src="assets/two.svg" width="29px" height="29px" />
             <span class="step-text">Upload all the files to Liste.AI</span>
           </li>
-          <li style="list-style-type: none;" class="mb-3">
-            <img src="assets/three.svg" width="29px" height="29px">
+          <li style="list-style-type: none" class="mb-3">
+            <img src="assets/three.svg" width="29px" height="29px" />
             <span class="step-text">Let Liste.AI do the rest</span>
           </li>
         </ul>
-        <hr>
+        <hr />
         <div class="easy-steps-text mb-3">
           <i class="fas fa-lock mr-3"></i>
           Serious about your transaction data. We only read
         </div>
         <ul class="pl-0 mb-5">
-          <li class="step-text"> Symbol / Ticker</li>
-          <li class="step-text"> Buy Date</li>
-          <li class="step-text"> Sell Date</li>
+          <li class="step-text">Symbol / Ticker</li>
+          <li class="step-text">Buy Date</li>
+          <li class="step-text">Sell Date</li>
         </ul>
       </div>
-
     </div>
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -85,130 +116,142 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Thank you for uploading files to Liste.AI. It takes about 15 mins to read all the data and build an AI model just for you. You will get an email once its done.</p>
+          <p>
+            Thank you for uploading files to Liste.AI. It takes about 15 mins to read all the data and build an AI model
+            just for you. You will get an email once its done.
+          </p>
           <p>Click on below button to view your Return on Investment distribution.</p>
         </div>
         <div class="modal-footer">
-          <button type="button" (click)="viewDistribution()" data-dismiss="modal" class="btn btn-primary">View ROI Distribution</button>
+          <button type="button" (click)="viewDistribution()" data-dismiss="modal" class="btn btn-primary">
+            View ROI Distribution
+          </button>
         </div>
       </div>
     </div>
   </div>
 
-
   <div class="mt-3">
     <div [hidden]="hideSchwabInstr" class="jumbotron">
       <div class="mb-3">
-        <h2> Instructions to get transaction history from Charles Schwab</h2>
+        <h2>Instructions to get transaction history from Charles Schwab</h2>
       </div>
-      <p>
-        1. Log in to <a target="_blank" href="https://schwab.com">Schwab</a>
-      </p>
+      <p>1. Log in to <a target="_blank" href="https://schwab.com">Schwab</a></p>
       <p>
         2. Goto <span class="font-weight-bold">Account</span> -> <span class="font-weight-bold">History</span>
-          <img src="/assets/schwab_step_2.png" alt="Click on Account" style="max-width:500px; max-height: 110px;"/>
+        <img src="/assets/schwab_step_2.png" alt="Click on Account" style="max-width: 500px; max-height: 110px" />
       </p>
       <p>
         3. Select the desired account # from the <span class="font-weight-bold">dropdown</span>(on the top-left)
-        <img src="/assets/schwab_step_3.png" alt="Select Account" style="max-width:500px; max-height: 110px;"/>
+        <img src="/assets/schwab_step_3.png" alt="Select Account" style="max-width: 500px; max-height: 110px" />
       </p>
       <p>
-        4. Select <span class="font-weight-bold">All</span> in the <span class="font-weight-bold">Date Range</span> dropdown
-        <img src="/assets/schwab_step_4.png" alt="Select All transactions" style="max-width:500px; max-height: 110px;"/>
+        4. Select <span class="font-weight-bold">All</span> in the
+        <span class="font-weight-bold">Date Range</span> dropdown
+        <img
+          src="/assets/schwab_step_4.png"
+          alt="Select All transactions"
+          style="max-width: 500px; max-height: 110px"
+        />
       </p>
       <p>
-        5. Click on <span class="font-weight-bold">Export</span> on top right corner (this will open a disclaimer in a pop-up)
-        <img src="/assets/schwab_step_5.png" alt="Click on Export" style="max-width:500px; max-height: 110px;"/>
+        5. Click on <span class="font-weight-bold">Export</span> on top right corner (this will open a disclaimer in a
+        pop-up)
+        <img src="/assets/schwab_step_5.png" alt="Click on Export" style="max-width: 500px; max-height: 110px" />
       </p>
       <p>
         6. Click <span class="font-weight-bold">OK</span> on the disclaimer notice
-        <img src="/assets/schwab_step_6.png" alt="Accept disclaimer" style="max-width:500px; max-height: 110px;"/>
+        <img src="/assets/schwab_step_6.png" alt="Accept disclaimer" style="max-width: 500px; max-height: 110px" />
       </p>
       <p>
-        7. This will open a window, click <span class="font-weight-bold">save</span>(make sure it is in comma-separated/csv format)
+        7. This will open a window, click <span class="font-weight-bold">save</span>(make sure it is in
+        comma-separated/csv format)
       </p>
-      <p>
-        8. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span>
-      </p>
+      <p>8. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span></p>
     </div>
 
     <div [hidden]="hideEtradeInstr" class="jumbotron">
       <div class="mb-3">
-        <h2> Instructions to get transaction history from E-TRADE</h2>
+        <h2>Instructions to get transaction history from E-TRADE</h2>
       </div>
-      <p>
-        1. Log in to <a target="_blank" href="https://etrade.com">E-TRADE</a>
-      </p>
+      <p>1. Log in to <a target="_blank" href="https://etrade.com">E-TRADE</a></p>
       <p>
         2. Goto <span class="font-weight-bold">Accounts</span> -> <span class="font-weight-bold">Transactions</span>
-          <img src="/assets/etrade_step_2.png" alt="Click on Account" style="max-width:500px; max-height: 110px;"/>
+        <img src="/assets/etrade_step_2.png" alt="Click on Account" style="max-width: 500px; max-height: 110px" />
       </p>
       <p>
         3. Click on the download icon on the top-right corner
-        <img src="/assets/etrade_step_3.png" alt="Select Account" style="max-width:500px; max-height: 110px;"/>
+        <img src="/assets/etrade_step_3.png" alt="Select Account" style="max-width: 500px; max-height: 110px" />
       </p>
       <p>
         4. Select
-            <span style="display: block; margin-left: 50px; font-size: 14px;">a) Account # from the select <span class="font-weight-bold">Account dropdown</span></span>
-            <span style="display: block; margin-left: 50px; font-size: 14px;">b) Spredsheet Format including Microsoft Excel for the <span class="font-weight-bold">data format dropdown</span></span>
-            <span style="display: block; margin-left: 50px; font-size: 14px;">
-              c) E-Trade allows only to download past <span class="font-weight-bold"><u>16 months</u></span> of data, select From data appropriately
-            </span>
-        <img src="/assets/etrade_step_4.png" alt="Select Account" style="max-width:500px; max-height: 110px;"/>
+        <span style="display: block; margin-left: 50px; font-size: 14px"
+          >a) Account # from the select <span class="font-weight-bold">Account dropdown</span></span
+        >
+        <span style="display: block; margin-left: 50px; font-size: 14px"
+          >b) Spredsheet Format including Microsoft Excel for the
+          <span class="font-weight-bold">data format dropdown</span></span
+        >
+        <span style="display: block; margin-left: 50px; font-size: 14px">
+          c) E-Trade allows only to download past <span class="font-weight-bold"><u>16 months</u></span> of data, select
+          From data appropriately
+        </span>
+        <img src="/assets/etrade_step_4.png" alt="Select Account" style="max-width: 500px; max-height: 110px" />
       </p>
-      <p>
-        5. Click <span class="font-weight-bold">Download</span>
-      </p>
-      <p>
-        6. This will open a window, click <span class="font-weight-bold">save</span>
-      </p>
-      <p>
-        7. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span>
-      </p>
+      <p>5. Click <span class="font-weight-bold">Download</span></p>
+      <p>6. This will open a window, click <span class="font-weight-bold">save</span></p>
+      <p>7. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span></p>
     </div>
 
     <div [hidden]="hideTSInstr" class="jumbotron">
       <div class="mb-3">
-        <h2> Instructions to get transaction history from TradeStation</h2>
+        <h2>Instructions to get transaction history from TradeStation</h2>
       </div>
       <p>
         1. Log in to <a target="_blank" href="https://clientcenter.tradestation.com/">TradeStation Client Center</a>
       </p>
       <p>
         2. Click on <span class="font-weight-bold">Account</span>
-          <img src="/assets/ts_step_2.png" alt="Click on Account" style="max-width:500px; max-height: 110px;"/>
+        <img src="/assets/ts_step_2.png" alt="Click on Account" style="max-width: 500px; max-height: 110px" />
       </p>
       <p>
         3. Click on <span class="font-weight-bold">Equities Accounts</span>(on the left)
-        <img src="/assets/ts_step_3.png" alt="Select Account" style="max-width:500px; max-height: 110px;"/>
+        <img src="/assets/ts_step_3.png" alt="Select Account" style="max-width: 500px; max-height: 110px" />
       </p>
       <p>
         4. Click on <span class="font-weight-bold">Trades & Other Transactions</span>
-        <img src="/assets/ts_step_4.png" alt="Select All transactions" style="max-width:500px; max-height: 110px;"/>
+        <img src="/assets/ts_step_4.png" alt="Select All transactions" style="max-width: 500px; max-height: 110px" />
       </p>
       <p>
-        5. Select 
-        <span style="display: block; margin-left: 50px; font-size: 14px;">a) Account # from the select <span class="font-weight-bold">Account dropdown</span></span>
-        <span style="display: block; margin-left: 50px; font-size: 14px;">b) Date Range, Tradestation allows only to download past <span class="font-weight-bold"><u>3 months</u></span> of data at a time</span>
-        <span style="display: block; margin-left: 50px; font-size: 14px;">c) <span class="font-weight-bold">Microsoft Excel</span> for the format </span>
-        <span style="display: block; margin-left: 50px; font-size: 14px;">d) <span class="font-weight-bold">Trades</span> for the Transaction Type </span>
-        <span style="display: block; margin-left: 50px; font-size: 14px;">e) <span class="font-weight-bold">All</span> for Symbol </span>
-        <span style="display: block; margin-left: 50px; font-size: 14px;">f) <span class="font-weight-bold">All Trades</span> </span>
-        <img src="/assets/ts_step_5.png" alt="Click on Export" style="max-width:500px; max-height: 110px;"/>
+        5. Select
+        <span style="display: block; margin-left: 50px; font-size: 14px"
+          >a) Account # from the select <span class="font-weight-bold">Account dropdown</span></span
+        >
+        <span style="display: block; margin-left: 50px; font-size: 14px"
+          >b) Date Range, Tradestation allows only to download past
+          <span class="font-weight-bold"><u>3 months</u></span> of data at a time</span
+        >
+        <span style="display: block; margin-left: 50px; font-size: 14px"
+          >c) <span class="font-weight-bold">Microsoft Excel</span> for the format
+        </span>
+        <span style="display: block; margin-left: 50px; font-size: 14px"
+          >d) <span class="font-weight-bold">Trades</span> for the Transaction Type
+        </span>
+        <span style="display: block; margin-left: 50px; font-size: 14px"
+          >e) <span class="font-weight-bold">All</span> for Symbol
+        </span>
+        <span style="display: block; margin-left: 50px; font-size: 14px"
+          >f) <span class="font-weight-bold">All Trades</span>
+        </span>
+        <img src="/assets/ts_step_5.png" alt="Click on Export" style="max-width: 500px; max-height: 110px" />
       </p>
-      <p>
-        6. Click <span class="font-weight-bold">View/Download</span>
-      </p>
-      <p>
-        7. This will open a window, click <span class="font-weight-bold">save</span>
-      </p>
-      <p>
-        8. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span>
-      </p>
+      <p>6. Click <span class="font-weight-bold">View/Download</span></p>
+      <p>7. This will open a window, click <span class="font-weight-bold">save</span></p>
+      <p>8. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span></p>
     </div>
 
     <div [hidden]="hideIBInstr" class="jumbotron">
-      <h2> Instructions to get history from interactivebrokers.com</h2>
+      <h2>Instructions to get history from interactivebrokers.com</h2>
       <p><i class="far fa-bookmark"></i> <span translate>Version</span> {{ version }}</p>
     </div>
   </div>

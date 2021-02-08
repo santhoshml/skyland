@@ -1,82 +1,98 @@
 <div class="container">
-    <div class="container" *ngIf="userProfile">
-        <div class="row mb-4">
-            <div class="col-sm-4">
-                <h6 class="mt-4 text-center">Accuracy</h6>
-                <small class="text-justify text-muted">This is the percent accuracy of the model built based on your old transactions. This is updated every time you upload more transactions.</small>
-             </div>
-             <div class="col-sm-8">
-                <span class="badge badge-secondary accuracy-label card-text m-4 text-center"  style="font-size: xx-large;" *ngIf="userProfile.accuracy ; else naComment">
-                {{ userProfile.accuracy | percent: '1.0-2' }}
-                </span>
-             </div>
-            <ng-template #naComment>
-                <span class="badge badge-secondary accuracy-label card-text m-4 text-center"  style="font-size: xx-large;">
-                    N/A
-                </span>
-            </ng-template>
-        </div>
-        <br>
-        <div class="m-4">
-            <i class="far fa-sticky-note"></i>
-            <span class="pl-3">Scanning your past transactions, your gains were better when you picked a stock with some of the below attributes at the time of purchase.</span>
-        </div>        
-       <div class="row">
-          <div class="col-sm-4">
-             <h6 class="mt-4 mb-3 text-center">Price/Volume</h6>
-             <small class="text-justify text-muted">Your favorable Price and Volume attributes picked from the stocks you bought/sold in the past.</small>
-          </div>
-          <div class="col-sm-8">
-             <div class="card">
-                <div class="card-body">
-                   <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
-                      <span class="card-text m-4 text-center" *ngIf="isExistsInPriceVol(tag)">
-                      <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
-                      {{ getTagDisplayText(tag) }}
-                      </a>
-                      </span>
-                   </ng-container>
-                </div>
-             </div>
-          </div>
-       </div>
-       <div class="row mt-1">
-          <div class="col-sm-4">
-             <h6 class="mt-4 mb-3 card-title text-center">Classification</h6>
-             <small class="text-justify text-muted">Your favorable stock classification attributes picked from the stocks you bought/sold in the past.</small>
-          </div>
-          <div class="col-sm-8">
-             <div class="card">
-                <div class="card-body">
-                   <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
-                      <span class="card-text m-4 text-center" *ngIf="isExistsInClassification(tag)">
-                      <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
-                      {{ getTagDisplayText(tag) }}
-                      </a>
-                      </span>
-                   </ng-container>
-                </div>
-             </div>
-          </div>
-       </div>
-       <div class="row mt-1">
-          <div class="col-sm-4">
-             <h6 class="mt-4 mb-3 card-title text-center">Technical</h6>
-             <small class="text-justify text-muted">Your favorable technical attributes picked from the stocks you bought/sold in the past.</small>
-          </div>
-          <div class="col-sm-8">
-             <div class="card">
-                <div class="card-body">
-                   <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
-                      <span class="card-text m-4 text-center" *ngIf="isExistsInTechnical(tag)">
-                      <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
-                      {{ getTagDisplayText(tag) }}
-                      </a>
-                      </span>
-                   </ng-container>
-                </div>
-             </div>
-          </div>
-       </div>
+  <div class="container" *ngIf="userProfile">
+    <div class="row mb-4">
+      <div class="col-sm-4">
+        <h6 class="mt-4 text-center">Accuracy</h6>
+        <small class="text-justify text-muted"
+          >This is the percent accuracy of the model built based on your old transactions. This is updated every time
+          you upload more transactions.</small
+        >
+      </div>
+      <div class="col-sm-8">
+        <span
+          class="badge badge-secondary accuracy-label card-text m-4 text-center"
+          style="font-size: xx-large"
+          *ngIf="userProfile.accuracy; else naComment"
+        >
+          {{ userProfile.accuracy | percent: '1.0-2' }}
+        </span>
+      </div>
+      <ng-template #naComment>
+        <span class="badge badge-secondary accuracy-label card-text m-4 text-center" style="font-size: xx-large">
+          N/A
+        </span>
+      </ng-template>
     </div>
- </div>
+    <br />
+    <div class="m-4">
+      <i class="far fa-sticky-note"></i>
+      <span class="pl-3"
+        >Scanning your past transactions, your gains were better when you picked a stock with some of the below
+        attributes at the time of purchase.</span
+      >
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <h6 class="mt-4 mb-3 text-center">Price/Volume</h6>
+        <small class="text-justify text-muted"
+          >Your favorable Price and Volume attributes picked from the stocks you bought/sold in the past.</small
+        >
+      </div>
+      <div class="col-sm-8">
+        <div class="card">
+          <div class="card-body">
+            <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
+              <span class="card-text m-4 text-center" *ngIf="isExistsInPriceVol(tag)">
+                <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
+                  {{ getTagDisplayText(tag) }}
+                </a>
+              </span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-1">
+      <div class="col-sm-4">
+        <h6 class="mt-4 mb-3 card-title text-center">Classification</h6>
+        <small class="text-justify text-muted"
+          >Your favorable stock classification attributes picked from the stocks you bought/sold in the past.</small
+        >
+      </div>
+      <div class="col-sm-8">
+        <div class="card">
+          <div class="card-body">
+            <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
+              <span class="card-text m-4 text-center" *ngIf="isExistsInClassification(tag)">
+                <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
+                  {{ getTagDisplayText(tag) }}
+                </a>
+              </span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-1">
+      <div class="col-sm-4">
+        <h6 class="mt-4 mb-3 card-title text-center">Technical</h6>
+        <small class="text-justify text-muted"
+          >Your favorable technical attributes picked from the stocks you bought/sold in the past.</small
+        >
+      </div>
+      <div class="col-sm-8">
+        <div class="card">
+          <div class="card-body">
+            <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
+              <span class="card-text m-4 text-center" *ngIf="isExistsInTechnical(tag)">
+                <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
+                  {{ getTagDisplayText(tag) }}
+                </a>
+              </span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

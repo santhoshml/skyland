@@ -6,7 +6,13 @@ import { Shell } from '@app/shell/shell.service';
 import { SymbolDetailsComponent } from './symbolDetails.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'symbolDetails/:symbol', component: SymbolDetailsComponent, data: { title: marker('Liste.AI - Symbol Details') } }]),
+  Shell.childRoutes([
+    {
+      path: 'symbolDetails/:symbol',
+      component: SymbolDetailsComponent,
+      data: { title: marker('Liste.AI - Symbol Details') },
+    },
+  ]),
 ];
 
 @NgModule({

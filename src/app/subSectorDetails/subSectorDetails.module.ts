@@ -9,13 +9,7 @@ import { SubSectorDetailsRoutingModule } from './subSectorDetails-routing.module
 import { SubSectorDetailsComponent } from './subSectorDetails.component';
 
 @NgModule({
-  imports: [
-    CommonModule, 
-    TranslateModule, 
-    SubSectorDetailsRoutingModule, 
-    BrowserModule, 
-    NgbModule,
-    FileUploadModule],
+  imports: [CommonModule, TranslateModule, SubSectorDetailsRoutingModule, BrowserModule, NgbModule, FileUploadModule],
   declarations: [SubSectorDetailsComponent],
 })
 export class SubSectorDetailsModule {}

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 export interface Credentials {
   // Customize received credentials here
-  id: string,
+  id: string;
   email: string;
   token: string;
 }
@@ -14,7 +14,7 @@ export interface UserProfileModel {
   recall: number;
   f1_score: number;
   support: number;
-  selected_params : string[];
+  selected_params: string[];
 }
 
 const credentialsKey = 'credentials';
@@ -44,12 +44,11 @@ export class CredentialsService {
       this._credentials = JSON.parse(savedCredentials);
     }
 
-    if(savedUserProfileModel) {
+    if (savedUserProfileModel) {
       this._userProfileModel = JSON.parse(savedUserProfileModel);
     }
 
     this._webDisplayDate = sessionStorage.getItem(webDisplayDateKey) || localStorage.getItem(webDisplayDateKey);
-
   }
 
   /**
@@ -89,7 +88,7 @@ export class CredentialsService {
    * @return The user access_token or null if the user is not authenticated.
    */
   getToken(): string | null {
-    if(this._credentials){
+    if (this._credentials) {
       return this._credentials.token;
     }
     return null;

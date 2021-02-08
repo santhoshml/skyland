@@ -9,13 +9,7 @@ import { UserProfileRoutingModule } from './userProfile-routing.module';
 import { UserProfileComponent } from './userProfile.component';
 
 @NgModule({
-  imports: [
-    CommonModule, 
-    TranslateModule, 
-    UserProfileRoutingModule, 
-    BrowserModule, 
-    NgbModule,
-    FileUploadModule],
+  imports: [CommonModule, TranslateModule, UserProfileRoutingModule, BrowserModule, NgbModule, FileUploadModule],
   declarations: [UserProfileComponent],
 })
 export class UserProfileModule {}

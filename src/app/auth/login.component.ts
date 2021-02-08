@@ -8,42 +8,42 @@ import { Logger, untilDestroyed, GoogleAnalyticsService } from '@core';
 import { AuthenticationService } from './authentication.service';
 import { Credentials } from './credentials.service';
 
-import {SymbolDetailsService} from '../symbolDetails/symbolDetails.service';
+import { SymbolDetailsService } from '../symbolDetails/symbolDetails.service';
 
 const log = new Logger('Login');
 
 let infoWidgetOptions = {
-  "symbols": [
+  symbols: [
     {
-      "proName": "FOREXCOM:SPXUSD",
-      "title": "S&P 500"
+      proName: 'FOREXCOM:SPXUSD',
+      title: 'S&P 500',
     },
     {
-      "proName": "FOREXCOM:NSXUSD",
-      "title": "Nasdaq 100"
+      proName: 'FOREXCOM:NSXUSD',
+      title: 'Nasdaq 100',
     },
     {
-      "description": "DowJones",
-      "proName": "FOREXCOM:DJI"
+      description: 'DowJones',
+      proName: 'FOREXCOM:DJI',
     },
     {
-      "description": "TSLA",
-      "proName": "NASDAQ:TSLA"
+      description: 'TSLA',
+      proName: 'NASDAQ:TSLA',
     },
     {
-      "description": "MSFT",
-      "proName": "NASDAQ:MSFT"
+      description: 'MSFT',
+      proName: 'NASDAQ:MSFT',
     },
     {
-      "description": "FB",
-      "proName": "FB"
-    }
+      description: 'FB',
+      proName: 'FB',
+    },
   ],
-  "showSymbolLogo": true,
-  "colorTheme": "light",
-  "isTransparent": false,
-  "displayMode": "adaptive",
-  "locale": "en"
+  showSymbolLogo: true,
+  colorTheme: 'light',
+  isTransparent: false,
+  displayMode: 'adaptive',
+  locale: 'en',
 };
 
 @Component({
@@ -53,7 +53,7 @@ let infoWidgetOptions = {
 })
 export class LoginComponent implements OnInit, OnDestroy {
   version: string | null = environment.version;
-  
+
   loginError: string | undefined;
   createAccountError: string | undefined;
   forgotError: string | undefined;
@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   accountForm!: FormGroup;
 
   activeTab: string;
-  
+
   isLoading = false;
 
   constructor(
@@ -81,22 +81,22 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.symbolDetailsService.loadTradingViewScript('tickerTapeWidget', 'embed-widget-ticker-tape', infoWidgetOptions);
 
-    this.route.params.subscribe(params=>{
+    this.route.params.subscribe((params) => {
       console.log(`params in params: ${JSON.stringify(params)}`);
       this.loginError = params['errMsg'];
     });
 
     // redirected from oauth
-    this.route.queryParams.subscribe(params => {
-        console.log(`params in queryParams : ${JSON.stringify(params)}`);
-        let token = params['token'];
-        let email = params['email'];
-        let id = params['id'];
-        if(token){
-          this.authenticationService.saveCredentianls(id, email, token);
-          this.googleAnalyticsService.eventEmitter("redirectedt-login", "login", "redirected", "redirected", 1, id);
-          this.router.navigate(['/listCards'], { replaceUrl: true });
-        }
+    this.route.queryParams.subscribe((params) => {
+      console.log(`params in queryParams : ${JSON.stringify(params)}`);
+      let token = params['token'];
+      let email = params['email'];
+      let id = params['id'];
+      if (token) {
+        this.authenticationService.saveCredentianls(id, email, token);
+        this.googleAnalyticsService.eventEmitter('redirectedt-login', 'login', 'redirected', 'redirected', 1, id);
+        this.router.navigate(['/listCards'], { replaceUrl: true });
+      }
     });
   }
 
@@ -115,7 +115,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (credentials: any) => {
-          this.googleAnalyticsService.eventEmitter("login-successful", "login", "login-response", "login", 1, credentials.id);
+          this.googleAnalyticsService.eventEmitter(
+            'login-successful',
+            'login',
+            'login-response',
+            'login',
+            1,
+            credentials.id
+          );
 
           // get favorites for the user
           this.authenticationService.getFavorites().subscribe();
@@ -131,7 +138,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   createAccount() {
-    this.googleAnalyticsService.eventEmitter("createAccount-called", "createAccount", "click", "createAccount", 1, null);
+    this.googleAnalyticsService.eventEmitter(
+      'createAccount-called',
+      'createAccount',
+      'click',
+      'createAccount',
+      1,
+      null
+    );
 
     this.isLoading = true;
     const login$ = this.authenticationService.createAccount(this.accountForm.value);
@@ -146,14 +160,21 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe(
         (credentials: Credentials) => {
           log.debug(`${credentials.email} successfully logged in`);
-          this.googleAnalyticsService.eventEmitter("createAccount-successful", "createAccount", "createAccount-response", "createAccount", 1, credentials.id);
+          this.googleAnalyticsService.eventEmitter(
+            'createAccount-successful',
+            'createAccount',
+            'createAccount-response',
+            'createAccount',
+            1,
+            credentials.id
+          );
           this.router.navigate(['/topPicks'], { replaceUrl: true });
           // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
         },
         (error) => {
           log.debug(`Login error: ${JSON.stringify(error)}`);
-          if(error.error && error.error.errors) {
-            this.createAccountError = error.error.errors
+          if (error.error && error.error.errors) {
+            this.createAccountError = error.error.errors;
           } else {
             this.createAccountError = `Code or Email or password incorrect.`;
           }
@@ -162,11 +183,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       );
   }
 
-  forgotPassword() {
+  forgotPassword() {}
 
-  }
-
-  setActiveTab(val: string){
+  setActiveTab(val: string) {
     this.activeTab = val;
     this.initForm();
   }
@@ -180,7 +199,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           password: ['', Validators.required],
           phone: [''],
           remember: true,
-        });            
+        });
         break;
       case 'createAccount':
         this.accountForm = this.formBuilder.group({
@@ -189,12 +208,11 @@ export class LoginComponent implements OnInit, OnDestroy {
           password: ['', Validators.required],
           phone: [''],
           remember: true,
-        });            
+        });
         break;
-    
+
       default:
         break;
     }
-
   }
 }

@@ -6,7 +6,9 @@ import { Shell } from '@app/shell/shell.service';
 import { TopPicksComponent } from './topPicks.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'topPicks', component: TopPicksComponent, data: { title: marker('Liste.AI - Top Picks') } }]),
+  Shell.childRoutes([
+    { path: 'topPicks', component: TopPicksComponent, data: { title: marker('Liste.AI - Top Picks') } },
+  ]),
 ];
 
 @NgModule({

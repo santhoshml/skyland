@@ -1,113 +1,134 @@
-<div class="container mb-5" style="display: grid;">
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Return on Capital Invested (ROI) Distribution</h5>
-          <p class="card-text">Bar graph of your rate of returns of the all your past investments at a glance
-              <span *ngIf="roiData"> - {{roiData.length}} trades in total </span>. 
-              ROI is calculated with end of day price based on the buy date and sell date for each Symbol.
-            </p>
+<div class="container mb-5" style="display: grid">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Return on Capital Invested (ROI) Distribution</h5>
+      <p class="card-text">
+        Bar graph of your rate of returns of the all your past investments at a glance
+        <span *ngIf="roiData"> - {{ roiData.length }} trades in total </span>. ROI is calculated with end of day price
+        based on the buy date and sell date for each Symbol.
+      </p>
 
-            <div *ngIf="txnStats">
-                <dl class="row active">
-                    <dt class="col">
-                        Profit/Loss Ratio
-                        <a href="https://www.investopedia.com/terms/p/profit_loss_ratio.asp" target="_blank"><i class="far fa-question-circle"></i></a>
-                    </dt>
-                    <dd *ngIf="txnStats.gain_ratio; else naComment" class="col">{{txnStats.gain_ratio | percent: '1.0-2'}}</dd>
-                </dl>
-                <!-- <dl class="row">
+      <div *ngIf="txnStats">
+        <dl class="row active">
+          <dt class="col">
+            Profit/Loss Ratio
+            <a href="https://www.investopedia.com/terms/p/profit_loss_ratio.asp" target="_blank"
+              ><i class="far fa-question-circle"></i
+            ></a>
+          </dt>
+          <dd *ngIf="txnStats.gain_ratio; else naComment" class="col">{{ txnStats.gain_ratio | percent: '1.0-2' }}</dd>
+        </dl>
+        <!-- <dl class="row">
                     <dt class="col">Average Return on Capital Invested(ROI)
                         <a href="https://www.investopedia.com/articles/basics/10/guide-to-calculating-roi.asp" target="_blank"><i class="far fa-question-circle"></i></a>
                     </dt>
                     <dd *ngIf="txnStats.avg_roi; else naComment" class="col">{{txnStats.avg_roi}}%</dd>
                 </dl> -->
-                <dl class="row">
-                    <dt class="col">Average ROI% on winning trades</dt>
-                    <dd *ngIf="txnStats.avg_positive_roi; else naComment" class="col">{{txnStats.avg_positive_roi}}%</dd>
-                </dl>
-                <dl class="row">
-                    <dt class="col">Average ROI% on loosing trades</dt>
-                    <dd *ngIf="txnStats.avg_negative_roi; else naComment" class="col">{{txnStats.avg_negative_roi}}%</dd>
-                </dl>
-            </div>
+        <dl class="row">
+          <dt class="col">Average ROI% on winning trades</dt>
+          <dd *ngIf="txnStats.avg_positive_roi; else naComment" class="col">{{ txnStats.avg_positive_roi }}%</dd>
+        </dl>
+        <dl class="row">
+          <dt class="col">Average ROI% on loosing trades</dt>
+          <dd *ngIf="txnStats.avg_negative_roi; else naComment" class="col">{{ txnStats.avg_negative_roi }}%</dd>
+        </dl>
+      </div>
 
-            <ng-template #naComment>
-                <dd class="col">N/A</dd>
-            </ng-template>
+      <ng-template #naComment>
+        <dd class="col">N/A</dd>
+      </ng-template>
 
-          <p class="card-text text-muted bottom-notes">All the values in the graph are in percentages based on end of day price on buy date and sell date.</p>
-          <p class="card-text text-muted bottom-notes">Ideally, higher the ROI the better, but it also depends on the quantity bought and sold, this is the best approximation without having quantity value.</p>
-          <!-- <a href="#" class="card-link">Card link</a>
+      <p class="card-text text-muted bottom-notes">
+        All the values in the graph are in percentages based on end of day price on buy date and sell date.
+      </p>
+      <p class="card-text text-muted bottom-notes">
+        Ideally, higher the ROI the better, but it also depends on the quantity bought and sold, this is the best
+        approximation without having quantity value.
+      </p>
+      <!-- <a href="#" class="card-link">Card link</a>
           <a href="#" class="card-link">Another link</a> -->
-        </div>
     </div>
-    <div class="mt-5">
-        <ngx-charts-bar-vertical *ngIf="roiData"
-            [view]="[1000,400]"
-            [results]="roiData"
-            [xAxisLabel]="'Each investment/trade'"
-            [yAxisLabel]="'ROI %'"
-            [showXAxisLabel]="true"
-            [showYAxisLabel]="true"
-            [xAxis]="false"
-            [yAxis]="true"
-            [gradient]="false">
-        </ngx-charts-bar-vertical>
-        <div class="spinner-border" role="status" *ngIf="!roiData">
-            <span class="sr-only">Loading...</span>
-          </div>
+  </div>
+  <div class="mt-5">
+    <ngx-charts-bar-vertical
+      *ngIf="roiData"
+      [view]="[1000, 400]"
+      [results]="roiData"
+      [xAxisLabel]="'Each investment/trade'"
+      [yAxisLabel]="'ROI %'"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      [xAxis]="false"
+      [yAxis]="true"
+      [gradient]="false"
+    >
+    </ngx-charts-bar-vertical>
+    <div class="spinner-border" role="status" *ngIf="!roiData">
+      <span class="sr-only">Loading...</span>
     </div>
-    <br>
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Holding Period
-            <a href="https://www.investopedia.com/terms/h/holdingperiod.asp" target="_blank"><i class="far fa-question-circle"></i></a>
-          </h5>
-          <p class="card-text">Bar graph of the holding period (in days)- A holding period is the amount of time the investment is held by an investor,
-               or the period between the purchase and sale of a security
-            <span *ngIf="holdDaysData"> based on {{holdDaysData.length}} of your previous trades.</span>             
-              Each bar in below graph corresponds to the bar from the above ROI chart.
-          </p>
-          <p>The holding period of an investment is used to determine the taxing of capital gains or losses.</p>
-          <p>The holding period is used to calculate Holding Period Return/Yield
-            <a href="https://www.investopedia.com/terms/h/holdingperiodreturn-yield.asp" target="_blank"><i class="far fa-question-circle"></i></a>
-          </p>
+  </div>
+  <br />
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">
+        Holding Period
+        <a href="https://www.investopedia.com/terms/h/holdingperiod.asp" target="_blank"
+          ><i class="far fa-question-circle"></i
+        ></a>
+      </h5>
+      <p class="card-text">
+        Bar graph of the holding period (in days)- A holding period is the amount of time the investment is held by an
+        investor, or the period between the purchase and sale of a security
+        <span *ngIf="holdDaysData"> based on {{ holdDaysData.length }} of your previous trades.</span>
+        Each bar in below graph corresponds to the bar from the above ROI chart.
+      </p>
+      <p>The holding period of an investment is used to determine the taxing of capital gains or losses.</p>
+      <p>
+        The holding period is used to calculate Holding Period Return/Yield
+        <a href="https://www.investopedia.com/terms/h/holdingperiodreturn-yield.asp" target="_blank"
+          ><i class="far fa-question-circle"></i
+        ></a>
+      </p>
 
-            <div *ngIf="txnStats">
-                <dl class="row">
-                    <dt class="col">Average Holding days</dt>
-                    <dd *ngIf="txnStats.avg_days; else naComment" class="col">{{txnStats.avg_days}} days</dd>
-                </dl>
-                <dl class="row">
-                    <dt class="col">Average Holding days on winning trades</dt>
-                    <dd *ngIf="txnStats.avg_positve_days; else naComment" class="col">{{txnStats.avg_positve_days}} days</dd>
-                </dl>
-                <dl class="row">
-                    <dt class="col">Average Holding days on loosing trades</dt>
-                    <dd *ngIf="txnStats.avg_negative_days; else naComment" class="col">{{txnStats.avg_negative_days}} days</dd>
-                </dl>
-            </div>
+      <div *ngIf="txnStats">
+        <dl class="row">
+          <dt class="col">Average Holding days</dt>
+          <dd *ngIf="txnStats.avg_days; else naComment" class="col">{{ txnStats.avg_days }} days</dd>
+        </dl>
+        <dl class="row">
+          <dt class="col">Average Holding days on winning trades</dt>
+          <dd *ngIf="txnStats.avg_positve_days; else naComment" class="col">{{ txnStats.avg_positve_days }} days</dd>
+        </dl>
+        <dl class="row">
+          <dt class="col">Average Holding days on loosing trades</dt>
+          <dd *ngIf="txnStats.avg_negative_days; else naComment" class="col">{{ txnStats.avg_negative_days }} days</dd>
+        </dl>
+      </div>
 
-          <p class="card-text text-muted bottom-notes">All the values in the graph are rounded to a day based on the buy date and sell date.</p>
-          <!-- <a href="#" class="card-link">Card link</a>
+      <p class="card-text text-muted bottom-notes">
+        All the values in the graph are rounded to a day based on the buy date and sell date.
+      </p>
+      <!-- <a href="#" class="card-link">Card link</a>
           <a href="#" class="card-link">Another link</a> -->
-        </div>
     </div>
-    <div class="mt-5 mb-5">
-        <ngx-charts-bar-vertical 
-            [view]="[1000,400]" *ngIf="holdDaysData"
-            [results]="holdDaysData"
-            [xAxisLabel]="'Each investment/trade'"
-            [yAxisLabel]="'# of Days in a Trade'"
-            [showXAxisLabel]="true"
-            [showYAxisLabel]="true"
-            [xAxis]="false"
-            [yAxis]="true"
-            [scheme]=""
-            [gradient]="false">
-        </ngx-charts-bar-vertical>
-        <div class="spinner-border" role="status" *ngIf="!holdDaysData">
-            <span class="sr-only">Loading...</span>
-          </div>
+  </div>
+  <div class="mt-5 mb-5">
+    <ngx-charts-bar-vertical
+      [view]="[1000, 400]"
+      *ngIf="holdDaysData"
+      [results]="holdDaysData"
+      [xAxisLabel]="'Each investment/trade'"
+      [yAxisLabel]="'# of Days in a Trade'"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      [xAxis]="false"
+      [yAxis]="true"
+      [scheme]=""
+      [gradient]="false"
+    >
+    </ngx-charts-bar-vertical>
+    <div class="spinner-border" role="status" *ngIf="!holdDaysData">
+      <span class="sr-only">Loading...</span>
     </div>
+  </div>
 </div>

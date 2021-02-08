@@ -7,7 +7,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { FormsModule } from '@angular/forms';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxChartsModule }from '@swimlane/ngx-charts';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SymbolDetailsRoutingModule } from './symbolDetails-routing.module';
 import { SymbolDetailsComponent } from './symbolDetails.component';
 
@@ -15,17 +15,18 @@ import { GaugeChartModule } from 'angular-gauge-chart';
 
 @NgModule({
   imports: [
-    CommonModule, 
-    TranslateModule, 
+    CommonModule,
+    TranslateModule,
     SymbolDetailsRoutingModule,
-    BrowserModule, 
+    BrowserModule,
     NgbModule,
     FormsModule,
     TruncateModule,
     BrowserAnimationsModule,
     NgxChartsModule,
     GaugeChartModule,
-    FileUploadModule],
+    FileUploadModule,
+  ],
   declarations: [SymbolDetailsComponent],
 })
 export class SymbolDetailsModule {}

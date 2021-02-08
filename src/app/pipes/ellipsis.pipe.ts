@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'ellipsis'
+  name: 'ellipsis',
 })
 export class EllipsisPipe implements PipeTransform {
-  transform(val : string, args: number) {
+  transform(val: string, args: number) {
     if (args === undefined) {
       return val;
     }

@@ -10,7 +10,7 @@ const routes = {
   createAccount: () => `/signup`,
   userModelStats: () => `/model/info`,
   getFavorites: () => `/favorites`,
-  getConfigValue: (key:string) => `/config/key_str/${key}`,
+  getConfigValue: (key: string) => `/config/key_str/${key}`,
 };
 
 export interface LoginContext {
@@ -35,16 +35,18 @@ export interface CreateAccountContext {
   providedIn: 'root',
 })
 export class AuthenticationService {
-  constructor(private httpClient: HttpClient, 
-    private credentialsService: CredentialsService) {}
+  constructor(private httpClient: HttpClient, private credentialsService: CredentialsService) {}
 
-  saveCredentianls(id:string, email:string, token:string) : void {
-    this.credentialsService.setCredentials({
-      email: email,
-      token: token,
-      id: id
-    }, true);
-  }  
+  saveCredentianls(id: string, email: string, token: string): void {
+    this.credentialsService.setCredentials(
+      {
+        email: email,
+        token: token,
+        id: id,
+      },
+      true
+    );
+  }
 
   /**
    * Authenticates the user.
@@ -55,54 +57,54 @@ export class AuthenticationService {
     // Replace by proper authentication call
     let loginData = {
       email: context.email,
-      password: context.password
+      password: context.password,
     };
     let headers = {
-      contentType: 'application/json'
+      contentType: 'application/json',
     };
-    return this.httpClient.post(routes.login(), loginData, {
-      headers: headers
-    }).pipe(
-      map((body: any)=>{
-        console.log(`body: ${JSON.stringify(body)}`);
-        this.credentialsService.setCredentials(body, context.remember);
-        this.getUserModelProfile().subscribe();
-        return of(body);
-      }),
-      catchError((err)=> {
-        console.log(`err: ${JSON.stringify(err)}`);
-        return throwError(err)
+    return this.httpClient
+      .post(routes.login(), loginData, {
+        headers: headers,
       })
-    );
+      .pipe(
+        map((body: any) => {
+          console.log(`body: ${JSON.stringify(body)}`);
+          this.credentialsService.setCredentials(body, context.remember);
+          this.getUserModelProfile().subscribe();
+          return of(body);
+        }),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
   }
 
   getFavorites() {
     console.log(`In getFavorites`);
     return this.httpClient.get(routes.getFavorites()).pipe(
-      map((body: any)=>{
+      map((body: any) => {
         console.log(`getFavorites body: ${JSON.stringify(body)}`);
         this.credentialsService.setFavorites(body);
         // this.credentialsService.setCredentials(body, context.remember);
       }),
-      catchError((err)=> {
+      catchError((err) => {
         console.log(`err: ${JSON.stringify(err)}`);
         return of(null);
       })
     );
   }
 
-  getConfigValue(key:string): Observable<any> {
+  getConfigValue(key: string): Observable<any> {
     console.log(`In getConfigValue`);
-    return this.httpClient.get(routes.getConfigValue(key), {withCredentials: true})
-    .pipe(
-      map((body:any)=> body),
-      catchError(err=> {
+    return this.httpClient.get(routes.getConfigValue(key), { withCredentials: true }).pipe(
+      map((body: any) => body),
+      catchError((err) => {
         console.log(`getConfigValue err: ${JSON.stringify(err)}`);
         return throwError(err);
       })
     );
   }
-
 
   /**
    * Create Account for the user.
@@ -116,18 +118,18 @@ export class AuthenticationService {
       password: context.password,
       displayName: context.displayName,
       phone: context.phone,
-      code: context.code
+      code: context.code,
     };
     return this.httpClient.post(routes.createAccount(), createAccountData).pipe(
-      map((body: any)=>{
+      map((body: any) => {
         console.log(`body: ${JSON.stringify(body)}`);
         this.credentialsService.setCredentials(body, false);
         this.getUserModelProfile().subscribe();
         return of(body);
       }),
-      catchError((err)=> {
+      catchError((err) => {
         console.log(`err: ${JSON.stringify(err)}`);
-        return throwError(err)
+        return throwError(err);
       })
     );
   }
@@ -148,25 +150,25 @@ export class AuthenticationService {
    * @return The user credentials.
    */
   getUserModelProfile(): Observable<any> {
-    console.log(`In authenticatiopnService.getUserModelProfile`)
+    console.log(`In authenticatiopnService.getUserModelProfile`);
     // Replace by proper authentication call
     let headers = {
-      contentType: 'application/json'
+      contentType: 'application/json',
     };
-    return this.httpClient.get(routes.userModelStats(), {
-      headers: headers
-    }).pipe(
-      map((body: any)=>{
-        console.log(`getUserModelProfile body: ${JSON.stringify(body)}`);
-        this.credentialsService.setUserProfile(body);
-        return of(body);
-      }),
-      catchError((err)=> {
-        console.log(`err: ${JSON.stringify(err)}`);
-        return throwError(err)
+    return this.httpClient
+      .get(routes.userModelStats(), {
+        headers: headers,
       })
-    );
-
-
-  }  
+      .pipe(
+        map((body: any) => {
+          console.log(`getUserModelProfile body: ${JSON.stringify(body)}`);
+          this.credentialsService.setUserProfile(body);
+          return of(body);
+        }),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
 }

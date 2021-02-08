@@ -27,13 +27,12 @@ export class AppComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private i18nService: I18nService
   ) {
-    this.router.events.subscribe(event => {
-      if(event instanceof NavigationEnd){
-
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
         console.log(event.urlAfterRedirects);
-        gtag('config', 'UA-177829863-1', {'page_path': event.urlAfterRedirects});
+        gtag('config', 'UA-177829863-1', { page_path: event.urlAfterRedirects });
       }
-    })
+    });
   }
 
   ngOnInit() {

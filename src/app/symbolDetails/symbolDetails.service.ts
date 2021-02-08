@@ -2,50 +2,55 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { SymbolDetailsResp, TagDetails, TagCategories, SentimentResp, AnalystReccomendationResp, ExchangeResp } from './symbolDetails.component';
+import {
+  SymbolDetailsResp,
+  TagDetails,
+  TagCategories,
+  SentimentResp,
+  AnalystReccomendationResp,
+  ExchangeResp,
+} from './symbolDetails.component';
 import { CredentialsService } from '@app/auth';
 
 const routes = {
-  listDetails: (symbol : string) => `/symbol/${symbol}/details`,
+  listDetails: (symbol: string) => `/symbol/${symbol}/details`,
   tagDetails: () => `/data/tags`,
-  addToFavorites: (symbol : string) => `/favorites/symbol/${symbol}`,
-  userNotes: (symbol : string) => `/userNotes/symbol/${symbol}`,
+  addToFavorites: (symbol: string) => `/favorites/symbol/${symbol}`,
+  userNotes: (symbol: string) => `/userNotes/symbol/${symbol}`,
   tagCategories: () => `/data/tagCategories`,
-  analystReccomendations: (symbol: string)=> `/analystReccomendation/symbol/${symbol}`,
-  sentimentData: (symbol: string)=> `/sentiment/symbol/${symbol}`,
-  exchangeData: (symbol: string)=> `/exchange/symbol/${symbol}`
+  analystReccomendations: (symbol: string) => `/analystReccomendation/symbol/${symbol}`,
+  sentimentData: (symbol: string) => `/sentiment/symbol/${symbol}`,
+  exchangeData: (symbol: string) => `/exchange/symbol/${symbol}`,
 };
 
 @Injectable({
   providedIn: 'root',
 })
 export class SymbolDetailsService {
-  constructor(private httpClient: HttpClient,
-    private credentialsService : CredentialsService) {}
+  constructor(private httpClient: HttpClient, private credentialsService: CredentialsService) {}
 
-  getExchangeData(symbol: string): Observable<ExchangeResp | string>{
+  getExchangeData(symbol: string): Observable<ExchangeResp | string> {
     return this.httpClient.get(routes.exchangeData(symbol)).pipe(
       map((body: ExchangeResp) => body),
       catchError(() => of('Error, could not GET exchange details :-('))
     );
   }
-  
-  
-  getSentimentData(symbol: string): Observable<SentimentResp | string>{
+
+  getSentimentData(symbol: string): Observable<SentimentResp | string> {
     return this.httpClient.get(routes.sentimentData(symbol)).pipe(
       map((body: SentimentResp) => body),
       catchError(() => of('Error, could not GET sentiment details :-('))
     );
   }
 
-  getAnalystReccomendationData(symbol: string): Observable<AnalystReccomendationResp | string>{
+  getAnalystReccomendationData(symbol: string): Observable<AnalystReccomendationResp | string> {
     return this.httpClient.get(routes.analystReccomendations(symbol)).pipe(
       map((body: AnalystReccomendationResp) => body),
       catchError(() => of('Error, could not GET sentiment details :-('))
     );
   }
 
-  getTagCategories(): Observable<TagCategories[]| string>{
+  getTagCategories(): Observable<TagCategories[] | string> {
     return this.httpClient.get(routes.tagCategories()).pipe(
       map((body: TagCategories[]) => body),
       catchError(() => of('Error, could not GET tag details :-('))
@@ -59,28 +64,28 @@ export class SymbolDetailsService {
     );
   }
 
-  addToFavorites(symbol: string) : Observable<any> {
+  addToFavorites(symbol: string): Observable<any> {
     // add to localdb
-    let favArr:string[] = this.credentialsService.userFavorites;
+    let favArr: string[] = this.credentialsService.userFavorites;
     favArr.push(symbol);
     this.credentialsService.setFavorites(favArr);
 
     // update the backend
     return this.httpClient.post(routes.addToFavorites(symbol), {}).pipe(
       map((body: any) => body),
-      catchError((err:any) => {
+      catchError((err: any) => {
         console.log(`Error while adding to favorites, ${JSON.stringify(err)}`);
         return throwError('Error, could not POST to favorites :-(');
       })
     );
   }
 
-  removeFromFavorites(symbol: string) : Observable<any> {
+  removeFromFavorites(symbol: string): Observable<any> {
     // add to localdb
     let updFavList = [];
-    let favArr:string[] = this.credentialsService.userFavorites;
-    for(let fSym of favArr){
-      if(fSym.toLowerCase() != symbol.toLowerCase()){
+    let favArr: string[] = this.credentialsService.userFavorites;
+    for (let fSym of favArr) {
+      if (fSym.toLowerCase() != symbol.toLowerCase()) {
         updFavList.push(fSym);
       }
     }
@@ -89,37 +94,42 @@ export class SymbolDetailsService {
     // update the backend
     return this.httpClient.delete(routes.addToFavorites(symbol), {}).pipe(
       map((body: any) => body),
-      catchError((err:any) => {
+      catchError((err: any) => {
         console.log(`Error while removing from favorites, ${JSON.stringify(err)}`);
         return throwError('Error, could not DELETE from favorites :-(');
       })
     );
   }
 
-  saveUserNotes(symbol:string, notes:string): Observable<any> {
+  saveUserNotes(symbol: string, notes: string): Observable<any> {
     // add to localdb
     this.credentialsService.setUserNotes(notes);
 
     let headers = {
-      contentType: 'application/json'
+      contentType: 'application/json',
     };
 
     // update the backend
-    return this.httpClient.post(routes.userNotes(symbol), 
-    {
-      notes : notes
-    }, {
-      headers: headers
-    }).pipe(
-      map((body: any) => body),
-      catchError((err:any) => {
-        console.log(`Error while adding to userNotes, ${JSON.stringify(err)}`);
-        return throwError('Error, could not POST to userNotes :-(');
-      })
-    );
+    return this.httpClient
+      .post(
+        routes.userNotes(symbol),
+        {
+          notes: notes,
+        },
+        {
+          headers: headers,
+        }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((err: any) => {
+          console.log(`Error while adding to userNotes, ${JSON.stringify(err)}`);
+          return throwError('Error, could not POST to userNotes :-(');
+        })
+      );
   }
 
-  getUserNotes(symbol:string): Observable<any> {
+  getUserNotes(symbol: string): Observable<any> {
     // update the backend
     return this.httpClient.get(routes.userNotes(symbol)).pipe(
       map((body: any) => {
@@ -127,42 +137,42 @@ export class SymbolDetailsService {
         this.credentialsService.setUserNotes(body.notes);
         return body;
       }),
-      catchError((err:any) => {
+      catchError((err: any) => {
         console.log(`Error while adding to userNotes, ${JSON.stringify(err)}`);
         return throwError('Error, could not POST to userNotes :-(');
       })
     );
   }
 
-  isFavorite(symbol : string) : boolean {
-    let favArr:string[] = this.credentialsService.userFavorites;
-    for(let fSym of favArr){
-      if(fSym.toLowerCase() == symbol.toLowerCase()){
+  isFavorite(symbol: string): boolean {
+    let favArr: string[] = this.credentialsService.userFavorites;
+    for (let fSym of favArr) {
+      if (fSym.toLowerCase() == symbol.toLowerCase()) {
         return true;
       }
     }
     return false;
   }
 
-  getTagDetails(){
+  getTagDetails() {
     return this.httpClient.get(routes.tagDetails()).pipe(
       map((body: Map<string, TagDetails[]>) => body),
       catchError(() => of('Error, could not GET tag details :-('))
     );
   }
 
-  loadTradingViewScript(containerId: string, widgetType:string, widgetOptions:any){
+  loadTradingViewScript(containerId: string, widgetType: string, widgetOptions: any) {
     const container: HTMLElement = document.getElementById(containerId);
-    container.innerHTML="";
-    if(container){
+    container.innerHTML = '';
+    if (container) {
       const script = document.createElement('script');
       script.innerHTML = JSON.stringify(widgetOptions);
-      script.src = `https://s3.tradingview.com/external-embedding/${widgetType}.js`
+      script.src = `https://s3.tradingview.com/external-embedding/${widgetType}.js`;
       script.async = true;
       script.defer = true;
-  
+
       container.appendChild(script);
-      // replace the widget node      
+      // replace the widget node
       // if(container.childElementCount === 1){
       //   console.log(`appending the child node`);
       //   container.appendChild(script);
@@ -172,7 +182,6 @@ export class SymbolDetailsService {
       //     console.log(container.childNodes[0]);
       //   container.replaceChild(script, container.childNodes[0]);
       // }
-    }    
+    }
   }
-
 }

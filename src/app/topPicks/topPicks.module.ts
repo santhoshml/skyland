@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
@@ -11,13 +12,15 @@ import { TopPicksComponent } from './topPicks.component';
 
 @NgModule({
   imports: [
-    CommonModule, 
-    TranslateModule, 
-    TopPicksRoutingModule, 
-    BrowserModule, 
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    TopPicksRoutingModule,
+    BrowserModule,
     NgbModule,
     TruncateModule,
-    FileUploadModule],
+    FileUploadModule,
+  ],
   declarations: [TopPicksComponent],
 })
 export class TopPicksModule {}

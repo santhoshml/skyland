@@ -11,13 +11,14 @@ import { ListCardsComponent } from './listCards.component';
 
 @NgModule({
   imports: [
-    CommonModule, 
-    TranslateModule, 
-    ListCardsRoutingModule, 
-    BrowserModule, 
+    CommonModule,
+    TranslateModule,
+    ListCardsRoutingModule,
+    BrowserModule,
     NgbModule,
     TruncateModule,
-    FileUploadModule],
+    FileUploadModule,
+  ],
   declarations: [ListCardsComponent],
 })
 export class ListCardsModule {}

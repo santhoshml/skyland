@@ -17,34 +17,31 @@ export interface TagDefinition {
 })
 export class DefinitionsComponent implements OnInit {
   version: string | null = environment.version;
-  
-  definitionsArr : TagDefinition[] = [
+
+  definitionsArr: TagDefinition[] = [
     {
       title: 'Price < $20',
       desc: 'List of stocks whose end of day price is less than $20',
-      links : []
+      links: [],
     },
     {
       title: 'Price < $50',
       desc: 'List of stocks whose end of day price is greater then $20 and less than $50',
-      links : []
+      links: [],
     },
     {
       title: 'Price < $100',
       desc: 'List of stocks whose end of day price is greater then $50 and less than $100',
-      links : []
+      links: [],
     },
     {
       title: 'Price > $100',
       desc: 'List of stocks whose end of day price is greater then $100',
-      links : []
+      links: [],
     },
   ];
 
   constructor() {}
 
-  ngOnInit() {
-  }
-
-
+  ngOnInit() {}
 }

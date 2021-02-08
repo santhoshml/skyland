@@ -5,7 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { SubSectorDetailsTable } from './subSectorDetails.component';
 
 const routes = {
-  subSectorDetails: (key : string) => `/subsectors/details/${key}`
+  subSectorDetails: (key: string) => `/subsectors/details/${key}`,
 };
 
 export interface RandomQuoteContext {

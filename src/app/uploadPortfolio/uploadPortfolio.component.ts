@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@env/environment';
@@ -12,96 +12,133 @@ import { UploadPortfolioService } from './uploadPortfolio.services';
 @Component({
   selector: 'app-uploadPortfolio',
   templateUrl: './uploadPortfolio.component.html',
-  styleUrls: ['./uploadPortfolio.component.scss']
+  styleUrls: ['./uploadPortfolio.component.scss'],
 })
 export class UploadPortfolioComponent implements OnInit {
   version: string | null = environment.version;
-  selectedPlatform: string = "Online Platforms";
+  selectedPlatform: string = 'Online Platforms';
   hideSchwabInstr = true;
   hideEtradeInstr = true;
   hideTSInstr = true;
   hideIBInstr = true;
   isPlatformSelected = false;
-  selectedPlatformKey:string;
+  selectedPlatformKey: string;
   response: string;
   isUploadSuccess = false;
-  
+
   myForm = new FormGroup({
     file: new FormControl('', [Validators.required]),
-    fileSource: new FormControl('', [Validators.required])
+    fileSource: new FormControl('', [Validators.required]),
   });
 
   onlinePlatforms: Object[] = [
-    {key: 'schwab', value: 'Charles Schwab'},
-    {key: 'etrade', value: 'E-Trade'},
-    {key: 'ts', value: 'Trade Station'},
-    {key: 'ib', value: 'Interactive Brokers'}
+    { key: 'schwab', value: 'Charles Schwab' },
+    { key: 'etrade', value: 'E-Trade' },
+    { key: 'ts', value: 'Trade Station' },
+    { key: 'ib', value: 'Interactive Brokers' },
   ];
 
-  constructor(private http: HttpClient,
+  constructor(
+    private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
     private credentialsService: CredentialsService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private uploadPortfolioService: UploadPortfolioService
-) {}
+  ) {}
 
   ngOnInit() {
-    this.googleAnalyticsService.eventEmitter("uploadPortfolio", "uploadPortfolio", "init", "init", 1,this.credentialsService.credentials.id);
+    this.googleAnalyticsService.eventEmitter(
+      'uploadPortfolio',
+      'uploadPortfolio',
+      'init',
+      'init',
+      1,
+      this.credentialsService.credentials.id
+    );
   }
 
-  get f(){
+  get f() {
     return this.myForm.controls;
   }
 
-  onFileChange(event:any) {    
-    this.isUploadSuccess=false;
+  onFileChange(event: any) {
+    this.isUploadSuccess = false;
 
-    this.googleAnalyticsService.eventEmitter("uploadPortfolio", "uploadPortfolio", "onFileChange", "onFileChange", 1,this.credentialsService.credentials.id);
-  
+    this.googleAnalyticsService.eventEmitter(
+      'uploadPortfolio',
+      'uploadPortfolio',
+      'onFileChange',
+      'onFileChange',
+      1,
+      this.credentialsService.credentials.id
+    );
+
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.myForm.patchValue({
-        fileSource: file
+        fileSource: file,
       });
     }
   }
 
-  viewDistribution(){
+  viewDistribution() {
     console.log(`In viewDistributions`);
-    this.googleAnalyticsService.eventEmitter("uploadPortfolio", "uploadPortfolio", "viewDistribution", "viewDistribution", 1,this.credentialsService.credentials.id);
+    this.googleAnalyticsService.eventEmitter(
+      'uploadPortfolio',
+      'uploadPortfolio',
+      'viewDistribution',
+      'viewDistribution',
+      1,
+      this.credentialsService.credentials.id
+    );
 
     this.router.navigate(['/distribution'], { replaceUrl: true });
   }
 
-  submit(){
+  submit() {
     const formData = new FormData();
     formData.append('list', this.myForm.get('fileSource').value);
-   
-    this.http.post(`${environment.serverUrl}/brokerage/${this.selectedPlatformKey}/portfolio`, formData)
-      .subscribe(res => {
+
+    this.http
+      .post(`${environment.serverUrl}/brokerage/${this.selectedPlatformKey}/portfolio`, formData)
+      .subscribe((res) => {
         console.log(res);
-        this.googleAnalyticsService.eventEmitter("uploadPortfolio", "uploadPortfolio-submit", "submit", "submit", 1,this.credentialsService.credentials.id);
+        this.googleAnalyticsService.eventEmitter(
+          'uploadPortfolio',
+          'uploadPortfolio-submit',
+          'submit',
+          'submit',
+          1,
+          this.credentialsService.credentials.id
+        );
         this.myForm.reset();
         this.isUploadSuccess = true;
         // alert('Uploaded Successfully.');
-      })
+      });
   }
 
-  onSelectPlatform(selectedPlatform: string){
-  console.log(`selectedPlatform: ${selectedPlatform}`);
-  this.googleAnalyticsService.eventEmitter("uploadPortfolio", "onSelectPlatform-selected", "onSelectPlatform-selected", selectedPlatform, 1,this.credentialsService.credentials.id);
+  onSelectPlatform(selectedPlatform: string) {
+    console.log(`selectedPlatform: ${selectedPlatform}`);
+    this.googleAnalyticsService.eventEmitter(
+      'uploadPortfolio',
+      'onSelectPlatform-selected',
+      'onSelectPlatform-selected',
+      selectedPlatform,
+      1,
+      this.credentialsService.credentials.id
+    );
 
     this.isPlatformSelected = true;
     this.hideAllInstr();
     this.selectedPlatform = this.getOnlinePlatformValue(selectedPlatform);
-    if(selectedPlatform === 'schwab'){
+    if (selectedPlatform === 'schwab') {
       this.hideSchwabInstr = false;
-    } else if(selectedPlatform === 'etrade'){
+    } else if (selectedPlatform === 'etrade') {
       this.hideEtradeInstr = false;
-    } else if(selectedPlatform === 'ts'){
+    } else if (selectedPlatform === 'ts') {
       this.hideTSInstr = false;
-    } else if(selectedPlatform === 'ib'){
+    } else if (selectedPlatform === 'ib') {
       this.hideIBInstr = false;
     }
 
@@ -122,24 +159,22 @@ export class UploadPortfolioComponent implements OnInit {
     //  };
   }
 
-  hideAllInstr(){
+  hideAllInstr() {
     this.hideSchwabInstr = true;
     this.hideEtradeInstr = true;
     this.hideTSInstr = true;
     this.hideIBInstr = true;
   }
 
-  getOnlinePlatformValue(key:string){
+  getOnlinePlatformValue(key: string) {
     this.selectedPlatformKey = key;
-    for(let plt of this.onlinePlatforms){
-      if(plt["key"] === key)
-        return plt["value"];
+    for (let plt of this.onlinePlatforms) {
+      if (plt['key'] === key) return plt['value'];
     }
   }
-  
 
-  openModal(){
-    // user clicked done with uploading all the files 
+  openModal() {
+    // user clicked done with uploading all the files
     // fire the function to create the file
     this.uploadPortfolioService.startUserAnalysis().subscribe();
   }

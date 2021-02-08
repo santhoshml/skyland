@@ -14,11 +14,6 @@ import { map, catchError } from 'rxjs/operators';
 export class PageNotFoundComponent implements OnInit {
   version: string | null = environment.version;
   isLoading = false;
-  
-  ngOnInit() {
-  }
 
-  
-  
-  
+  ngOnInit() {}
 }

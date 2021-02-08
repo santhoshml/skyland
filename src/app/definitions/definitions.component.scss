@@ -1,24 +1,24 @@
 .nav-link.dropdown-toggle {
-    cursor: pointer;
-  }
+  cursor: pointer;
+}
 
 .full-width {
-    width: 100% !important;
+  width: 100% !important;
 }
 
 .zero-padding {
-    padding: 0 !important;
+  padding: 0 !important;
 }
 
 .flex-cont {
-    display: flex;
+  display: flex;
   flex-wrap: wrap;
 }
 
-.flex-cont>div {
-    flex: 0 50%;
+.flex-cont > div {
+  flex: 0 50%;
 }
 
 .item {
-    width: 100%
+  width: 100%;
 }
