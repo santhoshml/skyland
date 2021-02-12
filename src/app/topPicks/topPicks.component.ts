@@ -8,7 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { AuthenticationService, CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-listCards',
@@ -22,11 +22,13 @@ export class TopPicksComponent implements OnInit {
   topStocks$: Observable<any>;
   yourBestStocks$: Observable<any>;
   myOpenPositions$: Observable<any>;
+  myClosePositions$: Observable<any>;
   hasConfidenceScore = false;
   newOpenPositionSymbol:string;
 
   openPositionsForm!: FormGroup;
   showOpenPositionSuccess=false;
+
 
   constructor(
     private service: TopPicksService,
@@ -80,12 +82,8 @@ export class TopPicksComponent implements OnInit {
       })
     );
 
-    this.myOpenPositions$ = this.service.getOpenPositions().pipe(
-      map((body)=>{
-        console.log(`my open positions : ${JSON.stringify(body)}`);
-        return body;
-      })
-    );
+    this.readOpenPositions();
+    this.readClosedPositions();
   }
 
   private initOpenPositionsForm() {
@@ -125,7 +123,9 @@ export class TopPicksComponent implements OnInit {
       1,
       this.credentialsService.credentials.id
     );
-    this.symbolDetailsService.addToFavorites(symbol).subscribe();
+    this.symbolDetailsService.addToFavorites(symbol).subscribe((data)=>{
+      this.readOpenPositions();
+    });
   }
 
   removeFromFavorites(symbol: string) {
@@ -163,7 +163,35 @@ export class TopPicksComponent implements OnInit {
     return `#collapseExample${id}`
   }
   
-  closeOpenPosition(){
-    
+  closePosition(id: number, form: NgForm){
+    console.log(`In closePosition, id:${id}`);
+    let closePositionData = {
+      id: id,
+      sellPrice: form.value.sellPrice,
+      sellDate: form.value.sellDate
+    };
+    this.service.closePosition(closePositionData).subscribe(
+      (data)=>{
+        this.readOpenPositions();
+        this.readClosedPositions();
+    });
+  }
+
+  readOpenPositions(){    
+    this.myOpenPositions$ = this.service.getOpenPositions().pipe(
+      map((body)=>{
+        console.log(`my open positions : ${JSON.stringify(body)}`);
+        return body;
+      })
+    );
+  }
+
+  readClosedPositions(){
+    this.myClosePositions$ = this.service.getClosePositions().pipe(
+      map((body)=>{
+        console.log(`my close positions : ${JSON.stringify(body)}`);
+        return body;
+      })
+    );
   }
 }

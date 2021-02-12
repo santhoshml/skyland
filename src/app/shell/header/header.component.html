@@ -1,12 +1,16 @@
 <header>
   <nav class="navbar navbar-top navbar-expand-lg navbar-light bg-light" style="">
     <!-- <a class="navbar-brand" href="https://www.liste.ai" translate>APP_NAME</a> -->
-    <a class="navbar-brand" routerLink="/topPicks" style="display: contents" translate>
+    <a class="navbar-brand"  href="https://www.liste.ai" style="display: contents" translate>
       <img class="card-img-top mr-3 logo-img" src="assets/logo-size.png" alt="Card image cap" /><img />
     </a>
 
     <div id="navbar-menu" class="collapse navbar-collapse float-xs-none" [ngbCollapse]="menuHidden">
       <div class="navbar-nav">
+        <a class="nav-item nav-link text-uppercase mr-3" routerLink="/topPicks" routerLinkActive="active">
+          <i class="fas fa-home"></i>
+          <span translate>Home</span>
+        </a>        
         <a class="nav-item nav-link text-uppercase mr-3" routerLink="/uploadPortfolio" routerLinkActive="active">
           <i class="fas fa-upload"></i>
           <span translate>Upload_history</span>

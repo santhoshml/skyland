@@ -8,6 +8,8 @@ const routes = {
   yourBest: () => `/predictions/2/addLimit/1`,
   addOpenPositions : () => `/user/txn/open`,
   getOpenPositions : () => `/user/txn/open`,
+  closePositions : () => `/user/txn/close`,
+  getClosePositions : () => `/user/txn/close`,
 };
 
 export interface RandomQuoteContext {
@@ -20,6 +22,35 @@ export interface RandomQuoteContext {
 })
 export class TopPicksService {
   constructor(private httpClient: HttpClient) {}
+
+  getClosePositions(): Observable<any> {
+    return this.httpClient
+      .get(routes.getClosePositions(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+    );
+  }
+
+  closePosition(data:any): Observable<any> {
+    return this.httpClient
+      .post(routes.closePositions(), data, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
 
   getOpenPositions(): Observable<any> {
     return this.httpClient
