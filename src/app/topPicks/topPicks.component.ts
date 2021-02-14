@@ -28,6 +28,8 @@ export class TopPicksComponent implements OnInit {
 
   openPositionsForm!: FormGroup;
   showOpenPositionSuccess=false;
+  sellPrice:string;
+  sellDate:string;
 
 
   constructor(
@@ -147,11 +149,12 @@ export class TopPicksComponent implements OnInit {
     this.newOpenPositionSymbol = formvalue.symbol;
     this.service.addOpenPosition(formvalue).subscribe(
       (data)=>{
-        console.log(`In addOpenPositions: ${JSON.stringify(data)}`);
-        this.openPositionsForm.markAsPristine();
-        this.showOpenPositionSuccess=true;
-      }
-    );
+      console.log(`In addOpenPositions: ${JSON.stringify(data)}`);
+      this.openPositionsForm.reset();
+      this.openPositionsForm.markAsPristine();
+      this.showOpenPositionSuccess=true;
+      this.readOpenPositions();
+    });
   }
 
   closeOpenPositionAlert(){
@@ -172,6 +175,8 @@ export class TopPicksComponent implements OnInit {
     };
     this.service.closePosition(closePositionData).subscribe(
       (data)=>{
+        form.reset();
+        form.resetForm();
         this.readOpenPositions();
         this.readClosedPositions();
     });

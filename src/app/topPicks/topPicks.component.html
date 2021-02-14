@@ -8,7 +8,6 @@
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a
         class="nav-item nav-link active"
-        style="background-color: #99ecff"
         id="nav-topStocks-tab"
         data-toggle="tab"
         href="#nav-topStocks"
@@ -19,7 +18,6 @@
       >
       <a
         class="nav-item nav-link"
-        style="background-color: #f7b94f"
         id="nav-yourBest-tab"
         data-toggle="tab"
         href="#nav-yourBest"
@@ -264,6 +262,7 @@
           type="text"
           class="form-control"
           formControlName="symbol"
+          style="font-size: 14px;"
           autocomplete="symbol"
           placeholder="Symbol"
           required
@@ -280,6 +279,7 @@
         <input
           type="text"
           class="form-control"
+          style="font-size: 14px;"
           formControlName="buy_price"
           autocomplete="buy_price"
           placeholder="Buy Price"
@@ -297,6 +297,7 @@
         <input
           type="text"
           class="form-control"
+          style="font-size: 14px;"
           formControlName="buy_date"
           autocomplete="buy_date"
           placeholder="Buy Date (yyyy-mm-dd)"
@@ -311,7 +312,13 @@
         <div class="invalid-tooltip">Please provide a valid buy date.</div>
       </div>
       <div class="col-md-3 mb-3">
-        <button class="btn btn-primary btn-block" type="submit">Add</button>
+        <button 
+          class="btn btn-primary btn-block" 
+          style="font-size: 14px;" 
+          [disabled]="openPositionsForm.invalid"
+          type="submit">
+          Add
+        </button>
       </div>
     </div>
     <hr/>
@@ -320,7 +327,6 @@
       <div class="nav nav-tabs" id="nav-tab-positions" role="tablist">
         <a
           class="nav-item nav-link active"
-          style="background-color: #99ecff"
           id="nav-openPositions-tab"
           data-toggle="tab"
           href="#nav-openPositions"
@@ -331,7 +337,6 @@
         >
         <a
           class="nav-item nav-link"
-          style="background-color: #f7b94f"
           id="nav-closedPositions-tab"
           data-toggle="tab"
           href="#nav-closedPositions"
@@ -354,7 +359,7 @@
                   <th class="text-center" scope="col">Sector</th>
                   <th class="text-center" scope="col">Symbol</th>
                   <th class="text-center" scope="col">Direction</th>
-                  <th class="text-center" scope="col">Price</th>
+                  <th class="text-center" scope="col">Curr. Price</th>
                   <th class="text-center" scope="col">Stop Loss</th>
                   <th class="text-center" scope="col">Gain/Loss</th>              
                   <th class="text-center" scope="col"># days</th>
@@ -375,24 +380,30 @@
                           #pickedNameSellPrice="ngModel"
                           [(ngModel)]="sellPrice"
                           type="text"
-                          style="height: 1.5em;"
+                          style="height: 1.5em; font-size: 10px;"
                           class="form-control mb-2 input-sm"
                           placeholder="Sell Price"
                           required
                         />
                         <input
-                        id="sellDate"
-                        name="sellDate"
-                        #pickedNameSellDate="ngModel"
-                        [(ngModel)]="sellDate"
-                        type="text"
-                        style="height: 1.5em;"
-                        class="form-control mb-2 input-sm"
-                        autocomplete="sell_date"
-                        placeholder="yyyy-mm-dd"
-                        required
-                      />
-                        <button class="btn btn-primary btn-block" style="width: fit-content; margin: auto; font-size: 9px;height: 1.5em; padding-top: 0;" type="submit">Submit</button>
+                          id="sellDate"
+                          name="sellDate"
+                          #pickedNameSellDate="ngModel"
+                          [(ngModel)]="sellDate"
+                          type="text"
+                          style="height: 1.5em; font-size: 10px;"
+                          class="form-control mb-2 input-sm"
+                          autocomplete="sell_date"
+                          placeholder="yyyy-mm-dd"
+                          required
+                        />
+                        <button 
+                          class="btn btn-primary btn-block" 
+                          style="width: fit-content; margin: auto; font-size: 9px;height: 1.5em; padding-top: 0;" 
+                          [disabled]="closePositionsForm.form.invalid"
+                          type="submit">
+                        Submit
+                        </button>
                       </form>
                     </div>    
                   </td>
@@ -400,11 +411,13 @@
                     <p class="card-text" [innerHTML]="txn.name | truncate: 15"></p>
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
-                    <p class="card-text" [innerHTML]="txn.sector | truncate: 10"></p>
+                    <p class="card-text"  *ngIf="txn.sector" [innerHTML]="txn.sector | truncate: 10"></p>
+                    <p class="card-text"  *ngIf="!txn.sector">N/A</p>
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
                     {{txn.symbol}}
-                    <span title="Stop-loss alert triggered to sell" *ngIf="txn.stopLossAlert === 1" class="badge badge-danger">SELL</span>
+                    <br>
+                    <span title="Stop-loss alert triggered to sell" *ngIf="txn.stopLossAlert === 1" class="badge badge-danger">SELL ALERT</span>
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
                     <i *ngIf="txn.direction == 1" class="fas fa-arrow-up"></i>

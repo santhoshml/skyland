@@ -72,7 +72,10 @@ export class TopPicksService {
         withCredentials: true,
       })
       .pipe(
-        map((body: any) => body),
+        map((body: any) => {
+          console.log(`In addOpenPosition ${JSON.stringify(body)}`);
+          return body;
+        }),
         catchError((err) => {
           console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);

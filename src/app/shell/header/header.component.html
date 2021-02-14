@@ -10,14 +10,14 @@
         <a class="nav-item nav-link text-uppercase mr-3" routerLink="/topPicks" routerLinkActive="active">
           <i class="fas fa-home"></i>
           <span translate>Home</span>
-        </a>        
-        <a class="nav-item nav-link text-uppercase mr-3" routerLink="/uploadPortfolio" routerLinkActive="active">
-          <i class="fas fa-upload"></i>
-          <span translate>Upload_history</span>
         </a>
         <a class="nav-item nav-link text-uppercase mr-3" routerLink="/listCards" routerLinkActive="active">
           <i class="fas fa-chess"></i>
           <span translate>Ideas</span>
+        </a>
+        <a class="nav-item nav-link text-uppercase mr-3" routerLink="/uploadPortfolio" routerLinkActive="active">
+          <i class="fas fa-upload"></i>
+          <span translate>Upload_history</span>
         </a>
         <form [formGroup]="searchForm" class="form-inline my-2 my-lg-0" (ngSubmit)="onSubmit()">
           <input
