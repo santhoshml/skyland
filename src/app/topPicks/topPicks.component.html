@@ -56,14 +56,14 @@
             </thead>
             <tbody>
               <tr *ngFor="let topStock of topStocks" class="table-row">
-                <td class="text-center">
-                  <p [innerHTML]="topStock.companyName | truncate: 20"></p>
+                <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
+                  {{ topStock.companyName }}
                 </td>
                 <td class="text-center">
                   <a href="/symbolDetails/{{ topStock.symbol }}">{{ topStock.symbol }}</a>
                 </td>
-                <td class="text-center">
-                  <p [innerHTML]="topStock.sector | truncate: 15"></p>
+                <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
+                  {{ topStock.sector }}
                 </td>
                 <td class="text-center">{{ topStock.price }}</td>
                 <td
@@ -122,17 +122,17 @@
             </thead>
             <tbody>
               <tr *ngFor="let topStock of topStocks" class="table-row">
-                <td class="text-center">
-                  <p [innerHTML]="topStock.companyName | truncate: 20"></p>
+                <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
+                  {{topStock.companyName}}
                 </td>
                 <td class="text-center">
                   <a href="/symbolDetails/{{ topStock.symbol }}">{{ topStock.symbol }}</a>
                 </td>
-                <td class="text-center">
-                  <p [innerHTML]="topStock.sector | truncate: 15"></p>
+                <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
+                  {{ topStock.sector }}
                 </td>
                 <td class="text-center">{{ topStock.price | currency }}</td>
-                <td class="text-center small">
+                <td class="text-center small" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
                   <a href="/uploadPortfolio">Upload transactions</a> so we can compute this value.
                   <p>you are 1-step away from it.</p>
                 </td>
@@ -191,18 +191,18 @@
             </thead>
             <tbody>
               <tr *ngFor="let bestStock of yourBestStocks" class="table-row">
-                <td class="text-center">
-                  <p class="card-text" [innerHTML]="bestStock.companyName | truncate: 20"></p>
+                <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
+                  {{ bestStock.companyName }}
                 </td>
-                <td class="text-center">
+                <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
                   {{ bestStock.sector }}
-                  <p class="small" *ngIf="bestStock.sector == 'Finance'">Best perfoming sector (+0.5%)</p>
+                  <!-- <p class="small" *ngIf="bestStock.sector == 'Finance'">Best perfoming sector (+0.5%)</p>
                   <p class="small" *ngIf="bestStock.sector == 'Utilities'">2nd Best perfoming sector (+0.27%)</p>
                   <p class="small" *ngIf="bestStock.sector == 'Industrial Services'">
                     3rd Best perfoming sector (+0.12%)
                   </p>
                   <p class="small" *ngIf="bestStock.sector == 'Process Industries'">-0.37%</p>
-                  <p class="small" *ngIf="bestStock.sector == 'Producer Manufacturing'">-1.1%</p>
+                  <p class="small" *ngIf="bestStock.sector == 'Producer Manufacturing'">-1.1%</p> -->
                 </td>
                 <td class="text-center">
                   <a href="/symbolDetails/{{ bestStock.symbol }}">{{ bestStock.symbol }}</a>

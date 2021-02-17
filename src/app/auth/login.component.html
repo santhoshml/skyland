@@ -143,6 +143,23 @@
                     <input
                       type="text"
                       class="form-control"
+                      formControlName="displayName"
+                      autocomplete="name"
+                      [placeholder]="'Display Name' | translate"
+                    />
+                    <span hidden translate>Email</span>
+                    <small
+                      [hidden]="accountForm.controls.displayName.valid || accountForm.controls.displayName.untouched"
+                      class="text-danger"
+                      translate
+                    >
+                      Display Name is required
+                    </small>
+                  </label>
+                  <label class="d-block mt-3">
+                    <input
+                      type="text"
+                      class="form-control"
                       formControlName="email"
                       autocomplete="email"
                       [placeholder]="'Email' | translate"

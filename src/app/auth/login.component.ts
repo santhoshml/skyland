@@ -195,6 +195,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       case 'login':
         this.accountForm = this.formBuilder.group({
           code: ['test', Validators.required],
+          displayName: [''],
           email: ['', Validators.required],
           password: ['', Validators.required],
           phone: [''],
@@ -204,6 +205,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       case 'createAccount':
         this.accountForm = this.formBuilder.group({
           code: ['', Validators.required],
+          displayName: ['', Validators.required],
           email: ['', Validators.required],
           password: ['', Validators.required],
           phone: [''],
