@@ -10,6 +10,7 @@ const routes = {
   getOpenPositions : () => `/user/txn/open`,
   closePositions : () => `/user/txn/close`,
   getClosePositions : () => `/user/txn/close`,
+  getPriceObject : (symbol: string) => `/price/symbol/${symbol}`,
 };
 
 export interface RandomQuoteContext {
@@ -22,6 +23,20 @@ export interface RandomQuoteContext {
 })
 export class TopPicksService {
   constructor(private httpClient: HttpClient) {}
+
+  getPriceObject(symbol: string): Observable<any> {
+    return this.httpClient
+      .get(routes.getPriceObject(symbol), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+    );
+  }
 
   getClosePositions(): Observable<any> {
     return this.httpClient

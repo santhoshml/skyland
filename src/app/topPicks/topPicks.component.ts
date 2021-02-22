@@ -9,6 +9,7 @@ import { AuthenticationService, CredentialsService, UserProfileModel } from '@ap
 import { GoogleAnalyticsService } from '@app/@core';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-listCards',
@@ -89,10 +90,11 @@ export class TopPicksComponent implements OnInit {
   }
 
   private initOpenPositionsForm() {
+    let todayDate = moment().format("MM/DD/YYYY");
     this.openPositionsForm = this.formBuilder.group({
       symbol: ['', Validators.required],
       buy_price: ['', Validators.required],
-      buy_date: ['', Validators.required],
+      buy_date: [todayDate, Validators.required],
     });
   }
 
@@ -197,6 +199,19 @@ export class TopPicksComponent implements OnInit {
         console.log(`my close positions : ${JSON.stringify(body)}`);
         return body;
       })
+    );
+  }
+
+  getClosePrice(event:any){
+    let symbol = event.target.value;
+    console.log(`symbol: ${symbol}`);
+    this.service.getPriceObject(symbol).subscribe(
+      (data)=>{
+        console.log(`In getClosePrice, data:${JSON.stringify(data)}`);
+        this.openPositionsForm.patchValue({
+          buy_price: data.close
+        });
+      }
     );
   }
 }

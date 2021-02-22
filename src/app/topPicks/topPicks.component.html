@@ -47,7 +47,7 @@
               <tr>
                 <th class="text-center" scope="col">Company</th>
                 <th class="text-center" scope="col">Symbol</th>
-                <th class="text-center" scope="col">Sector</th>
+                <th class="text-center" scope="col">Industry rank</th>
                 <th class="text-center" scope="col">Price</th>
                 <th class="text-center" scope="col">Gain/Loss</th>
                 <th class="text-center" scope="col">Matching Score</th>
@@ -63,7 +63,15 @@
                   <a href="/symbolDetails/{{ topStock.symbol }}">{{ topStock.symbol }}</a>
                 </td>
                 <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
-                  {{ topStock.sector }}
+                  <div *ngIf="topStock.industry && topStock.industryRank">
+                    <a href="/subSectorDetails/{{topStock.industryId}}">
+                      {{ topStock.industry }}
+                    </a>
+                    (<span class="font-weight-bold">{{topStock.industryRank}}</span>/144)
+                  </div>
+                  <div *ngIf="!topStock.industry || !topStock.industryRank">
+                    N/A
+                  </div>
                 </td>
                 <td class="text-center">{{ topStock.price }}</td>
                 <td
@@ -114,7 +122,7 @@
               <tr>
                 <th class="text-center" scope="col">Company</th>
                 <th class="text-center" scope="col">Symbol</th>
-                <th class="text-center" scope="col">Sector</th>
+                <th class="text-center" scope="col">Industry rank</th>
                 <th class="text-center" scope="col">Price</th>
                 <th class="text-center" scope="col">Gain/Loss</th>
                 <th class="text-center" scope="col">Action</th>
@@ -128,8 +136,19 @@
                 <td class="text-center">
                   <a href="/symbolDetails/{{ topStock.symbol }}">{{ topStock.symbol }}</a>
                 </td>
-                <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
-                  {{ topStock.sector }}
+                <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;font-size: 14px;">
+                  <div *ngIf="topStock.industry && topStock.industryRank">
+                    <a href="/subSectorDetails/{{topStock.industryId}}">
+                      {{ topStock.industry }}
+                    </a>
+                    (<span class="font-weight-bold">{{topStock.industryRank}}</span>/144)
+                    <div *ngFor="let industryBadge of topStock.industryBadgeList">
+                      <span class="badge badge-pill badge-info">{{ industryBadge }}</span>
+                    </div>
+                  </div>
+                  <div *ngIf="!topStock.industry || !topStock.industryRank">
+                    N/A
+                  </div>
                 </td>
                 <td class="text-center">{{ topStock.price | currency }}</td>
                 <td class="text-center small" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
@@ -196,13 +215,6 @@
                 </td>
                 <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
                   {{ bestStock.sector }}
-                  <!-- <p class="small" *ngIf="bestStock.sector == 'Finance'">Best perfoming sector (+0.5%)</p>
-                  <p class="small" *ngIf="bestStock.sector == 'Utilities'">2nd Best perfoming sector (+0.27%)</p>
-                  <p class="small" *ngIf="bestStock.sector == 'Industrial Services'">
-                    3rd Best perfoming sector (+0.12%)
-                  </p>
-                  <p class="small" *ngIf="bestStock.sector == 'Process Industries'">-0.37%</p>
-                  <p class="small" *ngIf="bestStock.sector == 'Producer Manufacturing'">-1.1%</p> -->
                 </td>
                 <td class="text-center">
                   <a href="/symbolDetails/{{ bestStock.symbol }}">{{ bestStock.symbol }}</a>
@@ -265,6 +277,7 @@
           style="font-size: 14px;"
           autocomplete="symbol"
           placeholder="Symbol"
+          (blur)="getClosePrice($event)"
           required
         />
         <small
@@ -274,6 +287,24 @@
           Please provide a valid symbol.
         </small>
         <div class="invalid-tooltip">Please provide a valid symbol.</div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <input
+          type="text"
+          class="form-control"
+          style="font-size: 14px;"
+          formControlName="buy_date"
+          autocomplete="buy_date"
+          placeholder="Buy Date (mm/dd/yyyy)"
+          required
+        />
+        <small
+          [hidden]="openPositionsForm.controls.buy_date.valid || openPositionsForm.controls.buy_date.untouched"
+          class="text-danger"
+        >
+          Please provide a valid buy date in yyyy-mm-dd format.
+        </small>
+        <div class="invalid-tooltip">Please provide a valid buy date.</div>
       </div>
       <div class="col-md-3 mb-3">
         <input
@@ -292,24 +323,6 @@
           Please provide a valid buy price.
         </small>
         <div class="invalid-tooltip">Please provide a valid buy price.</div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <input
-          type="text"
-          class="form-control"
-          style="font-size: 14px;"
-          formControlName="buy_date"
-          autocomplete="buy_date"
-          placeholder="Buy Date (yyyy-mm-dd)"
-          required
-        />
-        <small
-          [hidden]="openPositionsForm.controls.buy_date.valid || openPositionsForm.controls.buy_date.untouched"
-          class="text-danger"
-        >
-          Please provide a valid buy date in yyyy-mm-dd format.
-        </small>
-        <div class="invalid-tooltip">Please provide a valid buy date.</div>
       </div>
       <div class="col-md-3 mb-3">
         <button 
@@ -356,9 +369,10 @@
                 <tr>
                   <th class="text-center" scope="col"></th>
                   <th class="text-center" scope="col">Company Name</th>
-                  <th class="text-center" scope="col">Sector</th>
-                  <th class="text-center" scope="col">Symbol</th>
-                  <th class="text-center" scope="col">Direction</th>
+                  <th class="text-center" scope="col">
+                    Industry rank
+                    <div class="small">1 day performence</div>
+                  </th>
                   <th class="text-center" scope="col">Curr. Price</th>
                   <th class="text-center" scope="col">Stop Loss</th>
                   <th class="text-center" scope="col">Gain/Loss</th>              
@@ -408,23 +422,28 @@
                     </div>    
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
-                    <p class="card-text" [innerHTML]="txn.name | truncate: 15"></p>
-                  </td>
-                  <td class="text-center" style="padding: 12px 1px;">
-                    <p class="card-text"  *ngIf="txn.sector" [innerHTML]="txn.sector | truncate: 10"></p>
-                    <p class="card-text"  *ngIf="!txn.sector">N/A</p>
-                  </td>
-                  <td class="text-center" style="padding: 12px 1px;">
-                    {{txn.symbol}}
+                    (<span class="font-weight-bold">{{txn.symbol}}</span>)&nbsp;{{ txn.name | truncate: 15}}
                     <br>
                     <span title="Stop-loss alert triggered to sell" *ngIf="txn.stopLossAlert === 1" class="badge badge-danger">SELL ALERT</span>
+                  </td>
+                  <td class="text-center" style="padding: 12px 1px;">
+                    <div *ngIf="txn.industry && txn.industryRank">
+                      <a href="/subSectorDetails/{{txn.industryId}}">
+                        {{ txn.industry | truncate: 15}}
+                      </a>
+                      (<span class="font-weight-bold">{{txn.industryRank}}</span>/144)
+                      <div *ngFor="let industryBadge of txn.industryBadgeList">
+                        <span class="badge badge-pill badge-info">{{ industryBadge }}</span>
+                      </div>
+                    </div>
+                    <div *ngIf="!txn.industry || !txn.industryRank">
+                      N/A
+                    </div>
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
                     <i *ngIf="txn.direction == 1" class="fas fa-arrow-up"></i>
                     <i *ngIf="txn.direction == -1" class="fas fa-arrow-down"></i>
                     <i *ngIf="txn.direction == 0" class="fas fa-arrow-right"></i>
-                  </td>
-                  <td class="text-center" style="padding: 12px 1px;">
                     {{txn.close | currency}}
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
