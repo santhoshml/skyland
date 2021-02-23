@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { AuthenticationService, CredentialsService } from '@app/auth';
 import { map, catchError } from 'rxjs/operators';
+import { HeaderService } from './header.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-header',
@@ -15,12 +17,16 @@ export class HeaderComponent implements OnInit {
   searchForm!: FormGroup;
   userModelProfile$: Observable<any>;
   webDisplayDate$: Observable<string>;
+  closeResult: string;
+  userFeedback: string;
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
-    private credentialsService: CredentialsService
+    private credentialsService: CredentialsService,
+    private service: HeaderService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -83,5 +89,50 @@ export class HeaderComponent implements OnInit {
 
   getJSONValue(obj: any) {
     return JSON.stringify(obj);
+  }
+
+  emojiClick(value:string){
+    console.log(`In emojiClick: ${value}`);
+    const credentials = this.credentialsService.credentials;
+    let userId = credentials ? credentials.id: null;
+    let email = credentials ? credentials.email: null;
+    let data = {
+      userId: userId,
+      email: email,
+      value: value,
+      url: this.router.url
+    };
+    this.service.updateEmojiValue(data).subscribe();
+  }
+
+  openModal(content: any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+        const credentials = this.credentialsService.credentials;
+        let userId = credentials ? credentials.id: null;
+        let email = credentials ? credentials.email: null;    
+        let data = {
+          comments: this.userFeedback,
+          userId: userId,
+          email: email,
+          url: this.router.url
+        };
+        this.service.recordUserFeedback(data).subscribe();
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

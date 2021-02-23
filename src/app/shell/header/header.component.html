@@ -38,18 +38,6 @@
           <span translate>Profile</span>
         </a>
 
-        <!-- <div *ngIf="userModelProfile$ | async as userModel; else naComment" class="navbar-brand">
-          Accuracy : 
-          <span *ngIf="userModel.accuracy" class="badge badge-secondary accuracy-label">{{ userModel.accuracy | percent: '1.0-2' }}</span>
-        </div> -->
-
-        <!-- <ng-template #naComment>
-          <div class="navbar-brand">
-            Accuracy : <span class="badge badge-secondary accuracy-label">N/A</span>            
-          </div>
-        </ng-template> -->
-
-        <!-- <app-language-selector inNavbar="true" menuClass="dropdown-menu dropdown-menu-right"></app-language-selector> -->
         <div class="nav-item" ngbDropdown>
           <a id="user-dropdown" class="nav-link" ngbDropdownToggle>
             <span class="font-weight-bold">{{ email }}</span>
@@ -67,10 +55,42 @@
       </div>
     </div>
   </nav>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="webDisplayDate$ | async as webDisplayDateElement">
+  <nav class="navbar navbar-expand-md navbar-light bg-light" *ngIf="webDisplayDate$ | async as webDisplayDateElement">
     <small class="close-of-date"
       >Data & Analysis updates as of close of Market :
       <span style="font-weight: bolder">{{ webDisplayDateElement.value_str }}</span>
     </small>
+    <div class="navbar-nav ml-auto">
+      <span class="small close-of-date mt-2">How are we doing ?</span>
+      <a class="ml-4 mr-2" style="cursor: pointer;" (click)="!!emojiClick('happy')">
+        <img style="width: 25px;" src="assets/happy_emoji.png">
+      </a>
+      <a class="ml-2 mr-2" style="cursor: pointer;" (click)="!!emojiClick('neutral')">
+        <img style="width: 25px;" src="assets/neutral_emoji.png">
+      </a>
+      <a class="ml-2 mr-4" style="cursor: pointer;" (click)="!!emojiClick('sad')">
+        <img style="width: 25px;" src="assets/sad_emoji.png">
+      </a>
+      <button type="button" (click)="openModal(mymodal)" class="btn btn-secondary btn-sm">Leave us a comment</button>
+    </div>
   </nav>
 </header>
+
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Thank you for the feedback !</h4>
+  </div>
+  <div class="modal-body">
+    <textarea
+      class="form-control"
+      rows="5"
+      [(ngModel)]="userFeedback"
+      type="text"
+      placeholder="Add your feedback here ..."
+    ></textarea>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary btn-sm" aria-label="Close" (click)="modal.dismiss('Cross click')">Close</button>
+    <button type="button" class="btn btn btn-primary btn-sm" (click)="modal.close('Save click')">Update</button>
+  </div>
+</ng-template>
