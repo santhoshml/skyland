@@ -48,7 +48,7 @@ export class RoiDistributionComponent implements OnInit {
         1,
         this.credentialsService.credentials.id
       );
-      console.log(`data: ${JSON.stringify(data)}`);
+      // console.log(`data: ${JSON.stringify(data)}`);
       this.roiData = data.roi;
       this.holdDaysData = data.holdDays;
     });
@@ -62,7 +62,7 @@ export class RoiDistributionComponent implements OnInit {
         1,
         this.credentialsService.credentials.id
       );
-      console.log(`txn stats: ${JSON.stringify(data)}`);
+      // console.log(`txn stats: ${JSON.stringify(data)}`);
       this.txnStats = data;
     });
   }

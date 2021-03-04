@@ -149,7 +149,7 @@ export class SymbolDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(`I am in ngOnInit`);
+    // console.log(`I am in ngOnInit`);
     this.googleAnalyticsService.eventEmitter(
       'symbolDetails-init',
       'symbolDetails',
@@ -480,14 +480,14 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   onSelect(data: any): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
 
   onActivate(data: any): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
+    // console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
   onDeactivate(data: any): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 }

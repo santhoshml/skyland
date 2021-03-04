@@ -29,7 +29,7 @@ export class ListCardsService {
       .pipe(
         map((body: ListCard[]) => body),
         catchError((err) => {
-          console.log(`err: ${JSON.stringify(err)}`);
+          // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
       );
@@ -43,7 +43,7 @@ export class ListCardsService {
       .pipe(
         map((body: ListCard[]) => body),
         catchError((err) => {
-          console.log(`err: ${JSON.stringify(err)}`);
+          // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
       );

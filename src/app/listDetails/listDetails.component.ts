@@ -64,10 +64,10 @@ export class ListDetailsComponent implements OnInit {
 
     // this.listDetails$ = this.listDetailsService.getListDetails();
     this.sub = this.route.params.subscribe((params) => {
-      console.log(`params : ${JSON.stringify(params)}`);
+      // console.log(`params : ${JSON.stringify(params)}`);
       this.listId = +params['listId']; // (+) converts string 'listId' to a number
 
-      console.log(`this.listId : ${this.listId}`);
+      // console.log(`this.listId : ${this.listId}`);
 
       // get the list from BE
       this.listDetails$ = this.listDetailsService.getListDetails(this.listId).pipe(
@@ -101,7 +101,7 @@ export class ListDetailsComponent implements OnInit {
   }
 
   getSymbolDetails(listRow: ListRow) {
-    console.log(`navigate to SymbolDetails, ${JSON.stringify(listRow)}`);
+    // console.log(`navigate to SymbolDetails, ${JSON.stringify(listRow)}`);
     this.googleAnalyticsService.eventEmitter(
       'symbolDetails-forwading',
       'symbolDetails',

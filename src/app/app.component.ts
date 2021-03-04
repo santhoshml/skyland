@@ -29,7 +29,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        console.log(event.urlAfterRedirects);
+        // console.log(event.urlAfterRedirects);
         gtag('config', 'UA-177829863-1', { page_path: event.urlAfterRedirects });
       }
     });

@@ -68,10 +68,10 @@ export class SubSectorDetailsComponent implements OnInit {
 
     // this.listDetails$ = this.listDetailsService.getListDetails();
     this.sub = this.route.params.subscribe((params) => {
-      console.log(`params : ${JSON.stringify(params)}`);
+      // console.log(`params : ${JSON.stringify(params)}`);
       let key = params['key']; // (+) converts string 'listId' to a number
 
-      console.log(`key : ${key}`);
+      // console.log(`key : ${key}`);
 
       // get the list from BE
       this.subSectorDetailsArr$ = this.subSectorDetailsService.getSubSectorDetails(key).pipe(
@@ -84,11 +84,11 @@ export class SubSectorDetailsComponent implements OnInit {
             1,
             this.credentialsService.credentials.id
           );
-          console.log(`I am in body: ${JSON.stringify(body)}`);
+          // console.log(`I am in body: ${JSON.stringify(body)}`);
           return body;
         }),
         catchError((err) => {
-          console.log(`I am catchError`);
+          // console.log(`I am catchError`);
           if (err.status === 401) {
             this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
           } else {
@@ -107,7 +107,7 @@ export class SubSectorDetailsComponent implements OnInit {
   }
 
   getSymbolDetails(row: SubSectorDetailsRow) {
-    console.log(`navigate to SymbolDetails, ${JSON.stringify(row)}`);
+    // console.log(`navigate to SymbolDetails, ${JSON.stringify(row)}`);
     this.googleAnalyticsService.eventEmitter(
       'symbolDetails-forwading',
       'symbolDetails',

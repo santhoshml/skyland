@@ -74,7 +74,7 @@ export class SymbolDetailsService {
     return this.httpClient.post(routes.addToFavorites(symbol), {}).pipe(
       map((body: any) => body),
       catchError((err: any) => {
-        console.log(`Error while adding to favorites, ${JSON.stringify(err)}`);
+        // console.log(`Error while adding to favorites, ${JSON.stringify(err)}`);
         return throwError('Error, could not POST to favorites :-(');
       })
     );
@@ -95,7 +95,7 @@ export class SymbolDetailsService {
     return this.httpClient.delete(routes.addToFavorites(symbol), {}).pipe(
       map((body: any) => body),
       catchError((err: any) => {
-        console.log(`Error while removing from favorites, ${JSON.stringify(err)}`);
+        // console.log(`Error while removing from favorites, ${JSON.stringify(err)}`);
         return throwError('Error, could not DELETE from favorites :-(');
       })
     );
@@ -123,7 +123,7 @@ export class SymbolDetailsService {
       .pipe(
         map((body: any) => body),
         catchError((err: any) => {
-          console.log(`Error while adding to userNotes, ${JSON.stringify(err)}`);
+          // console.log(`Error while adding to userNotes, ${JSON.stringify(err)}`);
           return throwError('Error, could not POST to userNotes :-(');
         })
       );
@@ -138,7 +138,7 @@ export class SymbolDetailsService {
         return body;
       }),
       catchError((err: any) => {
-        console.log(`Error while adding to userNotes, ${JSON.stringify(err)}`);
+        // console.log(`Error while adding to userNotes, ${JSON.stringify(err)}`);
         return throwError('Error, could not POST to userNotes :-(');
       })
     );

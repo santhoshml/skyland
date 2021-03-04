@@ -77,7 +77,7 @@ export class UserProfileComponent implements OnInit {
 
     // set user profile
     this.userProfile = this.credentialsService.userProfileModel;
-    console.log(`this.userProfile : ${JSON.stringify(this.userProfile)}`);
+    // console.log(`this.userProfile : ${JSON.stringify(this.userProfile)}`);
   }
 
   getArray(arr: string[]) {

@@ -83,7 +83,7 @@ export class UploadPortfolioComponent implements OnInit {
   }
 
   viewDistribution() {
-    console.log(`In viewDistributions`);
+    // console.log(`In viewDistributions`);
     this.googleAnalyticsService.eventEmitter(
       'uploadPortfolio',
       'uploadPortfolio',
@@ -103,7 +103,7 @@ export class UploadPortfolioComponent implements OnInit {
     this.http
       .post(`${environment.serverUrl}/brokerage/${this.selectedPlatformKey}/portfolio`, formData)
       .subscribe((res) => {
-        console.log(res);
+        // console.log(res);
         this.googleAnalyticsService.eventEmitter(
           'uploadPortfolio',
           'uploadPortfolio-submit',
@@ -119,7 +119,7 @@ export class UploadPortfolioComponent implements OnInit {
   }
 
   onSelectPlatform(selectedPlatform: string) {
-    console.log(`selectedPlatform: ${selectedPlatform}`);
+    // console.log(`selectedPlatform: ${selectedPlatform}`);
     this.googleAnalyticsService.eventEmitter(
       'uploadPortfolio',
       'onSelectPlatform-selected',

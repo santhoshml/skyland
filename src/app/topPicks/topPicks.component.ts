@@ -26,12 +26,13 @@ export class TopPicksComponent implements OnInit {
   myClosePositions$: Observable<any>;
   hasConfidenceScore = false;
   newOpenPositionSymbol:string;
+  openPositions:any = [];
 
   openPositionsForm!: FormGroup;
   showOpenPositionSuccess=false;
   sellPrice:string;
   sellDate:string;
-
+  idToShow = 0;
 
   constructor(
     private service: TopPicksService,
@@ -57,6 +58,10 @@ export class TopPicksComponent implements OnInit {
     // setup the Add new positions form
     this.initOpenPositionsForm();
 
+    // default close position date
+    let todayDate = moment().format("MM/DD/YYYY");
+    this.sellDate = todayDate;
+
     // set user profile
     this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
       map((body) => {
@@ -67,18 +72,18 @@ export class TopPicksComponent implements OnInit {
 
     this.topStocks$ = this.service.getTopStocks().pipe(
       map((body) => {
-        console.log(`topStocks : ${JSON.stringify(body)}`);
+        // console.log(`topStocks : ${JSON.stringify(body)}`);
         if (body && body.length > 0 && body[0].confidence) {
           this.hasConfidenceScore = true;
         }
-        console.log(`this.hasConfidenceScore : ${this.hasConfidenceScore}`);
+        // console.log(`this.hasConfidenceScore : ${this.hasConfidenceScore}`);
         return body;
       })
     );
 
     this.yourBestStocks$ = this.service.getYourBestStocks().pipe(
       map((body) => {
-        console.log(`yourBestStocks: ${JSON.stringify(body)}`);
+        // console.log(`yourBestStocks: ${JSON.stringify(body)}`);
         if (body.list && body.list.list) {
           return body.list.list;
         }
@@ -99,11 +104,11 @@ export class TopPicksComponent implements OnInit {
   }
 
   thumbsUp(symbol: string) {
-    console.log(`thumbsup for ${symbol}`);
+    // console.log(`thumbsup for ${symbol}`);
   }
 
   thumbsDown(symbol: string) {
-    console.log(`thumbsdown for ${symbol}`);
+    // console.log(`thumbsdown for ${symbol}`);
   }
 
   isFavorite(symbol: string) {
@@ -148,14 +153,19 @@ export class TopPicksComponent implements OnInit {
     let formvalue = this.openPositionsForm.value;
     // console.log(`formvalue: ${JSON.stringify(formvalue)}`);
     formvalue.symbol = formvalue.symbol.toUpperCase();
+    formvalue.buy_date = moment(formvalue.buy_date, "MM/DD/YYYY").format("YYYY-MM-DD");
     this.newOpenPositionSymbol = formvalue.symbol;
     this.service.addOpenPosition(formvalue).subscribe(
       (data)=>{
-      console.log(`In addOpenPositions: ${JSON.stringify(data)}`);
-      this.openPositionsForm.reset();
-      this.openPositionsForm.markAsPristine();
-      this.showOpenPositionSuccess=true;
-      this.readOpenPositions();
+        let todayDate = moment().format("MM/DD/YYYY");
+        // console.log(`In addOpenPositions: ${JSON.stringify(data)}`);
+        this.openPositionsForm.reset();
+        this.openPositionsForm.markAsPristine();
+        this.showOpenPositionSuccess=true;
+        this.openPositionsForm.patchValue({
+          buy_date: todayDate
+        });
+        this.readOpenPositions();
     });
   }
 
@@ -168,26 +178,28 @@ export class TopPicksComponent implements OnInit {
     return `#collapseExample${id}`
   }
   
-  closePosition(id: number, form: NgForm){
-    console.log(`In closePosition, id:${id}`);
+  closePosition(id: number){
+    // console.log(`In closePosition, id:${id}`);
     let closePositionData = {
       id: id,
-      sellPrice: form.value.sellPrice,
-      sellDate: form.value.sellDate
+      sellPrice: this.sellPrice,      
+      sellDate: moment(this.sellDate, "MM/DD/YYYY").format("YYYY-MM-DD")
     };
     this.service.closePosition(closePositionData).subscribe(
       (data)=>{
-        form.reset();
-        form.resetForm();
         this.readOpenPositions();
         this.readClosedPositions();
+
+        let todayDate = moment().format("MM/DD/YYYY");
+        this.sellDate = todayDate;    
     });
   }
 
   readOpenPositions(){    
     this.myOpenPositions$ = this.service.getOpenPositions().pipe(
       map((body)=>{
-        console.log(`my open positions : ${JSON.stringify(body)}`);
+        // console.log(`my open positions : ${JSON.stringify(body)}`);
+        this.openPositions = body;
         return body;
       })
     );
@@ -196,22 +208,46 @@ export class TopPicksComponent implements OnInit {
   readClosedPositions(){
     this.myClosePositions$ = this.service.getClosePositions().pipe(
       map((body)=>{
-        console.log(`my close positions : ${JSON.stringify(body)}`);
+        // console.log(`my close positions : ${JSON.stringify(body)}`);
         return body;
       })
     );
   }
 
   getClosePrice(event:any){
-    let symbol = event.target.value;
-    console.log(`symbol: ${symbol}`);
+    let symbol = event.target.value.toUpperCase();
+    // console.log(`symbol: ${symbol}`);
     this.service.getPriceObject(symbol).subscribe(
       (data)=>{
-        console.log(`In getClosePrice, data:${JSON.stringify(data)}`);
+        // console.log(`In getClosePrice, data:${JSON.stringify(data)}`);
         this.openPositionsForm.patchValue({
-          buy_price: data.close
+          buy_price: data.close,
+          symbol: symbol
         });
       }
     );
+  }
+
+  enableClosePositionFlag(id:number) {
+    // console.log(`start enableClosePositionFlag, id:${id}`);
+    if(this.idToShow === id){
+      this.idToShow = 0;
+    } else {
+      this.idToShow = id;
+      let openPosition = this.getOpenPositionById(id);
+      // console.log(`openPosition: ${JSON.stringify(openPosition)}`);
+      this.sellPrice = openPosition.close; 
+    }
+  }
+
+  getOpenPositionById(id:number) {
+    return this.openPositions.length && this.openPositions.find(ele => ele.id === id);
+  }
+
+  deleteOpenPosition(id:number) {
+    // console.log(`In deleteOpenPosition, id: ${id}`);
+    this.service.deleteOpenPosition(id).subscribe((data)=>{
+      this.readOpenPositions();
+    })
   }
 }

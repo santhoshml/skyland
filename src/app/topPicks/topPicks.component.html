@@ -28,7 +28,7 @@
       >
     </div>
   </nav>
-  <div class="tab-content" id="nav-tabContent">
+  <div class="tab-content mb-5" id="nav-tabContent">
     <div class="tab-pane fade show active card" id="nav-topStocks" role="tabpanel" aria-labelledby="nav-topStocks-tab">
       <div *ngIf="topStocks$ | async as topStocks">
         <div *ngIf="hasConfidenceScore">
@@ -38,7 +38,12 @@
                 <li>
                   Stocks in uptrend and at a good point to enter, based on price, volume and candlesticks pattern.
                 </li>
-                <li>Displays matching score with your investing style and predicted gain/loss.</li>
+                <li>
+                  Displays matching score with your investing style and predicted gain/loss.
+                </li>
+                <li>
+                  Ranks particular stock industry group aganist 144 total industries in the market
+                </li>
               </ul>
             </div>
           </div>
@@ -47,7 +52,7 @@
               <tr>
                 <th class="text-center" scope="col">Company</th>
                 <th class="text-center" scope="col">Symbol</th>
-                <th class="text-center" scope="col">Industry rank</th>
+                <th class="text-center" scope="col">Industry</th>
                 <th class="text-center" scope="col">Price</th>
                 <th class="text-center" scope="col">Gain/Loss</th>
                 <th class="text-center" scope="col">Matching Score</th>
@@ -63,13 +68,12 @@
                   <a href="/symbolDetails/{{ topStock.symbol }}">{{ topStock.symbol }}</a>
                 </td>
                 <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;">
-                  <div *ngIf="topStock.industry && topStock.industryRank">
+                  <div *ngIf="topStock.industry">
                     <a href="/subSectorDetails/{{topStock.industryId}}">
                       {{ topStock.industry }}
                     </a>
-                    (<span class="font-weight-bold">{{topStock.industryRank}}</span>/144)
                   </div>
-                  <div *ngIf="!topStock.industry || !topStock.industryRank">
+                  <div *ngIf="!topStock.industry">
                     N/A
                   </div>
                 </td>
@@ -113,7 +117,12 @@
                 <li>
                   Stocks in uptrend and at a good point to enter, based on price, volume and candlesticks pattern.
                 </li>
-                <li>Upload your transaction history to matchup with your investing style.</li>
+                <li>
+                  Upload your transaction history to matchup with your investing style.
+                </li>
+                <li>
+                  Ranks particular stock industry group aganist 144 total industries in the market
+                </li>
               </ul>
             </div>
           </div>
@@ -122,7 +131,7 @@
               <tr>
                 <th class="text-center" scope="col">Company</th>
                 <th class="text-center" scope="col">Symbol</th>
-                <th class="text-center" scope="col">Industry rank</th>
+                <th class="text-center" scope="col">Industry</th>
                 <th class="text-center" scope="col">Price</th>
                 <th class="text-center" scope="col">Gain/Loss</th>
                 <th class="text-center" scope="col">Action</th>
@@ -137,16 +146,15 @@
                   <a href="/symbolDetails/{{ topStock.symbol }}">{{ topStock.symbol }}</a>
                 </td>
                 <td class="text-center" style="word-wrap: break-word;min-width: 160px;max-width: 160px;font-size: 14px;">
-                  <div *ngIf="topStock.industry && topStock.industryRank">
+                  <div *ngIf="topStock.industry">
                     <a href="/subSectorDetails/{{topStock.industryId}}">
                       {{ topStock.industry }}
                     </a>
-                    (<span class="font-weight-bold">{{topStock.industryRank}}</span>/144)
                     <div *ngFor="let industryBadge of topStock.industryBadgeList">
                       <span class="badge badge-pill badge-info">{{ industryBadge }}</span>
                     </div>
                   </div>
-                  <div *ngIf="!topStock.industry || !topStock.industryRank">
+                  <div *ngIf="!topStock.industry">
                     N/A
                   </div>
                 </td>
@@ -256,7 +264,7 @@
     </div>
   </div>
 
-  <form class="needs-validation card p-3 bg-light mt-5" [formGroup]="openPositionsForm" (ngSubmit)="addOpenPositions()" novalidate>
+  
     <h2>My Portfolio</h2>
     <p>
       Add new open positions so we can track and alert you when the it hits the
@@ -268,73 +276,75 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="form-row">
-      <div class="col-md-3 mb-3">
-        <input
-          type="text"
-          class="form-control"
-          formControlName="symbol"
-          style="font-size: 14px;"
-          autocomplete="symbol"
-          placeholder="Symbol"
-          (blur)="getClosePrice($event)"
-          required
-        />
-        <small
-          [hidden]="openPositionsForm.controls.symbol.valid || openPositionsForm.controls.symbol.untouched"
-          class="text-danger"
-        >
-          Please provide a valid symbol.
-        </small>
-        <div class="invalid-tooltip">Please provide a valid symbol.</div>
+    <form class="needs-validation card p-3 bg-light mt-1" [formGroup]="openPositionsForm" (ngSubmit)="addOpenPositions()" novalidate>
+      <div class="form-row">
+        <div class="col-md-3 mb-3">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="symbol"
+            style="font-size: 14px;"
+            autocomplete="symbol"
+            placeholder="Symbol"
+            (blur)="getClosePrice($event)"
+            required
+          />
+          <small
+            [hidden]="openPositionsForm.controls.symbol.valid || openPositionsForm.controls.symbol.untouched"
+            class="text-danger"
+          >
+            Please provide a valid symbol.
+          </small>
+          <div class="invalid-tooltip">Please provide a valid symbol.</div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <input
+            type="text"
+            class="form-control"
+            style="font-size: 14px;"
+            formControlName="buy_date"
+            autocomplete="buy_date"
+            placeholder="Buy Date (mm/dd/yyyy)"
+            required
+          />
+          <small
+            [hidden]="openPositionsForm.controls.buy_date.valid || openPositionsForm.controls.buy_date.untouched"
+            class="text-danger"
+          >
+            Please provide a valid buy date in yyyy-mm-dd format.
+          </small>
+          <div class="invalid-tooltip">Please provide a valid buy date.</div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <input
+            type="text"
+            class="form-control"
+            style="font-size: 14px;"
+            formControlName="buy_price"
+            autocomplete="buy_price"
+            placeholder="Buy Price"
+            required
+          />
+          <small
+            [hidden]="openPositionsForm.controls.buy_price.valid || openPositionsForm.controls.buy_price.untouched"
+            class="text-danger"
+          >
+            Please provide a valid buy price.
+          </small>
+          <div class="invalid-tooltip">Please provide a valid buy price.</div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <button 
+            class="btn btn-primary btn-block" 
+            style="font-size: 14px;" 
+            [disabled]="openPositionsForm.invalid"
+            type="submit">
+            Add
+          </button>
+        </div>
       </div>
-      <div class="col-md-3 mb-3">
-        <input
-          type="text"
-          class="form-control"
-          style="font-size: 14px;"
-          formControlName="buy_date"
-          autocomplete="buy_date"
-          placeholder="Buy Date (mm/dd/yyyy)"
-          required
-        />
-        <small
-          [hidden]="openPositionsForm.controls.buy_date.valid || openPositionsForm.controls.buy_date.untouched"
-          class="text-danger"
-        >
-          Please provide a valid buy date in yyyy-mm-dd format.
-        </small>
-        <div class="invalid-tooltip">Please provide a valid buy date.</div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <input
-          type="text"
-          class="form-control"
-          style="font-size: 14px;"
-          formControlName="buy_price"
-          autocomplete="buy_price"
-          placeholder="Buy Price"
-          required
-        />
-        <small
-          [hidden]="openPositionsForm.controls.buy_price.valid || openPositionsForm.controls.buy_price.untouched"
-          class="text-danger"
-        >
-          Please provide a valid buy price.
-        </small>
-        <div class="invalid-tooltip">Please provide a valid buy price.</div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <button 
-          class="btn btn-primary btn-block" 
-          style="font-size: 14px;" 
-          [disabled]="openPositionsForm.invalid"
-          type="submit">
-          Add
-        </button>
-      </div>
-    </div>
-    <hr/>
+    </form>
+
 
     <nav mt-5>
       <div class="nav nav-tabs" id="nav-tab-positions" role="tablist">
@@ -369,92 +379,112 @@
                 <tr>
                   <th class="text-center" scope="col"></th>
                   <th class="text-center" scope="col">Company Name</th>
+                  <th class="text-center" scope="col">Price</th>
                   <th class="text-center" scope="col">
-                    Industry rank
-                    <div class="small">1 day performence</div>
+                    <a href="https://www.investopedia.com/articles/stocks/09/use-stop-loss.asp" target="_blank">Stop Loss</a>
+                    <i class="fa fa-info-circle" title="Sell if the price reaches this price point, to limit loss" aria-hidden="true"></i>
                   </th>
-                  <th class="text-center" scope="col">Curr. Price</th>
-                  <th class="text-center" scope="col">Stop Loss</th>
-                  <th class="text-center" scope="col">Gain/Loss</th>              
-                  <th class="text-center" scope="col"># days</th>
+                  <th class="text-center" scope="col">Gain % (# days)</th>
+                  <th class="text-center" scope="col">Industry rank</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let txn of myOpenPositions; let i = index" class="table-row">
                   <td style="width: 100px;padding: 12px 1px;">
-                    <button type="button" class="btn btn-info ml-2" data-toggle="collapse" [attr.data-target]="'#collapseExample'+txn.id" aria-expanded="false" aria-controls="collapseExample">
-                      <i class="fas fa-times"></i>
+                    <button 
+                      type="button"
+                      class="btn btn-info btn-block" 
+                      style="margin: 5px; font-size: 9px;height: 1.7em; padding-top: 0;" 
+                      (click)="enableClosePositionFlag(txn.id)">
+                      Close position
                     </button>
-                    <div class="mt-3 collapse" [id]="'collapseExample'+txn.id">
-                      <form class="needs-validation mt-1" #closePositionsForm="ngForm" (ngSubmit)="closePosition(txn.id, closePositionsForm)" novalidate>
-                        <h6 class="ml-3" style="font-size: 12px;">Sell Details</h6>
-                        <input
-                          id="sellPrice"
-                          name="sellPrice"
-                          #pickedNameSellPrice="ngModel"
-                          [(ngModel)]="sellPrice"
-                          type="text"
-                          style="height: 1.5em; font-size: 10px;"
-                          class="form-control mb-2 input-sm"
-                          placeholder="Sell Price"
-                          required
-                        />
-                        <input
-                          id="sellDate"
-                          name="sellDate"
-                          #pickedNameSellDate="ngModel"
-                          [(ngModel)]="sellDate"
-                          type="text"
-                          style="height: 1.5em; font-size: 10px;"
-                          class="form-control mb-2 input-sm"
-                          autocomplete="sell_date"
-                          placeholder="yyyy-mm-dd"
-                          required
-                        />
-                        <button 
-                          class="btn btn-primary btn-block" 
-                          style="width: fit-content; margin: auto; font-size: 9px;height: 1.5em; padding-top: 0;" 
-                          [disabled]="closePositionsForm.form.invalid"
-                          type="submit">
-                        Submit
-                        </button>
-                      </form>
+                    <button 
+                      type="button"
+                      class="btn btn-warning btn-block mt-3" 
+                      style="margin: 5px; font-size: 9px;height: 1.7em; padding-top: 0;" 
+                      (click)="deleteOpenPosition(txn.id)">
+                      Delete
+                    </button>                    
+                    <div class="mt-3 ml-3" *ngIf="txn.id === idToShow">
+                        <h6 class="font-weight-bold" style="font-size: 12px;">Sell Details</h6>
                     </div>    
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
-                    (<span class="font-weight-bold">{{txn.symbol}}</span>)&nbsp;{{ txn.name | truncate: 15}}
+                    (<span class="font-weight-bold">
+                      <a href="/symbolDetails/{{ txn.symbol }}">{{txn.symbol}}</a>
+                    </span>)&nbsp;{{ txn.name | truncate: 15}}
                     <br>
                     <span title="Stop-loss alert triggered to sell" *ngIf="txn.stopLossAlert === 1" class="badge badge-danger">SELL ALERT</span>
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
-                    <div *ngIf="txn.industry && txn.industryRank">
-                      <a href="/subSectorDetails/{{txn.industryId}}">
-                        {{ txn.industry | truncate: 15}}
-                      </a>
-                      (<span class="font-weight-bold">{{txn.industryRank}}</span>/144)
-                      <div *ngFor="let industryBadge of txn.industryBadgeList">
-                        <span class="badge badge-pill badge-info">{{ industryBadge }}</span>
-                      </div>
-                    </div>
-                    <div *ngIf="!txn.industry || !txn.industryRank">
-                      N/A
-                    </div>
-                  </td>
-                  <td class="text-center" style="padding: 12px 1px;">
+                    <div>
                     <i *ngIf="txn.direction == 1" class="fas fa-arrow-up"></i>
                     <i *ngIf="txn.direction == -1" class="fas fa-arrow-down"></i>
                     <i *ngIf="txn.direction == 0" class="fas fa-arrow-right"></i>
                     {{txn.close | currency}}
+                    </div>
+                    <div *ngIf="txn.id === idToShow">
+                      <hr/>
+                      <input
+                        name="sellPrice"
+                        #pickedNameSellPrice="ngModel"
+                        [(ngModel)]="sellPrice"
+                        type="text"
+                        placeholder="Sell Price"
+                        required
+                      />                  
+                    </div>
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
-                    {{txn.stop_loss | currency}}
+                    <div>
+                      {{txn.stop_loss | currency}}
+                    </div>
+                    <div *ngIf="txn.id === idToShow">
+                      <hr/>
+                      <input
+                        name="sellDate"
+                        #pickedNameSellDate="ngModel"
+                        [(ngModel)]="sellDate"
+                        type="text"                        
+                        autocomplete="sell_date"
+                        placeholder="yyyy-mm-dd"
+                        required
+                      />
+                    </div>
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
+                    <div>
                     {{txn.roi/100 | percent}}
+                    (
+                    <span *ngIf="txn.hold_days > 0">{{txn.hold_days}} days</span>
+                    <span *ngIf="txn.hold_days === -1">N/A</span>
+                    )
+                  </div>
+                  <div *ngIf="txn.id === idToShow">
+                    <hr/>
+                    <button 
+                      type="button"
+                      class="btn btn-primary btn-block" 
+                      style="width: fit-content; margin: auto; font-size: 9px;height: 2em; padding-top: 2px;" 
+                      (click)="closePosition(txn.id)">
+                      Submit
+                    </button>
+                  </div>
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
-                    <span *ngIf="txn.hold_days > 0">{{txn.hold_days}}</span>
-                    <span *ngIf="txn.hold_days === -1">N/A</span>
+                    <div>
+                      <div *ngIf="txn.industry">
+                        <a href="/subSectorDetails/{{txn.industryId}}">
+                          {{ txn.industry | truncate: 15}}
+                        </a>
+                        <div *ngFor="let industryBadge of txn.industryBadgeList">
+                          <span class="badge badge-pill badge-info">{{ industryBadge }}</span>
+                        </div>
+                      </div>
+                      <div *ngIf="!txn.industry">
+                        N/A
+                      </div>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -488,7 +518,7 @@
                     <p class="card-text" [innerHTML]="txn.sector | truncate: 20"></p>
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
-                    {{txn.symbol}}
+                    <a href="/symbolDetails/{{ txn.symbol }}">{{txn.symbol}}</a>
                   </td>
                   <td class="text-center" style="padding: 12px 1px;">
                     {{txn.roi/100 | percent}}
@@ -499,12 +529,12 @@
                   </td>
                 </tr>
               </tbody>
-              </table>
+            </table>
           </div>
         </div>
       </div>
     </div>
-  </form>
+  
 
   <ng-template #noDataDiv>
     <div class="text-center mt-10 mb-2">

@@ -77,18 +77,18 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(`In login ngOnInit`);
+    // console.log(`In login ngOnInit`);
 
     this.symbolDetailsService.loadTradingViewScript('tickerTapeWidget', 'embed-widget-ticker-tape', infoWidgetOptions);
 
     this.route.params.subscribe((params) => {
-      console.log(`params in params: ${JSON.stringify(params)}`);
+      // console.log(`params in params: ${JSON.stringify(params)}`);
       this.loginError = params['errMsg'];
     });
 
     // redirected from oauth
     this.route.queryParams.subscribe((params) => {
-      console.log(`params in queryParams : ${JSON.stringify(params)}`);
+      // console.log(`params in queryParams : ${JSON.stringify(params)}`);
       let token = params['token'];
       let email = params['email'];
       let id = params['id'];
@@ -178,7 +178,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           } else {
             this.createAccountError = `Code or Email or password incorrect.`;
           }
-          console.log(`createAccountError : ${this.createAccountError}`);
+          // console.log(`createAccountError : ${this.createAccountError}`);
         }
       );
   }

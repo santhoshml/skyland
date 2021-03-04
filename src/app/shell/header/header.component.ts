@@ -38,12 +38,12 @@ export class HeaderComponent implements OnInit {
     // get date from config
     this.webDisplayDate$ = this.authenticationService.getConfigValue('web_data_display_date').pipe(
       map((body: any) => {
-        console.log(`getConfigValue body: ${JSON.stringify(body)}`);
+        // console.log(`getConfigValue body: ${JSON.stringify(body)}`);
         this.credentialsService.setWebDisplayDate(body.value_str);
         return body;
       }),
       catchError((err) => {
-        console.log(`err: ${JSON.stringify(err)}`);
+        // console.log(`err: ${JSON.stringify(err)}`);
         return of(null);
       })
     );
@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(`symbol: ${this.searchForm.value.symbol}`);
+    // console.log(`symbol: ${this.searchForm.value.symbol}`);
     if (this.searchForm.value.symbol) {
       this.router.navigate(['/symbolDetails', this.searchForm.value.symbol], { replaceUrl: true });
     }
@@ -91,8 +91,8 @@ export class HeaderComponent implements OnInit {
     return JSON.stringify(obj);
   }
 
-  emojiClick(value:string){
-    console.log(`In emojiClick: ${value}`);
+  emojiClick(value:string): boolean{
+    // console.log(`In emojiClick: ${value}`);
     const credentials = this.credentialsService.credentials;
     let userId = credentials ? credentials.id: null;
     let email = credentials ? credentials.email: null;
@@ -103,6 +103,7 @@ export class HeaderComponent implements OnInit {
       url: this.router.url
     };
     this.service.updateEmojiValue(data).subscribe();
+    return true;
   }
 
   openModal(content: any) {

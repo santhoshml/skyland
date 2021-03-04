@@ -11,6 +11,7 @@ const routes = {
   closePositions : () => `/user/txn/close`,
   getClosePositions : () => `/user/txn/close`,
   getPriceObject : (symbol: string) => `/price/symbol/${symbol}`,
+  deleteOpenPosition : (id: number) => `/user/txn/delete/${id}`,
 };
 
 export interface RandomQuoteContext {
@@ -24,6 +25,20 @@ export interface RandomQuoteContext {
 export class TopPicksService {
   constructor(private httpClient: HttpClient) {}
 
+  deleteOpenPosition(id: number): Observable<any> {
+    return this.httpClient
+      .delete(routes.deleteOpenPosition(id), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+    );
+  }  
+
   getPriceObject(symbol: string): Observable<any> {
     return this.httpClient
       .get(routes.getPriceObject(symbol), {
@@ -32,7 +47,7 @@ export class TopPicksService {
       .pipe(
         map((body: any) => body),
         catchError((err) => {
-          console.log(`err: ${JSON.stringify(err)}`);
+          // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
     );
@@ -46,7 +61,7 @@ export class TopPicksService {
       .pipe(
         map((body: any) => body),
         catchError((err) => {
-          console.log(`err: ${JSON.stringify(err)}`);
+          // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
     );
@@ -60,7 +75,7 @@ export class TopPicksService {
       .pipe(
         map((body: any) => body),
         catchError((err) => {
-          console.log(`err: ${JSON.stringify(err)}`);
+          // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
       );
@@ -75,7 +90,7 @@ export class TopPicksService {
       .pipe(
         map((body: any) => body),
         catchError((err) => {
-          console.log(`err: ${JSON.stringify(err)}`);
+          // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
     );
@@ -88,11 +103,11 @@ export class TopPicksService {
       })
       .pipe(
         map((body: any) => {
-          console.log(`In addOpenPosition ${JSON.stringify(body)}`);
+          // console.log(`In addOpenPosition ${JSON.stringify(body)}`);
           return body;
         }),
         catchError((err) => {
-          console.log(`err: ${JSON.stringify(err)}`);
+          // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
       );
@@ -106,7 +121,7 @@ export class TopPicksService {
       .pipe(
         map((body: any) => body),
         catchError((err) => {
-          console.log(`err: ${JSON.stringify(err)}`);
+          // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
       );
@@ -120,7 +135,7 @@ export class TopPicksService {
       .pipe(
         map((body: any) => body),
         catchError((err) => {
-          console.log(`err: ${JSON.stringify(err)}`);
+          // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
       );
