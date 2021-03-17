@@ -1,9 +1,4 @@
 <div class="container mb-5">
-  <div class="p-3 mb-2 bg-warning text-dark text-center" *ngIf="!userProfile$">
-    We do not have a model built for you yet, so you can not find any stocks matching your trading style (with a Matching
-    score)
-  </div>
-
   <nav mt-5>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a
@@ -39,19 +34,22 @@
         <div class="card-body">
           <h5 class="card-title">Trading Ideas</h5>
           <p class="card-text">
-            List of Trading ideas grouped in its own category. This helps traders find the best stock suited to their
-            trading style in the current market.
+            Newest Trading Ideas gaining momentum in the stock market. This list is updated periodically to reflect the
+            market sentiment.
           </p>
           <ul class="pl-0">
             <li style="list-style-type: lower-alpha" class="ml-3 mb-3">
-              <span class="card-text step-text">Each Trading idea has a list of stocks personalized for you.</span>
+              <span class="card-text step-text">Each Trading idea has a list of stocks associated with the idea.</span>
             </li>
             <li style="list-style-type: lower-alpha" class="ml-3 mb-3">
-              <span class="card-text step-text">Lists only the stocks which are predicted to be a GAIN.</span>
+              <span class="card-text step-text">Lists publiclity traded stocks from NASDAQ, NYSE and AMEX.</span>
+            </li>
+            <li style="list-style-type: lower-alpha" class="ml-3 mb-3">
+              <span class="card-text step-text">Click on "GET List" to see the list of stocks in each category.</span>
             </li>
             <li style="list-style-type: lower-alpha" class="ml-3 mb-3">
               <span class="card-text step-text"
-                >Displays matching score of the stock with your trading style in the current market.</span
+                >Each card also displays the percent gain/loss by the ETF for this trading Idea.</span
               >
             </li>
           </ul>

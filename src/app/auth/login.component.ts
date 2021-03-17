@@ -9,6 +9,8 @@ import { AuthenticationService } from './authentication.service';
 import { Credentials } from './credentials.service';
 
 import { SymbolDetailsService } from '../symbolDetails/symbolDetails.service';
+import { SocialAuthService } from 'angularx-social-login';
+import { FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
 
 const log = new Logger('Login');
 
@@ -70,14 +72,19 @@ export class LoginComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private symbolDetailsService: SymbolDetailsService
+    private symbolDetailsService: SymbolDetailsService,
+    private socialAuthService: SocialAuthService
   ) {
     this.activeTab = 'login';
     this.initForm();
   }
 
   ngOnInit() {
-    // console.log(`In login ngOnInit`);
+    console.log(`In login ngOnInit`);
+
+    // this.socialAuthService.authState.subscribe((user) => {
+    //   console.log(`user: ${JSON.stringify(user)}`);
+    // });
 
     this.symbolDetailsService.loadTradingViewScript('tickerTapeWidget', 'embed-widget-ticker-tape', infoWidgetOptions);
 
@@ -98,6 +105,18 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.router.navigate(['/listCards'], { replaceUrl: true });
       }
     });
+  }
+
+  signInWithGoogle(): void {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  signInWithFB(): void {
+    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
+  }
+
+  signOut(): void {
+    this.socialAuthService.signOut();
   }
 
   ngOnDestroy() {}

@@ -1,8 +1,4 @@
 <div class="container">
-  <div class="p-3 mb-2 bg-warning text-dark text-center" *ngIf="!userProfile">
-    We do not have a model built for you yet, so you can not find any stocks matching your trading style (with a Matching
-    score)
-  </div>
   <div *ngIf="listDetails$ | async as listDetails">
     <div class="card mb-5">
       <h5 class="card-header">Trading Idea</h5>
@@ -33,11 +29,11 @@
                 <li class="ml-3 mb-3">
                   <span class="step-text">Click on a symbol to see more details about it</span>
                 </li>
-                <li class="ml-3 mb-3">
+                <!-- <li class="ml-3 mb-3">
                   <span class="step-text"
                     >Upload your old transactions to see the prediction as per you investment style</span
                   >
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
@@ -49,13 +45,13 @@
         <tr>
           <th scope="col">Company Name</th>
           <th scope="col">Symbol</th>
-          <th scope="col">Sector</th>
+          <th scope="col">Industry</th>
+          <!-- <th scope="col">Sector</th> -->
           <th scope="col">Price</th>
           <th scope="col">Trend</th>
-          <th scope="col">
-            Prediction
-            <i class="far fa-question-circle"></i>
-          </th>
+          <th scope="col">Cap</th>
+          <th scope="col">Dividend yeild</th>
+          <th scope="col">PE Ratio</th>
         </tr>
       </thead>
       <tbody>
@@ -64,7 +60,10 @@
           <td>
             <a routerLink="/symbolDetails/{{ listRow.symbol }}">{{ listRow.symbol }}</a>
           </td>
-          <td>{{ listRow.sector }}</td>
+          <td>
+            <a href="/subSectorDetails/{{ listRow.industryId }}">{{ listRow.industry }}</a>
+          </td>
+          <!-- <td>{{ listRow.sector }}</td> -->
           <td>{{ listRow.close | currency }}</td>
           <td>
             <div *ngIf="listRow.strong_uptrend === 1">
@@ -84,19 +83,11 @@
               Downtrend
             </div>
           </td>
+          <td>{{ getPrunedValue(listRow.marketcap) }}</td>
           <td>
-            <span class="badge badge-pill badge-primary" *ngIf="listRow.gain_flag == 1">Gain</span>
-            <span class="badge badge-pill badge-danger" *ngIf="listRow.gain_flag == 0">Loss</span>
-            <span *ngIf="listRow.gain_flag == -1">
-              <div class="text-center small mt-10 mb-2">
-                <br />
-                <br />
-                <a href="/uploadPortfolio">Upload transactions</a> to get this value.
-                <br />
-                <br />
-              </div>
-            </span>
+            {{ listRow.dividendYield | percent: '1.0-2' }}
           </td>
+          <td>{{ listRow.peRatio | number: '1.0-2' }}</td>
         </tr>
       </tbody>
     </table>

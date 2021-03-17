@@ -19,8 +19,8 @@ export interface RandomQuoteContext {
 })
 export class HeaderService {
   constructor(private httpClient: HttpClient) {}
-  
-  updateEmojiValue(data:any): Observable<any> {
+
+  updateEmojiValue(data: any): Observable<any> {
     return this.httpClient
       .post(routes.recordEmoji(), data, {
         withCredentials: true,
@@ -34,7 +34,7 @@ export class HeaderService {
       );
   }
 
-  recordUserFeedback(data:any): Observable<any> {
+  recordUserFeedback(data: any): Observable<any> {
     return this.httpClient
       .post(routes.recordComments(), data, {
         withCredentials: true,

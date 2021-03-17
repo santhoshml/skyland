@@ -91,16 +91,16 @@ export class HeaderComponent implements OnInit {
     return JSON.stringify(obj);
   }
 
-  emojiClick(value:string): boolean{
+  emojiClick(value: string): boolean {
     // console.log(`In emojiClick: ${value}`);
     const credentials = this.credentialsService.credentials;
-    let userId = credentials ? credentials.id: null;
-    let email = credentials ? credentials.email: null;
+    let userId = credentials ? credentials.id : null;
+    let email = credentials ? credentials.email : null;
     let data = {
       userId: userId,
       email: email,
       value: value,
-      url: this.router.url
+      url: this.router.url,
     };
     this.service.updateEmojiValue(data).subscribe();
     return true;
@@ -111,13 +111,13 @@ export class HeaderComponent implements OnInit {
       (result) => {
         this.closeResult = `Closed with: ${result}`;
         const credentials = this.credentialsService.credentials;
-        let userId = credentials ? credentials.id: null;
-        let email = credentials ? credentials.email: null;    
+        let userId = credentials ? credentials.id : null;
+        let email = credentials ? credentials.email : null;
         let data = {
           comments: this.userFeedback,
           userId: userId,
           email: email,
-          url: this.router.url
+          url: this.router.url,
         };
         this.service.recordUserFeedback(data).subscribe();
       },

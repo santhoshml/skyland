@@ -6,6 +6,7 @@ import { ListDetailsService } from './listDetails.service';
 import { Observable, of } from 'rxjs';
 import { CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
+import pruned from 'pruned';
 
 export interface ListDetails {
   success: boolean;
@@ -111,5 +112,9 @@ export class ListDetailsComponent implements OnInit {
       this.credentialsService.credentials.id
     );
     this.router.navigate([`symbolDetails`, listRow.symbol], { replaceUrl: true });
+  }
+
+  getPrunedValue(value: number) {
+    return pruned.Number(value);
   }
 }

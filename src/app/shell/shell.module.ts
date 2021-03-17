@@ -14,15 +14,15 @@ import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
-    TranslateModule, 
-    NgbModule, 
-    AuthModule, 
-    I18nModule, 
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    NgbModule,
+    AuthModule,
+    I18nModule,
     RouterModule,
     FormsModule,
-    BrowserModule
+    BrowserModule,
   ],
   declarations: [HeaderComponent, ShellComponent],
 })

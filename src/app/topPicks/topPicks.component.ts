@@ -22,16 +22,22 @@ export class TopPicksComponent implements OnInit {
   userProfile$: Observable<any>;
   topStocks$: Observable<any>;
   yourBestStocks$: Observable<any>;
+  favorites$: Observable<any>;
+  watchlist$: Observable<any>;
   myOpenPositions$: Observable<any>;
   myClosePositions$: Observable<any>;
   hasConfidenceScore = false;
-  newOpenPositionSymbol:string;
-  openPositions:any = [];
+  newOpenPositionSymbol: string;
+  openPositions: any = [];
+  displayNotificationInTopStocks = false;
+  topStocksNotificationMsg: string;
+  displayNotificationInFavorites = false;
+  favoritesSymbol: string;
 
   openPositionsForm!: FormGroup;
-  showOpenPositionSuccess=false;
-  sellPrice:string;
-  sellDate:string;
+  showOpenPositionSuccess = false;
+  sellPrice: string;
+  sellDate: string;
   idToShow = 0;
 
   constructor(
@@ -59,7 +65,7 @@ export class TopPicksComponent implements OnInit {
     this.initOpenPositionsForm();
 
     // default close position date
-    let todayDate = moment().format("MM/DD/YYYY");
+    let todayDate = moment().format('MM/DD/YYYY');
     this.sellDate = todayDate;
 
     // set user profile
@@ -90,12 +96,13 @@ export class TopPicksComponent implements OnInit {
       })
     );
 
+    this.readFavorites();
     this.readOpenPositions();
     this.readClosedPositions();
   }
 
   private initOpenPositionsForm() {
-    let todayDate = moment().format("MM/DD/YYYY");
+    let todayDate = moment().format('MM/DD/YYYY');
     this.openPositionsForm = this.formBuilder.group({
       symbol: ['', Validators.required],
       buy_price: ['', Validators.required],
@@ -132,8 +139,10 @@ export class TopPicksComponent implements OnInit {
       1,
       this.credentialsService.credentials.id
     );
-    this.symbolDetailsService.addToFavorites(symbol).subscribe((data)=>{
-      this.readOpenPositions();
+    this.symbolDetailsService.addToFavorites(symbol).subscribe((data) => {
+      this.readFavorites();
+      this.displayNotificationInFavorites = true;
+      this.favoritesSymbol = symbol;
     });
   }
 
@@ -149,55 +158,53 @@ export class TopPicksComponent implements OnInit {
     this.symbolDetailsService.removeFromFavorites(symbol).subscribe();
   }
 
-  addOpenPositions(){
+  addOpenPositions() {
     let formvalue = this.openPositionsForm.value;
     // console.log(`formvalue: ${JSON.stringify(formvalue)}`);
     formvalue.symbol = formvalue.symbol.toUpperCase();
-    formvalue.buy_date = moment(formvalue.buy_date, "MM/DD/YYYY").format("YYYY-MM-DD");
+    formvalue.buy_date = moment(formvalue.buy_date, 'MM/DD/YYYY').format('YYYY-MM-DD');
     this.newOpenPositionSymbol = formvalue.symbol;
-    this.service.addOpenPosition(formvalue).subscribe(
-      (data)=>{
-        let todayDate = moment().format("MM/DD/YYYY");
-        // console.log(`In addOpenPositions: ${JSON.stringify(data)}`);
-        this.openPositionsForm.reset();
-        this.openPositionsForm.markAsPristine();
-        this.showOpenPositionSuccess=true;
-        this.openPositionsForm.patchValue({
-          buy_date: todayDate
-        });
-        this.readOpenPositions();
+    this.service.addOpenPosition(formvalue).subscribe((data) => {
+      let todayDate = moment().format('MM/DD/YYYY');
+      // console.log(`In addOpenPositions: ${JSON.stringify(data)}`);
+      this.openPositionsForm.reset();
+      this.openPositionsForm.markAsPristine();
+      this.showOpenPositionSuccess = true;
+      this.openPositionsForm.patchValue({
+        buy_date: todayDate,
+      });
+      this.readOpenPositions();
     });
   }
 
-  closeOpenPositionAlert(){
-    this.showOpenPositionSuccess=false;
+  closeOpenPositionAlert() {
+    this.showOpenPositionSuccess = false;
     this.newOpenPositionSymbol = null;
   }
 
-  getDataTargetValue(id:number){
-    return `#collapseExample${id}`
+  getDataTargetValue(id: number) {
+    return `#collapseExample${id}`;
   }
-  
-  closePosition(id: number){
+
+  closePosition(id: number) {
     // console.log(`In closePosition, id:${id}`);
     let closePositionData = {
       id: id,
-      sellPrice: this.sellPrice,      
-      sellDate: moment(this.sellDate, "MM/DD/YYYY").format("YYYY-MM-DD")
+      sellPrice: this.sellPrice,
+      sellDate: moment(this.sellDate, 'MM/DD/YYYY').format('YYYY-MM-DD'),
     };
-    this.service.closePosition(closePositionData).subscribe(
-      (data)=>{
-        this.readOpenPositions();
-        this.readClosedPositions();
+    this.service.closePosition(closePositionData).subscribe((data) => {
+      this.readOpenPositions();
+      this.readClosedPositions();
 
-        let todayDate = moment().format("MM/DD/YYYY");
-        this.sellDate = todayDate;    
+      let todayDate = moment().format('MM/DD/YYYY');
+      this.sellDate = todayDate;
     });
   }
 
-  readOpenPositions(){    
+  readOpenPositions() {
     this.myOpenPositions$ = this.service.getOpenPositions().pipe(
-      map((body)=>{
+      map((body) => {
         // console.log(`my open positions : ${JSON.stringify(body)}`);
         this.openPositions = body;
         return body;
@@ -205,49 +212,75 @@ export class TopPicksComponent implements OnInit {
     );
   }
 
-  readClosedPositions(){
+  readFavorites() {
+    this.favorites$ = this.service.getFavorites().pipe(
+      map((body) => {
+        // console.log(`yourBestStocks: ${JSON.stringify(body)}`);
+        if (body.list) {
+          return body.list;
+        }
+      })
+    );
+  }
+
+  readClosedPositions() {
     this.myClosePositions$ = this.service.getClosePositions().pipe(
-      map((body)=>{
+      map((body) => {
         // console.log(`my close positions : ${JSON.stringify(body)}`);
         return body;
       })
     );
   }
 
-  getClosePrice(event:any){
+  getClosePrice(event: any) {
     let symbol = event.target.value.toUpperCase();
     // console.log(`symbol: ${symbol}`);
-    this.service.getPriceObject(symbol).subscribe(
-      (data)=>{
-        // console.log(`In getClosePrice, data:${JSON.stringify(data)}`);
-        this.openPositionsForm.patchValue({
-          buy_price: data.close,
-          symbol: symbol
-        });
-      }
-    );
+    this.service.getPriceObject(symbol).subscribe((data) => {
+      // console.log(`In getClosePrice, data:${JSON.stringify(data)}`);
+      this.openPositionsForm.patchValue({
+        buy_price: data.close,
+        symbol: symbol,
+      });
+    });
   }
 
-  enableClosePositionFlag(id:number) {
+  enableClosePositionFlag(id: number) {
     // console.log(`start enableClosePositionFlag, id:${id}`);
-    if(this.idToShow === id){
+    if (this.idToShow === id) {
       this.idToShow = 0;
     } else {
       this.idToShow = id;
       let openPosition = this.getOpenPositionById(id);
       // console.log(`openPosition: ${JSON.stringify(openPosition)}`);
-      this.sellPrice = openPosition.close; 
+      this.sellPrice = openPosition.close;
     }
   }
 
-  getOpenPositionById(id:number) {
-    return this.openPositions.length && this.openPositions.find(ele => ele.id === id);
+  getOpenPositionById(id: number) {
+    return this.openPositions.length && this.openPositions.find((ele) => ele.id === id);
   }
 
-  deleteOpenPosition(id:number) {
+  deleteOpenPosition(id: number) {
     // console.log(`In deleteOpenPosition, id: ${id}`);
-    this.service.deleteOpenPosition(id).subscribe((data)=>{
+    this.service.deleteOpenPosition(id).subscribe((data) => {
       this.readOpenPositions();
-    })
+    });
+  }
+
+  public navigateToSection(section: string) {
+    window.location.hash = '';
+    window.location.hash = section;
+  }
+
+  closeFavoritesAlert() {
+    this.displayNotificationInFavorites = false;
+    this.favoritesSymbol = null;
+  }
+
+  deleteFromFavorites(symbol: string) {
+    // console.log(`In deleteOpenPosition, id: ${id}`);
+    this.service.deleteFavorites(symbol).subscribe((data) => {
+      this.readFavorites();
+    });
   }
 }

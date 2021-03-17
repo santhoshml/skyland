@@ -38,11 +38,13 @@
     "@yellowspot/ng-truncate": "^1.5.2",
     "angular-gauge-chart": "^0.7.2",
     "angular-popper": "^2.0.1",
+    "angularx-social-login": "^3.5.4",
     "bootstrap": "^4.5.2",
     "jquery": "^3.5.1",
     "moment": "^2.29.1",
     "ng2-file-upload": "^1.4.0",
     "popper.js": "^1.16.1",
+    "pruned": "^0.1.1",
     "rxjs": "^6.6.2",
     "tslib": "^2.0.1",
     "zone.js": "~0.10.3"
