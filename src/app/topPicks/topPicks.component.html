@@ -387,7 +387,7 @@
             [hidden]="openPositionsForm.controls.buy_date.valid || openPositionsForm.controls.buy_date.untouched"
             class="text-danger"
           >
-            Please provide a valid buy date in yyyy-mm-dd format.
+            Please provide a valid buy date in mm/dd/yyyy format.
           </small>
           <div class="invalid-tooltip">Please provide a valid buy date.</div>
         </div>
@@ -460,7 +460,7 @@
               <tr>
                 <th class="text-center" scope="col"></th>
                 <th class="text-center" scope="col">Company Name</th>
-                <th class="text-center" scope="col">Price</th>
+                <th class="text-center" scope="col">Today's Close</th>
                 <th class="text-center" scope="col">
                   <a href="https://www.investopedia.com/articles/stocks/09/use-stop-loss.asp" target="_blank"
                     >Stop Loss</a
@@ -471,7 +471,8 @@
                     aria-hidden="true"
                   ></i>
                 </th>
-                <th class="text-center" scope="col">Gain % (# days)</th>
+                <th class="text-center" scope="col">Buy Price</th>
+                <th class="text-center" scope="col">Buy Date</th>
                 <th class="text-center" scope="col">Industry</th>
               </tr>
             </thead>
@@ -515,10 +516,10 @@
                     <i *ngIf="txn.direction == 1" class="fas fa-arrow-up"></i>
                     <i *ngIf="txn.direction == -1" class="fas fa-arrow-down"></i>
                     <i *ngIf="txn.direction == 0" class="fas fa-arrow-right"></i>
-                    {{ txn.close | currency }}
+                    {{ txn.close | currency }} ({{ txn.roi / 100 | percent }})
                   </div>
                   <div *ngIf="txn.id === idToShow">
-                    <hr />
+                    <hr style="background-color: black" />
                     <input
                       name="sellPrice"
                       #pickedNameSellPrice="ngModel"
@@ -527,6 +528,7 @@
                       placeholder="Sell Price"
                       required
                     />
+                    <div class="small">Sell Price</div>
                   </div>
                 </td>
                 <td class="text-center" style="padding: 12px 1px">
@@ -534,37 +536,41 @@
                     {{ txn.stop_loss | currency }}
                   </div>
                   <div *ngIf="txn.id === idToShow">
-                    <hr />
+                    <hr style="background-color: black" />
                     <input
                       name="sellDate"
                       #pickedNameSellDate="ngModel"
                       [(ngModel)]="sellDate"
                       type="text"
                       autocomplete="sell_date"
-                      placeholder="yyyy-mm-dd"
+                      placeholder="mm/dd/yyyy"
                       required
                     />
+                    <div class="small">Sell Date(mm/dd/yyyy)</div>
                   </div>
                 </td>
                 <td class="text-center" style="padding: 12px 1px">
                   <div>
-                    {{ txn.roi / 100 | percent }}
-                    (
-                    <span *ngIf="txn.hold_days > 0">{{ txn.hold_days }} days</span>
-                    <span *ngIf="txn.hold_days === -1">N/A</span>
-                    )
+                    {{ txn.buy_price | currency }}
                   </div>
                   <div *ngIf="txn.id === idToShow">
-                    <hr />
+                    <hr style="background-color: black" />
                     <button
                       type="button"
                       class="btn btn-primary btn-block"
                       style="width: fit-content; margin: auto; font-size: 9px; height: 2em; padding-top: 2px"
                       (click)="closePosition(txn.id)"
                     >
-                      Submit
+                      Submit Close
                     </button>
                   </div>
+                </td>
+                <td class="text-center" style="padding: 12px 1px">
+                  {{ txn.buy_date | date }}
+                  (
+                  <span *ngIf="txn.hold_days > 0">{{ txn.hold_days }} days</span>
+                  <span *ngIf="txn.hold_days === -1">N/A</span>
+                  )
                 </td>
                 <td class="text-center" style="padding: 12px 1px">
                   <div>
@@ -597,10 +603,11 @@
           <table class="mt-20 table table-striped table-hover" style="font-size: 12px">
             <thead>
               <tr>
-                <th class="text-center" scope="col">Date Closed</th>
+                <th class="text-center" scope="col">Buy Date</th>
+                <th class="text-center" scope="col">Sell Date</th>
                 <th class="text-center" scope="col">Company Name</th>
-                <th class="text-center" scope="col">Sector</th>
-                <th class="text-center" scope="col">Symbol</th>
+                <th class="text-center" scope="col">Buy Price</th>
+                <th class="text-center" scope="col">Sell Price</th>
                 <th class="text-center" scope="col">Gain/Loss</th>
                 <th class="text-center" scope="col"># days</th>
               </tr>
@@ -608,16 +615,21 @@
             <tbody>
               <tr *ngFor="let txn of myClosePositions; let i = index" class="table-row">
                 <td class="text-center" style="padding: 12px 1px">
-                  {{ txn.sell_date }}
+                  {{ txn.buy_date | date }}
                 </td>
                 <td class="text-center" style="padding: 12px 1px">
-                  <p class="card-text" [innerHTML]="txn.name | truncate: 20"></p>
+                  {{ txn.sell_date | date }}
                 </td>
                 <td class="text-center" style="padding: 12px 1px">
-                  <p class="card-text" [innerHTML]="txn.sector | truncate: 20"></p>
+                  (<a href="/symbolDetails/{{ txn.symbol }}">{{ txn.symbol }}</a
+                  >)
+                  {{ txn.name | truncate: 15 }}
                 </td>
                 <td class="text-center" style="padding: 12px 1px">
-                  <a href="/symbolDetails/{{ txn.symbol }}">{{ txn.symbol }}</a>
+                  {{ txn.buy_price | currency }}
+                </td>
+                <td class="text-center" style="padding: 12px 1px">
+                  {{ txn.sell_price | currency }}
                 </td>
                 <td class="text-center" style="padding: 12px 1px">
                   {{ txn.roi / 100 | percent }}

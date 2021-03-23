@@ -58,20 +58,38 @@
   <nav class="navbar navbar-expand-md navbar-light bg-light" *ngIf="webDisplayDate$ | async as webDisplayDateElement">
     <small class="close-of-date"
       >Data & Analysis updates as of close of Market :
-      <span style="font-weight: bolder">{{ webDisplayDateElement.value_str | date }}</span>
+      <span class="h1 badge badge-secondary as-of-date">{{ webDisplayDateElement.value_str | date }}</span>
     </small>
     <div class="navbar-nav ml-auto">
-      <span class="small close-of-date mt-2">How are we doing ?</span>
-      <a class="ml-4 mr-2" style="cursor: pointer" (click)="!!emojiClick('happy')">
-        <img style="width: 25px" src="assets/happy_emoji.png" />
-      </a>
-      <a class="ml-2 mr-2" style="cursor: pointer" (click)="!!emojiClick('neutral')">
-        <img style="width: 25px" src="assets/neutral_emoji.png" />
-      </a>
-      <a class="ml-2 mr-4" style="cursor: pointer" (click)="!!emojiClick('sad')">
-        <img style="width: 25px" src="assets/sad_emoji.png" />
-      </a>
-      <button type="button" (click)="openModal(mymodal)" class="btn btn-secondary btn-sm">Leave us a comment</button>
+      <div *ngIf="!showThankYouForFeedbackFlag">
+        <span class="small close-of-date mt-2">How are we doing ?</span>
+        <a class="ml-4 mr-2" style="cursor: pointer" (click)="!!emojiClick('happy')">
+          <img style="width: 25px" src="assets/happy_emoji.png" />
+        </a>
+        <a class="ml-2 mr-2" style="cursor: pointer" (click)="!!emojiClick('neutral')">
+          <img style="width: 25px" src="assets/neutral_emoji.png" />
+        </a>
+        <a class="ml-2 mr-4" style="cursor: pointer" (click)="!!emojiClick('sad')">
+          <img style="width: 25px" src="assets/sad_emoji.png" />
+        </a>
+        <button type="button" (click)="openModal(mymodal)" class="btn btn-secondary btn-sm">Leave us a comment</button>
+      </div>
+      <div
+        *ngIf="showThankYouForFeedbackFlag"
+        class="alert alert-warning alert-dismissible fade show mb-0 thankyou-for-feedback"
+        role="alert"
+      >
+        Thank you for your feedback. We really appreciate it !
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+          (click)="closeThankYouForFeedbackAlert()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </div>
   </nav>
 </header>
@@ -95,4 +113,12 @@
     </button>
     <button type="button" class="btn btn btn-primary btn-sm" (click)="modal.close('Save click')">Update</button>
   </div>
+</ng-template>
+
+<ng-template #itemTemplate let-item>
+  <a [innerHTML]="item.name"></a>
+</ng-template>
+
+<ng-template #notFoundTemplate let-notFound>
+  <div [innerHTML]="notFound"></div>
 </ng-template>

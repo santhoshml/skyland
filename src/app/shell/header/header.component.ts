@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   webDisplayDate$: Observable<string>;
   closeResult: string;
   userFeedback: string;
+  showThankYouForFeedbackFlag = false;
 
   constructor(
     private router: Router,
@@ -102,7 +103,9 @@ export class HeaderComponent implements OnInit {
       value: value,
       url: this.router.url,
     };
-    this.service.updateEmojiValue(data).subscribe();
+    this.service.updateEmojiValue(data).subscribe((data) => {
+      this.showThankYouForFeedbackFlag = true;
+    });
     return true;
   }
 
@@ -119,7 +122,9 @@ export class HeaderComponent implements OnInit {
           email: email,
           url: this.router.url,
         };
-        this.service.recordUserFeedback(data).subscribe();
+        this.service.recordUserFeedback(data).subscribe((dt) => {
+          this.showThankYouForFeedbackFlag = true;
+        });
       },
       (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -135,5 +140,9 @@ export class HeaderComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  closeThankYouForFeedbackAlert() {
+    this.showThankYouForFeedbackFlag = false;
   }
 }

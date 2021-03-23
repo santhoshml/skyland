@@ -37,6 +37,7 @@
     "@swimlane/ngx-charts": "^16.0.0",
     "@yellowspot/ng-truncate": "^1.5.2",
     "angular-gauge-chart": "^0.7.2",
+    "angular-ng-autocomplete": "^2.0.5",
     "angular-popper": "^2.0.1",
     "angularx-social-login": "^3.5.4",
     "bootstrap": "^4.5.2",
