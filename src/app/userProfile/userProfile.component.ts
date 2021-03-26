@@ -2,10 +2,12 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import { UserProfileService } from './userProfile.service';
+import { map, catchError } from 'rxjs/operators';
+import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 
 export interface TagDetails {
   key: string;
@@ -34,14 +36,27 @@ export class UserProfileComponent implements OnInit {
   technicalCategoryArr: string[];
   tagDetailsMap: Map<string, TagDetails[]> = new Map<string, TagDetails[]>();
   tagDetailsArr: TagDetails[] = [];
+  userDetails$: Observable<any>;
+  userProfileForm!: FormGroup;
+  displayUpdatNotif = false;
 
   constructor(
     private credentialsService: CredentialsService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private userProfileService: UserProfileService
+    private userProfileService: UserProfileService,
+    private router: Router,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
+    // initialse the form
+    this.userProfileForm = this.formBuilder.group({
+      name: [''],
+      email: [''],
+      phone: [''],
+      expertise: [''],
+    });
+
     // get tag categories
     this.userProfileService.getTagCategories().subscribe((data: TagCategories[]) => {
       this.googleAnalyticsService.eventEmitter(
@@ -50,7 +65,7 @@ export class UserProfileComponent implements OnInit {
         'init',
         'getTagCategories',
         1,
-        this.credentialsService.credentials.id
+        this.credentialsService.credentials.email
       );
 
       this.tagCategories = data;
@@ -67,7 +82,7 @@ export class UserProfileComponent implements OnInit {
         'init',
         'getTagDetails',
         1,
-        this.credentialsService.credentials.id
+        this.credentialsService.credentials.email
       );
       this.tagDetailsMap = data;
       for (const [key, value] of Object.entries(this.tagDetailsMap)) {
@@ -77,7 +92,39 @@ export class UserProfileComponent implements OnInit {
 
     // set user profile
     this.userProfile = this.credentialsService.userProfileModel;
-    // console.log(`this.userProfile : ${JSON.stringify(this.userProfile)}`);
+    console.log(`this.userProfile : ${JSON.stringify(this.userProfile)}`);
+
+    this.userDetails$ = this.userProfileService.getUserDetails().pipe(
+      map((body: any, headers: any) => {
+        console.log(`In userDetails body: ${JSON.stringify(body)}`);
+        // console.log(`headers: ${JSON.stringify(headers)}`);
+        this.googleAnalyticsService.eventEmitter(
+          'userProfile-response',
+          'userProfile',
+          'response',
+          'getUserDetails',
+          1,
+          this.credentialsService.credentials.email
+        );
+
+        this.userProfileForm.patchValue({
+          name: body.user.profile.name,
+          email: body.user.email,
+          phone: body.user.profile.phone,
+          expertise: body.user.profile.expertise,
+        });
+        this.userProfileForm.controls['email'].disable();
+        console.log(`body: ${JSON.stringify(body)}`);
+        return body;
+      }),
+      catchError((err) => {
+        if (err.status === 401) {
+          this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
+        } else {
+          return of(false);
+        }
+      })
+    );
   }
 
   getArray(arr: string[]) {
@@ -130,5 +177,17 @@ export class UserProfileComponent implements OnInit {
   getTagDisplayText(str: string) {
     let ele: TagDetails = this.tagDetailsArr.find((element: TagDetails) => element.key === str);
     return ele ? ele.display : str;
+  }
+
+  updateUserDetails() {
+    let formvalue = this.userProfileForm.value;
+    console.log(`formvalue: ${JSON.stringify(formvalue)}`);
+    this.userProfileService.updateUserDetails(formvalue).subscribe((data) => {
+      this.displayUpdatNotif = true;
+    });
+  }
+
+  closeUpdateNotif() {
+    this.displayUpdatNotif = false;
   }
 }

@@ -36,7 +36,7 @@ export class RoiDistributionComponent implements OnInit {
       'init',
       'init',
       1,
-      this.credentialsService.credentials.id
+      this.credentialsService.credentials.email
     );
 
     this.roiDistributionService.getDistribution().subscribe((data) => {
@@ -46,7 +46,7 @@ export class RoiDistributionComponent implements OnInit {
         'init',
         'getDistribution',
         1,
-        this.credentialsService.credentials.id
+        this.credentialsService.credentials.email
       );
       // console.log(`data: ${JSON.stringify(data)}`);
       this.roiData = data.roi;
@@ -60,7 +60,7 @@ export class RoiDistributionComponent implements OnInit {
         'init',
         'getTxnStats',
         1,
-        this.credentialsService.credentials.id
+        this.credentialsService.credentials.email
       );
       // console.log(`txn stats: ${JSON.stringify(data)}`);
       this.txnStats = data;

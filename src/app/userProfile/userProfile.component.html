@@ -1,95 +1,212 @@
-<div class="container">
-  <div class="container" *ngIf="userProfile">
-    <div class="row mb-4">
-      <div class="col-sm-4">
-        <h6 class="mt-4 text-center">Accuracy</h6>
-        <small class="text-justify text-muted"
-          >This is the percent accuracy of the model built based on your old transactions. This is updated every time
-          you upload more transactions.</small
-        >
-      </div>
-      <div class="col-sm-8">
-        <span
-          class="badge badge-secondary accuracy-label card-text m-4 text-center"
-          style="font-size: xx-large"
-          *ngIf="userProfile.accuracy; else naComment"
-        >
-          {{ userProfile.accuracy | percent: '1.0-2' }}
-        </span>
-      </div>
-      <ng-template #naComment>
-        <span class="badge badge-secondary accuracy-label card-text m-4 text-center" style="font-size: xx-large">
-          N/A
-        </span>
-      </ng-template>
-    </div>
-    <br />
-    <div class="m-4">
-      <i class="far fa-sticky-note"></i>
-      <span class="pl-3"
-        >Scanning your past transactions, your gains were better when you picked a stock with some of the below
-        attributes at the time of purchase.</span
+<div class="container mt-5">
+  <nav mt-5>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a
+        class="nav-item nav-link active"
+        id="nav-userDetails-tab"
+        data-toggle="tab"
+        href="#nav-userDetails"
+        role="tab"
+        aria-controls="nav-userDetails"
+        aria-selected="true"
+        >Details</a
+      >
+      <a
+        [ngClass]="userProfile ? 'nav-item nav-link' : 'nav-item nav-link disabled'"
+        id="nav-userModel-tab"
+        data-toggle="tab"
+        href="#nav-favorites"
+        role="tab"
+        aria-disabled="!userProfile"
+        aria-controls="nav-favorites"
+        aria-selected="false"
+        >AI Model details</a
       >
     </div>
-    <div class="row">
-      <div class="col-sm-4">
-        <h6 class="mt-4 mb-3 text-center">Price/Volume</h6>
-        <small class="text-justify text-muted"
-          >Your favorable Price and Volume attributes picked from the stocks you bought/sold in the past.</small
+  </nav>
+  <div class="tab-content mb-5" id="nav-tabContent">
+    <div
+      class="tab-pane fade show active card"
+      id="nav-userDetails"
+      role="tabpanel"
+      aria-labelledby="nav-userDetails-tab"
+    >
+      <div *ngIf="userDetails$ | async as userDetails" class="form-group">
+        <form
+          class="p-3 mt-1 justify-content-center"
+          [formGroup]="userProfileForm"
+          (ngSubmit)="updateUserDetails()"
+          novalidate
         >
-      </div>
-      <div class="col-sm-8">
-        <div class="card">
-          <div class="card-body">
-            <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
-              <span class="card-text m-4 text-center" *ngIf="isExistsInPriceVol(tag)">
-                <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
-                  {{ getTagDisplayText(tag) }}
-                </a>
-              </span>
-            </ng-container>
+          <div *ngIf="displayUpdatNotif" class="alert alert-warning alert-dismissible fade show" role="alert">
+            Your details updated succesfully.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeUpdateNotif()">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-        </div>
+          <div class="row mt-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2 pt-2">
+              <label>Name</label>
+            </div>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                autocomplete="name"
+                placeholder="Full Name"
+              />
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2 pt-2">
+              <label>Email</label>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" formControlName="email" autocomplete="email" />
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2 pt-2">
+              <label>Phone</label>
+            </div>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="phone"
+                autocomplete="phone"
+                placeholder="Mobile Phone Number"
+              />
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2 pt-2">
+              <label>Investment Expertise</label>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <select class="form-control" formControlName="expertise" id="expertise">
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Expert">Expert</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2 pt-2"></div>
+            <div class="col-sm-4">
+              <button class="btn btn-primary" type="submit">Update</button>
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+        </form>
       </div>
     </div>
-    <div class="row mt-1">
-      <div class="col-sm-4">
-        <h6 class="mt-4 mb-3 card-title text-center">Classification</h6>
-        <small class="text-justify text-muted"
-          >Your favorable stock classification attributes picked from the stocks you bought/sold in the past.</small
-        >
-      </div>
-      <div class="col-sm-8">
-        <div class="card">
-          <div class="card-body">
-            <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
-              <span class="card-text m-4 text-center" *ngIf="isExistsInClassification(tag)">
-                <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
-                  {{ getTagDisplayText(tag) }}
-                </a>
-              </span>
-            </ng-container>
+    <div class="tab-pane fade show card" id="nav-userModel" role="tabpanel" aria-labelledby="nav-userModel-tab">
+      <div *ngIf="userProfile">
+        <div class="row mb-4">
+          <div class="col-sm-4">
+            <h6 class="mt-4 text-center">Accuracy</h6>
+            <small class="text-justify text-muted"
+              >This is the percent accuracy of the model built based on your old transactions. This is updated every
+              time you upload more transactions.</small
+            >
+          </div>
+          <div class="col-sm-8">
+            <span
+              class="badge badge-secondary accuracy-label card-text m-4 text-center"
+              style="font-size: xx-large"
+              *ngIf="userProfile.accuracy; else naComment"
+            >
+              {{ userProfile.accuracy | percent: '1.0-2' }}
+            </span>
+          </div>
+          <ng-template #naComment>
+            <span class="badge badge-secondary accuracy-label card-text m-4 text-center" style="font-size: xx-large">
+              N/A
+            </span>
+          </ng-template>
+        </div>
+        <br />
+        <div class="m-4">
+          <i class="far fa-sticky-note"></i>
+          <span class="pl-3"
+            >Scanning your past transactions, your gains were better when you picked a stock with some of the below
+            attributes at the time of purchase.</span
+          >
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <h6 class="mt-4 mb-3 text-center">Price/Volume</h6>
+            <small class="text-justify text-muted"
+              >Your favorable Price and Volume attributes picked from the stocks you bought/sold in the past.</small
+            >
+          </div>
+          <div class="col-sm-8">
+            <div class="card">
+              <div class="card-body">
+                <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
+                  <span class="card-text m-4 text-center" *ngIf="isExistsInPriceVol(tag)">
+                    <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
+                      {{ getTagDisplayText(tag) }}
+                    </a>
+                  </span>
+                </ng-container>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="row mt-1">
-      <div class="col-sm-4">
-        <h6 class="mt-4 mb-3 card-title text-center">Technical</h6>
-        <small class="text-justify text-muted"
-          >Your favorable technical attributes picked from the stocks you bought/sold in the past.</small
-        >
-      </div>
-      <div class="col-sm-8">
-        <div class="card">
-          <div class="card-body">
-            <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
-              <span class="card-text m-4 text-center" *ngIf="isExistsInTechnical(tag)">
-                <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
-                  {{ getTagDisplayText(tag) }}
-                </a>
-              </span>
-            </ng-container>
+        <div class="row mt-1">
+          <div class="col-sm-4">
+            <h6 class="mt-4 mb-3 card-title text-center">Classification</h6>
+            <small class="text-justify text-muted"
+              >Your favorable stock classification attributes picked from the stocks you bought/sold in the past.</small
+            >
+          </div>
+          <div class="col-sm-8">
+            <div class="card">
+              <div class="card-body">
+                <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
+                  <span class="card-text m-4 text-center" *ngIf="isExistsInClassification(tag)">
+                    <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
+                      {{ getTagDisplayText(tag) }}
+                    </a>
+                  </span>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-1">
+          <div class="col-sm-4">
+            <h6 class="mt-4 mb-3 card-title text-center">Technical</h6>
+            <small class="text-justify text-muted"
+              >Your favorable technical attributes picked from the stocks you bought/sold in the past.</small
+            >
+          </div>
+          <div class="col-sm-8">
+            <div class="card">
+              <div class="card-body">
+                <ng-container *ngFor="let tag of getArray(userProfile.selected_params)">
+                  <span class="card-text m-4 text-center" *ngIf="isExistsInTechnical(tag)">
+                    <a role="button" (click)="gotoTagLink(tag)" ngClass="badge badge-pill badge-primary">
+                      {{ getTagDisplayText(tag) }}
+                    </a>
+                  </span>
+                </ng-container>
+              </div>
+            </div>
           </div>
         </div>
       </div>

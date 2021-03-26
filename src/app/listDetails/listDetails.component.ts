@@ -60,7 +60,7 @@ export class ListDetailsComponent implements OnInit {
       'init',
       'listDetails',
       1,
-      this.credentialsService.credentials.id
+      this.credentialsService.credentials.email
     );
 
     // this.listDetails$ = this.listDetailsService.getListDetails();
@@ -79,7 +79,7 @@ export class ListDetailsComponent implements OnInit {
             'response',
             'listDetails',
             1,
-            this.credentialsService.credentials.id
+            this.credentialsService.credentials.email
           );
           return body;
         }),
@@ -109,7 +109,7 @@ export class ListDetailsComponent implements OnInit {
       'forwading',
       'symbolDetails',
       1,
-      this.credentialsService.credentials.id
+      this.credentialsService.credentials.email
     );
     this.router.navigate([`symbolDetails`, listRow.symbol], { replaceUrl: true });
   }

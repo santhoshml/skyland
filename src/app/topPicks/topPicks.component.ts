@@ -58,7 +58,7 @@ export class TopPicksComponent implements OnInit {
       'init',
       'topPicks',
       1,
-      this.credentialsService.credentials.id
+      this.credentialsService.credentials.email
     );
 
     // setup the Add new positions form
@@ -137,7 +137,7 @@ export class TopPicksComponent implements OnInit {
       'addToFavorites',
       'addToFavorites',
       1,
-      this.credentialsService.credentials.id
+      this.credentialsService.credentials.email
     );
     this.symbolDetailsService.addToFavorites(symbol).subscribe((data) => {
       this.readFavorites();
@@ -153,7 +153,7 @@ export class TopPicksComponent implements OnInit {
       'removeFromFavorites',
       'removeFromFavorites',
       0,
-      this.credentialsService.credentials.id
+      this.credentialsService.credentials.email
     );
     this.symbolDetailsService.removeFromFavorites(symbol).subscribe();
   }

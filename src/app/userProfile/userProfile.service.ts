@@ -7,6 +7,7 @@ import { TagDetails, TagCategories } from './userProfile.component';
 const routes = {
   tagCategories: () => `/data/tagCategories`,
   tagDetails: () => `/data/tags`,
+  userDetails: () => `/user/details`,
 };
 
 @Injectable({
@@ -26,6 +27,20 @@ export class UserProfileService {
     return this.httpClient.get(routes.tagDetails()).pipe(
       map((body: Map<string, TagDetails[]>) => body),
       catchError(() => of('Error, could not GET tag details :-('))
+    );
+  }
+
+  getUserDetails() {
+    return this.httpClient.get(routes.userDetails()).pipe(
+      map((body: Map<string, TagDetails[]>) => body),
+      catchError(() => of('Error, could not GET tag details :-('))
+    );
+  }
+
+  updateUserDetails(data: any) {
+    return this.httpClient.post(routes.userDetails(), data, { withCredentials: true }).pipe(
+      map((body: Map<string, TagDetails[]>) => body),
+      catchError(() => of('Error, could not POST userDeatils details :-('))
     );
   }
 }

@@ -9,6 +9,7 @@ const routes = {
   login: () => `/login`,
   createAccount: () => `/signup`,
   userModelStats: () => `/model/info`,
+  userDetails: () => `/user/details`,
   getFavorites: () => `/favorites`,
   getConfigValue: (key: string) => `/config/key_str/${key}`,
 };
@@ -68,7 +69,7 @@ export class AuthenticationService {
       })
       .pipe(
         map((body: any) => {
-          // console.log(`body: ${JSON.stringify(body)}`);
+          console.log(`In authentication.service.login body: ${JSON.stringify(body)}`);
           this.credentialsService.setCredentials(body, context.remember);
           this.getUserModelProfile().subscribe();
           return of(body);
@@ -150,7 +151,7 @@ export class AuthenticationService {
    * @return The user credentials.
    */
   getUserModelProfile(): Observable<any> {
-    // console.log(`In authenticatiopnService.getUserModelProfile`);
+    console.log(`In authenticatiopnService.getUserModelProfile`);
     // Replace by proper authentication call
     let headers = {
       contentType: 'application/json',
@@ -161,12 +162,12 @@ export class AuthenticationService {
       })
       .pipe(
         map((body: any) => {
-          // console.log(`getUserModelProfile body: ${JSON.stringify(body)}`);
+          console.log(`getUserModelProfile body: ${JSON.stringify(body)}`);
           this.credentialsService.setUserProfile(body);
           return of(body);
         }),
         catchError((err) => {
-          // console.log(`err: ${JSON.stringify(err)}`);
+          console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
       );

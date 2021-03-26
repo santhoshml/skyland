@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       let id = params['id'];
       if (token) {
         this.authenticationService.saveCredentianls(id, email, token);
-        this.googleAnalyticsService.eventEmitter('redirectedt-login', 'login', 'redirected', 'redirected', 1, id);
+        this.googleAnalyticsService.eventEmitter('redirectedt-login', 'login', 'redirected', 'redirected', 1, email);
         this.router.navigate(['/listCards'], { replaceUrl: true });
       }
     });
@@ -140,7 +140,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             'login-response',
             'login',
             1,
-            credentials.id
+            credentials.email
           );
 
           // get favorites for the user
@@ -185,7 +185,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             'createAccount-response',
             'createAccount',
             1,
-            credentials.id
+            credentials.email
           );
           this.router.navigate(['/topPicks'], { replaceUrl: true });
           // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });

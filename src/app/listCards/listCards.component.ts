@@ -48,7 +48,7 @@ export class ListCardsComponent implements OnInit {
       'init',
       'listCards',
       1,
-      this.credentialsService.credentials.id
+      this.credentialsService.credentials.email
     );
 
     // set user profile
@@ -69,7 +69,7 @@ export class ListCardsComponent implements OnInit {
           'response',
           'getAllCards',
           1,
-          this.credentialsService.credentials.id
+          this.credentialsService.credentials.email
         );
         return body;
       }),
@@ -92,7 +92,7 @@ export class ListCardsComponent implements OnInit {
           'response',
           'getSubSectorList',
           1,
-          this.credentialsService.credentials.id
+          this.credentialsService.credentials.email
         );
         return body;
       }),
@@ -115,7 +115,7 @@ export class ListCardsComponent implements OnInit {
       'forwading',
       'getList',
       1,
-      this.credentialsService.credentials.id
+      this.credentialsService.credentials.email
     );
     this.router.navigate([`listDetails`, selectedCard.id], { replaceUrl: true });
   }

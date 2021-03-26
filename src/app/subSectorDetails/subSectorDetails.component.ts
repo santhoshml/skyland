@@ -63,7 +63,7 @@ export class SubSectorDetailsComponent implements OnInit {
       'init',
       'subSectorDetails',
       1,
-      this.credentialsService.credentials.id
+      this.credentialsService.credentials.email
     );
 
     // this.listDetails$ = this.listDetailsService.getListDetails();
@@ -82,7 +82,7 @@ export class SubSectorDetailsComponent implements OnInit {
             'response',
             'subSectorDetails',
             1,
-            this.credentialsService.credentials.id
+            this.credentialsService.credentials.email
           );
           // console.log(`I am in body: ${JSON.stringify(body)}`);
           return body;
@@ -114,7 +114,7 @@ export class SubSectorDetailsComponent implements OnInit {
       'forwading',
       'symbolDetails',
       1,
-      this.credentialsService.credentials.id
+      this.credentialsService.credentials.email
     );
     this.router.navigate([`symbolDetails`, row.symbol], { replaceUrl: true });
   }
