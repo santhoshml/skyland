@@ -1,7 +1,7 @@
 <div class="container">
   <div class="p-3 mb-2 bg-warning text-dark text-center" *ngIf="!userProfile">
     We do not have a model built for you yet, so you can not find any stocks matching your trading style (with a
-    Matching score)
+    Confidence Score)
   </div>
   <div class="tradingview-widget-container" id="symbolInfoWidget">
     <div class="tradingview-widget-container__widget"></div>
@@ -88,7 +88,7 @@
               <hr />
               <div>
                 <div class="card-body mb-5">
-                  <h5 class="card-title analyst-label">Matching Score</h5>
+                  <h5 class="card-title analyst-label">Confidence Score</h5>
                   <h1 class="card-subtitle text-center mt-3 mb-3 p-3">
                     {{ symbolDetailsResp.confidence | percent: '1.0-2' }}
                   </h1>
