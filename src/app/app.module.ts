@@ -22,6 +22,7 @@ import { DefinitionsModule } from './definitions/definitions.module';
 import { UserProfileModule } from './userProfile/userProfile.module';
 import { PageNotFoundModule } from './pageNotFound/pageNotFound.module';
 import { TopPicksModule } from './topPicks/topPicks.module';
+import { UptrendingStocksModule } from './uptrendingStocks/uptrendingStocks.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TruncateModule } from '@yellowspot/ng-truncate';
@@ -56,6 +57,7 @@ import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-logi
     DefinitionsModule,
     PageNotFoundModule,
     TopPicksModule,
+    UptrendingStocksModule,
     SubSectorDetailsModule,
     RoiDistributionModule,
     BrowserAnimationsModule,

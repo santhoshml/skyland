@@ -53,7 +53,7 @@ export class TopPicksComponent implements OnInit {
 
   ngOnInit() {
     this.googleAnalyticsService.eventEmitter(
-      'listCards-init',
+      'topPicks-init',
       'topPicks',
       'init',
       'topPicks',
@@ -282,5 +282,9 @@ export class TopPicksComponent implements OnInit {
     this.service.deleteFavorites(symbol).subscribe((data) => {
       this.readFavorites();
     });
+  }
+
+  viewAllUptrendingStocks() {
+    this.router.navigate(['/uptrendingStocks'], { replaceUrl: true });
   }
 }
