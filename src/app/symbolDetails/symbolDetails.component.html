@@ -1,8 +1,4 @@
 <div class="container">
-  <div class="p-3 mb-2 bg-warning text-dark text-center" *ngIf="!userProfile">
-    We do not have a model built for you yet, so you can not find any stocks matching your trading style (with a
-    Confidence Score)
-  </div>
   <div class="tradingview-widget-container" id="symbolInfoWidget">
     <div class="tradingview-widget-container__widget"></div>
   </div>
@@ -187,8 +183,10 @@
         </div>
         <ng-template #noModelDiv>
           <div class="ml-2 mt-5 div-noModel">
-            <p class="p-noModel">Do not know your investing style. You are 1-step away from it.</p>
-            <p class="p-noModel">Upload your old transactions from any brokerages.</p>
+            <p class="p-noModel">
+              Want to know if this stock suit your investment style ? You are 1-step away from it.
+            </p>
+            <p class="p-noModel">Click the below button to upload your old transactions from any brokerages.</p>
             <a class="btn btn-warning d-block" href="/uploadPortfolio" role="button"> Upload Transactions </a>
           </div>
         </ng-template>

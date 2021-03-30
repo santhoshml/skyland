@@ -92,7 +92,6 @@ export class SymbolDetailsComponent implements OnInit {
   priceVolCategoryArr: string[];
   classificationCategoryArr: string[];
   technicalCategoryArr: string[];
-  userProfile: UserProfileModel;
   enableStockFeatures = false;
   completeSymbol: string = null;
 
@@ -304,9 +303,6 @@ export class SymbolDetailsComponent implements OnInit {
     this.userModelTags = this.credentialsService.userProfileModel
       ? this.credentialsService.userProfileModel.selected_params
       : [];
-
-    // set user profile
-    this.userProfile = this.credentialsService.userProfileModel;
   }
 
   getAnalystReccomendationValue(name: string) {
@@ -432,11 +428,6 @@ export class SymbolDetailsComponent implements OnInit {
     let ele: TagDetails = this.tagDetailsArr.find((element: TagDetails) => element.key === str);
     let retVal = ele ? ele.link : '#';
     window.open(retVal, '_blank');
-  }
-
-  isExistInUserProfile(tag: string) {
-    if (this.userModelTags.find((str) => str === tag)) return true;
-    return false;
   }
 
   isExistsInPriceVol(val: string): boolean {
