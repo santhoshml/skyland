@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
 import { TruncateModule } from '@yellowspot/ng-truncate';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 import { TopPicksRoutingModule } from './topPicks-routing.module';
 import { TopPicksComponent } from './topPicks.component';
@@ -21,6 +22,7 @@ import { TopPicksComponent } from './topPicks.component';
     NgbModule,
     TruncateModule,
     FileUploadModule,
+    AutocompleteLibModule,
   ],
   declarations: [TopPicksComponent],
 })

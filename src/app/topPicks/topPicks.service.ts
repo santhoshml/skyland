@@ -14,6 +14,7 @@ const routes = {
   deleteOpenPosition: (id: number) => `/user/txn/delete/${id}`,
   favorites: () => `/tradingIdeas/favorites`,
   deleteFavorites: (symbol: string) => `/favorites/symbol/${symbol}`,
+  getAllSymbols: () => `/stocks/all/symbolAndNames`,
 };
 
 export interface RandomQuoteContext {
@@ -159,6 +160,20 @@ export class TopPicksService {
   getFavorites(): Observable<any> {
     return this.httpClient
       .get(routes.favorites(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  getAllSymbols(): Observable<any> {
+    return this.httpClient
+      .get(routes.getAllSymbols(), {
         withCredentials: true,
       })
       .pipe(

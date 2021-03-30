@@ -40,6 +40,11 @@ export class TopPicksComponent implements OnInit {
   sellDate: string;
   idToShow = 0;
 
+  // searchbar
+  keyword = 'name';
+  allSymbolData = [];
+  data = [];
+
   constructor(
     private service: TopPicksService,
     private router: Router,
@@ -95,6 +100,11 @@ export class TopPicksComponent implements OnInit {
         }
       })
     );
+
+    this.service.getAllSymbols().subscribe((data) => {
+      this.allSymbolData = data;
+      this.data = data.slice(0, 15);
+    });
 
     this.readFavorites();
     this.readOpenPositions();
@@ -161,7 +171,7 @@ export class TopPicksComponent implements OnInit {
   addOpenPositions() {
     let formvalue = this.openPositionsForm.value;
     // console.log(`formvalue: ${JSON.stringify(formvalue)}`);
-    formvalue.symbol = formvalue.symbol.toUpperCase();
+    formvalue.symbol = this.newOpenPositionSymbol.toUpperCase();
     formvalue.buy_date = moment(formvalue.buy_date, 'MM/DD/YYYY').format('YYYY-MM-DD');
     this.newOpenPositionSymbol = formvalue.symbol;
     this.service.addOpenPosition(formvalue).subscribe((data) => {
@@ -286,5 +296,50 @@ export class TopPicksComponent implements OnInit {
 
   viewAllUptrendingStocks() {
     this.router.navigate(['/uptrendingStocks'], { replaceUrl: true });
+  }
+
+  selectEvent(item) {
+    // do something with selected item
+    console.log(`In selectEvent, ${JSON.stringify(item)}`);
+    if (item) {
+      let symbol = item.id.toUpperCase();
+      this.newOpenPositionSymbol = symbol;
+
+      this.service.getPriceObject(symbol).subscribe((data) => {
+        // console.log(`In getClosePrice, data:${JSON.stringify(data)}`);
+        this.openPositionsForm.patchValue({
+          buy_price: data.close,
+          symbol: symbol,
+        });
+      });
+    }
+  }
+
+  onChangeSearch(val: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+    console.log(`In onChangeSearch, ${JSON.stringify(val)}`);
+    let filteredList = [];
+    if (!val || val.length === 0 || !this.allSymbolData) {
+      return [];
+    } else {
+      console.log(`this.allSymbolData length : ${this.allSymbolData.length}`);
+      let str = val.toLowerCase();
+      console.log(`ste:${str}`);
+      for (let ele of this.allSymbolData) {
+        if (ele.name.toLowerCase().includes(str)) {
+          filteredList.push(ele);
+        }
+        if (filteredList.length >= 15) {
+          this.data = filteredList;
+        }
+      }
+      this.data = filteredList;
+    }
+  }
+
+  onFocused(e) {
+    // do something when input is focused
+    console.log(`In onFocused, ${JSON.stringify(e)}`);
   }
 }

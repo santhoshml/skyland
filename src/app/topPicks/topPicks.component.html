@@ -381,7 +381,29 @@
     >
       <div class="form-row">
         <div class="col-md-3 mb-3">
-          <input
+          <div class="ng-autocomplete" style="width: auto">
+            <ng-autocomplete
+              [data]="data"
+              placeholder="Search - Symbol/Company Name"
+              [searchKeyword]="keyword"
+              (selected)="selectEvent($event)"
+              (inputChanged)="onChangeSearch($event)"
+              (inputFocused)="onFocused($event)"
+              [itemTemplate]="itemTemplate"
+              debounceTime="600"
+              [notFoundTemplate]="notFoundTemplate"
+            >
+            </ng-autocomplete>
+
+            <ng-template #itemTemplate let-item>
+              <a [innerHTML]="item.name"></a>
+            </ng-template>
+
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
+          </div>
+          <!-- <input
             type="text"
             class="form-control"
             formControlName="symbol"
@@ -390,7 +412,7 @@
             placeholder="Symbol"
             (blur)="getClosePrice($event)"
             required
-          />
+          /> -->
           <small
             [hidden]="openPositionsForm.controls.symbol.valid || openPositionsForm.controls.symbol.untouched"
             class="text-danger"
