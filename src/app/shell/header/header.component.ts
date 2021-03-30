@@ -14,12 +14,16 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 })
 export class HeaderComponent implements OnInit {
   menuHidden = true;
-  searchForm!: FormGroup;
   userModelProfile$: Observable<any>;
   webDisplayDate$: Observable<string>;
   closeResult: string;
   userFeedback: string;
   showThankYouForFeedbackFlag = false;
+
+  // searchbar in the header
+  keyword = 'name';
+  allSymbolData = [];
+  data = [];
 
   constructor(
     private router: Router,
@@ -31,8 +35,6 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.initForm();
-
     // get UserModelProfile
     this.authenticationService.getUserModelProfile().subscribe();
 
@@ -49,13 +51,14 @@ export class HeaderComponent implements OnInit {
       })
     );
 
-    // .pipe(
-    //   map(())
-    // )
-    // .subscribe(data=>{
-    //   console.log(`web_data_display_date, ${JSON.stringify(data)}`);
-    //   this.webDisplayDate = data.value_str;
-    // });
+    this.service.getAllSymbols().subscribe((data) => {
+      this.allSymbolData = data;
+      this.data = data.slice(0, 15);
+    });
+  }
+
+  ngAfterContentInit() {
+    console.log(`In ngAfterContentInit`);
   }
 
   toggleMenu() {
@@ -73,19 +76,6 @@ export class HeaderComponent implements OnInit {
   get email(): string | null {
     const credentials = this.credentialsService.credentials;
     return credentials ? credentials.email : null;
-  }
-
-  onSubmit() {
-    // console.log(`symbol: ${this.searchForm.value.symbol}`);
-    if (this.searchForm.value.symbol) {
-      this.router.navigate(['/symbolDetails', this.searchForm.value.symbol], { replaceUrl: true });
-    }
-  }
-
-  private initForm() {
-    this.searchForm = this.formBuilder.group({
-      symbol: ['', Validators.required],
-    });
   }
 
   getJSONValue(obj: any) {
@@ -144,5 +134,41 @@ export class HeaderComponent implements OnInit {
 
   closeThankYouForFeedbackAlert() {
     this.showThankYouForFeedbackFlag = false;
+  }
+
+  selectEvent(item) {
+    // do something with selected item
+    console.log(`In selectEvent, ${JSON.stringify(item)}`);
+    if (item) {
+      this.router.navigate(['/symbolDetails', item.id], { replaceUrl: true });
+    }
+  }
+
+  onChangeSearch(val: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+    console.log(`In onChangeSearch, ${JSON.stringify(val)}`);
+    let filteredList = [];
+    if (!val || val.length === 0 || !this.allSymbolData) {
+      return [];
+    } else {
+      console.log(`this.allSymbolData length : ${this.allSymbolData.length}`);
+      let str = val.toLowerCase();
+      console.log(`ste:${str}`);
+      for (let ele of this.allSymbolData) {
+        if (ele.name.toLowerCase().includes(str)) {
+          filteredList.push(ele);
+        }
+        if (filteredList.length >= 15) {
+          this.data = filteredList;
+        }
+      }
+      this.data = filteredList;
+    }
+  }
+
+  onFocused(e) {
+    // do something when input is focused
+    console.log(`In onFocused, ${JSON.stringify(e)}`);
   }
 }

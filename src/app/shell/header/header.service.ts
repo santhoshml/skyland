@@ -7,6 +7,7 @@ import { map, catchError } from 'rxjs/operators';
 const routes = {
   recordEmoji: () => `/feedback/emoji`,
   recordComments: () => `/feedback/comments`,
+  getAllSymbols: () => `/stocks/all/symbolAndNames`,
 };
 
 export interface RandomQuoteContext {
@@ -48,28 +49,17 @@ export class HeaderService {
       );
   }
 
-  keyword = 'name';
-  data = [
-    {
-      id: 1,
-      name: 'Usa',
-    },
-    {
-      id: 2,
-      name: 'England',
-    },
-  ];
-
-  selectEvent(item) {
-    // do something with selected item
-  }
-
-  onChangeSearch(val: string) {
-    // fetch remote data from here
-    // And reassign the 'data' which is binded to 'data' property.
-  }
-
-  onFocused(e) {
-    // do something when input is focused
+  getAllSymbols(): Observable<any> {
+    return this.httpClient
+      .get(routes.getAllSymbols(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
   }
 }

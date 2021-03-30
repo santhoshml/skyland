@@ -19,17 +19,28 @@
           <i class="fas fa-upload"></i>
           <span translate>Upload_history</span>
         </a>
-        <form [formGroup]="searchForm" class="form-inline my-2 my-lg-0" (ngSubmit)="onSubmit()">
-          <input
-            class="form-control mr-sm-2"
-            formControlName="symbol"
-            id="symbol"
-            type="search"
-            placeholder="Symbol"
-            aria-label="Search"
-          />
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <div class="ng-autocomplete">
+          <ng-autocomplete
+            [data]="data"
+            placeholder="Search - Symbol/Company Name"
+            [searchKeyword]="keyword"
+            (selected)="selectEvent($event)"
+            (inputChanged)="onChangeSearch($event)"
+            (inputFocused)="onFocused($event)"
+            [itemTemplate]="itemTemplate"
+            debounceTime="600"
+            [notFoundTemplate]="notFoundTemplate"
+          >
+          </ng-autocomplete>
+
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
       </div>
 
       <div class="navbar-nav ml-auto">
