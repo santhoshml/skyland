@@ -67,7 +67,7 @@
             <tbody>
               <tr *ngFor="let topStock of topStocks" class="table-row">
                 <td class="text-center" style="word-wrap: break-word; min-width: 160px; max-width: 160px">
-                  {{ topStock.companyName }}
+                  {{ topStock.company_name }}
                 </td>
                 <td class="text-center">
                   <a href="/symbolDetails/{{ topStock.symbol }}">{{ topStock.symbol }}</a>
@@ -144,7 +144,7 @@
             <tbody>
               <tr *ngFor="let topStock of topStocks" class="table-row">
                 <td class="text-center" style="word-wrap: break-word; min-width: 160px; max-width: 160px">
-                  {{ topStock.companyName }}
+                  {{ topStock.company_name }}
                 </td>
                 <td class="text-center">
                   <a href="/symbolDetails/{{ topStock.symbol }}">{{ topStock.symbol }}</a>
