@@ -148,6 +148,11 @@
                 </td>
                 <td class="text-center">
                   <a href="/symbolDetails/{{ topStock.symbol }}">{{ topStock.symbol }}</a>
+                  <div *ngIf="topStock.good_candle == 1 && topStock.macd_dir == 1 && topStock.rsi_dir == 1">
+                    <span class="badge badge-pill badge-success"
+                      ><i class="fa fa-star" aria-hidden="true"></i> &nbsp;Good Buy Setup</span
+                    >
+                  </div>
                 </td>
                 <td
                   class="text-center"
