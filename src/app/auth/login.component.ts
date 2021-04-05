@@ -195,7 +195,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           if (error.error && error.error.errors) {
             this.createAccountError = error.error.errors;
           } else {
-            this.createAccountError = `Code or Email or password incorrect.`;
+            this.createAccountError = `Email or password incorrect.`;
           }
           // console.log(`createAccountError : ${this.createAccountError}`);
         }
@@ -213,7 +213,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     switch (this.activeTab) {
       case 'login':
         this.accountForm = this.formBuilder.group({
-          code: ['test', Validators.required],
           displayName: [''],
           email: ['', Validators.required],
           password: ['', Validators.required],
@@ -223,7 +222,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         break;
       case 'createAccount':
         this.accountForm = this.formBuilder.group({
-          code: ['', Validators.required],
           displayName: ['', Validators.required],
           email: ['', Validators.required],
           password: ['', Validators.required],

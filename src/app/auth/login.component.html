@@ -125,23 +125,6 @@
                   {{ createAccountError }}
                 </div>
                 <div class="mt-3 form-group">
-                  <label class="d-block">
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="code"
-                      autocomplete="code"
-                      [placeholder]="'Code' | translate"
-                    />
-                    <span hidden translate>Code</span>
-                    <small
-                      [hidden]="accountForm.controls.code.valid || accountForm.controls.code.untouched"
-                      class="text-danger"
-                      translate
-                    >
-                      Code is required
-                    </small>
-                  </label>
                   <label class="d-block mt-3">
                     <input
                       type="text"
