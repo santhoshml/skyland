@@ -20,6 +20,7 @@ import { SubSectorDetailsModule } from './subSectorDetails/subSectorDetails.modu
 import { SymbolDetailsModule } from './symbolDetails/symbolDetails.module';
 import { DefinitionsModule } from './definitions/definitions.module';
 import { UserProfileModule } from './userProfile/userProfile.module';
+import { AllUserListAdminModule } from './allUserListAdmin/allUserListAdmin.module';
 import { PageNotFoundModule } from './pageNotFound/pageNotFound.module';
 import { TopPicksModule } from './topPicks/topPicks.module';
 import { UptrendingStocksModule } from './uptrendingStocks/uptrendingStocks.module';
@@ -65,6 +66,7 @@ import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-logi
     TruncateModule,
     GaugeChartModule,
     SocialLoginModule,
+    AllUserListAdminModule,
     AppRoutingModule, // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],

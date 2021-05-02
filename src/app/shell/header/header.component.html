@@ -1,5 +1,5 @@
-<header>
-  <nav class="navbar navbar-top navbar-expand-lg navbar-light bg-light" style="">
+<header *ngIf="userProfile$ | async as userProfile">
+  <nav class="navbar navbar-top navbar-expand-lg navbar-light bg-light">
     <!-- <a class="navbar-brand" href="https://www.liste.ai" translate>APP_NAME</a> -->
     <a class="navbar-brand" href="https://www.liste.ai" style="display: contents" translate>
       <img class="card-img-top mr-3 logo-img" src="assets/logo-size.png" alt="Card image cap" /><img />
@@ -60,6 +60,14 @@
             </h6> -->
             <!-- <div class="dropdown-divider"></div> -->
             <button class="dropdown-item" (click)="distributions()" translate>ROI distribution</button>
+            <button
+              class="dropdown-item"
+              *ngIf="userProfile.user.profile.acct_type === 'ADMIN'"
+              (click)="displayAllUsers()"
+              translate
+            >
+              Admin - All User List
+            </button>
             <button class="dropdown-item" (click)="logout()" translate>Logout</button>
           </div>
         </div>

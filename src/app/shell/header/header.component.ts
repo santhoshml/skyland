@@ -6,6 +6,7 @@ import { AuthenticationService, CredentialsService } from '@app/auth';
 import { map, catchError } from 'rxjs/operators';
 import { HeaderService } from './header.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { UserProfileService } from '@app/userProfile/userProfile.service';
 
 @Component({
   selector: 'app-header',
@@ -16,6 +17,7 @@ export class HeaderComponent implements OnInit {
   menuHidden = true;
   userModelProfile$: Observable<any>;
   webDisplayDate$: Observable<string>;
+  userProfile$: Observable<any>;
   closeResult: string;
   userFeedback: string;
   showThankYouForFeedbackFlag = false;
@@ -30,6 +32,7 @@ export class HeaderComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
     private credentialsService: CredentialsService,
+    private userProfileService: UserProfileService,
     private service: HeaderService,
     private modalService: NgbModal
   ) {}
@@ -55,6 +58,8 @@ export class HeaderComponent implements OnInit {
       this.allSymbolData = data;
       this.data = data.slice(0, 15);
     });
+
+    this.userProfile$ = this.userProfileService.getUserDetails();
   }
 
   ngAfterContentInit() {
@@ -67,6 +72,10 @@ export class HeaderComponent implements OnInit {
 
   distributions() {
     this.router.navigate(['/distribution'], { replaceUrl: true });
+  }
+
+  displayAllUsers() {
+    this.router.navigate(['/allUserListAdmin'], { replaceUrl: true });
   }
 
   logout() {

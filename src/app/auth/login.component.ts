@@ -202,7 +202,49 @@ export class LoginComponent implements OnInit, OnDestroy {
       );
   }
 
-  forgotPassword() {}
+  forgotPassword() {
+    this.googleAnalyticsService.eventEmitter(
+      'forgotPassword-called',
+      'forgotPassword',
+      'click',
+      'forgotPassword',
+      1,
+      null
+    );
+    this.isLoading = true;
+    const forgotPassword$ = this.authenticationService.forgotPassword(this.accountForm.value);
+    forgotPassword$
+      .pipe(
+        finalize(() => {
+          this.accountForm.markAsPristine();
+          this.isLoading = false;
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(
+        (credentials: Credentials) => {
+          log.debug(`new password sent to ${credentials.email} successfully`);
+          this.googleAnalyticsService.eventEmitter(
+            'forgotPassword-successful',
+            'forgotPassword',
+            'forgotPassword-response',
+            'forgotPassword',
+            1,
+            credentials.email
+          );
+          this.setActiveTab('login');
+        },
+        (error) => {
+          log.debug(`forgotError : ${JSON.stringify(error)}`);
+          if (error.error && error.error.errors) {
+            this.forgotError = error.error.errors;
+          } else {
+            this.forgotError = `Email is incorrect or does not exist in our system.`;
+          }
+          // console.log(`createAccountError : ${this.createAccountError}`);
+        }
+      );
+  }
 
   setActiveTab(val: string) {
     this.activeTab = val;

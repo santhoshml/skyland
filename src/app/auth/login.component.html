@@ -45,6 +45,19 @@
               >
             </li>
             <!-- <li class="nav-item">
+              <a
+                class="nav-link"
+                id="forgotPassword-tab"
+                data-toggle="tab"
+                href="#forgotPassword"
+                (click)="setActiveTab('forgotPassword')"
+                role="tab"
+                aria-controls="forgotPassword"
+                aria-selected="true"
+                >Forgot Password</a
+              >
+            </li> -->
+            <!-- <li class="nav-item">
               <a class="nav-link" id="forgotPassword-tab" data-toggle="tab" href="#forgotPassword" (click)="setActiveTab('forgotPassword')" role="tab" aria-controls="forgotPassword" aria-selected="true">Forgot Password</a>
             </li> -->
           </ul>
@@ -201,10 +214,10 @@
                 </p>
               </form>
             </div>
-            <!-- <div class="tab-pane fade" id="forgotPassword" role="tabpanel" aria-labelledby="forgotPassword-tab">
-              <form (ngSubmit)="forgotPassword()" [formGroup]="accountForm" novalidate> 
-                <div class="alert alert-danger" [hidden]="!forgotError || isLoading" translate>
-                  Email incorrect.
+            <div class="tab-pane fade" id="forgotPassword" role="tabpanel" aria-labelledby="forgotPassword-tab">
+              <form class="mt-3" (ngSubmit)="forgotPassword()" [formGroup]="accountForm" novalidate>
+                <div class="alert alert-danger" [hidden]="!forgotError || isLoading">
+                  Email is incorrect or does not exist in our system.
                 </div>
                 <div class="form-group">
                   <label class="d-block">
@@ -221,7 +234,7 @@
                       class="text-danger"
                       translate
                     >
-                    Email is required
+                      Email is required
                     </small>
                   </label>
                 </div>
@@ -229,8 +242,13 @@
                   <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
                   <span translate>Forgot Password</span>
                 </button>
+                <p class="agree-tos">
+                  By clicking Sign In, you agree to our
+                  <a href="https://www.liste.ai/terms.html" target="_blank">Terms</a> and have read and acknowledge our
+                  <a href="https://www.liste.ai/privacy.html" target="_blank">US Privacy Statement</a>.
+                </p>
               </form>
-            </div> -->
+            </div>
           </div>
         </div>
         <hr style="margin: 0px" />
