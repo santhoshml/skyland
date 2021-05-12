@@ -6,6 +6,8 @@ import { SubSectorDetailsService } from './subSectorDetails.service';
 import { Observable, of } from 'rxjs';
 import { CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
+import pruned from 'pruned';
+import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 
 export interface SubSectorDetailsTable {
   id: number;
@@ -48,12 +50,19 @@ export class SubSectorDetailsComponent implements OnInit {
     ['ytd_change', 'YTD'],
   ]);
 
+  subSectorId = '';
+
+  MIN_ROWS_TO_DISPLAY = 10;
+  MAX_ROWS_TO_DISPLAY = 10000;
+  hideViewMoreBtn = false;
+
   constructor(
     private subSectorDetailsService: SubSectorDetailsService,
     private router: Router,
     private route: ActivatedRoute,
     private credentialsService: CredentialsService,
-    private googleAnalyticsService: GoogleAnalyticsService
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private symbolDetailsService: SymbolDetailsService
   ) {}
 
   ngOnInit() {
@@ -69,24 +78,36 @@ export class SubSectorDetailsComponent implements OnInit {
     // this.listDetails$ = this.listDetailsService.getListDetails();
     this.sub = this.route.params.subscribe((params) => {
       // console.log(`params : ${JSON.stringify(params)}`);
-      let key = params['key']; // (+) converts string 'listId' to a number
+      this.subSectorId = params['key']; // (+) converts string 'listId' to a number
 
       // console.log(`key : ${key}`);
 
       // get the list from BE
-      this.subSectorDetailsArr$ = this.subSectorDetailsService.getSubSectorDetails(key).pipe(
-        map((body: any, headers: any) => {
-          this.googleAnalyticsService.eventEmitter(
-            'subSectorDetails-response',
-            'subSectorDetails',
-            'response',
-            'subSectorDetails',
-            1,
-            this.credentialsService.credentials.email
-          );
-          // console.log(`I am in body: ${JSON.stringify(body)}`);
-          return body;
-        }),
+      this.subSectorDetailsArr$ = this.subSectorDetailsService
+        .getSubSectorDetails(this.subSectorId, this.MIN_ROWS_TO_DISPLAY)
+        .pipe(
+          map((body: any, headers: any) => body),
+          catchError((err) => {
+            // console.log(`I am catchError`);
+            if (err.status === 401) {
+              this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
+            } else {
+              return of();
+            }
+          })
+        );
+    });
+
+    // set user profile
+    this.userProfile = this.credentialsService.userProfileModel;
+  }
+
+  viewMoreFn() {
+    this.hideViewMoreBtn = true;
+    this.subSectorDetailsArr$ = this.subSectorDetailsService
+      .getSubSectorDetails(this.subSectorId, this.MAX_ROWS_TO_DISPLAY)
+      .pipe(
+        map((body: any, headers: any) => body),
         catchError((err) => {
           // console.log(`I am catchError`);
           if (err.status === 401) {
@@ -96,10 +117,6 @@ export class SubSectorDetailsComponent implements OnInit {
           }
         })
       );
-    });
-
-    // set user profile
-    this.userProfile = this.credentialsService.userProfileModel;
   }
 
   ngOnDestroy() {
@@ -121,5 +138,39 @@ export class SubSectorDetailsComponent implements OnInit {
 
   printObject(obj: any) {
     return JSON.stringify(obj);
+  }
+
+  getPrunedValue(value: number) {
+    return pruned.Number(value);
+  }
+
+  addToFavorites(symbol: string) {
+    console.log(`addToFavorites : ${symbol}`);
+    this.googleAnalyticsService.eventEmitter(
+      'topPicks',
+      'favorites',
+      'addToFavorites',
+      'addToFavorites',
+      1,
+      this.credentialsService.credentials.email
+    );
+    this.symbolDetailsService.addToFavorites(symbol).subscribe((body) => {});
+  }
+
+  isFavorite(symbol: string) {
+    return this.symbolDetailsService.isFavorite(symbol);
+  }
+
+  removeFromFavorites(symbol: string) {
+    console.log(`removeFromFavorites : ${symbol}`);
+    this.googleAnalyticsService.eventEmitter(
+      'subSectorDetails',
+      'favorites',
+      'removeFromFavorites',
+      'removeFromFavorites',
+      1,
+      this.credentialsService.credentials.email
+    );
+    this.symbolDetailsService.removeFromFavorites(symbol).subscribe((body) => {});
   }
 }

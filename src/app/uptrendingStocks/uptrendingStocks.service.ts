@@ -52,13 +52,15 @@ export class UptrendingStocksService {
       );
   }
 
-  getUptrendingStocks(): Observable<any> {
+  getUptrendingStocks(rows: number): Observable<any> {
     return this.httpClient
       .get(routes.uptrendingStocks(), {
         withCredentials: true,
       })
       .pipe(
-        map((body: any) => body),
+        map((body: any) => {
+          return body.slice(0, rows);
+        }),
         catchError((err) => {
           // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);

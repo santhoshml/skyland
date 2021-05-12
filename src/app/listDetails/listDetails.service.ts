@@ -21,24 +21,30 @@ export interface RandomQuoteContext {
 export class ListDetailsService {
   constructor(private httpClient: HttpClient) {}
 
-  getListDetails(key: number): Observable<ListDetails[] | string> {
+  getListDetails(key: number, rows: number): Observable<ListDetails[] | string> {
     if (key === 1002) {
-      return this.getFavoritesListDetails(key);
+      return this.getFavoritesListDetails(key, rows);
     } else {
-      return this.getListDetailsForTradingIdea(key);
+      return this.getListDetailsForTradingIdea(key, rows);
     }
   }
 
-  getListDetailsForTradingIdea(key: number): Observable<ListDetails[] | string> {
+  getListDetailsForTradingIdea(key: number, rows: number): Observable<ListDetails[] | string> {
     return this.httpClient.get(routes.listDetails(key)).pipe(
-      map((body: ListDetails[]) => body),
+      map((body: any) => {
+        body.list = body.list.slice(0, rows);
+        return body;
+      }),
       catchError(() => of('Error, could not GET list details :-('))
     );
   }
 
-  getFavoritesListDetails(key: number): Observable<ListDetails[] | string> {
+  getFavoritesListDetails(key: number, rows: number): Observable<ListDetails[] | string> {
     return this.httpClient.get(routes.listDetailsFavorites(key)).pipe(
-      map((body: ListDetails[]) => body),
+      map((body: any) => {
+        body.list = body.list.slice(0, rows);
+        return body;
+      }),
       catchError(() => of('Error, could not GET list details :-('))
     );
   }

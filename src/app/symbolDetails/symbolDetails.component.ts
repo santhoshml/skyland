@@ -395,7 +395,7 @@ export class SymbolDetailsComponent implements OnInit {
       interval: 'D',
       timezone: 'Etc/UTC',
       theme: 'light',
-      style: '1',
+      style: '3',
       locale: 'en',
       toolbar_bg: '#f1f3f6',
       enable_publishing: false,

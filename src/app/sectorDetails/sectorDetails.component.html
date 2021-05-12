@@ -1,69 +1,23 @@
 <div class="container-fluid">
-  <div *ngIf="subSectorDetailsArr$ | async as ssDetails">
+  <div *ngIf="sectorDetails$ | async as sectorDetails">
     <div class="card mb-5">
       <div class="card-body">
         <div class="row">
           <div class="col-9">
-            <div><span class="font-weight-bold">Industry :</span> {{ ssDetails.title }}</div>
+            <div><span class="font-weight-bold">Sector :</span> {{ sectorDetails.displayName }}</div>
             <div class="mt-2 mb-2 note">
-              List of stocks in the sub-sector / industry. Ordered by price trend (Uptrend, Neutral and Downtrend) and
-              price value.
+              {{ sectorDetails.desc }}
             </div>
             <br />
-            <div>
-              <span class="font-weight-bold">
-                Short term - Long term industry performance :
-                {{ ssDetails.change }}
-              </span>
-              (today's change)
-            </div>
-            <div class="row mt-3">
-              <div class="col-2">
-                <div>
-                  1-Week
-                  <div class="font-weight-bold">{{ ssDetails.perf_week }}</div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div>
-                  1-Month
-                  <div class="font-weight-bold">{{ ssDetails.perf_month }}</div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div>
-                  1-Quater
-                  <div class="font-weight-bold">{{ ssDetails.perf_quart }}</div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div>
-                  6-Months
-                  <div class="font-weight-bold">{{ ssDetails.perf_half }}</div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div>
-                  1-year
-                  <div class="font-weight-bold">{{ ssDetails.perf_year }}</div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div>
-                  YTD
-                  <div class="font-weight-bold">{{ ssDetails.perf_ytd }}</div>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="col-3">
             <div class="ver-line pl-4 pr-2 mb-5">
               <ul class="pl-0 mb-5">
                 <li class="ml-3 mb-3">
-                  <span class="step-text">List of stocks in the Sub-Sector</span>
+                  <span class="step-text">List of stocks in the Sector</span>
                 </li>
                 <li class="ml-3 mb-3">
-                  <span class="step-text">Sorted by Direction and Price</span>
+                  <span class="step-text">All the stocks are in Uptrend</span>
                 </li>
                 <li class="ml-3 mb-3">
                   <span class="step-text">Click on the symbol to see more details</span>
@@ -78,7 +32,7 @@
       <thead>
         <tr>
           <th class="text-center" scope="col">Company</th>
-          <th class="text-center" style="width: 9%" scope="col">Trend</th>
+          <th class="text-center" style="width: 7%" scope="col">Trend</th>
           <th class="text-center" style="width: 7%" scope="col">Price</th>
           <th class="text-center" style="width: 7%" scope="col">Volume</th>
           <th class="text-center" style="width: 7%" scope="col">
@@ -104,28 +58,28 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let listRow of ssDetails.list" class="table-row">
+        <tr *ngFor="let listRow of sectorDetails.list" class="table-row">
           <td class="text-left company-name">
             <a class="symbol" href="/symbolDetails/{{ listRow.symbol }}">{{ listRow.symbol }}</a>
             <br />
-            {{ listRow.companyName | truncate: 40 | uppercase }}
+            {{ listRow.company_name | truncate: 40 | uppercase }}
           </td>
           <td class="text-left">
             <div *ngIf="listRow.trend === 1">
               <i class="fas fa-arrow-up"></i>
-              Uptrend
-            </div>
-            <div *ngIf="listRow.trend === 0">
-              <i class="fas fa-arrow-right"></i>
-              Neutral
+              <span class="trend">Uptrend</span>
             </div>
             <div *ngIf="listRow.trend === -1">
               <i class="fas fa-arrow-down"></i>
-              Downtrend
+              <span class="trend">Downtrend</span>
+            </div>
+            <div *ngIf="listRow.trend === 0">
+              <i class="fas fa-arrow-right"></i>
+              <span class="trend">Neutral</span>
             </div>
           </td>
           <td class="text-right price">
-            {{ listRow.close | currency }}
+            {{ listRow.price | currency }}
             <div *ngIf="listRow.bestBuy === 1">
               <span class="badge badge-pill badge-primary info-badge">
                 <i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy
@@ -150,20 +104,20 @@
                 {{ listRow.industry }}
               </a>
               <div *ngFor="let industryBadge of listRow.industryBadgeList">
-                <span class="badge badge-pill badge-info info-badge pill-wrap">{{ industryBadge }}</span>
+                <span class="badge badge-pill badge-info pill-wrap info-badge">{{ industryBadge }}</span>
               </div>
             </div>
             <div *ngIf="!listRow.industry">N/A</div>
           </td>
-          <td class="text-left note">
-            <div class="action-btn-group" *ngIf="isFavorite(listRow.symbol)">
-              <a href="javascript:void(0);" (click)="removeFromFavorites(listRow.symbol)" class="btn-pading text-btn">
-                Delete from Favorites
-              </a>
-            </div>
+          <td class="text-left">
             <div class="action-btn-group" *ngIf="!isFavorite(listRow.symbol)">
               <a href="javascript:void(0);" (click)="addToFavorites(listRow.symbol)" class="btn-pading text-btn">
                 Add to Favorites
+              </a>
+            </div>
+            <div class="action-btn-group" *ngIf="isFavorite(listRow.symbol)">
+              <a href="javascript:void(0);" (click)="removeFromFavorites(listRow.symbol)" class="btn-pading text-btn">
+                Delete from Favorites
               </a>
             </div>
           </td>

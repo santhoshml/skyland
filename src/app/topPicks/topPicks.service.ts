@@ -15,6 +15,7 @@ const routes = {
   favorites: () => `/tradingIdeas/favorites`,
   deleteFavorites: (symbol: string) => `/favorites/symbol/${symbol}`,
   getAllSymbols: () => `/stocks/all/symbolAndNames`,
+  getAllSectors: () => `/sectors/all/info`,
 };
 
 export interface RandomQuoteContext {
@@ -174,6 +175,20 @@ export class TopPicksService {
   getAllSymbols(): Observable<any> {
     return this.httpClient
       .get(routes.getAllSymbols(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  getAllSectors(): Observable<any> {
+    return this.httpClient
+      .get(routes.getAllSectors(), {
         withCredentials: true,
       })
       .pipe(

@@ -1,9 +1,9 @@
-<div class="container mb-5">
+<div class="container-fluid mb-5">
   <div class="mb-5">
     <div class="tab-pane fade show active card">
       <div *ngIf="uptrendingStocks$ | async as uptrendingStocks">
         <div class="card-body">
-          <div class="card-subtitle">
+          <div class="card-subtitle note">
             <ul class="mb-0">
               <li>Stocks in confirmed uptrend and at a good buy point.</li>
               <li>Click on the symbol to get more detailed analysis about the stock.</li>
@@ -15,87 +15,109 @@
           <thead>
             <tr>
               <th class="text-center" scope="col">Company</th>
-              <th class="text-center" scope="col">Symbol</th>
-              <th class="text-center" scope="col">
-                <a href="https://www.investopedia.com/terms/i/industry.asp" target="_blank">Industry</a>
-                <i class="fa fa-info-circle" title="Industry of a stock" aria-hidden="true"></i>
+              <th class="text-center" style="width: 7%" scope="col">Trend</th>
+              <th class="text-center" style="width: 7%" scope="col">Price</th>
+              <th class="text-center" style="width: 7%" scope="col">Volume</th>
+              <th class="text-center" style="width: 7%" scope="col">
+                Dividend
+                <a href="https://www.investopedia.com/terms/d/dividendyield.asp" target="_blank">
+                  <i class="fa fa-info-circle" title="Current Dividend Yield of the stock" aria-hidden="true"></i>
+                </a>
               </th>
-              <th class="text-center" scope="col">Price</th>
-              <th class="text-center" scope="col">
-                <a href="https://www.investopedia.com/terms/d/dividendyield.asp" target="_blank">Dividend Yield</a>
-                <i class="fa fa-info-circle" title="Current Dividend Yield of the stock" aria-hidden="true"></i>
+              <th class="text-center" style="width: 7%" scope="col">
+                P/E
+                <a href="https://www.investopedia.com/terms/p/price-earningsratio.asp" target="_blank">
+                  <i class="fa fa-info-circle" title="Current P/E ratio of the stock" aria-hidden="true"></i>
+                </a>
               </th>
+              <th class="text-center" style="width: 9%" scope="col">Market Cap</th>
               <th class="text-center" scope="col">
-                <a href="https://www.investopedia.com/terms/p/price-earningsratio.asp" target="_blank">P/E</a>
-                <i class="fa fa-info-circle" title="Current P/E ratio of the stock" aria-hidden="true"></i>
+                Industry
+                <a href="https://www.investopedia.com/terms/i/industry.asp" target="_blank">
+                  <i class="fa fa-info-circle" title="Industry of a stock" aria-hidden="true"></i>
+                </a>
               </th>
-              <th class="text-center" scope="col">Action</th>
+              <th class="text-center" style="width: 10%" scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let uptrendingStock of uptrendingStocks" class="table-row">
-              <td class="text-center" style="word-wrap: break-word; min-width: 160px; max-width: 160px">
-                {{ uptrendingStock.companyName }}
+              <td class="text-left company-name">
+                <a class="symbol" href="/symbolDetails/{{ uptrendingStock.symbol }}">{{ uptrendingStock.symbol }}</a>
+                <br />
+                {{ uptrendingStock.companyName | truncate: 40 | uppercase }}
               </td>
-              <td class="text-center">
-                <a href="/symbolDetails/{{ uptrendingStock.symbol }}">{{ uptrendingStock.symbol }}</a>
-                <div
-                  *ngIf="
-                    uptrendingStock.good_candle == 1 && uptrendingStock.macd_dir == 1 && uptrendingStock.rsi_dir == 1
-                  "
-                >
-                  <span class="badge badge-pill badge-success"
-                    ><i class="fa fa-star" aria-hidden="true"></i> &nbsp;Good Buy Setup</span
+              <td class="text-left">
+                <div *ngIf="uptrendingStock.trend === 1">
+                  <i class="fas fa-arrow-up"></i>
+                  <span class="trend">Uptrend</span>
+                </div>
+                <div *ngIf="uptrendingStock.trend === -1">
+                  <i class="fas fa-arrow-down"></i>
+                  <span class="trend">Downtrend</span>
+                </div>
+                <div *ngIf="uptrendingStock.trend === 0">
+                  <i class="fas fa-arrow-right"></i>
+                  <span class="trend">Neutral</span>
+                </div>
+              </td>
+              <td class="text-right price">
+                {{ uptrendingStock.price | currency }}
+                <div *ngIf="uptrendingStock.bestBuy === 1">
+                  <span class="badge badge-pill badge-primary info-badge"
+                    ><i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy</span
                   >
                 </div>
               </td>
-              <td
-                class="text-center"
-                style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 14px"
-              >
+              <td class="text-right volume">
+                {{ uptrendingStock.volume | number }}
+              </td>
+              <td class="text-right dividend">
+                {{ uptrendingStock.dividendYield | percent: '1.0-2' }}
+              </td>
+              <td class="text-right pe-ratio">
+                {{ uptrendingStock.peRatio | number: '1.0-2' }}
+              </td>
+              <td class="text-right">
+                {{ getPrunedValue(uptrendingStock.marketcap) }}
+              </td>
+              <td class="text-left" style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 14px">
                 <div *ngIf="uptrendingStock.industry">
-                  <a href="/subSectorDetails/{{ uptrendingStock.industryId }}">
+                  <a class="industry" href="/subSectorDetails/{{ uptrendingStock.industryId }}">
                     {{ uptrendingStock.industry }}
                   </a>
                   <div *ngFor="let industryBadge of uptrendingStock.industryBadgeList">
-                    <span class="badge badge-pill badge-info">{{ industryBadge }}</span>
+                    <span class="badge badge-pill badge-info pill-wrap info-badge">{{ industryBadge }}</span>
                   </div>
                 </div>
                 <div *ngIf="!uptrendingStock.industry">N/A</div>
               </td>
-              <td class="text-center">
-                <i class="fas fa-arrow-up"></i>
-                {{ uptrendingStock.price | currency }}
-              </td>
-              <td class="text-center">
-                {{ uptrendingStock.dividendYield | percent: '1.0-2' }}
-              </td>
-              <td class="text-center">
-                {{ uptrendingStock.peRatio | number: '1.0-2' }}
-              </td>
-              <td class="text-center">
-                <div class="action-btn-group">
-                  <button
-                    type="button"
-                    *ngIf="uptrendingStock.isFavorite === 0"
+              <td class="text-left">
+                <div class="action-btn-group" *ngIf="!isFavorite(uptrendingStock.symbol)">
+                  <a
+                    href="javascript:void(0);"
                     (click)="addToFavorites(uptrendingStock.symbol)"
-                    class="btn btn-secondary mb-2"
+                    class="btn-pading text-btn"
                   >
                     Add to Favorites
-                  </button>
-                  <button
-                    type="button"
-                    *ngIf="uptrendingStock.isFavorite === 1"
+                  </a>
+                </div>
+                <div class="action-btn-group" *ngIf="isFavorite(uptrendingStock.symbol)">
+                  <a
+                    href="javascript:void(0);"
                     (click)="removeFromFavorites(uptrendingStock.symbol)"
-                    class="btn btn-secondary mb-2"
+                    class="btn-pading text-btn"
                   >
-                    Remove from Favorites
-                  </button>
+                    Delete from Favorites
+                  </a>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+      <div *ngIf="!hideViewMoreBtn" class="view-more-div">
+        <button type="button" (click)="viewMoreFn()" class="btn btn-red mb-2">View More</button>
       </div>
     </div>
   </div>

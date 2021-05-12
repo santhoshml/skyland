@@ -57,3 +57,154 @@
   text-align: left;
   color: #999;
 }
+
+.company-name {
+  max-width: 160px;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.symbol {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration-style: solid;
+  text-decoration-color: #0a66cc;
+  color: #0a66cc;
+}
+
+.industry {
+  max-width: 160px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.price {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.dividend {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.pe-ratio {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.roi {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.days {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.text-btn {
+  font-size: 15px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn-pading {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  width: fit-content;
+}
+
+.table > tbody > tr > td {
+  border: 0px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.info-badge {
+  font-size: 12px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.volume {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.trend {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.note {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn-red {
+  background-color: #b95e04;
+  color: #ffffff;
+}
+
+.view-more-div {
+  padding-left: 12px;
+}
+
+.table td.fit,
+.table th.fit {
+  white-space: nowrap;
+  width: 1%;
+}
+
+.tab-title {
+  font-size: 15px;
+  font-weight: 200;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.close-submit {
+  padding: 3px;
+}
+
+.btn-open-actions {
+  margin: 0px 3px;
+  padding: 3px;
+  font-size: 10px;
+}
+
+.card-text {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.market-cap {
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.pill-wrap {
+  white-space: normal !important;
+}
+
+.view-more-div {
+  padding-left: 12px;
+}
+
+.btn-red {
+  background-color: #b95e04;
+  color: #ffffff;
+}

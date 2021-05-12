@@ -4,12 +4,21 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
+import { TruncateModule } from '@yellowspot/ng-truncate';
 
 import { ListDetailsRoutingModule } from './listDetails-routing.module';
 import { ListDetailsComponent } from './listDetails.component';
 
 @NgModule({
-  imports: [CommonModule, TranslateModule, ListDetailsRoutingModule, BrowserModule, NgbModule, FileUploadModule],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    ListDetailsRoutingModule,
+    BrowserModule,
+    NgbModule,
+    TruncateModule,
+    FileUploadModule,
+  ],
   declarations: [ListDetailsComponent],
 })
 export class ListDetailsModule {}

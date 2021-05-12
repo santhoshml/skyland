@@ -10,6 +10,7 @@ import { GoogleAnalyticsService } from '@app/@core';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import * as moment from 'moment';
+import pruned from 'pruned';
 
 @Component({
   selector: 'app-uptrendingStocks',
@@ -26,6 +27,10 @@ export class UptrendingStocksComponent implements OnInit {
   sellPrice: string;
   sellDate: string;
   idToShow = 0;
+
+  MIN_ROWS_TO_DISPLAY = 10;
+  MAX_ROWS_TO_DISPLAY = 10000;
+  hideViewMoreBtn = false;
 
   constructor(
     private service: UptrendingStocksService,
@@ -48,16 +53,20 @@ export class UptrendingStocksComponent implements OnInit {
       this.credentialsService.credentials.email
     );
 
-    this.readUptrendStocks();
+    this.readUptrendStocks(this.MIN_ROWS_TO_DISPLAY);
   }
 
-  readUptrendStocks() {
-    this.uptrendingStocks$ = this.service.getUptrendingStocks().pipe(
+  readUptrendStocks(rows: number) {
+    this.uptrendingStocks$ = this.service.getUptrendingStocks(rows).pipe(
       map((body) => {
         // console.log(`topStocks : ${JSON.stringify(body)}`);
         return body;
       })
     );
+  }
+
+  isFavorite(symbol: string) {
+    return this.symbolDetailsService.isFavorite(symbol);
   }
 
   addToFavorites(symbol: string) {
@@ -70,7 +79,7 @@ export class UptrendingStocksComponent implements OnInit {
       this.credentialsService.credentials.email
     );
     this.symbolDetailsService.addToFavorites(symbol).subscribe((data) => {
-      this.readUptrendStocks();
+      // this.readUptrendStocks();
     });
   }
 
@@ -84,7 +93,16 @@ export class UptrendingStocksComponent implements OnInit {
       this.credentialsService.credentials.email
     );
     this.symbolDetailsService.removeFromFavorites(symbol).subscribe((data) => {
-      this.readUptrendStocks();
+      // this.readUptrendStocks();
     });
+  }
+
+  getPrunedValue(value: number) {
+    return pruned.Number(value);
+  }
+
+  viewMoreFn() {
+    this.hideViewMoreBtn = true;
+    this.readUptrendStocks(this.MAX_ROWS_TO_DISPLAY);
   }
 }

@@ -2,56 +2,32 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import { finalize, map, catchError } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
-import { ListDetailsService } from './listDetails.service';
+import { SectorDetailsService } from './sectorDetails.service';
 import { Observable, of } from 'rxjs';
 import { CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import pruned from 'pruned';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 
-export interface ListDetails {
-  success: boolean;
-  size: number;
-  list: ListTable;
-}
-
-export interface ListTable {
-  title: string;
-  desc: string;
-  list: ListRow[];
-}
-
-export interface ListRow {
-  symbol: string;
-  confidence: string;
-  raw_confidence: number;
-  companyName: string;
-  sector: string;
-  price: string;
-  tags: string[];
-  gain_flag: number;
-}
-
 @Component({
-  selector: 'app-listDetails',
-  templateUrl: './listDetails.component.html',
-  styleUrls: ['./listDetails.component.scss'],
+  selector: 'app-sectorDetails',
+  templateUrl: './sectorDetails.component.html',
+  styleUrls: ['./sectorDetails.component.scss'],
 })
-export class ListDetailsComponent implements OnInit {
+export class SectorDetailsComponent implements OnInit {
   version: string | null = environment.version;
-  listDetailsArr: ListDetails[];
   isLoading = false;
-  listId: number;
-  listDetails$: Observable<any>;
+  sectorDetails$: Observable<any>;
   private sub: any;
   userProfile: UserProfileModel;
+  sectorSymbol = '';
 
   MIN_ROWS_TO_DISPLAY = 10;
   MAX_ROWS_TO_DISPLAY = 10000;
   hideViewMoreBtn = false;
 
   constructor(
-    private listDetailsService: ListDetailsService,
+    private sectorDetailsService: SectorDetailsService,
     private router: Router,
     private route: ActivatedRoute,
     private credentialsService: CredentialsService,
@@ -61,10 +37,10 @@ export class ListDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.googleAnalyticsService.eventEmitter(
-      'listDetails-init',
-      'listDetails',
+      'sectorDetails-init',
+      'sectorDetails',
       'init',
-      'listDetails',
+      'sectorDetails',
       1,
       this.credentialsService.credentials.email
     );
@@ -72,56 +48,31 @@ export class ListDetailsComponent implements OnInit {
     // this.listDetails$ = this.listDetailsService.getListDetails();
     this.sub = this.route.params.subscribe((params) => {
       // console.log(`params : ${JSON.stringify(params)}`);
-      this.listId = +params['listId']; // (+) converts string 'listId' to a number
+      this.sectorSymbol = params['key']; // (+) converts string 'listId' to a number
 
-      // console.log(`this.listId : ${this.listId}`);
-
-      // get the list from BE
-      this.listDetails$ = this.listDetailsService.getListDetails(this.listId, this.MIN_ROWS_TO_DISPLAY).pipe(
-        map((body: any, headers: any) => {
-          return body;
-        }),
-        catchError((err) => {
-          if (err.status === 401) {
-            this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
-          } else {
-            return of();
-          }
-        })
-      );
+      this.sectorDetails$ = this.sectorDetailsService.getSectorDetails(this.sectorSymbol, this.MIN_ROWS_TO_DISPLAY);
     });
 
     // set user profile
     this.userProfile = this.credentialsService.userProfileModel;
   }
 
-  viewMoreFn() {
-    this.hideViewMoreBtn = true;
-    this.listDetails$ = this.listDetailsService.getListDetails(this.listId, this.MAX_ROWS_TO_DISPLAY).pipe(
-      map((body: any, headers: any) => {
-        return body;
-      }),
-      catchError((err) => {
-        if (err.status === 401) {
-          this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
-        } else {
-          return of();
-        }
-      })
-    );
-  }
-
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  getSymbolDetails(listRow: ListRow) {
+  viewMoreFn() {
+    this.hideViewMoreBtn = true;
+    this.sectorDetails$ = this.sectorDetailsService.getSectorDetails(this.sectorSymbol, this.MAX_ROWS_TO_DISPLAY);
+  }
+
+  getSymbolDetails(listRow: any) {
     // console.log(`navigate to SymbolDetails, ${JSON.stringify(listRow)}`);
     this.googleAnalyticsService.eventEmitter(
-      'symbolDetails-forwading',
-      'symbolDetails',
+      'sectorDetails-forwading',
+      'sectorDetails',
       'forwading',
-      'symbolDetails',
+      'sectorDetails',
       1,
       this.credentialsService.credentials.email
     );
@@ -138,25 +89,25 @@ export class ListDetailsComponent implements OnInit {
 
   addToFavorites(symbol: string) {
     this.googleAnalyticsService.eventEmitter(
-      'listDetails',
+      'sectorDetails',
       'favorites',
       'addToFavorites',
       'addToFavorites',
       1,
       this.credentialsService.credentials.email
     );
-    this.symbolDetailsService.addToFavorites(symbol).subscribe();
+    this.symbolDetailsService.addToFavorites(symbol).subscribe((data) => {});
   }
 
   removeFromFavorites(symbol: string) {
     this.googleAnalyticsService.eventEmitter(
-      'listDetails',
+      'sectorDetails',
       'favorites',
       'removeFromFavorites',
       'removeFromFavorites',
-      0,
+      1,
       this.credentialsService.credentials.email
     );
-    this.symbolDetailsService.removeFromFavorites(symbol).subscribe();
+    this.symbolDetailsService.removeFromFavorites(symbol).subscribe((data) => {});
   }
 }

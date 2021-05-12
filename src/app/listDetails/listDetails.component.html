@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div *ngIf="listDetails$ | async as listDetails">
     <div class="card mb-5">
       <h5 class="card-header">Trading Idea</h5>
@@ -29,11 +29,6 @@
                 <li class="ml-3 mb-3">
                   <span class="step-text">Click on a symbol to see more details about it</span>
                 </li>
-                <!-- <li class="ml-3 mb-3">
-                  <span class="step-text"
-                    >Upload your old transactions to see the prediction as per you investment style</span
-                  >
-                </li> -->
               </ul>
             </div>
           </div>
@@ -43,53 +38,101 @@
     <table class="mt-20 table table-striped table-hover table-bordered">
       <thead>
         <tr>
-          <th scope="col">Company Name</th>
-          <th scope="col">Symbol</th>
-          <th scope="col">Industry</th>
-          <!-- <th scope="col">Sector</th> -->
-          <th scope="col">Price</th>
-          <th scope="col">Trend</th>
-          <th scope="col">Cap</th>
-          <th scope="col">Dividend yeild</th>
-          <th scope="col">PE Ratio</th>
+          <th class="text-center" scope="col">Company</th>
+          <th class="text-center" style="width: 7%" scope="col">Trend</th>
+          <th class="text-center" style="width: 7%" scope="col">Price</th>
+          <th class="text-center" style="width: 7%" scope="col">Volume</th>
+          <th class="text-center" style="width: 7%" scope="col">
+            Dividend
+            <a href="https://www.investopedia.com/terms/d/dividendyield.asp" target="_blank">
+              <i class="fa fa-info-circle" title="Current Dividend Yield of the stock" aria-hidden="true"></i>
+            </a>
+          </th>
+          <th class="text-center" style="width: 7%" scope="col">
+            P/E
+            <a href="https://www.investopedia.com/terms/p/price-earningsratio.asp" target="_blank">
+              <i class="fa fa-info-circle" title="Current P/E ratio of the stock" aria-hidden="true"></i>
+            </a>
+          </th>
+          <th class="text-center" style="width: 9%" scope="col">Market Cap</th>
+          <th class="text-center" scope="col">
+            Industry
+            <a href="https://www.investopedia.com/terms/i/industry.asp" target="_blank">
+              <i class="fa fa-info-circle" title="Industry of a stock" aria-hidden="true"></i>
+            </a>
+          </th>
+          <th class="text-center" style="width: 10%" scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let listRow of listDetails.list" class="table-row" (click)="getSymbolDetails(listRow)">
-          <td>{{ listRow.name }}</td>
-          <td>
-            <a routerLink="/symbolDetails/{{ listRow.symbol }}">{{ listRow.symbol }}</a>
+        <tr *ngFor="let listRow of listDetails.list" class="table-row">
+          <td class="text-left company-name">
+            <a class="symbol" href="/symbolDetails/{{ listRow.symbol }}">{{ listRow.symbol }}</a>
+            <br />
+            {{ listRow.companyName | truncate: 40 | uppercase }}
           </td>
-          <td>
-            <a href="/subSectorDetails/{{ listRow.industryId }}">{{ listRow.industry }}</a>
-          </td>
-          <!-- <td>{{ listRow.sector }}</td> -->
-          <td>{{ listRow.close | currency }}</td>
-          <td>
-            <div *ngIf="listRow.strong_uptrend === 1">
-              <i class="fas fa-angle-double-up"></i>
-              Strong Uptrend
-            </div>
-            <div *ngIf="listRow.strong_uptrend === 0 && listRow.uptrend === 1">
+          <td class="text-left trend">
+            <div *ngIf="listRow.trend == 1">
               <i class="fas fa-arrow-up"></i>
-              Uptrend
+              <span class="trend">Uptrend</span>
             </div>
-            <div *ngIf="listRow.strong_uptrend === 0 && listRow.uptrend === 0">
-              <i class="fas fa-arrow-right"></i>
-              Neutral
-            </div>
-            <div *ngIf="listRow.strong_uptrend === 0 && listRow.uptrend === -1">
+            <div *ngIf="listRow.trend == -1">
               <i class="fas fa-arrow-down"></i>
-              Downtrend
+              <span class="trend">Downtrend</span>
+            </div>
+            <div *ngIf="listRow.trend == 0">
+              <i class="fas fa-arrow-right"></i>
+              <span class="trend">Neutral</span>
             </div>
           </td>
-          <td>{{ getPrunedValue(listRow.marketcap) }}</td>
-          <td>
+          <td class="text-right price">
+            {{ listRow.close | currency }}
+            <div *ngIf="listRow.bestBuy === 1">
+              <span class="badge badge-pill badge-primary info-badge">
+                <i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy
+              </span>
+            </div>
+          </td>
+          <td class="text-right volume">
+            {{ listRow.volume | number }}
+          </td>
+          <td class="text-center dividend">
             {{ listRow.dividendYield | percent: '1.0-2' }}
           </td>
-          <td>{{ listRow.peRatio | number: '1.0-2' }}</td>
+          <td class="text-center pe-ratio">
+            {{ listRow.peRatio | number: '1.0-2' }}
+          </td>
+          <td class="text-right market-cap">
+            {{ getPrunedValue(listRow.marketcap) }}
+          </td>
+          <td class="text-left" style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 14px">
+            <div *ngIf="listRow.industry">
+              <a href="/subSectorDetails/{{ listRow.industryId }}" class="industry">
+                {{ listRow.industry }}
+              </a>
+              <div *ngFor="let industryBadge of listRow.industryBadgeList">
+                <span class="badge badge-pill badge-info pill-wrap">{{ industryBadge }}</span>
+              </div>
+            </div>
+            <div *ngIf="!listRow.industry">N/A</div>
+          </td>
+          <td class="text-left note">
+            <div class="action-btn-group" *ngIf="!isFavorite(listRow.symbol)">
+              <a href="javascript:void(0);" (click)="addToFavorites(listRow.symbol)" class="btn-pading text-btn">
+                Add to Favorites
+              </a>
+            </div>
+            <div class="action-btn-group" *ngIf="isFavorite(listRow.symbol)">
+              <a href="javascript:void(0);" (click)="removeFromFavorites(listRow.symbol)" class="btn-pading text-btn">
+                Delete from Favorites
+              </a>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
+  </div>
+  <div *ngIf="!hideViewMoreBtn" class="view-more-div">
+    <button type="button" (click)="viewMoreFn()" class="btn btn-red mb-2">View More</button>
   </div>
 </div>

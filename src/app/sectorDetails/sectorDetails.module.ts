@@ -6,19 +6,19 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 
-import { SubSectorDetailsRoutingModule } from './subSectorDetails-routing.module';
-import { SubSectorDetailsComponent } from './subSectorDetails.component';
+import { SectorDetailsRoutingModule } from './sectorDetails-routing.module';
+import { SectorDetailsComponent } from './sectorDetails.component';
 
 @NgModule({
   imports: [
     CommonModule,
     TranslateModule,
-    SubSectorDetailsRoutingModule,
+    SectorDetailsRoutingModule,
     BrowserModule,
     NgbModule,
-    FileUploadModule,
     TruncateModule,
+    FileUploadModule,
   ],
-  declarations: [SubSectorDetailsComponent],
+  declarations: [SectorDetailsComponent],
 })
-export class SubSectorDetailsModule {}
+export class SectorDetailsModule {}

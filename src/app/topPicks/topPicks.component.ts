@@ -10,6 +10,7 @@ import { GoogleAnalyticsService } from '@app/@core';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import * as moment from 'moment';
+import pruned from 'pruned';
 
 @Component({
   selector: 'app-listCards',
@@ -24,6 +25,7 @@ export class TopPicksComponent implements OnInit {
   yourBestStocks$: Observable<any>;
   favorites$: Observable<any>;
   watchlist$: Observable<any>;
+  allSectorList$: Observable<any>;
   myOpenPositions$: Observable<any>;
   myClosePositions$: Observable<any>;
   hasConfidenceScore = false;
@@ -106,6 +108,8 @@ export class TopPicksComponent implements OnInit {
       this.data = data.slice(0, 15);
     });
 
+    this.allSectorList$ = this.service.getAllSectors();
+
     this.readFavorites();
     this.readOpenPositions();
     this.readClosedPositions();
@@ -129,18 +133,11 @@ export class TopPicksComponent implements OnInit {
   }
 
   isFavorite(symbol: string) {
-    let favList = this.credentialsService.userFavorites;
-    if (favList && favList.length > 0) {
-      for (let fav of favList) {
-        if (symbol.toUpperCase() == fav.toUpperCase()) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return this.symbolDetailsService.isFavorite(symbol);
   }
 
   addToFavorites(symbol: string) {
+    console.log(`addToFavorites : ${symbol}`);
     this.googleAnalyticsService.eventEmitter(
       'topPicks',
       'favorites',
@@ -149,7 +146,8 @@ export class TopPicksComponent implements OnInit {
       1,
       this.credentialsService.credentials.email
     );
-    this.symbolDetailsService.addToFavorites(symbol).subscribe((data) => {
+    this.symbolDetailsService.addToFavorites(symbol).subscribe((body) => {
+      console.log(`Done addToFavorites`);
       this.readFavorites();
       this.displayNotificationInFavorites = true;
       this.favoritesSymbol = symbol;
@@ -227,10 +225,21 @@ export class TopPicksComponent implements OnInit {
       map((body) => {
         // console.log(`yourBestStocks: ${JSON.stringify(body)}`);
         if (body.list) {
+          this.credentialsService.setFavorites(this.getSymbolArr(body.list));
           return body.list;
         }
       })
     );
+  }
+
+  getSymbolArr(list: any) {
+    let arr: string[] = [];
+    if (list && list.length > 0) {
+      for (let rec of list) {
+        arr.push(rec.symbol);
+      }
+    }
+    return arr;
   }
 
   readClosedPositions() {
@@ -341,5 +350,22 @@ export class TopPicksComponent implements OnInit {
   onFocused(e) {
     // do something when input is focused
     console.log(`In onFocused, ${JSON.stringify(e)}`);
+  }
+
+  gotoSectorList(card) {
+    // console.log(`navigate to SymbolDetails, ${JSON.stringify(listRow)}`);
+    this.googleAnalyticsService.eventEmitter(
+      'topPiicks-forwading',
+      'topPiicks',
+      'forwading',
+      'topPiicks',
+      1,
+      this.credentialsService.credentials.email
+    );
+    this.router.navigate([`sectorDetails`, card.symbol], { replaceUrl: true });
+  }
+
+  getPrunedValue(value: number) {
+    return pruned.Number(value);
   }
 }

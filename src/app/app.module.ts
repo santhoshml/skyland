@@ -17,6 +17,7 @@ import { UploadPortfolioModule } from './uploadPortfolio/uploadPortfolio.module'
 import { ListCardsModule } from './listCards/listCards.module';
 import { ListDetailsModule } from './listDetails/listDetails.module';
 import { SubSectorDetailsModule } from './subSectorDetails/subSectorDetails.module';
+import { SectorDetailsModule } from './sectorDetails/sectorDetails.module';
 import { SymbolDetailsModule } from './symbolDetails/symbolDetails.module';
 import { DefinitionsModule } from './definitions/definitions.module';
 import { UserProfileModule } from './userProfile/userProfile.module';
@@ -60,6 +61,7 @@ import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-logi
     TopPicksModule,
     UptrendingStocksModule,
     SubSectorDetailsModule,
+    SectorDetailsModule,
     RoiDistributionModule,
     BrowserAnimationsModule,
     NgxChartsModule,

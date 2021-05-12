@@ -81,16 +81,6 @@
     </small>
     <div class="navbar-nav ml-auto">
       <div *ngIf="!showThankYouForFeedbackFlag">
-        <span class="small close-of-date mt-2">How are we doing ?</span>
-        <a class="ml-4 mr-2" style="cursor: pointer" (click)="!!emojiClick('happy')">
-          <img style="width: 25px" src="assets/happy_emoji.png" />
-        </a>
-        <a class="ml-2 mr-2" style="cursor: pointer" (click)="!!emojiClick('neutral')">
-          <img style="width: 25px" src="assets/neutral_emoji.png" />
-        </a>
-        <a class="ml-2 mr-4" style="cursor: pointer" (click)="!!emojiClick('sad')">
-          <img style="width: 25px" src="assets/sad_emoji.png" />
-        </a>
         <button type="button" (click)="openModal(mymodal)" class="btn btn-secondary btn-sm">Leave us a comment</button>
       </div>
       <div

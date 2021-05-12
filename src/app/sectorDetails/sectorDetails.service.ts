@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { SubSectorDetailsTable } from './subSectorDetails.component';
 
 const routes = {
-  subSectorDetails: (key: string) => `/subsectors/details/${key}`,
+  sectorDetails: (key: string) => `/sector/details/${key}`,
 };
 
 export interface RandomQuoteContext {
@@ -16,11 +15,11 @@ export interface RandomQuoteContext {
 @Injectable({
   providedIn: 'root',
 })
-export class SubSectorDetailsService {
+export class SectorDetailsService {
   constructor(private httpClient: HttpClient) {}
 
-  getSubSectorDetails(key: string, rows: number): Observable<SubSectorDetailsTable[] | string> {
-    return this.httpClient.get(routes.subSectorDetails(key)).pipe(
+  getSectorDetails(key: string, rows: number): Observable<any> {
+    return this.httpClient.get(routes.sectorDetails(key)).pipe(
       map((body: any) => {
         body.list = body.list.slice(0, rows);
         return body;
