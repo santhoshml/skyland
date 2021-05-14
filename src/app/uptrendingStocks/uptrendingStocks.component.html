@@ -83,9 +83,16 @@
               </td>
               <td class="text-left" style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 14px">
                 <div *ngIf="uptrendingStock.industry">
-                  <a class="industry" href="/subSectorDetails/{{ uptrendingStock.industryId }}">
+                  <a
+                    *ngIf="uptrendingStock.industryId"
+                    class="industry"
+                    href="/subSectorDetails/{{ uptrendingStock.industryId }}"
+                  >
                     {{ uptrendingStock.industry }}
                   </a>
+                  <div *ngIf="!uptrendingStock.industryId" class="industry">
+                    {{ uptrendingStock.industry }}
+                  </div>
                   <div *ngFor="let industryBadge of uptrendingStock.industryBadgeList">
                     <span class="badge badge-pill badge-info pill-wrap info-badge">{{ industryBadge }}</span>
                   </div>

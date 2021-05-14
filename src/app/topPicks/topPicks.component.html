@@ -84,9 +84,12 @@
                 </td>
                 <td class="text-center" style="word-wrap: break-word; min-width: 160px; max-width: 160px">
                   <div *ngIf="topStock.industry">
-                    <a href="/subSectorDetails/{{ topStock.industryId }}">
+                    <a *ngIf="topStock.industryId" href="/subSectorDetails/{{ topStock.industryId }}">
                       {{ topStock.industry }}
                     </a>
+                    <div *ngIf="!topStock.industryId" class="industry">
+                      {{ topStock.industry }}
+                    </div>
                   </div>
                   <div *ngIf="!topStock.industry">N/A</div>
                 </td>
@@ -200,9 +203,12 @@
                   style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 14px"
                 >
                   <div *ngIf="topStock.industry">
-                    <a class="industry" href="/subSectorDetails/{{ topStock.industryId }}">
+                    <a *ngIf="topStock.industryId" class="industry" href="/subSectorDetails/{{ topStock.industryId }}">
                       {{ topStock.industry }}
                     </a>
+                    <div *ngIf="!topStock.industryId" class="industry">
+                      {{ topStock.industry }}
+                    </div>
                     <div *ngFor="let industryBadge of topStock.industryBadgeList">
                       <span class="badge badge-pill badge-info info-badge pill-wrap">{{ industryBadge }}</span>
                     </div>
@@ -395,9 +401,12 @@
               </td>
               <td class="text-left" style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 14px">
                 <div *ngIf="favorite.industry">
-                  <a href="/subSectorDetails/{{ favorite.industryId }}" class="industry">
+                  <a *ngIf="favorite.industryId" href="/subSectorDetails/{{ favorite.industryId }}" class="industry">
                     {{ favorite.industry }}
                   </a>
+                  <div *ngIf="!favorite.industryId" class="industry">
+                    {{ favorite.industry }}
+                  </div>
                   <div *ngFor="let industryBadge of favorite.industryBadgeList">
                     <span class="badge badge-pill badge-info pill-wrap">{{ industryBadge }}</span>
                   </div>
@@ -691,9 +700,12 @@
                     <td class="text-left industry">
                       <div>
                         <div *ngIf="txn.industry">
-                          <a href="/subSectorDetails/{{ txn.industryId }}">
+                          <a *ngIf="txn.industryId" href="/subSectorDetails/{{ txn.industryId }}">
                             {{ txn.industry | truncate: 40 }}
                           </a>
+                          <div *ngIf="!txn.industryId" class="industry">
+                            {{ txn.industry }}
+                          </div>
                           <div *ngFor="let industryBadge of txn.industryBadgeList">
                             <span class="badge badge-pill badge-info pill-wrap">{{ industryBadge }}</span>
                           </div>

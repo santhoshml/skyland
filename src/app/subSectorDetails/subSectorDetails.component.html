@@ -146,9 +146,12 @@
           </td>
           <td class="text-left" style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 14px">
             <div *ngIf="listRow.industry">
-              <a class="industry" href="/subSectorDetails/{{ listRow.industryId }}">
+              <a *ngIf="listRow.industryId" class="industry" href="/subSectorDetails/{{ listRow.industryId }}">
                 {{ listRow.industry }}
               </a>
+              <div *ngIf="!listRow.industryId" class="industry">
+                {{ listRow.industry }}
+              </div>
               <div *ngFor="let industryBadge of listRow.industryBadgeList">
                 <span class="badge badge-pill badge-info info-badge pill-wrap">{{ industryBadge }}</span>
               </div>
