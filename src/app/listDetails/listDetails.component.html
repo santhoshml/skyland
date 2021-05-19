@@ -97,7 +97,8 @@
             {{ listRow.volume | number }}
           </td>
           <td class="text-center dividend">
-            {{ listRow.dividendYield | percent: '1.0-2' }}
+            <span *ngIf="!listRow.dividendYield || listRow.dividendYield == '0'">-</span>
+            <span *ngIf="listRow.dividendYield != '0'">{{ listRow.dividendYield | percent: '1.0-2' }}</span>
           </td>
           <td class="text-center pe-ratio">
             {{ listRow.peRatio | number: '1.0-2' }}

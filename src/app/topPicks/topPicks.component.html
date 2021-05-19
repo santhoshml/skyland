@@ -190,7 +190,8 @@
                   {{ topStock.volume | number }}
                 </td>
                 <td class="text-right dividend">
-                  {{ topStock.dividendYield | percent: '1.0-2' }}
+                  <span *ngIf="!topStock.dividendYield || topStock.dividendYield == '0'">-</span>
+                  <span *ngIf="topStock.dividendYield != '0'">{{ topStock.dividendYield | percent: '1.0-2' }}</span>
                 </td>
                 <td class="text-right pe-ratio">
                   {{ topStock.peRatio | number: '1.0-2' }}
@@ -391,7 +392,8 @@
                 {{ favorite.volume | number }}
               </td>
               <td class="text-center dividend">
-                {{ favorite.dividendYield | percent: '1.0-2' }}
+                <span *ngIf="!favorite.dividendYield || favorite.dividendYield == '0'">-</span>
+                <span *ngIf="favorite.dividendYield != '0'">{{ favorite.dividendYield | percent: '1.0-2' }}</span>
               </td>
               <td class="text-center pe-ratio">
                 {{ favorite.peRatio | number: '1.0-2' }}
@@ -776,7 +778,7 @@
   </div>
 
   <div>
-    <h1>Market by Sectors</h1>
+    <h1>Uptrend by Sectors</h1>
     <p>
       All the sectors in the market and number of stocks uptrending in each sector. Click on 'Get List' to see all the
       stocks.

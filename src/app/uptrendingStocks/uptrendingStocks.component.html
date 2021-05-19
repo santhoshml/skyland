@@ -73,7 +73,10 @@
                 {{ uptrendingStock.volume | number }}
               </td>
               <td class="text-right dividend">
-                {{ uptrendingStock.dividendYield | percent: '1.0-2' }}
+                <span *ngIf="!uptrendingStock.dividendYield || uptrendingStock.dividendYield == '0'">-</span>
+                <span *ngIf="uptrendingStock.dividendYield != '0'">{{
+                  uptrendingStock.dividendYield | percent: '1.0-2'
+                }}</span>
               </td>
               <td class="text-right pe-ratio">
                 {{ uptrendingStock.peRatio | number: '1.0-2' }}
