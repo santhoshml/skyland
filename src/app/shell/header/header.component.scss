@@ -1,4 +1,4 @@
-@import "src/theme/theme-variables";
+@import "src/theme/_variables";
 
 .navbar {
   margin-bottom: $spacer;
@@ -19,13 +19,12 @@
 }
 
 .navbar-top {
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
   border-bottom: 5px solid #000;
 }
 
 .close-of-date {
   letter-spacing: 3px;
-  font-family: sans-serif;
   color: #000;
 }
 

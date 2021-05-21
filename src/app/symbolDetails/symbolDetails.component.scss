@@ -32,7 +32,7 @@
 }
 
 .card-body {
-  padding: 0px;
+  padding: 0;
 }
 
 .card-footer {
@@ -83,7 +83,7 @@
 .analyst-label {
   margin-top: 25px;
   line-height: 34.5px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   font-size: 20px;
   color: #131722;
   letter-spacing: 0.3px;
@@ -92,7 +92,7 @@
 }
 
 .pie-legend {
-  padding: 0px;
+  padding: 0;
 }
 
 .p-noModel {
@@ -100,7 +100,6 @@
   font-weight: bold;
   letter-spacing: 1px;
   word-spacing: 2px;
-  font-family: ui-monospace;
 }
 
 .div-noModel {
