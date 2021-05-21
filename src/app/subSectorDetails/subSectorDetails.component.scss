@@ -1,3 +1,5 @@
+@import "src/theme/_variables";
+
 .table {
   table-layout: fixed;
 }
@@ -62,13 +64,11 @@
   max-width: 160px;
   font-size: 12px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .symbol {
   font-size: 14px;
   font-weight: 600;
-  font-family: Arial, Helvetica, sans-serif;
   text-decoration-style: solid;
   text-decoration-color: #0a66cc;
   color: #0a66cc;
@@ -78,59 +78,51 @@
   max-width: 160px;
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .price {
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .market-cap {
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .dividend {
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .pe-ratio {
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .roi {
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .days {
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .text-btn {
   font-size: 15px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .btn-pading {
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding-top: 0;
+  padding-bottom: 0;
   width: fit-content;
 }
 
 .table > tbody > tr > td {
-  border: 0px;
+  border: 0;
   padding-top: 3px;
   padding-bottom: 3px;
 }
@@ -138,30 +130,26 @@
 .info-badge {
   font-size: 12px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .volume {
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .trend {
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .note {
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .btn-red {
   background-color: #b95e04;
-  color: #ffffff;
+  color: $white;
 }
 
 .view-more-div {
@@ -177,7 +165,6 @@
 .tab-title {
   font-size: 15px;
   font-weight: 200;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .close-submit {
@@ -185,7 +172,7 @@
 }
 
 .btn-open-actions {
-  margin: 0px 3px;
+  margin: 0 3px;
   padding: 3px;
   font-size: 10px;
 }
@@ -193,7 +180,6 @@
 .card-text {
   font-size: 14px;
   font-weight: 400;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .pill-wrap {
@@ -206,5 +192,5 @@
 
 .btn-red {
   background-color: #b95e04;
-  color: #ffffff;
+  color: $white;
 }

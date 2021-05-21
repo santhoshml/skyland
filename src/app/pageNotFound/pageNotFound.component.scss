@@ -1,3 +1,5 @@
+@import "src/theme/_variables";
+
 body {
   background-color: #95c2de;
 }
@@ -11,8 +13,7 @@ body {
 }
 
 .err {
-  color: #ffffff;
-  font-family: "Nunito Sans", sans-serif;
+  color: $white;
   font-size: 11rem;
   position: absolute;
   left: 20%;
@@ -24,12 +25,11 @@ body {
   font-size: 8.5rem;
   left: 42%;
   top: 15%;
-  color: #ffffff;
+  color: $white;
 }
 
 .err2 {
-  color: #ffffff;
-  font-family: "Nunito Sans", sans-serif;
+  color: $white;
   font-size: 11rem;
   position: absolute;
   left: 68%;
@@ -38,7 +38,6 @@ body {
 
 .msg {
   text-align: center;
-  font-family: "Nunito Sans", sans-serif;
   font-size: 1.2rem;
   position: absolute;
   left: 16%;

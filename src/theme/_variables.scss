@@ -2,8 +2,16 @@
  * Application global variables.
  */
 
+@import "~bootstrap/scss/_functions";
+@import "~bootstrap/scss/_variables";
+@import "~bootstrap/scss/mixins/_breakpoints";
+
 // Set Font Awesome font path
 $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+
+$font-family-open-sans: "Open Sans", sans-serif;
+$font-family-montserrat: montserrat, sans-serif;
+$font-family-base: $font-family-open-sans;
 
 // ---------------------------------------------------------------------------
 // Bootstrap variables
@@ -48,8 +56,3 @@ $theme-colors: (
   light: $gray-100,
   dark: $gray-800,
 );
-
-// Use Bootstrap defaults for other variables, imported here so we can access all app variables in one place when used
-// in components.
-@import "~bootstrap/scss/_functions";
-@import "~bootstrap/scss/_variables";
