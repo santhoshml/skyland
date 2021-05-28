@@ -6,31 +6,6 @@
   cursor: pointer;
 }
 
-.nav-link.dropdown-toggle {
-  cursor: pointer;
-}
-
-.full-width {
-  width: 100% !important;
-}
-
-.zero-padding {
-  padding: 0 !important;
-}
-
-.flex-cont {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.flex-cont > div {
-  flex: 0 50%;
-}
-
-.item {
-  width: 100%;
-}
-
 .card-body {
   padding: 0;
 }
@@ -42,15 +17,15 @@
 }
 
 .card-title {
-  padding-bottom: 0px !important;
+  padding-bottom: 0 !important;
 }
 
 .card-text {
-  padding-top: 0px !important;
+  padding-top: 0 !important;
 }
 
 .card-img-top {
-  /*height: 11vw;*/
+  /* height: 11vw; */
   // object-fit: cover;
   width: 100%;
   height: 15vh;
