@@ -10,13 +10,32 @@
 }
 
 .logo-img {
-  height: 50px;
-  width: 200px !important;
+  width: 200px;
+}
+
+.ng-autocomplete {
+  max-width: 300px;
+}
+
+.email-container {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .navbar-top {
-  margin-bottom: 0 !important;
-  border-bottom: 5px solid #000;
+  margin-bottom: 0;
+  border-bottom: 2px solid $gray-300;
+}
+
+.sub-navbar {
+  background-color: #f2f2f2;
+}
+
+.fa-user-circle {
+  font-size: 34px;
+  margin-top: 3px;
 }
 
 .close-of-date {
@@ -25,11 +44,31 @@
 }
 
 .as-of-date {
-  font-size: 1.5rem;
-  background-color: yellow;
-  color: black;
+  font-size: 1rem;
+  background-color: $yellow;
+  color: $black;
 }
 
 .thankyou-for-feedback {
-  background-color: yellow;
+  background-color: $yellow;
+}
+
+@include media-breakpoint-down(md) {
+  .ng-autocomplete {
+    margin-bottom: 10px;
+    max-width: 500px;
+  }
+
+  .dropdown {
+    .dropdown-toggle {
+      padding-left: 0 !important;
+    }
+  }
+
+  .email-container {
+    max-width: 100%;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: unset;
+  }
 }

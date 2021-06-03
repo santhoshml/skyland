@@ -1,24 +1,35 @@
 <header *ngIf="userProfile$ | async as userProfile">
   <nav class="navbar navbar-top navbar-expand-lg navbar-light bg-light">
     <!-- <a class="navbar-brand" href="https://www.liste.ai" translate>APP_NAME</a> -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbar-menu"
+      aria-controls="navbar-menu"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <a class="navbar-brand" href="https://www.liste.ai" style="display: contents" translate>
       <img class="card-img-top mr-3 logo-img" src="assets/logo-size.png" alt="Card image cap" /><img />
     </a>
 
     <div id="navbar-menu" class="collapse navbar-collapse float-xs-none" [ngbCollapse]="menuHidden">
       <div class="navbar-nav">
-        <a class="nav-item nav-link text-uppercase mr-3" routerLink="/topPicks" routerLinkActive="active">
-          <i class="fas fa-home"></i>
+        <a class="nav-item nav-link mr-3" routerLink="/topPicks" routerLinkActive="active">
           <span translate>Home</span>
         </a>
-        <a class="nav-item nav-link text-uppercase mr-3" routerLink="/listCards" routerLinkActive="active">
-          <i class="fas fa-chess"></i>
+        <a class="nav-item nav-link mr-3" routerLink="/listCards" routerLinkActive="active">
           <span translate>Ideas</span>
         </a>
-        <a class="nav-item nav-link text-uppercase mr-3" routerLink="/uploadPortfolio" routerLinkActive="active">
-          <i class="fas fa-upload"></i>
+        <a class="nav-item nav-link mr-3" routerLink="/uploadPortfolio" routerLinkActive="active">
           <span translate>Upload_history</span>
         </a>
+      </div>
+
+      <div class="navbar-nav ml-auto">
         <div class="ng-autocomplete">
           <ng-autocomplete
             [data]="data"
@@ -41,24 +52,15 @@
             <div [innerHTML]="notFound"></div>
           </ng-template>
         </div>
-      </div>
-
-      <div class="navbar-nav ml-auto">
-        <a class="nav-item nav-link text-uppercase mr-3" routerLink="/profile" routerLinkActive="active">
-          <i class="far fa-address-card"></i>
-          <span translate>Profile</span>
-        </a>
 
         <div class="nav-item" ngbDropdown>
-          <a id="user-dropdown" class="nav-link" ngbDropdownToggle>
-            <span class="font-weight-bold">{{ email }}</span>
+          <a id="user-dropdown" class="nav-link p-0 pl-4" ngbDropdownToggle>
             <i class="fas fa-user-circle"></i>
           </a>
           <div ngbDropdownMenu aria-labelledby="user-dropdown" class="dropdown-menu dropdown-menu-right">
-            <!-- <h6 class="dropdown-header">
-              <span translate>Logged in as</span> <b>{{ email }}</b>
-            </h6> -->
-            <!-- <div class="dropdown-divider"></div> -->
+            <div class="small text-center px-3 email-container">{{ email }}</div>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" (click)="profile()" translate>Profile</button>
             <button class="dropdown-item" (click)="distributions()" translate>ROI distribution</button>
             <button
               class="dropdown-item"
@@ -74,14 +76,25 @@
       </div>
     </div>
   </nav>
-  <nav class="navbar navbar-expand-md navbar-light bg-light" *ngIf="webDisplayDate$ | async as webDisplayDateElement">
-    <small class="close-of-date"
-      >Data & Analysis updates as of close of Market :
-      <span class="h1 badge badge-secondary as-of-date">{{ webDisplayDateElement.value_str | date }}</span>
+  <nav
+    class="navbar navbar-expand-md navbar-light py-2 sub-navbar"
+    *ngIf="webDisplayDate$ | async as webDisplayDateElement"
+  >
+    <small class="close-of-date">
+      Data & Analysis updates as of close of Market :
+      <span class="badge badge-secondary as-of-date">{{ webDisplayDateElement.value_str | date }}</span>
+      <span
+        class="text-primary font-weight-bold d-md-none d-block"
+        (click)="openModal(mymodal)"
+        *ngIf="!showThankYouForFeedbackFlag"
+        >Leave us a comment</span
+      >
     </small>
     <div class="navbar-nav ml-auto">
-      <div *ngIf="!showThankYouForFeedbackFlag">
-        <button type="button" (click)="openModal(mymodal)" class="btn btn-secondary btn-sm">Leave us a comment</button>
+      <div *ngIf="!showThankYouForFeedbackFlag" class="d-md-block d-none">
+        <button type="button" (click)="openModal(mymodal)" class="btn btn-outline-primary btn-sm">
+          Leave us a comment
+        </button>
       </div>
       <div
         *ngIf="showThankYouForFeedbackFlag"
@@ -122,12 +135,4 @@
     </button>
     <button type="button" class="btn btn btn-primary btn-sm" (click)="modal.close('Save click')">Update</button>
   </div>
-</ng-template>
-
-<ng-template #itemTemplate let-item>
-  <a [innerHTML]="item.name"></a>
-</ng-template>
-
-<ng-template #notFoundTemplate let-notFound>
-  <div [innerHTML]="notFound"></div>
 </ng-template>

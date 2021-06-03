@@ -70,6 +70,10 @@ export class HeaderComponent implements OnInit {
     this.menuHidden = !this.menuHidden;
   }
 
+  profile() {
+    this.router.navigate(['/profile'], { replaceUrl: true });
+  }
+
   distributions() {
     this.router.navigate(['/distribution'], { replaceUrl: true });
   }
@@ -89,23 +93,6 @@ export class HeaderComponent implements OnInit {
 
   getJSONValue(obj: any) {
     return JSON.stringify(obj);
-  }
-
-  emojiClick(value: string): boolean {
-    // console.log(`In emojiClick: ${value}`);
-    const credentials = this.credentialsService.credentials;
-    let userId = credentials ? credentials.id : null;
-    let email = credentials ? credentials.email : null;
-    let data = {
-      userId: userId,
-      email: email,
-      value: value,
-      url: this.router.url,
-    };
-    this.service.updateEmojiValue(data).subscribe((data) => {
-      this.showThankYouForFeedbackFlag = true;
-    });
-    return true;
   }
 
   openModal(content: any) {

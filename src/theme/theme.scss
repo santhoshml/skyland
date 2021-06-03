@@ -53,3 +53,32 @@ th[sortable] {
     content: "\2193";
   }
 }
+
+.ng-autocomplete {
+  .x {
+    background-color: $white;
+  }
+
+  .autocomplete-container {
+    box-shadow: none;
+    position: relative;
+    overflow: visible;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+
+    input {
+      border-radius: 5px;
+    }
+
+    .suggestions-container {
+      box-shadow: none;
+      margin-top: 0;
+      border-radius: 5px;
+
+      &.is-visible {
+        border: 1px solid #ddd;
+      }
+    }
+  }
+}
