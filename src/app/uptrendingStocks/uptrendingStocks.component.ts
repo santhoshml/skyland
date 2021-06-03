@@ -1,16 +1,16 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { finalize } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import pruned from 'pruned';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { environment } from '@env/environment';
-import { UptrendingStocksService } from './uptrendingStocks.service';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { AuthenticationService, CredentialsService, UserProfileModel } from '@app/auth';
+import { CredentialsService } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
-import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
-import * as moment from 'moment';
-import pruned from 'pruned';
+import { compare, SortEvent, TableSortableHeaderDirective } from '@app/@shared';
+
+import { UptrendingStocksService } from './uptrendingStocks.service';
 
 @Component({
   selector: 'app-uptrendingStocks',
@@ -18,6 +18,7 @@ import pruned from 'pruned';
   styleUrls: ['./uptrendingStocks.component.scss'],
 })
 export class UptrendingStocksComponent implements OnInit {
+  @ViewChildren(TableSortableHeaderDirective) headers: QueryList<TableSortableHeaderDirective>;
   version: string | null = environment.version;
   isLoading = false;
   uptrendingStocks$: Observable<any>;
@@ -31,14 +32,11 @@ export class UptrendingStocksComponent implements OnInit {
   MIN_ROWS_TO_DISPLAY = 10;
   MAX_ROWS_TO_DISPLAY = 10000;
   hideViewMoreBtn = false;
+  tableData: any = [];
 
   constructor(
     private service: UptrendingStocksService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
     private credentialsService: CredentialsService,
-    private authenticationService: AuthenticationService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private symbolDetailsService: SymbolDetailsService
   ) {}
@@ -54,6 +52,25 @@ export class UptrendingStocksComponent implements OnInit {
     );
 
     this.readUptrendStocks(this.MIN_ROWS_TO_DISPLAY);
+  }
+
+  tableValue(data) {
+    this.tableData = data;
+  }
+
+  onSort({ column, direction }: SortEvent) {
+    // resetting other headers
+    this.headers.forEach((header) => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    // sorting countries
+    this.tableData = [...this.tableData].sort((a, b) => {
+      const res = compare(a[column], b[column]);
+      return direction === 'asc' ? res : -res;
+    });
   }
 
   readUptrendStocks(rows: number) {

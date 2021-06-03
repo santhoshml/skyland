@@ -9,6 +9,7 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 
 import { UptrendingStocksRoutingModule } from './uptrendingStocks-routing.module';
 import { UptrendingStocksComponent } from './uptrendingStocks.component';
+import { SharedModule } from '@app/@shared';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { UptrendingStocksComponent } from './uptrendingStocks.component';
     NgbModule,
     TruncateModule,
     FileUploadModule,
+    SharedModule,
   ],
   declarations: [UptrendingStocksComponent],
 })

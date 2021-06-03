@@ -44,3 +44,12 @@
     column-count: 4;
   }
 }
+
+th[sortable] {
+  &.desc::before {
+    content: "\2191";
+  }
+  &.asc::before {
+    content: "\2193";
+  }
+}

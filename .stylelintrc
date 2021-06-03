@@ -5,11 +5,22 @@
     "stylelint-config-prettier"
   ],
   "rules": {
+    "selector-no-qualifying-type": [
+      true,
+      {
+        "ignore": [
+          "attribute",
+          "class"
+        ]
+      }
+    ],
     "font-family-name-quotes": "always-where-recommended",
     "function-url-quotes": [
       "always",
       {
-        "except": ["empty"]
+        "except": [
+          "empty"
+        ]
       }
     ],
     "selector-attribute-quotes": "always",
@@ -27,21 +38,34 @@
     "selector-class-pattern": "[a-z-]+",
     "selector-id-pattern": "[a-z-]+",
     "selector-max-id": 0,
-    "selector-no-qualifying-type": true,
     "selector-max-universal": 0,
     "selector-type-no-unknown": [
       true,
       {
-        "ignore": ["custom-elements", "default-namespace"]
+        "ignore": [
+          "custom-elements",
+          "default-namespace"
+        ]
       }
     ],
     "selector-pseudo-element-no-unknown": [
       true,
       {
-        "ignorePseudoElements": ["ng-deep"]
+        "ignorePseudoElements": [
+          "ng-deep"
+        ]
       }
     ],
-    "unit-whitelist": ["px", "%", "em", "rem", "vw", "vh", "deg", "s"],
+    "unit-whitelist": [
+      "px",
+      "%",
+      "em",
+      "rem",
+      "vw",
+      "vh",
+      "deg",
+      "s"
+    ],
     "max-empty-lines": 2,
     "max-line-length": 120
   }
