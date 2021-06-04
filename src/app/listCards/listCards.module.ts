@@ -6,6 +6,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 
+import { SharedModule } from '@app/@shared';
+
 import { ListCardsRoutingModule } from './listCards-routing.module';
 import { ListCardsComponent } from './listCards.component';
 
@@ -18,6 +20,7 @@ import { ListCardsComponent } from './listCards.component';
     NgbModule,
     TruncateModule,
     FileUploadModule,
+    SharedModule,
   ],
   declarations: [ListCardsComponent],
 })

@@ -1,0 +1,33 @@
+@import "src/theme/_variables";
+
+.btn-gray {
+  @include button-variant(
+    $gray-600,
+    darken($gray-600, 7.5%),
+    darken($gray-600, 10%),
+    lighten($gray-600, 5%),
+    lighten($gray-600, 10%),
+    darken($gray-600, 30%)
+  );
+}
+
+.btn-outline-gray {
+  @include button-outline-variant($gray-600, #fff, lighten($gray-600, 5%), $gray-600);
+}
+
+.btn-orange {
+  @include button-variant(
+    $orange,
+    darken($orange, 7.5%),
+    darken($orange, 10%),
+    lighten($orange, 5%),
+    lighten($orange, 10%),
+    darken($orange, 10%)
+  );
+
+  color: #fff;
+}
+
+.btn-outline-orange {
+  @include button-outline-variant($orange, #fff, lighten($orange, 5%), $orange);
+}

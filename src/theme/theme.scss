@@ -8,10 +8,19 @@
 .container-fluid {
   padding-right: 5%;
   padding-left: 5%;
+  @include media-breakpoint-down(lg) {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
 }
 
 .nav-link.dropdown-toggle {
   cursor: pointer;
+}
+
+.nav-tabs .nav-link.active {
+  color: $white;
+  background-color: $primary;
 }
 
 .item {
@@ -35,7 +44,7 @@
     column-count: 2;
   }
   @include media-breakpoint-only(md) {
-    column-count: 3;
+    column-count: 2;
   }
   @include media-breakpoint-only(lg) {
     column-count: 3;
@@ -45,12 +54,39 @@
   }
 }
 
-th[sortable] {
-  &.desc::before {
-    content: "\2191";
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  th {
+    font-size: 14px;
+    border-right: 1px solid $gray-400;
+    border-bottom: 1px solid $gray-400;
+    &:last-child {
+      border-right: 0;
+    }
   }
-  &.asc::before {
-    content: "\2193";
+  th[sortable] {
+    &.desc::before {
+      content: "\2191";
+    }
+    &.asc::before {
+      content: "\2193";
+    }
+  }
+  tr {
+    td {
+      vertical-align: middle !important;
+    }
+  }
+}
+
+.tab-content {
+  .tab-pane {
+    margin-top: -1px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
   }
 }
 
@@ -63,22 +99,27 @@ th[sortable] {
     box-shadow: none;
     position: relative;
     overflow: visible;
-    height: auto;
-    border: 1px solid #ddd;
+    height: 38px;
+    border: 1px solid $gray-400;
     border-radius: 5px;
 
-    input {
-      border-radius: 5px;
+    &.active {
+      .is-visible {
+        border: 1px solid $gray-400;
+      }
+    }
+
+    .input-container {
+      input {
+        border-radius: 5px;
+        height: 36px;
+      }
     }
 
     .suggestions-container {
       box-shadow: none;
       margin-top: 0;
       border-radius: 5px;
-
-      &.is-visible {
-        border: 1px solid #ddd;
-      }
     }
   }
 }

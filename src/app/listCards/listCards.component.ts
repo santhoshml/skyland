@@ -1,13 +1,12 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { finalize } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
 import { environment } from '@env/environment';
 import { ListCardsService } from './listCards.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { AuthenticationService, CredentialsService, UserProfileModel } from '@app/auth';
+import { AuthenticationService, CredentialsService } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
-import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
+import { compare, SortEvent, TableSortableHeaderDirective } from '@app/@shared';
 
 export interface ListCard {
   id: number;
@@ -23,6 +22,7 @@ export interface ListCard {
   styleUrls: ['./listCards.component.scss'],
 })
 export class ListCardsComponent implements OnInit {
+  @ViewChildren(TableSortableHeaderDirective) headers: QueryList<TableSortableHeaderDirective>;
   version: string | null = environment.version;
   cardArr: ListCard[];
   isLoading = false;
@@ -30,15 +30,14 @@ export class ListCardsComponent implements OnInit {
   subSectorList$: Observable<any>;
   userProfile$: Observable<any>;
   hasConfidenceScore = false;
+  tableData: any = [];
 
   constructor(
     private listCardsService: ListCardsService,
     private router: Router,
-    private route: ActivatedRoute,
     private credentialsService: CredentialsService,
     private authenticationService: AuthenticationService,
-    private googleAnalyticsService: GoogleAnalyticsService,
-    private symbolDetailsService: SymbolDetailsService
+    private googleAnalyticsService: GoogleAnalyticsService
   ) {}
 
   ngOnInit() {
@@ -104,6 +103,25 @@ export class ListCardsComponent implements OnInit {
         }
       })
     );
+  }
+
+  tableValue(data) {
+    this.tableData = data;
+  }
+
+  onSort({ column, direction }: SortEvent) {
+    // resetting other headers
+    this.headers.forEach((header) => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    // sorting countries
+    this.tableData = [...this.tableData].sort((a, b) => {
+      const res = compare(a[column], b[column]);
+      return direction === 'asc' ? res : -res;
+    });
   }
 
   getList(selectedCard: ListCard) {
