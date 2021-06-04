@@ -1,29 +1,46 @@
 @import "src/theme/_variables";
 
-.login-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.auth-container {
+  min-height: 100vh;
+  background-color: #ebeef7;
+  .card-container {
+    min-height: calc(100vh - 46px);
+    padding: 10px 0;
+  }
+  @include media-breakpoint-down(md) {
+    .card-container {
+      min-height: calc(100vh - 76px);
+    }
+  }
 }
 
-.login-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 100%;
+.logo {
+  width: 180px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  height: 48px;
+}
+
+.sub-title {
+  font-weight: 600;
 }
 
 .ng-invalid.ng-touched:not(form) {
   border-left: 4px solid theme-color("danger");
 }
 
-@include media-breakpoint-down(xs) {
-  .container {
-    width: 100%;
+.auth-card {
+  width: 450px;
+  border-radius: 5px;
+  background-color: $white;
+}
+
+@media (max-width: 450px) {
+  .auth-card {
+    width: 350px;
   }
 }
 
@@ -51,13 +68,4 @@
 
 .recaptcha-div {
   text-align: center;
-}
-
-.logo-img {
-  height: 50px;
-  width: 200px !important;
-}
-
-.login-image {
-  width: 100px;
 }

@@ -59,12 +59,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginError: string | undefined;
   createAccountError: string | undefined;
   forgotError: string | undefined;
-
   accountForm!: FormGroup;
-
-  activeTab: string;
-
   isLoading = false;
+  containerView = {
+    login: false,
+    signUp: false,
+    forgotPassword: false,
+  };
 
   constructor(
     private router: Router,
@@ -75,13 +76,18 @@ export class LoginComponent implements OnInit, OnDestroy {
     private symbolDetailsService: SymbolDetailsService,
     private socialAuthService: SocialAuthService
   ) {
-    this.activeTab = 'login';
-    this.initForm();
+    if (this.router.url === '/signup') {
+      this.containerView.signUp = true;
+      this.initForm('createAccount');
+    } else if (this.router.url === '/orgot-password') {
+      this.containerView.forgotPassword = true;
+    } else {
+      this.containerView.login = true;
+      this.initForm('login');
+    }
   }
 
   ngOnInit() {
-    console.log(`In login ngOnInit`);
-
     // this.socialAuthService.authState.subscribe((user) => {
     //   console.log(`user: ${JSON.stringify(user)}`);
     // });
@@ -89,7 +95,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.symbolDetailsService.loadTradingViewScript('tickerTapeWidget', 'embed-widget-ticker-tape', infoWidgetOptions);
 
     this.route.params.subscribe((params) => {
-      // console.log(`params in params: ${JSON.stringify(params)}`);
       this.loginError = params['errMsg'];
     });
 
@@ -232,7 +237,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             1,
             credentials.email
           );
-          this.setActiveTab('login');
+          this.router.navigate(['/login'], { replaceUrl: true });
         },
         (error) => {
           log.debug(`forgotError : ${JSON.stringify(error)}`);
@@ -246,13 +251,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       );
   }
 
-  setActiveTab(val: string) {
-    this.activeTab = val;
-    this.initForm();
-  }
-
-  private initForm() {
-    switch (this.activeTab) {
+  private initForm(type: string) {
+    switch (type) {
       case 'login':
         this.accountForm = this.formBuilder.group({
           displayName: [''],
@@ -271,7 +271,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           remember: true,
         });
         break;
-
       default:
         break;
     }
