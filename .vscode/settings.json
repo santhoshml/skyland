@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["Uptrending", "fontawesome", "fortawesome", "mixins", "webfonts"],
+  "cSpell.words": ["Uptrending", "fontawesome", "fortawesome", "mixins", "stylelint", "webfonts"],
   "editor.tabSize": 2,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "[javascript]": {

@@ -1,5 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { finalize, map, catchError } from 'rxjs/operators';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
 import { SectorDetailsService } from './sectorDetails.service';
@@ -8,6 +7,7 @@ import { CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import pruned from 'pruned';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
+import { compare, SortEvent, TableSortableHeaderDirective } from '@app/@shared';
 
 @Component({
   selector: 'app-sectorDetails',
@@ -15,6 +15,7 @@ import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
   styleUrls: ['./sectorDetails.component.scss'],
 })
 export class SectorDetailsComponent implements OnInit {
+  @ViewChildren(TableSortableHeaderDirective) headers: QueryList<TableSortableHeaderDirective>;
   version: string | null = environment.version;
   isLoading = false;
   sectorDetails$: Observable<any>;
@@ -25,6 +26,7 @@ export class SectorDetailsComponent implements OnInit {
   MIN_ROWS_TO_DISPLAY = 10;
   MAX_ROWS_TO_DISPLAY = 10000;
   hideViewMoreBtn = false;
+  tableData: any = [];
 
   constructor(
     private sectorDetailsService: SectorDetailsService,
@@ -59,6 +61,25 @@ export class SectorDetailsComponent implements OnInit {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+  }
+
+  tableValue(data) {
+    this.tableData = data;
+  }
+
+  onSort({ column, direction }: SortEvent) {
+    // resetting other headers
+    this.headers.forEach((header) => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    // sorting countries
+    this.tableData = [...this.tableData].sort((a, b) => {
+      const res = compare(a[column], b[column]);
+      return direction === 'asc' ? res : -res;
+    });
   }
 
   viewMoreFn() {

@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container-fluid pt-2">
   <div class="row">
-    <div class="col-9">
+    <div class="col-8">
       <div class="mb-5">
         <div class="h2 heading">See all your trades in one place</div>
         <div class="desc-text">
@@ -12,11 +12,11 @@
         <div class="col">
           <label>Select your online Brokerage </label>
         </div>
-        <div ngbDropdown class="col d-inline-block">
-          <button class="btn btn-outline-primary w-100" id="dropdownBasic1" ngbDropdownToggle>
+        <div ngbDropdown class="col d-inline-block text-right">
+          <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
             {{ selectedPlatform }}
           </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
             <button
               class="dropdown-item"
               *ngFor="let onlinePlatform of onlinePlatforms"
@@ -30,44 +30,48 @@
       <div *ngIf="isPlatformSelected" class="pl-3">
         <form [formGroup]="myForm" (ngSubmit)="submit()">
           <div class="form-group row mt-3">
-            <p>
-              Follow the below instructions to download the file from {{ selectedPlatform }} and attach it below to
-              upload
-            </p>
-            <input
-              formControlName="file"
-              id="file"
-              type="file"
-              class="form-control upload-btn-form"
-              (change)="onFileChange($event)"
-            />
-            <div *ngIf="f.file.touched && f.file.invalid" class="mt-2 alert alert-danger">
-              <div *ngIf="f.file.errors.required">File is required.</div>
-            </div>
-            <div *ngIf="isUploadSuccess" class="mt-2 upload-success-msg">
-              <p class="mb-0">
-                File uploaded succesfully. If you done uploading all the files, Click on
-                <span class="">Done Uploading all Files</span> button below.
+            <div class="col-9 p-0">
+              <p>
+                Follow the below instructions to download the file from {{ selectedPlatform }} and attach it below to
+                upload
               </p>
+              <input
+                formControlName="file"
+                id="file"
+                type="file"
+                class="form-control upload-btn-form"
+                (change)="onFileChange($event)"
+              />
+              <div *ngIf="f.file.touched && f.file.invalid" class="mt-2 alert alert-danger">
+                <div *ngIf="f.file.errors.required">File is required.</div>
+              </div>
+              <div *ngIf="isUploadSuccess" class="mt-2 upload-success-msg">
+                <p class="mb-0">
+                  File uploaded succesfully. If you done uploading all the files, Click on
+                  <span class="">Done Uploading all Files</span> button below.
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="row mt-3 justify-content-center">
-            <button class="btn btn-primary" type="submit">Upload</button>
-            <button
-              *ngIf="isUploadSuccess"
-              type="button"
-              class="ml-3 btn btn-info"
-              data-toggle="modal"
-              (click)="openModal()"
-              data-target="#exampleModal"
-            >
-              Done Uploading all Files
-            </button>
+            <div class="col-3 align-items-end d-flex justify-content-end">
+              <div>
+                <button class="btn btn-primary" type="submit">Upload</button>
+                <button
+                  *ngIf="isUploadSuccess"
+                  type="button"
+                  class="ml-3 btn btn-info"
+                  data-toggle="modal"
+                  (click)="openModal()"
+                  data-target="#exampleModal"
+                >
+                  Done Uploading all Files
+                </button>
+              </div>
+            </div>
           </div>
         </form>
       </div>
     </div>
-    <div class="col-3">
+    <div class="col-4">
       <div class="ver-line pl-4 pr-2 mb-5">
         <div class="easy-steps-text mb-3">Three easy steps to get started with Liste.AI</div>
         <ul class="pl-0 mb-5">
@@ -89,7 +93,7 @@
           <i class="fas fa-lock mr-3"></i>
           Serious about your transaction data. We only read
         </div>
-        <ul class="pl-0 mb-5">
+        <ul class="pl-3">
           <li class="step-text">Symbol / Ticker</li>
           <li class="step-text">Buy Date</li>
           <li class="step-text">Sell Date</li>
@@ -131,10 +135,10 @@
     </div>
   </div>
 
-  <div class="mt-3">
-    <div [hidden]="hideSchwabInstr" class="jumbotron">
-      <div class="mb-3">
-        <h2>Instructions to get transaction history from Charles Schwab</h2>
+  <div class="mt-3 mb-3">
+    <div [hidden]="hideSchwabInstr" class="border shadow p-4">
+      <div class="mb-5">
+        <h3>Instructions to get transaction history from Charles Schwab</h3>
       </div>
       <p>1. Log in to <a target="_blank" href="https://schwab.com">Schwab</a></p>
       <p>
@@ -170,9 +174,9 @@
       <p>8. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span></p>
     </div>
 
-    <div [hidden]="hideEtradeInstr" class="jumbotron">
-      <div class="mb-3">
-        <h2>Instructions to get transaction history from E-TRADE</h2>
+    <div [hidden]="hideEtradeInstr" class="border shadow p-4">
+      <div class="mb-5">
+        <h3>Instructions to get transaction history from E-TRADE</h3>
       </div>
       <p>1. Log in to <a target="_blank" href="https://etrade.com">E-TRADE</a></p>
       <p>
@@ -203,9 +207,9 @@
       <p>7. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span></p>
     </div>
 
-    <div [hidden]="hideTSInstr" class="jumbotron">
-      <div class="mb-3">
-        <h2>Instructions to get transaction history from TradeStation</h2>
+    <div [hidden]="hideTSInstr" class="border shadow p-4">
+      <div class="mb-5">
+        <h3>Instructions to get transaction history from TradeStation</h3>
       </div>
       <p>
         1. Log in to <a target="_blank" href="https://clientcenter.tradestation.com/">TradeStation Client Center</a>
@@ -250,8 +254,8 @@
       <p>8. In the above textbox, Browse to the file and click <span class="font-weight-bold">Upload</span></p>
     </div>
 
-    <div [hidden]="hideIBInstr" class="jumbotron">
-      <h2>Instructions to get history from interactivebrokers.com</h2>
+    <div [hidden]="hideIBInstr" class="border shadow p-4">
+      <div class="mb-5"><h3>Instructions to get history from interactivebrokers.com</h3></div>
       <p><i class="far fa-bookmark"></i> <span translate>Version</span> {{ version }}</p>
     </div>
   </div>

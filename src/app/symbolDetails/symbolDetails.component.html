@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid mb-4">
   <div class="tradingview-widget-container" id="symbolInfoWidget">
     <div class="tradingview-widget-container__widget"></div>
   </div>
@@ -62,127 +62,177 @@
       >
     </div>
   </nav>
-  <div class="tab-content" id="nav-tabContent">
+  <div class="tab-content p-3" id="nav-tabContent">
     <div class="tab-pane fade show active" id="nav-analysis" role="tabpanel" aria-labelledby="nav-analysis-tab">
       <div class="row">
-        <div class="column card" *ngIf="symbolDetailsResp$ | async as symbolDetailsResp">
-          <div class="card-body">
-            <div class="card-title analyst-label">Investing style</div>
-            <div *ngIf="symbolDetailsResp.symbol; else noModelDiv">
-              <div *ngIf="symbolDetailsResp.gain_flag === 1" class="ml-2">
-                <img class="card-img-top" src="assets/gain.png" style="height: 150px" alt="Card image cap" />
-                <div class="card-body mb-5">
-                  <h5 class="card-title p-3">Prediction - Gain</h5>
-                </div>
+        <div class="col-md-6 col-sm-12 mb-4" *ngIf="symbolDetailsResp$ | async as symbolDetailsResp">
+          <div class="card border-0 shadow-lg h-100 p-4">
+            <div class="card-body">
+              <div class="card-title mb-4">
+                <h4>Investing style</h4>
               </div>
-              <div *ngIf="symbolDetailsResp.gain_flag === 0">
-                <img class="card-img-top" src="assets/loss.png" style="height: 150px" alt="Card image cap" />
-                <div class="card-body mb-5">
-                  <h5 class="card-title p-3">Prediction - Loss</h5>
+              <div *ngIf="symbolDetailsResp.symbol; else noModelDiv">
+                <div *ngIf="symbolDetailsResp.gain_flag === 1" class="ml-2">
+                  <img class="card-img-top" src="assets/gain.png" style="height: 150px" alt="Card image cap" />
+                  <div class="card-body mb-5">
+                    <h5 class="card-title p-3">Prediction - Gain</h5>
+                  </div>
                 </div>
-              </div>
-              <hr />
-              <div>
-                <div class="card-body mb-5">
-                  <h5 class="card-title analyst-label">Confidence Score</h5>
-                  <h1 class="card-subtitle text-center mt-3 mb-3 p-3">
-                    {{ symbolDetailsResp.confidence | percent: '1.0-2' }}
-                  </h1>
-                  <small class="card-text text-muted"
-                    >Percent match of {{ symbolDetailsResp.symbol }}'s today pattern with your past succesful
-                    transactions</small
-                  >
+                <div *ngIf="symbolDetailsResp.gain_flag === 0">
+                  <img class="card-img-top" src="assets/loss.png" style="height: 150px" alt="Card image cap" />
+                  <div class="card-body mb-5">
+                    <h5 class="card-title p-3">Prediction - Loss</h5>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="column card">
-          <div class="card-body">
-            <div class="card-title analyst-label">Analyst Analysis</div>
-            <div *ngIf="analystReccomendationResp$ | async as anaReccoResp">
-              <div *ngIf="anaReccoResp.length > 0; else noDataDiv">
-                <ngx-charts-pie-chart
-                  [view]="view"
-                  [scheme]="colorScheme"
-                  [results]="anaReccoResp"
-                  [gradient]="pieGradient"
-                  [legend]="pieShowLegend"
-                  [legendPosition]="legendPosition"
-                  [labels]="pieShowLabels"
-                  [doughnut]="isDoughnut"
-                  (select)="onSelect($event)"
-                  (activate)="onActivate($event)"
-                  (deactivate)="onDeactivate($event)"
-                >
-                </ngx-charts-pie-chart>
+                <hr />
                 <div>
-                  <ul class="pie-legend">
-                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                      Buy
-                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Buy') }}</span>
-                    </li>
-                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                      Overweight
-                      <span class="badge badge-primary badge-pill">{{
-                        getAnalystReccomendationValue('Overweight')
-                      }}</span>
-                    </li>
-                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                      Hold
-                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Hold') }}</span>
-                    </li>
-                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                      Underweight
-                      <span class="badge badge-primary badge-pill">{{
-                        getAnalystReccomendationValue('Underweight')
-                      }}</span>
-                    </li>
-                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                      Sell
-                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Sell') }}</span>
-                    </li>
-                  </ul>
+                  <div class="card-body mb-5">
+                    <h5 class="card-title">Confidence Score</h5>
+                    <h1 class="card-subtitle text-center mb-3 p-3">
+                      {{ symbolDetailsResp.confidence | percent: '1.0-2' }}
+                    </h1>
+                    <small class="card-text text-muted"
+                      >Percent match of {{ symbolDetailsResp.symbol }}'s today pattern with your past succesful
+                      transactions</small
+                    >
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="column card">
-          <div class="card-body">
-            <div class="card-title mb-6 analyst-label">Social Sentiment</div>
-            <div *ngIf="sentimentResp$ | async as sentimentResp">
-              <div style="margin-top: 80px" *ngIf="sentimentResp.value; else noDataDiv">
-                <rg-gauge-chart
-                  [canvasWidth]="canvasWidth"
-                  [needleValue]="sentimentResp.value"
-                  [centralLabel]="centralLabel"
-                  [options]="options"
-                  [bottomLabel]="sentimentResp.value"
-                ></rg-gauge-chart>
-                <div style="margin-top: 125px">
-                  <ul class="pie-legend">
-                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                      Positive
-                      <span class="badge badge-primary badge-pill">{{ sentimentResp.positive | percent }}</span>
-                    </li>
-                    <li class="border-0 list-group-item d-flex justify-content-between align-items-center">
-                      Negative
-                      <span class="badge badge-primary badge-pill">{{ sentimentResp.negative | percent }}</span>
-                    </li>
-                  </ul>
+        <div class="col-md-6 col-sm-12 mb-4" *ngIf="analystReccomendationResp$ | async as anaReccoResp">
+          <div class="card border-0 shadow-lg h-100 p-4">
+            <div class="card-body">
+              <div class="card-title mb-4">
+                <h4>Analyst Analysis</h4>
+              </div>
+              <div>
+                <div *ngIf="anaReccoResp.length > 0; else noDataDiv" class="row">
+                  <div class="col-12 d-flex justify-content-center p-0">
+                    <ngx-charts-pie-chart
+                      [view]="view"
+                      [scheme]="colorScheme"
+                      [results]="anaReccoResp"
+                      [gradient]="pieGradient"
+                      [legend]="pieShowLegend"
+                      [legendPosition]="legendPosition"
+                      [labels]="pieShowLabels"
+                      [doughnut]="isDoughnut"
+                      (select)="onSelect($event)"
+                      (activate)="onActivate($event)"
+                      (deactivate)="onDeactivate($event)"
+                    >
+                    </ngx-charts-pie-chart>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-6 p-0">
+                        <div
+                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          Buy
+                          <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Buy') }}</span>
+                        </div>
+                      </div>
+                      <div class="col-6 p-0">
+                        <div
+                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          Overweight
+                          <span class="badge badge-primary badge-pill">{{
+                            getAnalystReccomendationValue('Overweight')
+                          }}</span>
+                        </div>
+                      </div>
+                      <div class="col-6 p-0">
+                        <div
+                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          Hold
+                          <span class="badge badge-primary badge-pill">{{
+                            getAnalystReccomendationValue('Hold')
+                          }}</span>
+                        </div>
+                      </div>
+                      <div class="col-6 p-0">
+                        <div
+                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          Underweight
+                          <span class="badge badge-primary badge-pill">{{
+                            getAnalystReccomendationValue('Underweight')
+                          }}</span>
+                        </div>
+                      </div>
+                      <div class="col-6 p-0">
+                        <div
+                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          Sell
+                          <span class="badge badge-primary badge-pill">{{
+                            getAnalystReccomendationValue('Sell')
+                          }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="column card">
-          <div class="tradingview-widget-container card-body" id="symbolTechnicalsWidget">
-            <div class="tradingview-widget-container__widget"></div>
+        <div class="col-md-6 col-sm-12 mb-4" *ngIf="sentimentResp$ | async as sentimentResp">
+          <div class="card border-0 shadow-lg h-100 p-4">
+            <div class="card-body">
+              <div class="card-title mb-4">
+                <h4>Social Sentiment</h4>
+              </div>
+              <div>
+                <div *ngIf="sentimentResp.value; else noDataDiv" class="row">
+                  <div class="col-12 d-flex justify-content-center">
+                    <rg-gauge-chart
+                      [canvasWidth]="canvasWidth"
+                      [needleValue]="sentimentResp.value"
+                      [centralLabel]="centralLabel"
+                      [options]="options"
+                      [bottomLabel]="sentimentResp.value"
+                    ></rg-gauge-chart>
+                  </div>
+                  <div class="col-12 mt-3">
+                    <div class="row">
+                      <div class="col-12 p-0">
+                        <div
+                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          Positive
+                          <span class="badge badge-primary badge-pill">{{ sentimentResp.positive | percent }}</span>
+                        </div>
+                      </div>
+                      <div class="col-12 p-0">
+                        <div
+                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                        >
+                          Negative
+                          <span class="badge badge-primary badge-pill">{{ sentimentResp.negative | percent }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 mb-4">
+          <div class="card border-0 shadow-lg h-100 p-4">
+            <div class="tradingview-widget-container mx-auto" id="symbolTechnicalsWidget">
+              <div class="tradingview-widget-container__widget"></div>
+            </div>
           </div>
         </div>
         <ng-template #noModelDiv>
-          <div class="ml-2 mt-5 div-noModel">
+          <div class="ml-2 div-noModel">
             <p class="p-noModel">
               Want to know if this stock suit your investment style ? You are 1-step away from it.
             </p>
@@ -191,7 +241,7 @@
           </div>
         </ng-template>
         <ng-template #noDataDiv>
-          <div class="ml-2 mt-5 div-noData">
+          <div class="ml-2 div-noData">
             <p class="p-noModel">No data available for {{ activeSymbol }}</p>
           </div>
         </ng-template>
@@ -247,8 +297,8 @@
       </div>
     </div>
   </div>
-  <div class="mt-3 col-md-12 col-lg-12">
-    <div id="tradingview_73abe"></div>
+  <div class="col-md-12 col-lg-12">
+    <div class="shadow-lg" id="tradingview_73abe"></div>
   </div>
 </div>
 

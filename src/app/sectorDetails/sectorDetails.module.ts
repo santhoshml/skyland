@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 
+import { SharedModule } from '@app/@shared';
 import { SectorDetailsRoutingModule } from './sectorDetails-routing.module';
 import { SectorDetailsComponent } from './sectorDetails.component';
 
@@ -18,6 +19,7 @@ import { SectorDetailsComponent } from './sectorDetails.component';
     NgbModule,
     TruncateModule,
     FileUploadModule,
+    SharedModule,
   ],
   declarations: [SectorDetailsComponent],
 })

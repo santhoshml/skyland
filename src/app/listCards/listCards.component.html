@@ -56,13 +56,13 @@
         </div>
       </div>
       <div *ngIf="listCard$ | async as cards" class="m-3 card-columns">
-        <div class="card pb-3" *ngFor="let card of cards">
-          <img class="card-img-top" width="300px" height="200" src="{{ card.img }}" alt="Card image cap" />
+        <div class="card pb-3 mb-4 border-0 shadow" *ngFor="let card of cards">
+          <img class="card-img-top" height="200" src="{{ card.img }}" alt="Card image cap" />
           <div class="card-body">
-            <h5 class="card-title">{{ card.title }}</h5>
-            <p class="card-text note" [innerHTML]="card.desc | truncate: 90"></p>
+            <h5 class="card-title line-clamp-1">{{ card.title }}</h5>
+            <p class="card-text note line-clamp-3" [innerHTML]="card.desc | truncate: 90"></p>
             <div>
-              <button (click)="getList(card)" class="btn btn-primary float-left">Get List</button>
+              <button (click)="getList(card)" class="btn btn-outline-primary float-left">Get List</button>
               <span class="float-right" *ngIf="card.day_change && card.day_change > 0">
                 {{ card.day_change / 100 | percent: '1.0-2' }}
               </span>

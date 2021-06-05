@@ -32,13 +32,6 @@
   object-fit: contain;
 }
 
-/* Three image containers (use 25% for four, and 50% for two, etc) */
-.column {
-  float: left;
-  width: 33.33%;
-  padding: 5px;
-}
-
 /* Clear floats after image containers */
 .row::after {
   content: "";
@@ -48,22 +41,6 @@
 
 .row {
   display: flex;
-}
-
-.column {
-  flex: 25%;
-  // padding: 5px;
-}
-
-.analyst-label {
-  margin-top: 25px;
-  line-height: 34.5px;
-  margin-bottom: 0;
-  font-size: 20px;
-  color: #131722;
-  letter-spacing: 0.3px;
-  font-weight: 400;
-  text-align: center;
 }
 
 .pie-legend {

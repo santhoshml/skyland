@@ -95,7 +95,7 @@ export class SymbolDetailsComponent implements OnInit {
   enableStockFeatures = false;
   completeSymbol: string = null;
 
-  view: any[] = [270, 400];
+  view: any[] = [350, 200];
   // options
   pieGradient: boolean = true;
   pieShowLegend: boolean = false;
@@ -103,7 +103,7 @@ export class SymbolDetailsComponent implements OnInit {
   isDoughnut: boolean = false;
   legendPosition: string = 'below'; //right
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#KKKKKK'],
+    domain: ['#1dfb0b', '#ff0033', '#ffe000', '#908e8e', '#KKKKKK'],
   };
 
   typesMap = [
@@ -284,9 +284,8 @@ export class SymbolDetailsComponent implements OnInit {
       // technical info widget
       let technicalsInfoWIdget = {
         interval: '1D',
-        width: 270,
         isTransparent: true,
-        height: 510,
+        height: 410,
         symbol: this.completeSymbol,
         showIntervalTabs: true,
         locale: 'en',
