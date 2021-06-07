@@ -86,48 +86,50 @@
             ></app-table-filter>
           </div>
         </div>
-        <table id="subsectors" class="table table-striped table-hover" *ngIf="tableData">
-          <thead>
-            <tr>
-              <th class="text-center" scope="col" sortable="title" (sort)="onSort($event)">Sub-Sector Title</th>
-              <th class="text-center" scope="col" sortable="change" (sort)="onSort($event)">1-Day Change</th>
-              <th class="text-center" scope="col" sortable="perf_week" (sort)="onSort($event)">1-Week Change</th>
-              <th class="text-center" scope="col" sortable="perf_month" (sort)="onSort($event)">1-Month Change</th>
-              <th class="text-center" scope="col" sortable="perf_quart" (sort)="onSort($event)">1-Quater Change</th>
-              <th class="text-center" scope="col" sortable="perf_half" (sort)="onSort($event)">6-Month Change</th>
-              <th class="text-center" scope="col" sortable="perf_year" (sort)="onSort($event)">1-Year Change</th>
-              <th class="text-center" scope="col" sortable="perf_ytd" (sort)="onSort($event)">YTD Change</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let subSector of tableData" class="table-row">
-              <td class="text-left">
-                <a routerLink="/subSectorDetails/{{ subSector.id }}">{{ subSector.title }}</a>
-              </td>
-              <td class="text-right note">
-                {{ subSector.change }}
-              </td>
-              <td class="text-right percent-change">
-                {{ subSector.perf_week }}
-              </td>
-              <td class="text-right percent-change">
-                {{ subSector.perf_month }}
-              </td>
-              <td class="text-right percent-change">
-                {{ subSector.perf_quart }}
-              </td>
-              <td class="text-right percent-change">
-                {{ subSector.perf_half }}
-              </td>
-              <td class="text-right percent-change">
-                {{ subSector.perf_year }}
-              </td>
-              <td class="text-right percent-change">
-                {{ subSector.perf_ytd }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-container">
+          <table id="subsectors" class="table table-striped table-hover" *ngIf="tableData">
+            <thead>
+              <tr>
+                <th class="text-center" scope="col" sortable="title" (sort)="onSort($event)">Sub-Sector Title</th>
+                <th class="text-center" scope="col" sortable="change" (sort)="onSort($event)">1-Day Change</th>
+                <th class="text-center" scope="col" sortable="perf_week" (sort)="onSort($event)">1-Week Change</th>
+                <th class="text-center" scope="col" sortable="perf_month" (sort)="onSort($event)">1-Month Change</th>
+                <th class="text-center" scope="col" sortable="perf_quart" (sort)="onSort($event)">1-Quater Change</th>
+                <th class="text-center" scope="col" sortable="perf_half" (sort)="onSort($event)">6-Month Change</th>
+                <th class="text-center" scope="col" sortable="perf_year" (sort)="onSort($event)">1-Year Change</th>
+                <th class="text-center" scope="col" sortable="perf_ytd" (sort)="onSort($event)">YTD Change</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let subSector of tableData" class="table-row">
+                <td class="text-left">
+                  <a routerLink="/subSectorDetails/{{ subSector.id }}">{{ subSector.title }}</a>
+                </td>
+                <td class="text-right note">
+                  {{ subSector.change }}
+                </td>
+                <td class="text-right percent-change">
+                  {{ subSector.perf_week }}
+                </td>
+                <td class="text-right percent-change">
+                  {{ subSector.perf_month }}
+                </td>
+                <td class="text-right percent-change">
+                  {{ subSector.perf_quart }}
+                </td>
+                <td class="text-right percent-change">
+                  {{ subSector.perf_half }}
+                </td>
+                <td class="text-right percent-change">
+                  {{ subSector.perf_year }}
+                </td>
+                <td class="text-right percent-change">
+                  {{ subSector.perf_ytd }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

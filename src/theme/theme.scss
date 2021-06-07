@@ -18,6 +18,18 @@
   cursor: pointer;
 }
 
+.word-break {
+  word-break: break-all;
+}
+
+.nav-tabs {
+  @include media-breakpoint-down(lg) {
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+}
+
 .nav-tabs .nav-link {
   border-width: 0 0 4px 0;
   border-bottom-color: transparent;
@@ -79,11 +91,17 @@ table {
     }
   }
   th[sortable] {
+    &::before {
+      content: "\2195 ";
+      opacity: 0.7;
+    }
     &.desc::before {
-      content: "\2191";
+      content: "\2191 ";
+      opacity: 1;
     }
     &.asc::before {
-      content: "\2193";
+      content: "\2193 ";
+      opacity: 1;
     }
   }
   tr {

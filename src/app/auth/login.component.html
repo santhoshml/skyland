@@ -8,7 +8,7 @@
       <div id="login" *ngIf="containerView.login">
         <h3 class="mb-2">Log in</h3>
         <div class="sub-title pb-2">
-          Don't have an account? <a class="text-primary" routerLink="/signup">sign Up</a>
+          Don't have an account? <a class="text-primary" routerLink="/signup">Sign up</a>
         </div>
         <form (ngSubmit)="login()" [formGroup]="accountForm" novalidate>
           <div class="alert alert-danger" [hidden]="!loginError || isLoading" translate>
@@ -81,7 +81,9 @@
       </div>
       <div class="" id="createAccount" *ngIf="containerView.signUp">
         <h3 class="mb-2">Sign up</h3>
-        <div class="sub-title pb-2">Already have an account? <a class="text-primary" routerLink="/login">Login</a></div>
+        <div class="sub-title pb-2">
+          Already have an account? <a class="text-primary" routerLink="/login">Log in</a>
+        </div>
         <form (ngSubmit)="createAccount()" [formGroup]="accountForm" novalidate>
           <div class="mt-3 alert alert-danger" [hidden]="!createAccountError" translate>
             {{ createAccountError }}

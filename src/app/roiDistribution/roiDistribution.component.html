@@ -1,5 +1,5 @@
-<div class="container mb-5" style="display: grid">
-  <div class="card">
+<div class="container-fluid mb-5">
+  <div class="card shadow-lg border-0">
     <div class="card-body">
       <h5 class="card-title">Return on Capital Invested (ROI) Distribution</h5>
       <p class="card-text">
@@ -49,26 +49,27 @@
           <a href="#" class="card-link">Another link</a> -->
     </div>
   </div>
-  <div class="mt-5">
-    <ngx-charts-bar-vertical
-      *ngIf="roiData"
-      [view]="[1000, 400]"
-      [results]="roiData"
-      [xAxisLabel]="'Each investment/trade'"
-      [yAxisLabel]="'ROI %'"
-      [showXAxisLabel]="true"
-      [showYAxisLabel]="true"
-      [xAxis]="false"
-      [yAxis]="true"
-      [gradient]="false"
-    >
-    </ngx-charts-bar-vertical>
+  <div class="my-5">
+    <div *ngIf="roiData" style="height: 400px" class="shadow-lg">
+      <ngx-charts-bar-vertical
+        *ngIf="roiData"
+        [results]="roiData"
+        [xAxisLabel]="'Each investment/trade'"
+        [yAxisLabel]="'ROI %'"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxis]="false"
+        [yAxis]="true"
+        [gradient]="false"
+      >
+      </ngx-charts-bar-vertical>
+    </div>
     <div class="spinner-border" role="status" *ngIf="!roiData">
       <span class="sr-only">Loading...</span>
     </div>
   </div>
   <br />
-  <div class="card">
+  <div class="card shadow-lg border-0">
     <div class="card-body">
       <h5 class="card-title">
         Holding Period
@@ -112,21 +113,21 @@
           <a href="#" class="card-link">Another link</a> -->
     </div>
   </div>
-  <div class="mt-5 mb-5">
-    <ngx-charts-bar-vertical
-      [view]="[1000, 400]"
-      *ngIf="holdDaysData"
-      [results]="holdDaysData"
-      [xAxisLabel]="'Each investment/trade'"
-      [yAxisLabel]="'# of Days in a Trade'"
-      [showXAxisLabel]="true"
-      [showYAxisLabel]="true"
-      [xAxis]="false"
-      [yAxis]="true"
-      [scheme]=""
-      [gradient]="false"
-    >
-    </ngx-charts-bar-vertical>
+  <div class="my-5">
+    <div *ngIf="holdDaysData" style="height: 400px" class="shadow-lg">
+      <ngx-charts-bar-vertical
+        [results]="holdDaysData"
+        [xAxisLabel]="'Each investment/trade'"
+        [yAxisLabel]="'# of Days in a Trade'"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxis]="false"
+        [yAxis]="true"
+        [scheme]=""
+        [gradient]="false"
+      >
+      </ngx-charts-bar-vertical>
+    </div>
     <div class="spinner-border" role="status" *ngIf="!holdDaysData">
       <span class="sr-only">Loading...</span>
     </div>

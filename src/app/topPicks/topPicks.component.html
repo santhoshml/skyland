@@ -181,7 +181,7 @@
                   <td class="text-right price">
                     {{ topStock.price | currency }}
                     <div *ngIf="topStock.bestBuy === 1">
-                      <span class="badge badge-pill badge-primary info-badge">
+                      <span class="badge badge-pill my-1 badge-primary info-badge">
                         <i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy
                       </span>
                     </div>
@@ -215,7 +215,7 @@
                         {{ topStock.industry }}
                       </div>
                       <div *ngFor="let industryBadge of topStock.industryBadgeList">
-                        <span class="badge badge-pill badge-info info-badge pill-wrap">{{ industryBadge }}</span>
+                        <span class="badge badge-pill my-1 badge-info info-badge pill-wrap">{{ industryBadge }}</span>
                       </div>
                     </div>
                     <div *ngIf="!topStock.industry">N/A</div>
@@ -245,7 +245,7 @@
             </table>
           </div>
         </div>
-        <div class="text-right mb-1 px-1">
+        <div class="text-right p-2">
           <button type="button" (click)="viewAllUptrendingStocks()" class="btn btn-orange">View More</button>
         </div>
       </div>
@@ -333,7 +333,7 @@
                   <td class="text-right price">
                     {{ favorite.close | currency }}
                     <div *ngIf="favorite.bestBuy === 1">
-                      <span class="badge badge-pill badge-primary info-badge"
+                      <span class="badge my-1 badge-pill badge-primary info-badge"
                         ><i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy</span
                       >
                     </div>
@@ -367,7 +367,7 @@
                         {{ favorite.industry }}
                       </div>
                       <div *ngFor="let industryBadge of favorite.industryBadgeList">
-                        <span class="badge badge-pill badge-info pill-wrap">{{ industryBadge }}</span>
+                        <span class="badge badge-pill my-1 badge-info pill-wrap">{{ industryBadge }}</span>
                       </div>
                     </div>
                     <div *ngIf="!favorite.industry">N/A</div>
@@ -666,7 +666,7 @@
                               {{ txn.industry }}
                             </div>
                             <div *ngFor="let industryBadge of txn.industryBadgeList">
-                              <span class="badge badge-pill badge-info pill-wrap">{{ industryBadge }}</span>
+                              <span class="badge badge-pill my-1 badge-info pill-wrap">{{ industryBadge }}</span>
                             </div>
                           </div>
                           <div *ngIf="!txn.industry">N/A</div>

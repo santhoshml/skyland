@@ -7,9 +7,18 @@ import { FileUploadModule } from 'ng2-file-upload';
 
 import { AllUserListAdminRoutingModule } from './allUserListAdmin-routing.module';
 import { AllUserListAdminComponent } from './allUserListAdmin.component';
+import { SharedModule } from '@app/@shared';
 
 @NgModule({
-  imports: [CommonModule, TranslateModule, AllUserListAdminRoutingModule, BrowserModule, NgbModule, FileUploadModule],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    AllUserListAdminRoutingModule,
+    BrowserModule,
+    NgbModule,
+    FileUploadModule,
+    SharedModule,
+  ],
   declarations: [AllUserListAdminComponent],
 })
 export class AllUserListAdminModule {}

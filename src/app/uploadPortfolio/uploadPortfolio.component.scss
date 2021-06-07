@@ -1,3 +1,4 @@
+@import "src/theme/_variables";
 .heading {
   font-size: 28px;
   font-style: normal;
@@ -16,7 +17,9 @@
 }
 
 .ver-line {
-  border-left: 1px solid #333;
+  @include media-breakpoint-up(md) {
+    border-left: 1px solid #333;
+  }
 }
 
 .easy-steps-text {

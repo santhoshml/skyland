@@ -1,6 +1,6 @@
 <div class="container-fluid pt-2">
   <div class="row">
-    <div class="col-8">
+    <div class="col-12 col-md-8 order-2 order-md-0">
       <div class="mb-5">
         <div class="h2 heading">See all your trades in one place</div>
         <div class="desc-text">
@@ -30,7 +30,7 @@
       <div *ngIf="isPlatformSelected" class="pl-3">
         <form [formGroup]="myForm" (ngSubmit)="submit()">
           <div class="form-group row mt-3">
-            <div class="col-9 p-0">
+            <div class="col-12 col-md-9 p-0">
               <p>
                 Follow the below instructions to download the file from {{ selectedPlatform }} and attach it below to
                 upload
@@ -52,7 +52,7 @@
                 </p>
               </div>
             </div>
-            <div class="col-3 align-items-end d-flex justify-content-end">
+            <div class="col-12 col-md-3 mt-3 mt-md-0 align-items-end d-flex justify-content-end">
               <div>
                 <button class="btn btn-primary" type="submit">Upload</button>
                 <button
@@ -71,7 +71,7 @@
         </form>
       </div>
     </div>
-    <div class="col-4">
+    <div class="col-12 col-md-4">
       <div class="ver-line pl-4 pr-2 mb-5">
         <div class="easy-steps-text mb-3">Three easy steps to get started with Liste.AI</div>
         <ul class="pl-0 mb-5">
@@ -143,11 +143,19 @@
       <p>1. Log in to <a target="_blank" href="https://schwab.com">Schwab</a></p>
       <p>
         2. Goto <span class="font-weight-bold">Account</span> -> <span class="font-weight-bold">History</span>
-        <img src="/assets/schwab_step_2.png" alt="Click on Account" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/schwab_step_2.png"
+          alt="Click on Account"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>
         3. Select the desired account # from the <span class="font-weight-bold">dropdown</span>(on the top-left)
-        <img src="/assets/schwab_step_3.png" alt="Select Account" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/schwab_step_3.png"
+          alt="Select Account"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>
         4. Select <span class="font-weight-bold">All</span> in the
@@ -155,17 +163,25 @@
         <img
           src="/assets/schwab_step_4.png"
           alt="Select All transactions"
-          style="max-width: 500px; max-height: 110px"
+          style="max-width: 100%; width: 500px; max-height: 110px"
         />
       </p>
       <p>
         5. Click on <span class="font-weight-bold">Export</span> on top right corner (this will open a disclaimer in a
         pop-up)
-        <img src="/assets/schwab_step_5.png" alt="Click on Export" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/schwab_step_5.png"
+          alt="Click on Export"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>
         6. Click <span class="font-weight-bold">OK</span> on the disclaimer notice
-        <img src="/assets/schwab_step_6.png" alt="Accept disclaimer" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/schwab_step_6.png"
+          alt="Accept disclaimer"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>
         7. This will open a window, click <span class="font-weight-bold">save</span>(make sure it is in
@@ -181,11 +197,19 @@
       <p>1. Log in to <a target="_blank" href="https://etrade.com">E-TRADE</a></p>
       <p>
         2. Goto <span class="font-weight-bold">Accounts</span> -> <span class="font-weight-bold">Transactions</span>
-        <img src="/assets/etrade_step_2.png" alt="Click on Account" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/etrade_step_2.png"
+          alt="Click on Account"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>
         3. Click on the download icon on the top-right corner
-        <img src="/assets/etrade_step_3.png" alt="Select Account" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/etrade_step_3.png"
+          alt="Select Account"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>
         4. Select
@@ -200,7 +224,11 @@
           c) E-Trade allows only to download past <span class="font-weight-bold"><u>16 months</u></span> of data, select
           From data appropriately
         </span>
-        <img src="/assets/etrade_step_4.png" alt="Select Account" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/etrade_step_4.png"
+          alt="Select Account"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>5. Click <span class="font-weight-bold">Download</span></p>
       <p>6. This will open a window, click <span class="font-weight-bold">save</span></p>
@@ -216,15 +244,27 @@
       </p>
       <p>
         2. Click on <span class="font-weight-bold">Account</span>
-        <img src="/assets/ts_step_2.png" alt="Click on Account" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/ts_step_2.png"
+          alt="Click on Account"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>
         3. Click on <span class="font-weight-bold">Equities Accounts</span>(on the left)
-        <img src="/assets/ts_step_3.png" alt="Select Account" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/ts_step_3.png"
+          alt="Select Account"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>
         4. Click on <span class="font-weight-bold">Trades & Other Transactions</span>
-        <img src="/assets/ts_step_4.png" alt="Select All transactions" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/ts_step_4.png"
+          alt="Select All transactions"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>
         5. Select
@@ -247,7 +287,11 @@
         <span style="display: block; margin-left: 50px; font-size: 14px"
           >f) <span class="font-weight-bold">All Trades</span>
         </span>
-        <img src="/assets/ts_step_5.png" alt="Click on Export" style="max-width: 500px; max-height: 110px" />
+        <img
+          src="/assets/ts_step_5.png"
+          alt="Click on Export"
+          style="max-width: 100%; width: 500px; max-height: 110px"
+        />
       </p>
       <p>6. Click <span class="font-weight-bold">View/Download</span></p>
       <p>7. This will open a window, click <span class="font-weight-bold">save</span></p>

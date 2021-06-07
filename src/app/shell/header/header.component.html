@@ -29,7 +29,7 @@
         </a>
       </div>
 
-      <div class="navbar-nav ml-auto">
+      <div class="ml-auto mt-3 mt-lg-0 navbar-nav">
         <div class="ng-autocomplete align-items-center d-flex">
           <ng-autocomplete
             [data]="data"
@@ -77,44 +77,45 @@
     </div>
   </nav>
   <nav
-    class="navbar navbar-expand-md navbar-light py-2 sub-navbar"
+    class="navbar navbar-expand navbar-light py-2 sub-navbar"
     *ngIf="webDisplayDate$ | async as webDisplayDateElement"
   >
-    <small class="close-of-date">
-      Data & Analysis updates as of close of Market :
-      <span class="badge badge-secondary as-of-date">{{ webDisplayDateElement.value_str | date }}</span>
-      <span
-        class="text-primary font-weight-bold d-md-none d-block"
-        (click)="openModal(mymodal)"
-        *ngIf="!showThankYouForFeedbackFlag"
-        >Leave us a comment</span
-      >
-    </small>
-    <div class="navbar-nav ml-auto">
-      <div *ngIf="!showThankYouForFeedbackFlag" class="d-md-block d-none">
-        <button type="button" (click)="openModal(mymodal)" class="btn btn-outline-primary btn-sm">
-          Leave us a comment
-        </button>
+    <div class="row m-0 w-100">
+      <div class="col-12 col-md-9 p-0">
+        <small class="close-of-date">
+          Data & Analysis updates as of close of Market :
+          <span class="badge badge-secondary as-of-date">{{ webDisplayDateElement.value_str | date }}</span>
+          <span
+            class="text-primary font-weight-bold d-md-none d-block text-center mt-2"
+            (click)="openModal(mymodal)"
+            *ngIf="!showThankYouForFeedbackFlag"
+            >Leave us a comment</span
+          >
+        </small>
       </div>
-      <div
-        *ngIf="showThankYouForFeedbackFlag"
-        class="alert alert-warning alert-dismissible fade show mb-0 thankyou-for-feedback"
-        role="alert"
-      >
-        Thank you for your feedback. We really appreciate it !
-        <button
-          type="button"
-          class="close"
-          data-dismiss="alert"
-          aria-label="Close"
-          (click)="closeThankYouForFeedbackAlert()"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div class="col-12 col-md-3 p-0">
+        <div class="navbar-nav ml-auto float-right">
+          <div *ngIf="!showThankYouForFeedbackFlag" class="d-md-block d-none">
+            <button type="button" (click)="openModal(mymodal)" class="btn btn-outline-primary btn-sm">
+              Leave us a comment
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
 </header>
+
+<div
+  *ngIf="showThankYouForFeedbackFlag"
+  class="alert alert-warning alert-dismissible fade show mb-0 thankyou-for-feedback"
+  role="alert"
+>
+  Thank you for your feedback. We really appreciate it !
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeThankYouForFeedbackAlert()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 
 <ng-template #mymodal let-modal>
   <div class="modal-header">

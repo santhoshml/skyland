@@ -1,11 +1,11 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { finalize, map, catchError } from 'rxjs/operators';
+import { Component, OnInit, EventEmitter, QueryList, ViewChildren } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
-import { Observable, of } from 'rxjs';
-import { CredentialsService, UserProfileModel } from '@app/auth';
+import { Observable } from 'rxjs';
+import { CredentialsService } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import { AllUserListAdminService } from './allUserListAdmin.service';
+import { compare, SortEvent, TableSortableHeaderDirective } from '@app/@shared';
 
 @Component({
   selector: 'app-allUserListAdmin',
@@ -13,9 +13,11 @@ import { AllUserListAdminService } from './allUserListAdmin.service';
   styleUrls: ['./allUserListAdmin.component.scss'],
 })
 export class AllUserListAdminComponent implements OnInit {
+  @ViewChildren(TableSortableHeaderDirective) headers: QueryList<TableSortableHeaderDirective>;
   version: string | null = environment.version;
   isLoading = false;
   allUserList$: Observable<any>;
+  tableData: any = [];
 
   constructor(
     private router: Router,
@@ -36,6 +38,25 @@ export class AllUserListAdminComponent implements OnInit {
     );
 
     this.allUserList$ = this.allUserListAdminService.getAllUsers();
+  }
+
+  tableValue(data) {
+    this.tableData = data;
+  }
+
+  onSort({ column, direction }: SortEvent) {
+    // resetting other headers
+    this.headers.forEach((header) => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    // sorting countries
+    this.tableData = [...this.tableData].sort((a, b) => {
+      const res = compare(a[column], b[column]);
+      return direction === 'asc' ? res : -res;
+    });
   }
 
   ngOnDestroy() {}

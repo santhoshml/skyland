@@ -51,12 +51,18 @@
 
 .thankyou-for-feedback {
   background-color: $yellow;
+  position: fixed;
+  width: 350px;
+  right: 10px;
+  top: 70px;
+  z-index: 9999;
+  color: $black;
 }
 
 @include media-breakpoint-down(md) {
   .ng-autocomplete {
     margin-bottom: 10px;
-    max-width: 500px;
+    max-width: calc(100vw - 50px);
   }
 
   .dropdown {
@@ -70,5 +76,12 @@
     white-space: normal;
     overflow: hidden;
     text-overflow: unset;
+  }
+}
+@include media-breakpoint-down(md) {
+  .navbar-collapse {
+    background: $white;
+    padding: 10px;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
   }
 }
