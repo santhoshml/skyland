@@ -17,6 +17,8 @@
           <th style="width: 200px" scope="col" sortable="name" (sort)="onSort($event)">Name</th>
           <th style="width: 200px" scope="col" sortable="phone" (sort)="onSort($event)">Phone#</th>
           <th style="width: 200px" scope="col" sortable="expertise" (sort)="onSort($event)">Expertise</th>
+          <th style="width: 200px" scope="col" sortable="expertise" (sort)="onSort($event)">Last Login</th>
+          <th style="width: 200px" scope="col" sortable="expertise" (sort)="onSort($event)">Login Count</th>
           <th style="width: 150px" scope="col" sortable="created_dt" (sort)="onSort($event)">Create Date</th>
         </tr>
       </thead>
@@ -26,6 +28,8 @@
           <td class="word-break">{{ row.name }}</td>
           <td>{{ row.phone }}</td>
           <td>{{ row.expertise }}</td>
+          <td>{{ row.lastLogin === 'Invalid date' ? '' : (row.lastLogin | date) }}</td>
+          <td>{{ row.loginCount }}</td>
           <td>{{ row.created_dt | date }}</td>
         </tr>
       </tbody>
