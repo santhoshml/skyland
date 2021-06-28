@@ -55,6 +55,7 @@ export class UptrendingStocksComponent implements OnInit {
   }
 
   tableValue(data) {
+    data.forEach((val, i) => (val.index = i + 1));
     this.tableData = data;
   }
 
@@ -65,6 +66,11 @@ export class UptrendingStocksComponent implements OnInit {
         header.direction = '';
       }
     });
+
+    if (!direction) {
+      column = 'index';
+      direction = 'asc';
+    }
 
     // sorting countries
     this.tableData = [...this.tableData].sort((a, b) => {

@@ -57,6 +57,9 @@
 }
 
 .card-columns {
+  .card {
+    position: inherit;
+  }
   img {
     object-fit: cover;
   }

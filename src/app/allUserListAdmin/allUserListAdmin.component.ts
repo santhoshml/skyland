@@ -52,6 +52,11 @@ export class AllUserListAdminComponent implements OnInit {
       }
     });
 
+    if (!direction) {
+      column = 'created_dt';
+      direction = 'desc';
+    }
+
     // sorting countries
     this.tableData = [...this.tableData].sort((a, b) => {
       const res = compare(a[column], b[column]);

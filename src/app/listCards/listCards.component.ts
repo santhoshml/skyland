@@ -117,6 +117,11 @@ export class ListCardsComponent implements OnInit {
       }
     });
 
+    if (!direction) {
+      column = 'id';
+      direction = 'asc';
+    }
+
     // sorting countries
     this.tableData = [...this.tableData].sort((a, b) => {
       const res = compare(a[column], b[column]);

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { finalize, map, catchError } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
@@ -8,6 +8,7 @@ import { CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import pruned from 'pruned';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
+import { compare, SortEvent, TableSortableHeaderDirective } from '@app/@shared';
 
 export interface SubSectorDetailsTable {
   id: number;
@@ -37,6 +38,7 @@ export interface SubSectorDetailsRow {
   styleUrls: ['./subSectorDetails.component.scss'],
 })
 export class SubSectorDetailsComponent implements OnInit {
+  @ViewChildren(TableSortableHeaderDirective) headers: QueryList<TableSortableHeaderDirective>;
   version: string | null = environment.version;
   isLoading = false;
   subSectorDetailsArr$: Observable<any>;
@@ -55,6 +57,7 @@ export class SubSectorDetailsComponent implements OnInit {
   MIN_ROWS_TO_DISPLAY = 10;
   MAX_ROWS_TO_DISPLAY = 10000;
   hideViewMoreBtn = false;
+  tableData: any = [];
 
   constructor(
     private subSectorDetailsService: SubSectorDetailsService,
@@ -100,6 +103,30 @@ export class SubSectorDetailsComponent implements OnInit {
 
     // set user profile
     this.userProfile = this.credentialsService.userProfileModel;
+  }
+
+  tableValue(data) {
+    this.tableData = data;
+  }
+
+  onSort({ column, direction }: SortEvent) {
+    // resetting other headers
+    this.headers.forEach((header) => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    if (!direction) {
+      column = 'id';
+      direction = 'asc';
+    }
+
+    // sorting countries
+    this.tableData = [...this.tableData].sort((a, b) => {
+      const res = compare(a[column], b[column]);
+      return direction === 'asc' ? res : -res;
+    });
   }
 
   viewMoreFn() {

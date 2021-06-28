@@ -1,11 +1,14 @@
 <div class="container-fluid" *ngIf="allUserList$ | async as allUserList">
   <div class="w-100 row m-0">
-    <div class="align-items-end offset-md-8 col-md-4 col-12 p-0 d-flex justify-content-end">
+    <div class="col-md-8 col-12 p-0 d-flex align-items-center">
+      <strong *ngIf="tableData" class="pb-2">Total Users Count: {{ tableData.length }}</strong>
+    </div>
+    <div class="align-items-center col-md-4 col-12 p-0 d-flex justify-content-end">
       <app-table-filter
         class="w-100"
         [data]="allUserList"
         (tableData)="tableValue($event)"
-        [searchFields]="['email', 'name', 'phone', 'expertise', 'created_dt']"
+        [searchFields]="['email', 'name', 'phone', 'expertise', 'created_dt', 'loginCount']"
       ></app-table-filter>
     </div>
   </div>
@@ -16,9 +19,9 @@
           <th style="width: 300px" scope="col" sortable="email" (sort)="onSort($event)">Email</th>
           <th style="width: 200px" scope="col" sortable="name" (sort)="onSort($event)">Name</th>
           <th style="width: 200px" scope="col" sortable="phone" (sort)="onSort($event)">Phone#</th>
-          <th style="width: 200px" scope="col" sortable="expertise" (sort)="onSort($event)">Expertise</th>
-          <th style="width: 200px" scope="col" sortable="expertise" (sort)="onSort($event)">Last Login</th>
-          <th style="width: 200px" scope="col" sortable="expertise" (sort)="onSort($event)">Login Count</th>
+          <th style="width: 150px" scope="col" sortable="expertise" (sort)="onSort($event)">Expertise</th>
+          <th style="width: 150px" scope="col" sortable="lastLogin" (sort)="onSort($event)">Last Login</th>
+          <th style="width: 150px" scope="col" sortable="loginCount" (sort)="onSort($event)">Login Count</th>
           <th style="width: 150px" scope="col" sortable="created_dt" (sort)="onSort($event)">Create Date</th>
         </tr>
       </thead>

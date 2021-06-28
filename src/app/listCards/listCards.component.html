@@ -60,7 +60,9 @@
           <img class="card-img-top" height="200" src="{{ card.img }}" alt="Card image cap" />
           <div class="card-body">
             <h5 class="card-title line-clamp-1">{{ card.title }}</h5>
-            <p class="card-text note line-clamp-3" [innerHTML]="card.desc | truncate: 90"></p>
+            <p class="card-text note line-clamp-3">
+              {{ card.desc }}
+            </p>
             <div>
               <button (click)="getList(card)" class="btn btn-outline-primary float-left">Get List</button>
               <span class="float-right" *ngIf="card.day_change && card.day_change > 0">
@@ -82,7 +84,7 @@
               class="w-100"
               [data]="subSectorList"
               (tableData)="tableValue($event)"
-              [searchFields]="['title']"
+              [searchFields]="['title', 'change', 'perf_week', 'perf_month', 'perf_half', 'perf_year', 'perf_ytd']"
             ></app-table-filter>
           </div>
         </div>
@@ -105,27 +107,13 @@
                 <td class="text-left">
                   <a routerLink="/subSectorDetails/{{ subSector.id }}">{{ subSector.title }}</a>
                 </td>
-                <td class="text-right note">
-                  {{ subSector.change }}
-                </td>
-                <td class="text-right percent-change">
-                  {{ subSector.perf_week }}
-                </td>
-                <td class="text-right percent-change">
-                  {{ subSector.perf_month }}
-                </td>
-                <td class="text-right percent-change">
-                  {{ subSector.perf_quart }}
-                </td>
-                <td class="text-right percent-change">
-                  {{ subSector.perf_half }}
-                </td>
-                <td class="text-right percent-change">
-                  {{ subSector.perf_year }}
-                </td>
-                <td class="text-right percent-change">
-                  {{ subSector.perf_ytd }}
-                </td>
+                <td class="text-right note">{{ subSector.change }}%</td>
+                <td class="text-right percent-change">{{ subSector.perf_week }}%</td>
+                <td class="text-right percent-change">{{ subSector.perf_month }}%</td>
+                <td class="text-right percent-change">{{ subSector.perf_quart }}%</td>
+                <td class="text-right percent-change">{{ subSector.perf_half }}%</td>
+                <td class="text-right percent-change">{{ subSector.perf_year }}%</td>
+                <td class="text-right percent-change">{{ subSector.perf_ytd }}%</td>
               </tr>
             </tbody>
           </table>
