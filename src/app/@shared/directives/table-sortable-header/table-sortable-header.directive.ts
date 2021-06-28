@@ -4,7 +4,14 @@ export type SortColumn = keyof any | '';
 export type SortDirection = 'asc' | 'desc' | '';
 const rotate: { [key: string]: SortDirection } = { asc: 'desc', desc: '', '': 'asc' };
 
-export const compare = (v1: string | number, v2: string | number) => (v1 < v2 ? -1 : v1 > v2 ? 1 : 0);
+export const compare = (v1: any, v2: any) => {
+  let val1 = Number(v1),
+    val2 = Number(v2);
+  if (val1 && val2) {
+    return val1 - val2;
+  }
+  return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+};
 
 export interface SortEvent {
   column: SortColumn;

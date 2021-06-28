@@ -818,7 +818,9 @@
         <img class="card-img-top" height="200" src="{{ card.imageName }}" alt="Card image cap" />
         <div class="card-body">
           <h5 class="card-title line-clamp-1">{{ card.displayName | truncate: 20 }}</h5>
-          <p class="card-text card-text line-clamp-3" [innerHTML]="card.desc | truncate: 100"></p>
+          <p class="card-text card-text line-clamp-3">
+            {{ card.desc }}
+          </p>
           <button
             (click)="gotoSectorList(card)"
             [disabled]="card.count === 0"

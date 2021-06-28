@@ -28,7 +28,6 @@ export class TableFilterComponent implements OnInit {
             if (res[1] !== '') {
               let filterValue = false;
               for (let i = 0; i < this.searchFields.length; i++) {
-                console.log(val[this.searchFields[i]]);
                 if (
                   val[this.searchFields[i]] &&
                   val[this.searchFields[i]].toString().toLowerCase().includes(res[1].toLowerCase())

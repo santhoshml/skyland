@@ -8,6 +8,7 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 
 import { SubSectorDetailsRoutingModule } from './subSectorDetails-routing.module';
 import { SubSectorDetailsComponent } from './subSectorDetails.component';
+import { SharedModule } from '@app/@shared';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { SubSectorDetailsComponent } from './subSectorDetails.component';
     NgbModule,
     FileUploadModule,
     TruncateModule,
+    SharedModule,
   ],
   declarations: [SubSectorDetailsComponent],
 })

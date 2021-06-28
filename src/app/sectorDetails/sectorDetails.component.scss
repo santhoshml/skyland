@@ -1,21 +1,5 @@
 @import "src/theme/_variables";
 
-.table {
-  table-layout: fixed;
-}
-
-.table-row {
-  cursor: pointer;
-}
-
-.desc-text {
-  font-weight: 400;
-}
-
-.ver-line {
-  border-left: 1px solid #333;
-}
-
 .easy-steps-text {
   font-size: 15px;
   font-style: normal;
@@ -49,86 +33,9 @@
   color: #0a66cc;
 }
 
-.industry {
-  max-width: 160px;
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.price {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.market-cap {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.dividend {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.pe-ratio {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.roi {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.days {
-  font-size: 14px;
-  font-weight: 400;
-}
-
 .text-btn {
   font-size: 15px;
   font-weight: 400;
-}
-
-.btn-pading {
-  padding-top: 0;
-  padding-bottom: 0;
-  width: fit-content;
-}
-
-.table > tbody > tr > td {
-  border: 0;
-  padding-top: 3px;
-  padding-bottom: 3px;
-}
-
-.info-badge {
-  font-size: 12px;
-  font-weight: 400;
-}
-
-.volume {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.trend {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.note {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.btn-red {
-  background-color: #b95e04;
-  color: $white;
-}
-
-.view-more-div {
-  padding-left: 12px;
 }
 
 .table td.fit,
@@ -158,14 +65,9 @@
 }
 
 .pill-wrap {
-  white-space: normal !important;
+  white-space: normal;
 }
 
 .view-more-div {
   padding-left: 12px;
-}
-
-.btn-red {
-  background-color: #b95e04;
-  color: $white;
 }
