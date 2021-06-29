@@ -61,6 +61,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   forgotError: string | undefined;
   accountForm!: FormGroup;
   isLoading = false;
+  redirectUrl: string = '/topPicks';
   containerView = {
     login: false,
     signUp: false,
@@ -104,6 +105,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       let token = params['token'];
       let email = params['email'];
       let id = params['id'];
+      if (params.redirect) {
+        this.redirectUrl = params.redirect;
+      }
       if (token) {
         this.authenticationService.saveCredentianls(id, email, token);
         this.googleAnalyticsService.eventEmitter('redirectedt-login', 'login', 'redirected', 'redirected', 1, email);
@@ -151,8 +155,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           // get favorites for the user
           this.authenticationService.getFavorites().subscribe();
 
-          this.router.navigate(['/topPicks'], { replaceUrl: true });
-          // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
+          this.router.navigate([this.redirectUrl], { replaceUrl: true });
         },
         (error) => {
           log.debug(`Login error: ${error}`);
@@ -192,8 +195,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             1,
             credentials.email
           );
-          this.router.navigate(['/topPicks'], { replaceUrl: true });
-          // this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
+          this.router.navigate([this.redirectUrl], { replaceUrl: true });
         },
         (error) => {
           log.debug(`Login error: ${JSON.stringify(error)}`);
