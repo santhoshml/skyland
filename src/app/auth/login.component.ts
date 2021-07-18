@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginError: string | undefined;
   createAccountError: string | undefined;
   forgotError: string | undefined;
+  resetError: string | undefined;
   accountForm!: FormGroup;
   isLoading = false;
   redirectUrl: string = '/topPicks';
@@ -66,7 +67,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     login: false,
     signUp: false,
     forgotPassword: false,
+    resetPassword: false,
   };
+  resetPasswordInfo = true;
 
   constructor(
     private router: Router,
@@ -80,8 +83,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.router.url === '/signup') {
       this.containerView.signUp = true;
       this.initForm('createAccount');
-    } else if (this.router.url === '/orgot-password') {
+    } else if (this.router.url === '/forgotPassword') {
       this.containerView.forgotPassword = true;
+      this.initForm('forgotPassword');
+    } else if (this.router.url === '/resetPassword') {
+      this.containerView.resetPassword = true;
+      this.initForm('resetPassword');
     } else {
       this.containerView.login = true;
       this.initForm('login');
@@ -219,6 +226,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       null
     );
     this.isLoading = true;
+    this.forgotError = undefined;
     const forgotPassword$ = this.authenticationService.forgotPassword(this.accountForm.value);
     forgotPassword$
       .pipe(
@@ -230,7 +238,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (credentials: Credentials) => {
-          log.debug(`new password sent to ${credentials.email} successfully`);
+          log.debug(`new code sent to ${credentials.email} successfully`);
           this.googleAnalyticsService.eventEmitter(
             'forgotPassword-successful',
             'forgotPassword',
@@ -239,7 +247,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             1,
             credentials.email
           );
-          this.router.navigate(['/login'], { replaceUrl: true });
+          this.router.navigate(['/resetPassword'], { replaceUrl: true });
         },
         (error) => {
           log.debug(`forgotError : ${JSON.stringify(error)}`);
@@ -248,10 +256,52 @@ export class LoginComponent implements OnInit, OnDestroy {
           } else {
             this.forgotError = `Email is incorrect or does not exist in our system.`;
           }
-          // console.log(`createAccountError : ${this.createAccountError}`);
         }
       );
   }
+
+  resetPassword() {
+    this.isLoading = true;
+    this.resetError = undefined;
+    this.resetPasswordInfo = false;
+    const resetPassword$ = this.authenticationService.resetPassword(this.accountForm.value);
+    resetPassword$
+      .pipe(
+        finalize(() => {
+          this.accountForm.markAsPristine();
+          this.isLoading = false;
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe(
+        (credentials: Credentials) => {
+          log.debug(`new password sent to ${credentials.email} successfully`);
+          this.googleAnalyticsService.eventEmitter(
+            'resetPassword-successful',
+            'resetPassword',
+            'resetPassword-response',
+            'resetPassword',
+            1,
+            credentials.email
+          );
+          this.router.navigate([this.redirectUrl], { replaceUrl: true });
+        },
+        (error) => {
+          log.debug(`forgotError : ${JSON.stringify(error)}`);
+          if (error.error && error.error.errors) {
+            this.resetError = error.error.errors;
+          } else {
+            this.resetError = 'Please verify the code or password fields';
+          }
+        }
+      );
+  }
+
+  checkPasswords: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+    let pass = group.get('password').value;
+    let confirmPass = group.get('confirm').value;
+    return pass.includes(confirmPass) ? null : { notSame: true };
+  };
 
   private initForm(type: string) {
     switch (type) {
@@ -272,6 +322,21 @@ export class LoginComponent implements OnInit, OnDestroy {
           phone: [''],
           remember: true,
         });
+        break;
+      case 'forgotPassword':
+        this.accountForm = this.formBuilder.group({
+          email: ['', Validators.required],
+        });
+        break;
+      case 'resetPassword':
+        this.accountForm = this.formBuilder.group(
+          {
+            code: ['', Validators.required],
+            password: ['', [Validators.required, Validators.minLength(8)]],
+            confirm: ['', [Validators.required, Validators.minLength(8)]],
+          },
+          { validators: this.checkPasswords }
+        );
         break;
       default:
         break;

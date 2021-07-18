@@ -11,7 +11,7 @@
           Don't have an account? <a class="text-primary" routerLink="/signup">Sign up</a>
         </div>
         <form (ngSubmit)="login()" [formGroup]="accountForm" novalidate>
-          <div class="alert alert-danger" [hidden]="!loginError || isLoading" translate>
+          <div class="alert alert-danger small" [hidden]="!loginError || isLoading" translate>
             {{ loginError }}
           </div>
           <div class="form-group mt-3">
@@ -50,16 +50,20 @@
                 Password is required
               </small>
             </label>
-            <div class="form-check mt-3">
-              <label class="form-check-label">
-                <input type="checkbox" class="form-check-input" formControlName="remember" />
-                <span translate>Remember me</span>
-              </label>
+            <div class="form-check mt-3 justify-content-between d-flex">
+              <div>
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input" formControlName="remember" />
+                  <span translate>Remember me</span>
+                </label>
+              </div>
+              <div>
+                <a class="text-primary" routerLink="/forgotPassword">Forgot password?</a>
+              </div>
             </div>
           </div>
           <button class="btn btn-primary btn-lg w-100 mb-1" type="submit" [disabled]="accountForm.invalid || isLoading">
             <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
-            <i class="fas fa-lock" [hidden]="isLoading"></i>
             <span translate>Login</span>
           </button>
           <p class="agree-tos">
@@ -79,13 +83,13 @@
             </a> -->
         </form>
       </div>
-      <div class="" id="createAccount" *ngIf="containerView.signUp">
+      <div id="createAccount" *ngIf="containerView.signUp">
         <h3 class="mb-2">Sign up</h3>
         <div class="sub-title pb-2">
           Already have an account? <a class="text-primary" routerLink="/login">Log in</a>
         </div>
         <form (ngSubmit)="createAccount()" [formGroup]="accountForm" novalidate>
-          <div class="mt-3 alert alert-danger" [hidden]="!createAccountError" translate>
+          <div class="mt-3 alert alert-danger small" [hidden]="!createAccountError" translate>
             {{ createAccountError }}
           </div>
           <div class="mt-3 form-group">
@@ -155,7 +159,6 @@
           </div>
           <button class="btn btn-primary btn-lg w-100 mb-1" type="submit" [disabled]="accountForm.invalid || isLoading">
             <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
-            <i class="fas fa-lock" [hidden]="isLoading"></i>
             <span translate>Create account</span>
           </button>
           <p class="agree-tos">
@@ -165,11 +168,11 @@
           </p>
         </form>
       </div>
-      <div class="" id="forgotPassword" *ngIf="containerView.forgotPassword">
+      <div id="forgotPassword" *ngIf="containerView.forgotPassword">
         <h3 class="mb-2">Forgot password</h3>
         <div class="sub-title pb-2">Already have an account? <a class="text-primary" routerLink="/login">Login</a></div>
         <form class="mt-3" (ngSubmit)="forgotPassword()" [formGroup]="accountForm" novalidate>
-          <div class="alert alert-danger" [hidden]="!forgotError || isLoading">
+          <div class="alert alert-danger small" [hidden]="!forgotError || isLoading">
             Email is incorrect or does not exist in our system.
           </div>
           <div class="form-group">
@@ -180,6 +183,7 @@
                 formControlName="email"
                 autocomplete="email"
                 [placeholder]="'Email' | translate"
+                required
               />
               <span hidden translate>Email</span>
               <small
@@ -193,7 +197,83 @@
           </div>
           <button class="btn btn-primary btn-lg w-100 mb-1" type="submit" [disabled]="accountForm.invalid || isLoading">
             <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
-            <span translate>Forgot Password</span>
+            <span translate>Next</span>
+          </button>
+          <p class="agree-tos">
+            By clicking Sign In, you agree to our
+            <a href="https://www.liste.ai/terms.html" target="_blank">Terms</a> and have read and acknowledge our
+            <a href="https://www.liste.ai/privacy.html" target="_blank">US Privacy Statement</a>.
+          </p>
+        </form>
+      </div>
+      <div id="resetPassword" *ngIf="containerView.resetPassword">
+        <h3 class="mb-2">Reset password</h3>
+        <div class="sub-title pb-2">Back to <a class="text-primary" routerLink="/login">Login</a>?</div>
+        <form class="mt-3" (ngSubmit)="resetPassword()" [formGroup]="accountForm" novalidate>
+          <div class="alert alert-danger small" [hidden]="!resetError || isLoading">
+            {{ resetError }}
+          </div>
+          <div class="alert alert-success small" *ngIf="resetPasswordInfo">
+            We sent you an activation code to your email address.
+          </div>
+          <div class="form-group">
+            <label class="d-block">
+              <input
+                id="code"
+                type="text"
+                class="form-control"
+                formControlName="code"
+                placeholder="Code"
+                autocomplete="off"
+                required
+              />
+              <small
+                [hidden]="accountForm.controls.code.valid || accountForm.controls.code.untouched"
+                class="text-danger"
+                translate
+              >
+                Code is required
+              </small>
+            </label>
+            <label class="d-block">
+              <input
+                id="passwordFiled"
+                type="password"
+                class="form-control"
+                formControlName="password"
+                placeholder="Password"
+                autocomplete="off"
+                required
+              />
+              <small
+                [hidden]="accountForm.controls.password.valid || accountForm.controls.password.untouched"
+                class="text-danger"
+                translate
+              >
+                Be at least 8 characters long
+              </small>
+            </label>
+            <label class="d-block">
+              <input
+                type="Password"
+                class="form-control"
+                formControlName="confirm"
+                placeholder="confirmPassword"
+                required
+              />
+              <small
+                [hidden]="accountForm.controls.confirm.valid || accountForm.controls.confirm.untouched"
+                class="text-danger"
+                *ngIf="!accountForm.hasError('notSame')"
+              >
+                Passwords are not matching
+              </small>
+              <small class="text-danger" *ngIf="accountForm.hasError('notSame')">Passwords are not matching</small>
+            </label>
+          </div>
+          <button class="btn btn-primary btn-lg w-100 mb-1" type="submit" [disabled]="accountForm.invalid || isLoading">
+            <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
+            <span translate>Reset Password </span>
           </button>
           <p class="agree-tos">
             By clicking Sign In, you agree to our

@@ -12,7 +12,8 @@ const routes = {
   userDetails: () => `/user/details`,
   getFavorites: () => `/favorites`,
   getConfigValue: (key: string) => `/config/key_str/${key}`,
-  forgotPassword: () => `/forgotPassword`,
+  forgotPassword: () => `/forgot`,
+  resetPassword: (code: string) => `/reset/${code}`,
 };
 
 export interface LoginContext {
@@ -30,6 +31,12 @@ export interface CreateAccountContext {
   password: string;
   phone: string;
   displayName: string;
+}
+
+export interface ResetPasswordContext {
+  code: string;
+  password: string;
+  confirm: string;
 }
 
 /**
@@ -109,8 +116,37 @@ export class AuthenticationService {
         }),
         catchError((err) => {
           // console.log(`err: ${JSON.stringify(err)}`);
-          // return throwError(err);
-          return of(true);
+          return throwError(err);
+        })
+      );
+  }
+
+  /**
+   * resetPassword for the user
+   * @param context The login parameters.
+   * @return The user credentials.
+   */
+  resetPassword(context: ResetPasswordContext): Observable<Credentials | any> {
+    // Replace by proper authentication call
+    let data = {
+      password: context.password,
+      confirm: context.confirm,
+    };
+    let headers = {
+      contentType: 'application/json',
+    };
+    return this.httpClient
+      .post(routes.resetPassword(context.code), data, {
+        headers: headers,
+      })
+      .pipe(
+        map((body: any) => {
+          console.log(`In authentication.service.resetPassword body: ${JSON.stringify(body)}`);
+          return of(body);
+        }),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
         })
       );
   }
