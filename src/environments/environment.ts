@@ -19,6 +19,7 @@ export const environment = {
   supportedLanguages: ['en-US', 'fr-FR'],
 };
 // serverUrl: 'https://dataliste.com',
+// serverUrl: 'http://localhost:8080',
 
 /*
  * For easier debugging in development mode, you can import the following file

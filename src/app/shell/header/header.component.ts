@@ -82,6 +82,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/allUserListAdmin'], { replaceUrl: true });
   }
 
+  displayTopStocksFromPast() {
+    this.router.navigate(['/recommendedStockListAdmin'], { replaceUrl: true });
+  }
+
   logout() {
     this.authenticationService.logout().subscribe(() => this.router.navigate(['/login'], { replaceUrl: true }));
   }

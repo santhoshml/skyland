@@ -1,0 +1,39 @@
+<div class="container-fluid" *ngIf="topStocksList$ | async as topStocksList">
+  <div class="w-100 row m-0">
+    <div class="col-md-8 col-12 p-0 d-flex align-items-center">
+      <strong *ngIf="tableData" class="pb-2">Total Users Count: {{ tableData.length }}</strong>
+    </div>
+    <div class="align-items-center col-md-4 col-12 p-0 d-flex justify-content-end">
+      <app-table-filter
+        class="w-100"
+        [data]="topStocksList"
+        (tableData)="tableValue($event)"
+        [searchFields]="['symbol', 'date']"
+      ></app-table-filter>
+    </div>
+  </div>
+  <div class="table-container border">
+    <table class="mt-20 table table-striped table-hover table-bordered">
+      <thead>
+        <tr>
+          <th style="width: 300px" scope="col" sortable="email" (sort)="onSort($event)">Symbol</th>
+          <th style="width: 200px" scope="col" sortable="phone" (sort)="onSort($event)">Highlighted Date</th>
+          <th style="width: 200px" scope="col" sortable="name" (sort)="onSort($event)">Price (Buy Price)</th>
+          <th style="width: 200px" scope="col" sortable="name" (sort)="onSort($event)">Current Price</th>
+          <th style="width: 150px" scope="col" sortable="expertise" (sort)="onSort($event)">ROI</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of tableData" class="table-row">
+          <td>
+            <a href="/symbolDetails/{{ row.symbol }}">{{ row.symbol }}</a>
+          </td>
+          <td>{{ row.date | date }}</td>
+          <td>{{ row.price | currency }}</td>
+          <td>{{ row.curr_price | currency }}</td>
+          <td>{{ row.roi / 100 | percent: '1.0-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

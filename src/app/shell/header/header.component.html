@@ -70,6 +70,14 @@
             >
               Admin - All User List
             </button>
+            <button
+              class="dropdown-item"
+              *ngIf="userProfile.user.profile.acct_type === 'ADMIN'"
+              (click)="displayTopStocksFromPast()"
+              translate
+            >
+              Admin - Top Stocks History
+            </button>
             <button class="dropdown-item" (click)="logout()" translate>Logout</button>
           </div>
         </div>
