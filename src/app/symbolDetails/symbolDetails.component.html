@@ -38,6 +38,69 @@
     </button>
   </div>
 
+  <div class="col-md-12 col-sm-12 mb-4" *ngIf="symbolIndustryDetailsResp$ | async as symbolIndustryDetailsResp">
+    <div class="card border-0 shadow-lg h-100 p-4">
+      <div class="card-body">
+        <div class="card-title card-header mb-4">
+          <span class="float-left h4"> {{ activeSymbol }} Industry </span>
+          <span class="float-right">
+            Today's change :
+            <span class="font-weight-bold">{{ symbolIndustryDetailsResp.change / 100 | percent: '1.0-2' }}</span>
+          </span>
+        </div>
+        <div class="card-text">
+          <div class="row">
+            <div class="col-6">
+              Name :
+              <a href="/subSectorDetails/{{ symbolIndustryDetailsResp.industryId }}">{{
+                symbolIndustryDetailsResp.industry
+              }}</a>
+            </div>
+            <div class="col-2">Rank : {{ symbolIndustryDetailsResp.industryRank }} / 144</div>
+            <div class="col-4">
+              <div *ngFor="let industryBadge of symbolIndustryDetailsResp.industryBadgeList">
+                <span class="badge badge-pill my-1 badge-info info-badge pill-wrap">{{ industryBadge }}</span>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm">
+              1-Week change
+              <br />
+              <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_week / 100 | percent: '1.0-2' }}</span>
+            </div>
+            <div class="col-sm">
+              1-Month change
+              <br />
+              <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_month / 100 | percent: '1.0-2' }}</span>
+            </div>
+            <div class="col-sm">
+              1-Quater change
+              <br />
+              <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_quart / 100 | percent: '1.0-2' }}</span>
+            </div>
+            <div class="col-sm">
+              6-Month change
+              <br />
+              <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_half / 100 | percent: '1.0-2' }}</span>
+            </div>
+            <div class="col-sm">
+              1-Year change
+              <br />
+              <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_year / 100 | percent: '1.0-2' }}</span>
+            </div>
+            <div class="col-sm">
+              YTD change
+              <br />
+              <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_ytd / 100 | percent: '1.0-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a

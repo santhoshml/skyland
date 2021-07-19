@@ -75,6 +75,7 @@ export interface TagCategories {
 export class SymbolDetailsComponent implements OnInit {
   version: string | null = environment.version;
   isLoading = false;
+  symbolIndustryDetailsResp$: Observable<any>;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
   sentimentResp$: Observable<SentimentResp | string>;
   analystReccomendationResp$: Observable<AnalystRatingRecord[] | string>;
@@ -302,6 +303,8 @@ export class SymbolDetailsComponent implements OnInit {
     this.userModelTags = this.credentialsService.userProfileModel
       ? this.credentialsService.userProfileModel.selected_params
       : [];
+
+    this.symbolIndustryDetailsResp$ = this.symbolDetailsService.getSymbolIndustryDetails(this.activeSymbol);
   }
 
   getAnalystReccomendationValue(name: string) {

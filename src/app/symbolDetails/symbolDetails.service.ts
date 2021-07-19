@@ -21,6 +21,7 @@ const routes = {
   analystReccomendations: (symbol: string) => `/analystReccomendation/symbol/${symbol}`,
   sentimentData: (symbol: string) => `/sentiment/symbol/${symbol}`,
   exchangeData: (symbol: string) => `/exchange/symbol/${symbol}`,
+  symbolIndustryDetails: (symbol: string) => `/stocks/symbol/${symbol}/industryStats`,
 };
 
 @Injectable({
@@ -28,6 +29,13 @@ const routes = {
 })
 export class SymbolDetailsService {
   constructor(private httpClient: HttpClient, private credentialsService: CredentialsService) {}
+
+  getSymbolIndustryDetails(symbol: string): Observable<any> {
+    return this.httpClient.get(routes.symbolIndustryDetails(symbol)).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not GET exchange details :-('))
+    );
+  }
 
   getExchangeData(symbol: string): Observable<ExchangeResp | string> {
     return this.httpClient.get(routes.exchangeData(symbol)).pipe(
