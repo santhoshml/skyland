@@ -1,14 +1,12 @@
 <div class="container-fluid" *ngIf="topStocksList$ | async as topStocksList">
   <div class="w-100 row m-0">
-    <div class="col-md-8 col-12 p-0 d-flex align-items-center">
-      <strong *ngIf="tableData" class="pb-2">Total Users Count: {{ tableData.length }}</strong>
-    </div>
+    <div class="col-md-8 col-12 p-0 d-flex align-items-center"></div>
     <div class="align-items-center col-md-4 col-12 p-0 d-flex justify-content-end">
       <app-table-filter
         class="w-100"
         [data]="topStocksList"
         (tableData)="tableValue($event)"
-        [searchFields]="['symbol', 'date']"
+        [searchFields]="['symbol', 'date', 'price', 'curr_price', 'roi']"
       ></app-table-filter>
     </div>
   </div>
@@ -16,11 +14,11 @@
     <table class="mt-20 table table-striped table-hover table-bordered">
       <thead>
         <tr>
-          <th style="width: 300px" scope="col" sortable="email" (sort)="onSort($event)">Symbol</th>
-          <th style="width: 200px" scope="col" sortable="phone" (sort)="onSort($event)">Highlighted Date</th>
-          <th style="width: 200px" scope="col" sortable="name" (sort)="onSort($event)">Price (Buy Price)</th>
-          <th style="width: 200px" scope="col" sortable="name" (sort)="onSort($event)">Current Price</th>
-          <th style="width: 150px" scope="col" sortable="expertise" (sort)="onSort($event)">ROI</th>
+          <th style="width: 300px" scope="col" sortable="symbol" (sort)="onSort($event)">Symbol</th>
+          <th style="width: 200px" scope="col" sortable="date" (sort)="onSort($event)">Highlighted Date</th>
+          <th style="width: 200px" scope="col" sortable="price" (sort)="onSort($event)">Price (Buy Price)</th>
+          <th style="width: 200px" scope="col" sortable="curr_price" (sort)="onSort($event)">Current Price</th>
+          <th style="width: 150px" scope="col" sortable="roi" (sort)="onSort($event)">ROI</th>
         </tr>
       </thead>
       <tbody>

@@ -22,7 +22,17 @@ const routes = {
   sentimentData: (symbol: string) => `/sentiment/symbol/${symbol}`,
   exchangeData: (symbol: string) => `/exchange/symbol/${symbol}`,
   symbolIndustryDetails: (symbol: string) => `/stocks/symbol/${symbol}/industryStats`,
+  trendingDetails: (symbol: string) => `/trend/details/symbol/${symbol}`,
 };
+
+export interface ITrendingDetails {
+  monthlyTrendline: string;
+  quaterlyTrendline: string;
+  todaysPriceBehaviour: string;
+  trendIndicators: string;
+  trendStrength: string;
+  yearlyTrendline: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -55,6 +65,13 @@ export class SymbolDetailsService {
     return this.httpClient.get(routes.analystReccomendations(symbol)).pipe(
       map((body: AnalystReccomendationResp) => body),
       catchError(() => of('Error, could not GET sentiment details :-('))
+    );
+  }
+
+  getTrendingDetails(symbol: string): Observable<ITrendingDetails | string> {
+    return this.httpClient.get(routes.trendingDetails(symbol)).pipe(
+      map((body: ITrendingDetails) => body),
+      catchError(() => of('Error, could not GET tag details :-('))
     );
   }
 
