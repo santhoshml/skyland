@@ -1,15 +1,13 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
-import { SymbolDetailsService } from './symbolDetails.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ITrendingDetails, SymbolDetailsService } from './symbolDetails.service';
 
 declare const TradingView: any;
 
@@ -73,9 +71,11 @@ export interface TagCategories {
   styleUrls: ['./symbolDetails.component.scss'],
 })
 export class SymbolDetailsComponent implements OnInit {
+  @ViewChild('iframe') iframe: ElementRef;
   version: string | null = environment.version;
   isLoading = false;
   symbolIndustryDetailsResp$: Observable<any>;
+  trendingDetails$: Observable<ITrendingDetails>;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
   sentimentResp$: Observable<SentimentResp | string>;
   analystReccomendationResp$: Observable<AnalystRatingRecord[] | string>;
@@ -194,6 +194,20 @@ export class SymbolDetailsComponent implements OnInit {
     this.sub = this.route.params.subscribe((params) => {
       this.activeSymbol = params['symbol'].toUpperCase();
       this.completeSymbol = this.activeSymbol;
+
+      this.trendingDetails$ = this.symbolDetailsService.getTrendingDetails(this.activeSymbol).pipe(
+        map((body: ITrendingDetails) => {
+          this.googleAnalyticsService.eventEmitter(
+            'trendingDetails-init',
+            'trendingDetails',
+            'init',
+            'getTrendingDetails',
+            1,
+            this.credentialsService.credentials.email
+          );
+          return body;
+        })
+      );
 
       //get exchange data
       this.symbolDetailsService.getExchangeData(this.activeSymbol).subscribe((data) => {
