@@ -43,20 +43,64 @@
     <div class="card border-0 shadow-lg h-100 px-4 pt-4 pb-1">
       <div class="row">
         <div class="col-md-4 col-sm-6 col-12 mb-3">
-          <div>Monthly Trendline</div>
+          <div>Monthly Trend</div>
           <span class="font-weight-bold">{{ trendingDetails.monthlyTrendline }}</span>
+          <span *ngIf="trendingDetails.monthlyTrendline">
+            <span *ngIf="trendingDetails.monthlyTrendline.toLowerCase() === 'uptrend'"
+              ><i class="fas fa-arrow-up"></i
+            ></span>
+            <span *ngIf="trendingDetails.monthlyTrendline.toLowerCase() === 'downtrend'"
+              ><i class="fas fa-arrow-down"></i
+            ></span>
+            <span *ngIf="trendingDetails.monthlyTrendline.toLowerCase() === 'sideways trend'"
+              ><i class="fas fa-arrow-right"></i
+            ></span>
+          </span>
         </div>
         <div class="col-md-4 col-sm-6 col-12 mb-3">
-          <div>Quarterly Trendline</div>
+          <div>Quarterly Trend</div>
           <span class="font-weight-bold">{{ trendingDetails.quaterlyTrendline }}</span>
+          <span *ngIf="trendingDetails.quaterlyTrendline">
+            <span *ngIf="trendingDetails.quaterlyTrendline.toLowerCase() === 'uptrend'"
+              ><i class="fas fa-arrow-up"></i
+            ></span>
+            <span *ngIf="trendingDetails.quaterlyTrendline.toLowerCase() === 'downtrend'"
+              ><i class="fas fa-arrow-down"></i
+            ></span>
+            <span *ngIf="trendingDetails.quaterlyTrendline.toLowerCase() === 'sideways trend'"
+              ><i class="fas fa-arrow-right"></i
+            ></span>
+          </span>
         </div>
         <div class="col-md-4 col-sm-6 col-12 mb-3">
-          <div>Yearly Trendline</div>
+          <div>Yearly Trend</div>
           <span class="font-weight-bold">{{ trendingDetails.yearlyTrendline }}</span>
+          <span *ngIf="trendingDetails.yearlyTrendline">
+            <span *ngIf="trendingDetails.yearlyTrendline.toLowerCase() === 'uptrend'"
+              ><i class="fas fa-arrow-up"></i
+            ></span>
+            <span *ngIf="trendingDetails.yearlyTrendline.toLowerCase() === 'downtrend'"
+              ><i class="fas fa-arrow-down"></i
+            ></span>
+            <span *ngIf="trendingDetails.yearlyTrendline.toLowerCase() === 'sideways trend'"
+              ><i class="fas fa-arrow-right"></i
+            ></span>
+          </span>
         </div>
         <div class="col-md-4 col-sm-6 col-12 mb-3">
-          <div>Todays Price Behavior</div>
+          <div>Today's Price Behavior</div>
           <span class="font-weight-bold">{{ trendingDetails.todaysPriceBehaviour }}</span>
+          <span *ngIf="trendingDetails.todaysPriceBehaviour">
+            <span *ngIf="trendingDetails.todaysPriceBehaviour.toLowerCase() === 'uptrend'"
+              ><i class="fas fa-arrow-up"></i
+            ></span>
+            <span *ngIf="trendingDetails.todaysPriceBehaviour.toLowerCase() === 'downtrend'"
+              ><i class="fas fa-arrow-down"></i
+            ></span>
+            <span *ngIf="trendingDetails.todaysPriceBehaviour.toLowerCase() === 'neutral'"
+              ><i class="fas fa-arrow-right"></i
+            ></span>
+          </span>
         </div>
         <div class="col-md-4 col-sm-6 col-12 mb-3">
           <div>Trend Strength</div>
@@ -65,6 +109,17 @@
         <div class="col-md-4 col-sm-6 col-12 mb-3">
           <div>Trend Indicators</div>
           <span class="font-weight-bold">{{ trendingDetails.trendIndicators }}</span>
+          <span *ngIf="trendingDetails.trendIndicators">
+            <span *ngIf="trendingDetails.trendIndicators.toLowerCase() === 'bullish'"
+              ><i class="fas fa-arrow-up"></i
+            ></span>
+            <span *ngIf="trendingDetails.trendIndicators.toLowerCase() === 'bearish'"
+              ><i class="fas fa-arrow-down"></i
+            ></span>
+            <span *ngIf="trendingDetails.trendIndicators.toLowerCase() === 'neutral'"
+              ><i class="fas fa-arrow-right"></i
+            ></span>
+          </span>
         </div>
       </div>
     </div>
@@ -87,7 +142,8 @@
         <div class="col-12 col-md-6 col-lg-6 text-md-right text-left">
           <div *ngIf="symbolIndustryDetailsResp.change">
             <div class="mb-2">
-              Today's change : <span class="font-weight-bold">{{ symbolIndustryDetailsResp.change }}</span>
+              Today's change :
+              <span class="font-weight-bold">{{ symbolIndustryDetailsResp.change / 100 | percent: '1.0-2' }}</span>
               <!-- <span class="font-weight-bold">{{ symbolIndustryDetailsResp.change / 100 | percent: '1.0-2' }}</span> -->
             </div>
           </div>
@@ -103,57 +159,32 @@
       <div class="row">
         <div class="col-lg-2 col-md-4 col-sm-4 col-6 mb-lg-0 mb-2">
           <div>1-Week change</div>
-          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_week }}</span>
-          <!-- / 100 | percent: '1.0-2' -->
+          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_week / 100 | percent: '1.0-2' }}</span>
         </div>
         <div class="col-lg-2 col-md-4 col-sm-4 col-6 mb-lg-0 mb-2">
           <div>1-Month change</div>
-          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_month }}</span>
+          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_month / 100 | percent: '1.0-2' }}</span>
         </div>
         <div class="col-lg-2 col-md-4 col-sm-4 col-6 mb-lg-0 mb-2">
           <div>1-Quater change</div>
-          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_quart }}</span>
+          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_quart / 100 | percent: '1.0-2' }}</span>
         </div>
         <div class="col-lg-2 col-md-4 col-sm-4 col-6 mb-lg-0 mb-2">
           <div>6-Month change</div>
-          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_half }}</span>
+          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_half / 100 | percent: '1.0-2' }}</span>
         </div>
         <div class="col-lg-2 col-md-4 col-sm-4 col-6 mb-lg-0 mb-2">
           <div>1-Year change</div>
-          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_year }}</span>
+          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_year / 100 | percent: '1.0-2' }}</span>
         </div>
         <div class="col-lg-2 col-md-4 col-sm-4 col-6 mb-lg-0 mb-2">
           <div>YTD change</div>
-          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_ytd }}</span>
+          <span class="font-weight-bold">{{ symbolIndustryDetailsResp.perf_ytd / 100 | percent: '1.0-2' }}</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- <nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <a
-        class="nav-item nav-link active"
-        id="nav-analysis-tab"
-        data-toggle="tab"
-        href="#nav-analysis"
-        role="tab"
-        aria-controls="nav-analysis"
-        aria-selected="true"
-        >Analysis</a
-      >
-      <a
-        [ngClass]="enableStockFeatures ? 'nav-item nav-link' : 'nav-item nav-link disabled'"
-        id="nav-features-tab"
-        data-toggle="tab"
-        href="#nav-features"
-        role="tab"
-        aria-controls="nav-features"
-        aria-selected="false"
-        >Stock Features</a
-      >
-    </div>
-  </nav> -->
   <div class="tab-content">
     <div class="tab-pane fade show active" id="nav-analysis" role="tabpanel" aria-labelledby="nav-analysis-tab">
       <div class="row">
