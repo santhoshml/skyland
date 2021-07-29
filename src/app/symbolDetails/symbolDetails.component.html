@@ -46,11 +46,11 @@
           <span>Today's Price Behavior - </span>
           <span class="font-weight-bold">{{ trendingDetails.todaysPriceBehaviour }}</span>
           <span *ngIf="trendingDetails.todaysPriceBehaviour">
-            <span *ngIf="trendingDetails.todaysPriceBehaviour.toLowerCase() === 'uptrend'">
+            <span *ngIf="trendingDetails.todaysPriceBehaviour.toLowerCase() === 'bullish'">
               <!-- <i class="fas fa-arrow-up"></i> -->
               <img src="assets/bullish-trend-icon.png" style="height: 40px; width: 40px" alt="Bullish" />
             </span>
-            <span *ngIf="trendingDetails.todaysPriceBehaviour.toLowerCase() === 'downtrend'">
+            <span *ngIf="trendingDetails.todaysPriceBehaviour.toLowerCase() === 'bearish'">
               <!-- <i class="fas fa-arrow-down"></i> -->
               <img src="assets/bearish-trend-icon.png" style="height: 40px; width: 40px" alt="Bearish" />
             </span>
