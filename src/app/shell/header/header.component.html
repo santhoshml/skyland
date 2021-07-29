@@ -37,8 +37,8 @@
             [searchKeyword]="keyword"
             (selected)="selectEvent($event)"
             (inputChanged)="onChangeSearch($event)"
-            (inputFocused)="onFocused($event)"
             [itemTemplate]="itemTemplate"
+            (inputCleared)="clearFilter($event)"
             debounceTime="600"
             [notFoundTemplate]="notFoundTemplate"
           >

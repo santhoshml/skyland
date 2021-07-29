@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { AuthenticationService, CredentialsService } from '@app/auth';
 import { map, catchError } from 'rxjs/operators';
@@ -147,28 +147,29 @@ export class HeaderComponent implements OnInit {
   onChangeSearch(val: string) {
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.
-    console.log(`In onChangeSearch, ${JSON.stringify(val)}`);
-    let filteredList = [];
     if (!val || val.length === 0 || !this.allSymbolData) {
       return [];
     } else {
-      console.log(`this.allSymbolData length : ${this.allSymbolData.length}`);
+      let filteredList = [];
+      let filteredSymbol = [];
       let str = val.toLowerCase();
-      console.log(`ste:${str}`);
       for (let ele of this.allSymbolData) {
-        if (ele.name.toLowerCase().includes(str)) {
+        const symbol = ele.id.toLowerCase();
+        const name = ele.name.toLowerCase().split(symbol)[1];
+        if (symbol === str) {
+          filteredSymbol.push(ele);
+        } else if (name.includes(str)) {
           filteredList.push(ele);
         }
-        if (filteredList.length >= 15) {
-          this.data = filteredList;
+        if (filteredSymbol.length + filteredList.length > 10) {
+          break;
         }
       }
-      this.data = filteredList;
+      this.data = [...filteredSymbol, ...filteredList];
     }
   }
 
-  onFocused(e) {
-    // do something when input is focused
-    console.log(`In onFocused, ${JSON.stringify(e)}`);
+  clearFilter(e) {
+    this.data = this.allSymbolData.slice(0, 15);
   }
 }
