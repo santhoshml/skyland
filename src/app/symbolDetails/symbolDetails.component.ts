@@ -311,14 +311,14 @@ export class SymbolDetailsComponent implements OnInit {
         'embed-widget-technical-analysis',
         technicalsInfoWIdget
       );
+
+      this.symbolIndustryDetailsResp$ = this.symbolDetailsService.getSymbolIndustryDetails(this.activeSymbol);
     });
 
     // load tags from userModelProfile
     this.userModelTags = this.credentialsService.userProfileModel
       ? this.credentialsService.userProfileModel.selected_params
       : [];
-
-    this.symbolIndustryDetailsResp$ = this.symbolDetailsService.getSymbolIndustryDetails(this.activeSymbol);
   }
 
   getAnalystReccomendationValue(name: string) {
