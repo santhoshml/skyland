@@ -177,6 +177,7 @@
                       <i class="fas fa-arrow-right"></i>
                       <span class="trend">Neutral</span>
                     </div>
+                    <app-view-trend-details [symbol]="topStock.symbol"></app-view-trend-details>
                   </td>
                   <td class="text-right price">
                     {{ topStock.price | currency }}
@@ -329,6 +330,7 @@
                       <i class="fas fa-arrow-right"></i>
                       <span class="trend">Neutral</span>
                     </div>
+                    <app-view-trend-details [symbol]="favorite.symbol"></app-view-trend-details>
                   </td>
                   <td class="text-right price">
                     {{ favorite.close | currency }}
@@ -615,6 +617,7 @@
                           />
                           <div class="small">Sell Date(mm/dd/yyyy)</div>
                         </div>
+                        <app-view-trend-details [symbol]="txn.symbol"></app-view-trend-details>
                       </td>
                       <td class="text-right price">
                         <div>

@@ -87,6 +87,7 @@
                 <i class="fas fa-arrow-right"></i>
                 <span class="trend">Neutral</span>
               </div>
+              <app-view-trend-details [symbol]="listRow.symbol"></app-view-trend-details>
             </td>
             <td class="text-right price">
               {{ listRow.price | currency }}

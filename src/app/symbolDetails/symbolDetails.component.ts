@@ -132,11 +132,11 @@ export class SymbolDetailsComponent implements OnInit {
   public options = {
     hasNeedle: true,
     needleColor: 'gray',
-    needleUpdateSpeed: 1000,
-    arcColors: ['rgb(255,99,71)', 'rgb(123,104,238)'],
-    arcDelimiters: [50],
+    needleUpdateSpeed: 2000,
+    arcColors: ['rgb(255,0,0)', 'rgb(41,98,255)'],
     rangeLabel: ['Bearish', 'Bullish'],
     needleStartValue: 50,
+    arcDelimiters: [10],
   };
 
   constructor(
@@ -254,6 +254,9 @@ export class SymbolDetailsComponent implements OnInit {
 
       // getSentiment data
       this.sentimentResp$ = this.symbolDetailsService.getSentimentData(this.activeSymbol);
+      this.sentimentResp$.subscribe((data: any) => {
+        this.options = { ...this.options, arcDelimiters: [data.negative * 100] };
+      });
 
       // AnalystReccomendation data
       this.analystReccomendationResp$ = this.symbolDetailsService.getAnalystReccomendationData(this.activeSymbol).pipe(

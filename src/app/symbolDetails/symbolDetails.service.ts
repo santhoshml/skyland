@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, Subject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import {
   SymbolDetailsResp,
@@ -38,6 +38,8 @@ export interface ITrendingDetails {
   providedIn: 'root',
 })
 export class SymbolDetailsService {
+  activeSymbol = new Subject<string>();
+
   constructor(private httpClient: HttpClient, private credentialsService: CredentialsService) {}
 
   getSymbolIndustryDetails(symbol: string): Observable<any> {

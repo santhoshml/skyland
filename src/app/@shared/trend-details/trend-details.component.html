@@ -1,0 +1,138 @@
+<ng-template #popupContent let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">{{ activeSymbol }}'s trend details</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-0">
+    <div class="border-bottom mb-3 p-3 pb-4">
+      <table class="table-striped w-100">
+        <tr>
+          <td>
+            <div>Today's Price Behavior :</div>
+          </td>
+          <td class="px-2">
+            <strong>{{ trendResult.todaysPriceBehaviour }}</strong>
+          </td>
+          <td>
+            <span *ngIf="trendResult.todaysPriceBehaviour">
+              <span *ngIf="trendResult.todaysPriceBehaviour.toLowerCase() === 'bullish'">
+                <img src="assets/bullish-trend-icon.png" class="icon" alt="Bullish" />
+              </span>
+              <span *ngIf="trendResult.todaysPriceBehaviour.toLowerCase() === 'bearish'">
+                <img src="assets/bearish-trend-icon.png" class="icon" alt="Bearish" />
+              </span>
+              <span *ngIf="trendResult.todaysPriceBehaviour.toLowerCase() === 'neutral'">
+                <img src="assets/neutral-trend-icon.png" class="icon" alt="Neutral" />
+              </span>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div>Trend Indicators :</div>
+          </td>
+          <td class="px-2">
+            <strong>{{ trendResult.trendIndicators }}</strong>
+          </td>
+          <td>
+            <span *ngIf="trendResult.trendIndicators">
+              <span *ngIf="trendResult.trendIndicators.toLowerCase() === 'bullish'">
+                <img src="assets/bullish-trend-icon.png" class="icon" alt="Bullish" />
+              </span>
+              <span *ngIf="trendResult.trendIndicators.toLowerCase() === 'bearish'">
+                <img src="assets/bearish-trend-icon.png" class="icon" alt="Bearish" />
+              </span>
+              <span *ngIf="trendResult.trendIndicators.toLowerCase() === 'neutral'">
+                <img src="assets/neutral-trend-icon.png" class="icon" alt="Neutral" />
+              </span>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div>Good to start new position? :</div>
+          </td>
+          <td class="px-2">
+            <strong>{{ trendResult.startNewPositionCandle === 0 ? 'No' : 'Yes' }}</strong>
+          </td>
+          <td>
+            <span *ngIf="trendResult.startNewPositionCandle === 0">
+              <img src="assets/no-entry.png" class="icon" alt="Caution before starting a new position" />
+            </span>
+            <span *ngIf="trendResult.startNewPositionCandle === 1">
+              <img src="assets/check-mark.png" class="icon" alt="Good to start new position" />
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="border-bottom pb-3 px-3">
+      Trend Strength - <span class="font-weight-bold">{{ trendResult.trendStrength }}</span>
+    </div>
+    <div class="p-3">
+      <table class="w-100">
+        <tr>
+          <td>
+            <div>Monthly Trend Line:</div>
+          </td>
+          <td class="px-2">
+            <strong>{{ trendResult.monthlyTrendline }}</strong>
+          </td>
+          <td>
+            <span *ngIf="trendResult.monthlyTrendline">
+              <span *ngIf="trendResult.monthlyTrendline.toLowerCase() === 'uptrend'">
+                <img src="assets/bullish-trend-icon.png" class="icon" alt="Bullish" />
+              </span>
+              <span *ngIf="trendResult.monthlyTrendline.toLowerCase() === 'downtrend'">
+                <img src="assets/bearish-trend-icon.png" class="icon" alt="Bearish" />
+              </span>
+              <span *ngIf="trendResult.monthlyTrendline.toLowerCase() === 'sideways trend'">
+                <img src="assets/neutral-trend-icon.png" class="icon" alt="Neutral" />
+              </span>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><div>Quarterly Trend Line:</div></td>
+          <td class="px-2">
+            <strong>{{ trendResult.quaterlyTrendline }}</strong>
+          </td>
+          <td>
+            <span *ngIf="trendResult.quaterlyTrendline">
+              <span *ngIf="trendResult.quaterlyTrendline.toLowerCase() === 'uptrend'">
+                <img src="assets/bullish-trend-icon.png" class="icon" alt="Bullish" />
+              </span>
+              <span *ngIf="trendResult.quaterlyTrendline.toLowerCase() === 'downtrend'">
+                <img src="assets/bearish-trend-icon.png" class="icon" alt="Bearish" />
+              </span>
+              <span *ngIf="trendResult.quaterlyTrendline.toLowerCase() === 'sideways trend'">
+                <img src="assets/neutral-trend-icon.png" class="icon" alt="Neutral" />
+              </span>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><div>Yearly Trend Line:</div></td>
+          <td class="px-2">
+            <strong>{{ trendResult.yearlyTrendline }}</strong>
+          </td>
+          <td>
+            <span *ngIf="trendResult.yearlyTrendline">
+              <span *ngIf="trendResult.yearlyTrendline.toLowerCase() === 'uptrend'">
+                <img src="assets/bullish-trend-icon.png" class="icon" alt="Bullish" />
+              </span>
+              <span *ngIf="trendResult.yearlyTrendline.toLowerCase() === 'downtrend'">
+                <img src="assets/bearish-trend-icon.png" class="icon" alt="Bearish" />
+              </span>
+              <span *ngIf="trendResult.yearlyTrendline.toLowerCase() === 'sideways trend'">
+                <img src="assets/neutral-trend-icon.png" class="icon" alt="Neutral" />
+              </span>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</ng-template>

@@ -143,6 +143,7 @@
                 <i class="fas fa-arrow-down"></i>
                 Downtrend
               </div>
+              <app-view-trend-details [symbol]="listRow.symbol"></app-view-trend-details>
             </td>
             <td class="text-right price">
               {{ listRow.close | currency }}

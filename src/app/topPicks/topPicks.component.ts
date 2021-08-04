@@ -1,14 +1,13 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { finalize } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
 import { TopPicksService } from './topPicks.service';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { AuthenticationService, CredentialsService, UserProfileModel } from '@app/auth';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AuthenticationService, CredentialsService } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
-import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import pruned from 'pruned';
 

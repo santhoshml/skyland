@@ -10,6 +10,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 import { TopPicksRoutingModule } from './topPicks-routing.module';
 import { TopPicksComponent } from './topPicks.component';
+import { SharedModule } from '@app/@shared';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { TopPicksComponent } from './topPicks.component';
     TruncateModule,
     FileUploadModule,
     AutocompleteLibModule,
+    SharedModule,
   ],
   declarations: [TopPicksComponent],
 })

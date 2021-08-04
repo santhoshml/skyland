@@ -1,13 +1,5 @@
 @import "src/theme/_variables";
 
-.table {
-  table-layout: fixed;
-}
-
-.table-row {
-  cursor: pointer;
-}
-
 .desc-text {
   font-weight: 400;
 }
@@ -89,12 +81,6 @@
   padding-top: 0;
   padding-bottom: 0;
   width: fit-content;
-}
-
-.table > tbody > tr > td {
-  border: 0;
-  padding-top: 3px;
-  padding-bottom: 3px;
 }
 
 .info-badge {
