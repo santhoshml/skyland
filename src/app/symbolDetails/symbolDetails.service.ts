@@ -32,6 +32,7 @@ export interface ITrendingDetails {
   trendIndicators: string;
   trendStrength: string;
   yearlyTrendline: string;
+  startNewPositionCandle: number;
 }
 
 @Injectable({
