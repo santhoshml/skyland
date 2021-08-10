@@ -63,15 +63,15 @@
                   {{ uptrendingStock.companyName | truncate: 40 | uppercase }}
                 </td>
                 <td class="text-left">
-                  <div *ngIf="uptrendingStock.trend === 1">
+                  <div *ngIf="uptrendingStock.trend == 1">
                     <i class="fas fa-arrow-up"></i>
                     <span class="trend">Uptrend</span>
                   </div>
-                  <div *ngIf="uptrendingStock.trend === -1">
+                  <div *ngIf="uptrendingStock.trend == -1">
                     <i class="fas fa-arrow-down"></i>
                     <span class="trend">Downtrend</span>
                   </div>
-                  <div *ngIf="uptrendingStock.trend === 0">
+                  <div *ngIf="uptrendingStock.trend == 0">
                     <i class="fas fa-arrow-right"></i>
                     <span class="trend">Neutral</span>
                   </div>
@@ -79,11 +79,11 @@
                 </td>
                 <td class="text-right price">
                   {{ uptrendingStock.price | currency }}
-                  <div *ngIf="uptrendingStock.bestBuy === 1">
+                  <!-- <div *ngIf="uptrendingStock.bestBuy === 1">
                     <span class="badge badge-pill my-1 badge-primary info-badge"
                       ><i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy</span
                     >
-                  </div>
+                  </div> -->
                 </td>
                 <td class="text-right volume">
                   {{ uptrendingStock.volume | number }}

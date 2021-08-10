@@ -165,15 +165,15 @@
                     {{ topStock.companyName | truncate: 40 | uppercase }}
                   </td>
                   <td class="text-left">
-                    <div *ngIf="topStock.trend === 1">
+                    <div *ngIf="topStock.trend == 1">
                       <i class="fas fa-arrow-up"></i>
                       <span class="trend">Uptrend</span>
                     </div>
-                    <div *ngIf="topStock.trend === -1">
+                    <div *ngIf="topStock.trend == -1">
                       <i class="fas fa-arrow-down"></i>
                       <span class="trend">Downtrend</span>
                     </div>
-                    <div *ngIf="topStock.trend === 0">
+                    <div *ngIf="topStock.trend == 0">
                       <i class="fas fa-arrow-right"></i>
                       <span class="trend">Neutral</span>
                     </div>
@@ -181,11 +181,11 @@
                   </td>
                   <td class="text-right price">
                     {{ topStock.price | currency }}
-                    <div *ngIf="topStock.bestBuy === 1">
+                    <!-- <div *ngIf="topStock.bestBuy === 1">
                       <span class="badge badge-pill my-1 badge-primary info-badge">
                         <i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy
                       </span>
-                    </div>
+                    </div> -->
                   </td>
                   <td class="text-right volume">
                     {{ topStock.volume | number }}
@@ -318,15 +318,15 @@
                     {{ favorite.companyName | truncate: 40 | uppercase }}
                   </td>
                   <td class="text-left trend">
-                    <div *ngIf="favorite.trend === 1">
+                    <div *ngIf="favorite.trend == 1">
                       <i class="fas fa-arrow-up"></i>
                       <span class="trend">Uptrend</span>
                     </div>
-                    <div *ngIf="favorite.trend === -1">
+                    <div *ngIf="favorite.trend == -1">
                       <i class="fas fa-arrow-down"></i>
                       <span class="trend">Downtrend</span>
                     </div>
-                    <div *ngIf="favorite.trend === 0">
+                    <div *ngIf="favorite.trend == 0">
                       <i class="fas fa-arrow-right"></i>
                       <span class="trend">Neutral</span>
                     </div>
@@ -334,11 +334,11 @@
                   </td>
                   <td class="text-right price">
                     {{ favorite.close | currency }}
-                    <div *ngIf="favorite.bestBuy === 1">
+                    <!-- <div *ngIf="favorite.bestBuy === 1">
                       <span class="badge my-1 badge-pill badge-primary info-badge"
                         ><i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy</span
                       >
-                    </div>
+                    </div> -->
                   </td>
                   <td class="text-right volume">
                     {{ favorite.volume | number }}
@@ -592,15 +592,15 @@
                         </span>
                       </td>
                       <td class="text-left trend">
-                        <div *ngIf="txn.trend === 1">
+                        <div *ngIf="txn.trend == 1">
                           <i class="fas fa-arrow-up"></i>
                           Uptrend
                         </div>
-                        <div *ngIf="txn.trend === -1">
+                        <div *ngIf="txn.trend == -1">
                           <i class="fas fa-arrow-down"></i>
                           Downtrend
                         </div>
-                        <div *ngIf="txn.trend === 0">
+                        <div *ngIf="txn.trend == 0">
                           <i class="fas fa-arrow-right"></i>
                           Neutral
                         </div>

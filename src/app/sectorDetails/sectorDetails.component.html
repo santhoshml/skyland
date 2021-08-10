@@ -75,15 +75,15 @@
               {{ listRow.company_name | truncate: 40 | uppercase }}
             </td>
             <td class="text-left">
-              <div *ngIf="listRow.trend === 1">
+              <div *ngIf="listRow.trend == 1">
                 <i class="fas fa-arrow-up"></i>
                 <span class="trend">Uptrend</span>
               </div>
-              <div *ngIf="listRow.trend === -1">
+              <div *ngIf="listRow.trend == -1">
                 <i class="fas fa-arrow-down"></i>
                 <span class="trend">Downtrend</span>
               </div>
-              <div *ngIf="listRow.trend === 0">
+              <div *ngIf="listRow.trend == 0">
                 <i class="fas fa-arrow-right"></i>
                 <span class="trend">Neutral</span>
               </div>
@@ -91,11 +91,11 @@
             </td>
             <td class="text-right price">
               {{ listRow.price | currency }}
-              <div *ngIf="listRow.bestBuy === 1">
+              <!-- <div *ngIf="listRow.bestBuy === 1">
                 <span class="badge badge-pill badge-primary info-badge">
                   <i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy
                 </span>
-              </div>
+              </div> -->
             </td>
             <td class="text-right volume">
               {{ listRow.volume | number }}
