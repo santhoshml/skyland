@@ -75,6 +75,27 @@
       <table class="w-100">
         <tr>
           <td>
+            <div>Daily Trend Line:</div>
+          </td>
+          <td class="px-2">
+            <strong>{{ trendResult.dailyTrendline }}</strong>
+          </td>
+          <td>
+            <span *ngIf="trendResult.dailyTrendline">
+              <span *ngIf="trendResult.dailyTrendline.toLowerCase() === 'uptrend'">
+                <img src="assets/bullish-trend-icon.png" class="icon" alt="Bullish" />
+              </span>
+              <span *ngIf="trendResult.dailyTrendline.toLowerCase() === 'downtrend'">
+                <img src="assets/bearish-trend-icon.png" class="icon" alt="Bearish" />
+              </span>
+              <span *ngIf="trendResult.dailyTrendline.toLowerCase() === 'sideways trend'">
+                <img src="assets/neutral-trend-icon.png" class="icon" alt="Neutral" />
+              </span>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <div>Monthly Trend Line:</div>
           </td>
           <td class="px-2">
