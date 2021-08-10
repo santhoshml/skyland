@@ -88,7 +88,7 @@
               <app-view-trend-details [symbol]="listRow.symbol"></app-view-trend-details>
             </td>
             <td class="text-right price">
-              {{ listRow.close | currency }}
+              {{ listRow.price | currency }}
               <!-- <div *ngIf="listRow.bestBuy === 1">
                 <span class="badge badge-pill badge-primary info-badge">
                   <i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy
