@@ -14,11 +14,12 @@
     <table class="mt-20 table table-striped table-hover table-bordered">
       <thead>
         <tr>
-          <th style="width: 300px" scope="col" sortable="symbol" (sort)="onSort($event)">Symbol</th>
-          <th style="width: 200px" scope="col" sortable="date" (sort)="onSort($event)">Highlighted Date</th>
-          <th style="width: 200px" scope="col" sortable="price" (sort)="onSort($event)">Price (Buy Price)</th>
-          <th style="width: 200px" scope="col" sortable="curr_price" (sort)="onSort($event)">Current Price</th>
-          <th style="width: 150px" scope="col" sortable="roi" (sort)="onSort($event)">ROI</th>
+          <th style="width: 150px" scope="col" sortable="symbol" (sort)="onSort($event)">Symbol</th>
+          <th style="width: 150px" scope="col" sortable="date" (sort)="onSort($event)">Highlighted Date</th>
+          <th style="width: 150px" scope="col" sortable="price" (sort)="onSort($event)">Price (Buy Price)</th>
+          <th style="width: 150px" scope="col" sortable="curr_price" (sort)="onSort($event)">Current Price</th>
+          <th style="width: 100px" scope="col" sortable="roi" (sort)="onSort($event)">ROI</th>
+          <th style="width: 400px" scope="col">Widget</th>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +31,9 @@
           <td>{{ row.price | currency }}</td>
           <td>{{ row.curr_price | currency }}</td>
           <td>{{ row.roi / 100 | percent: '1.0-2' }}</td>
+          <td>
+            <app-single-quote-widget [symbol]="row.symbol"></app-single-quote-widget>
+          </td>
         </tr>
       </tbody>
     </table>

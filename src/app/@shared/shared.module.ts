@@ -7,6 +7,7 @@ import { TableFilterComponent } from './table-filter/table-filter.component';
 import { TableSortableHeaderDirective } from './directives/table-sortable-header/table-sortable-header.directive';
 import { TrendDetailsComponent } from './trend-details/trend-details.component';
 import { ViewTrendDetailsComponent } from './view-trend-details/view-trend-details.component';
+import { SingleQuoteWidgetComponent } from './single-quote-widget/single-quote-widget.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
@@ -16,6 +17,7 @@ import { ViewTrendDetailsComponent } from './view-trend-details/view-trend-detai
     TableSortableHeaderDirective,
     TrendDetailsComponent,
     ViewTrendDetailsComponent,
+    SingleQuoteWidgetComponent,
   ],
   exports: [
     LoaderComponent,
@@ -23,6 +25,7 @@ import { ViewTrendDetailsComponent } from './view-trend-details/view-trend-detai
     TableSortableHeaderDirective,
     TrendDetailsComponent,
     ViewTrendDetailsComponent,
+    SingleQuoteWidgetComponent,
   ],
 })
 export class SharedModule {}

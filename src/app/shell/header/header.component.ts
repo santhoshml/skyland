@@ -164,9 +164,6 @@ export class HeaderComponent implements OnInit {
         } else if (name.includes(str)) {
           filteredList.push(ele);
         }
-        if (filteredSymbol.length + filteredMatchingSymbol.length + filteredList.length > 100) {
-          break;
-        }
       }
       this.data = [...filteredSymbol, ...filteredMatchingSymbol, ...filteredList];
     }
