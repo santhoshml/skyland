@@ -55,14 +55,25 @@
             <div>Is now the time to buy ? :</div>
           </td>
           <td class="px-2">
-            <strong>{{ trendResult.startNewPositionCandle === 0 ? 'No' : 'Yes' }}</strong>
+            <span *ngIf="trendResult.startNewPositionCandle === 1">
+              <strong>Yes</strong>
+            </span>
+            <span *ngIf="trendResult.startNewPositionCandle === 0">
+              <strong>Neutral</strong>
+            </span>
+            <span *ngIf="trendResult.startNewPositionCandle === -1">
+              <strong>No</strong>
+            </span>
           </td>
           <td>
-            <span *ngIf="trendResult.startNewPositionCandle === 0">
+            <span *ngIf="trendResult.startNewPositionCandle === -1">
               <img src="assets/no-entry.png" class="icon" alt="Caution before starting a new position" />
             </span>
             <span *ngIf="trendResult.startNewPositionCandle === 1">
               <img src="assets/check-mark.png" class="icon" alt="Is now the time to buy ?" />
+            </span>
+            <span *ngIf="trendResult.startNewPositionCandle === 0">
+              <img src="assets/maybe-icon.jpeg" class="icon" alt="Is now the time to buy ?" />
             </span>
           </td>
         </tr>

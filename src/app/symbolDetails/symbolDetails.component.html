@@ -80,7 +80,8 @@
         </div>
         <div class="col-md-4 col-sm-6 col-12 mb-3">
           <span>Is now the time to buy ? - </span>
-          <span *ngIf="trendingDetails.startNewPositionCandle === 0">
+          <span *ngIf="trendingDetails.startNewPositionCandle === -1">
+            <strong>No</strong>
             <img
               src="assets/no-entry.png"
               style="height: 40px; width: 40px"
@@ -88,7 +89,12 @@
             />
           </span>
           <span *ngIf="trendingDetails.startNewPositionCandle === 1">
+            <strong>Yes</strong>
             <img src="assets/check-mark.png" style="height: 40px; width: 40px" alt="Is now the time to buy ?" />
+          </span>
+          <span *ngIf="trendingDetails.startNewPositionCandle === 0">
+            <strong>Neutral</strong>
+            <img src="assets/maybe-icon.jpeg" style="height: 40px; width: 40px" alt="Is now the time to buy ?" />
           </span>
         </div>
       </div>
@@ -103,7 +109,25 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-4 col-sm-6 col-12 mb-3">
+        <div class="col-md-3 col-sm-6 col-12 mb-3">
+          <span>Daily - </span>
+          <span class="font-weight-bold">{{ trendingDetails.dailyTrendline }}</span>
+          <span *ngIf="trendingDetails.dailyTrendline">
+            <span *ngIf="trendingDetails.dailyTrendline.toLowerCase() === 'uptrend'">
+              <!-- <i class="fas fa-arrow-up"></i> -->
+              <img src="assets/bullish-trend-icon.png" style="height: 40px; width: 40px" alt="Bullish" />
+            </span>
+            <span *ngIf="trendingDetails.dailyTrendline.toLowerCase() === 'downtrend'">
+              <!-- <i class="fas fa-arrow-down"></i> -->
+              <img src="assets/bearish-trend-icon.png" style="height: 40px; width: 40px" alt="Bearish" />
+            </span>
+            <span *ngIf="trendingDetails.dailyTrendline.toLowerCase() === 'sideways trend'">
+              <!-- <i class="fas fa-arrow-right"></i> -->
+              <img src="assets/neutral-trend-icon.png" style="height: 40px; width: 40px" alt="Neutral" />
+            </span>
+          </span>
+        </div>
+        <div class="col-md-3 col-sm-6 col-12 mb-3">
           <span>Monthly - </span>
           <span class="font-weight-bold">{{ trendingDetails.monthlyTrendline }}</span>
           <span *ngIf="trendingDetails.monthlyTrendline">
@@ -121,7 +145,7 @@
             </span>
           </span>
         </div>
-        <div class="col-md-4 col-sm-6 col-12 mb-3">
+        <div class="col-md-3 col-sm-6 col-12 mb-3">
           <span>Quarterly - </span>
           <span class="font-weight-bold">{{ trendingDetails.quaterlyTrendline }}</span>
           <span *ngIf="trendingDetails.quaterlyTrendline">
@@ -139,7 +163,7 @@
             </span>
           </span>
         </div>
-        <div class="col-md-4 col-sm-6 col-12 mb-3">
+        <div class="col-md-3 col-sm-6 col-12 mb-3">
           <span>Yearly - </span>
           <span class="font-weight-bold">{{ trendingDetails.yearlyTrendline }}</span>
           <span *ngIf="trendingDetails.yearlyTrendline">

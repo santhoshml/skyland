@@ -26,6 +26,7 @@ const routes = {
 };
 
 export interface ITrendingDetails {
+  dailyTrendline: string;
   monthlyTrendline: string;
   quaterlyTrendline: string;
   todaysPriceBehaviour: string;
