@@ -1,5 +1,8 @@
-<div class="widget-container">
-  <div class="tradingview-widget-container" [id]="symbol">
-    <div class="tradingview-widget-container__widget"></div>
+<div class="widget-overlay-container">
+  <div class="widget-container">
+    <div class="tradingview-widget-container" [id]="widgetId">
+      <div class="tradingview-widget-container__widget"></div>
+    </div>
   </div>
+  <div class="widget-overlay" (click)="symbolDetail()"></div>
 </div>

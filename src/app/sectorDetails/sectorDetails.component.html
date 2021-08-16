@@ -41,10 +41,11 @@
       <table *ngIf="tableData" class="mt-20 table table-striped table-hover">
         <thead>
           <tr>
-            <th class="text-center" scope="col" sortable="symbol" (sort)="onSort($event)">Company</th>
+            <th width="380" class="text-center" scope="col" sortable="symbol" (sort)="onSort($event)">Company</th>
+            <!-- <th class="text-center" scope="col" sortable="symbol" (sort)="onSort($event)">Company</th> -->
             <th class="text-center" scope="col" sortable="trend" (sort)="onSort($event)">Trend</th>
-            <th class="text-center" scope="col" sortable="price" (sort)="onSort($event)">Price</th>
-            <th class="text-center" scope="col" sortable="volume" (sort)="onSort($event)">Volume</th>
+            <!-- <th class="text-center" scope="col" sortable="price" (sort)="onSort($event)">Price</th> -->
+            <!-- <th class="text-center" scope="col" sortable="volume" (sort)="onSort($event)">Volume</th> -->
             <th class="text-center" scope="col" sortable="dividendYield" (sort)="onSort($event)">
               Dividend
               <a href="https://www.investopedia.com/terms/d/dividendyield.asp" target="_blank">
@@ -69,11 +70,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let listRow of tableData" class="table-row">
-            <td class="text-left company-name">
+            <td><app-single-quote-widget [symbol]="listRow.symbol"></app-single-quote-widget></td>
+            <!-- <td class="text-left company-name">
               <a class="symbol" href="/symbolDetails/{{ listRow.symbol }}">{{ listRow.symbol }}</a>
               <br />
               {{ listRow.company_name | truncate: 40 | uppercase }}
-            </td>
+            </td> -->
             <td class="text-left">
               <div *ngIf="listRow.trend == 1">
                 <i class="fas fa-arrow-up"></i>
@@ -89,17 +91,12 @@
               </div>
               <app-view-trend-details [symbol]="listRow.symbol"></app-view-trend-details>
             </td>
-            <td class="text-right price">
+            <!-- <td class="text-right price">
               {{ listRow.price | currency }}
-              <!-- <div *ngIf="listRow.bestBuy === 1">
-                <span class="badge badge-pill badge-primary info-badge">
-                  <i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy
-                </span>
-              </div> -->
-            </td>
-            <td class="text-right volume">
+            </td> -->
+            <!-- <td class="text-right volume">
               {{ listRow.volume | number }}
-            </td>
+            </td> -->
             <td class="text-right dividend">
               <span *ngIf="!listRow.dividendYield || listRow.dividendYield == '0'">-</span>
               <span *ngIf="listRow.dividendYield != '0'">{{ listRow.dividendYield | percent: '1.0-2' }}</span>

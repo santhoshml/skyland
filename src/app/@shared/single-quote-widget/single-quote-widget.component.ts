@@ -1,4 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { GoogleAnalyticsService } from '@app/@core/google-analytics.service';
+import { CredentialsService } from '@app/auth';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 
 @Component({
@@ -8,6 +11,7 @@ import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 })
 export class SingleQuoteWidgetComponent implements OnInit, AfterViewInit {
   @Input() symbol: string = '';
+  widgetId: string;
   infoWidgetOptions = {
     showSymbolLogo: true,
     colorTheme: 'light',
@@ -16,16 +20,40 @@ export class SingleQuoteWidgetComponent implements OnInit, AfterViewInit {
     locale: 'en',
   };
 
-  constructor(private symbolDetailsService: SymbolDetailsService) {}
+  constructor(
+    private symbolDetailsService: SymbolDetailsService,
+    private googleAnalyticsService: GoogleAnalyticsService,
+    private credentialsService: CredentialsService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {
-    this.loadWidget();
+  ngOnInit(): void {
+    this.widgetId = `${this.symbol}-${Math.floor(Math.random() * 100)}`;
   }
 
-  loadWidget() {
-    this.infoWidgetOptions['symbol'] = this.symbol;
-    this.symbolDetailsService.loadTradingViewScript(this.symbol, 'embed-widget-single-quote', this.infoWidgetOptions);
+  ngAfterViewInit(): void {
+    this.symbolDetailsService.getExchangeData(this.symbol).subscribe((data) => {
+      this.googleAnalyticsService.eventEmitter(
+        'symbolDetails-init',
+        'symbolDetails',
+        'init',
+        'getExchangeData',
+        1,
+        this.credentialsService.credentials.email
+      );
+      let exchange = data['exchange'];
+      if (exchange) {
+        this.loadWidget(`${exchange}:${this.symbol}`);
+      }
+    });
+  }
+
+  loadWidget(symbol: string) {
+    this.infoWidgetOptions['symbol'] = symbol;
+    this.symbolDetailsService.loadTradingViewScript(this.widgetId, 'embed-widget-single-quote', this.infoWidgetOptions);
+  }
+
+  symbolDetail() {
+    this.router.navigate([`/symbolDetails/${this.symbol}`], { replaceUrl: true });
   }
 }
