@@ -10,6 +10,7 @@ import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import pruned from 'pruned';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-listCards',
@@ -17,6 +18,7 @@ import pruned from 'pruned';
   styleUrls: ['./topPicks.component.scss'],
 })
 export class TopPicksComponent implements OnInit {
+  modalReference: NgbModalRef;
   version: string | null = environment.version;
   isLoading = false;
   userProfile$: Observable<any>;
@@ -39,7 +41,7 @@ export class TopPicksComponent implements OnInit {
   showOpenPositionSuccess = false;
   sellPrice: string;
   sellDate: string;
-  idToShow = 0;
+  selectedPortfolioSymbol: any;
 
   // searchbar
   keyword = 'name';
@@ -54,7 +56,8 @@ export class TopPicksComponent implements OnInit {
     private credentialsService: CredentialsService,
     private authenticationService: AuthenticationService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private symbolDetailsService: SymbolDetailsService
+    private symbolDetailsService: SymbolDetailsService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -206,6 +209,7 @@ export class TopPicksComponent implements OnInit {
 
       let todayDate = moment().format('MM/DD/YYYY');
       this.sellDate = todayDate;
+      this.modalReference.close();
     });
   }
 
@@ -262,16 +266,13 @@ export class TopPicksComponent implements OnInit {
     });
   }
 
-  enableClosePositionFlag(id: number) {
+  enableClosePositionFlag(content: any, list: any) {
     // console.log(`start enableClosePositionFlag, id:${id}`);
-    if (this.idToShow === id) {
-      this.idToShow = 0;
-    } else {
-      this.idToShow = id;
-      let openPosition = this.getOpenPositionById(id);
-      // console.log(`openPosition: ${JSON.stringify(openPosition)}`);
-      this.sellPrice = openPosition.close;
-    }
+    this.selectedPortfolioSymbol = list;
+    let openPosition = this.getOpenPositionById(list.id);
+    // console.log(`openPosition: ${JSON.stringify(openPosition)}`);
+    this.sellPrice = openPosition.close;
+    this.modalReference = this.modalService.open(content, { ariaLabelledBy: 'closePosition-modal-popup' });
   }
 
   getOpenPositionById(id: number) {
