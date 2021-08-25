@@ -165,7 +165,12 @@
                     <br />
                     {{ topStock.companyName | truncate: 40 | uppercase }}
                   </td> -->
-                  <td><app-single-quote-widget [symbol]="topStock.symbol"></app-single-quote-widget></td>
+                  <td>
+                    <app-single-quote-widget
+                      [symbol]="topStock.symbol"
+                      [exchange]="topStock.exchange"
+                    ></app-single-quote-widget>
+                  </td>
                   <td class="text-left">
                     <div *ngIf="topStock.trend == 1">
                       <i class="fas fa-arrow-up"></i>
@@ -286,10 +291,11 @@
             <table class="table table-striped table-hover">
               <thead>
                 <tr>
-                  <th class="text-center" scope="col">Company</th>
+                  <th width="380" class="text-center" scope="col">Company</th>
+                  <!-- <th class="text-center" scope="col">Company</th> -->
                   <th class="text-center" scope="col">Trend</th>
-                  <th class="text-center" scope="col">Price</th>
-                  <th class="text-center" scope="col">Volume</th>
+                  <!-- <th class="text-center" scope="col">Price</th>
+                  <th class="text-center" scope="col">Volume</th> -->
                   <th class="text-center" scope="col">
                     Dividend
                     <a href="https://www.investopedia.com/terms/d/dividendyield.asp" target="_blank">
@@ -314,10 +320,16 @@
               </thead>
               <tbody>
                 <tr *ngFor="let favorite of favorites" class="table-row">
-                  <td class="text-left company-name">
+                  <!-- <td class="text-left company-name">
                     <a class="symbol" href="/symbolDetails/{{ favorite.symbol }}">{{ favorite.symbol }}</a>
                     <br />
                     {{ favorite.companyName | truncate: 40 | uppercase }}
+                  </td> -->
+                  <td>
+                    <app-single-quote-widget
+                      [symbol]="favorite.symbol"
+                      [exchange]="favorite.exchange"
+                    ></app-single-quote-widget>
                   </td>
                   <td class="text-left trend">
                     <div *ngIf="favorite.trend == 1">
@@ -334,17 +346,17 @@
                     </div>
                     <app-view-trend-details [symbol]="favorite.symbol"></app-view-trend-details>
                   </td>
-                  <td class="text-right price">
-                    {{ favorite.close | currency }}
-                    <!-- <div *ngIf="favorite.bestBuy === 1">
+                  <!-- <td class="text-right price">
+                    {{ favorite.close | currency }} -->
+                  <!-- <div *ngIf="favorite.bestBuy === 1">
                       <span class="badge my-1 badge-pill badge-primary info-badge"
                         ><i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy</span
                       >
                     </div> -->
-                  </td>
+                  <!-- </td>
                   <td class="text-right volume">
                     {{ favorite.volume | number }}
-                  </td>
+                  </td> -->
                   <td class="text-center dividend">
                     <span *ngIf="!favorite.dividendYield || favorite.dividendYield == '0'">-</span>
                     <span *ngIf="favorite.dividendYield != '0'">{{ favorite.dividendYield | percent: '1.0-2' }}</span>
@@ -562,7 +574,12 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let txn of myOpenPositions; let i = index" class="table-row">
-                      <td><app-single-quote-widget [symbol]="txn.symbol"></app-single-quote-widget></td>
+                      <td>
+                        <app-single-quote-widget
+                          [symbol]="txn.symbol"
+                          [exchange]="txn.exchange"
+                        ></app-single-quote-widget>
+                      </td>
                       <td style="width: 100px; padding: 12px 1px">
                         <button
                           type="button"

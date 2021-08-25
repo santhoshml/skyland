@@ -32,7 +32,7 @@
           <td>{{ row.curr_price | currency }}</td>
           <td>{{ row.roi / 100 | percent: '1.0-2' }}</td>
           <td>
-            <app-single-quote-widget [symbol]="row.symbol"></app-single-quote-widget>
+            <app-single-quote-widget [symbol]="row.symbol" [exchange]="row.exchange"></app-single-quote-widget>
           </td>
         </tr>
       </tbody>

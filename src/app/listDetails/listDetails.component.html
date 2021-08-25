@@ -39,10 +39,11 @@
       <table class="mt-20 table table-striped table-hover">
         <thead>
           <tr>
-            <th class="text-center" scope="col">Company</th>
+            <th width="380" class="text-center" scope="col" sortable="symbol" (sort)="onSort($event)">Company</th>
+            <!-- <th class="text-center" scope="col">Company</th> -->
             <th class="text-center" style="width: 7%" scope="col">Trend</th>
-            <th class="text-center" style="width: 7%" scope="col">Price</th>
-            <th class="text-center" style="width: 7%" scope="col">Volume</th>
+            <!-- <th class="text-center" style="width: 7%" scope="col">Price</th>
+            <th class="text-center" style="width: 7%" scope="col">Volume</th> -->
             <th class="text-center" style="width: 7%" scope="col">
               Dividend
               <a href="https://www.investopedia.com/terms/d/dividendyield.asp" target="_blank">
@@ -67,11 +68,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let listRow of listDetails.list" class="table-row">
-            <td class="text-left company-name">
+            <app-single-quote-widget [symbol]="listRow.symbol" [exchange]="listRow.exchange"></app-single-quote-widget>
+            <!-- <td class="text-left company-name">
               <a class="symbol" href="/symbolDetails/{{ listRow.symbol }}">{{ listRow.symbol }}</a>
               <br />
               {{ listRow.companyName | truncate: 40 | uppercase }}
-            </td>
+            </td> -->
             <td class="text-left trend">
               <div *ngIf="listRow.trend == 1">
                 <i class="fas fa-arrow-up"></i>
@@ -87,17 +89,17 @@
               </div>
               <app-view-trend-details [symbol]="listRow.symbol"></app-view-trend-details>
             </td>
-            <td class="text-right price">
-              {{ listRow.price | currency }}
-              <!-- <div *ngIf="listRow.bestBuy === 1">
+            <!-- <td class="text-right price">
+              {{ listRow.price | currency }} -->
+            <!-- <div *ngIf="listRow.bestBuy === 1">
                 <span class="badge badge-pill badge-primary info-badge">
                   <i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy
                 </span>
               </div> -->
-            </td>
+            <!-- </td>
             <td class="text-right volume">
               {{ listRow.volume | number }}
-            </td>
+            </td> -->
             <td class="text-center dividend">
               <span *ngIf="!listRow.dividendYield || listRow.dividendYield == '0'">-</span>
               <span *ngIf="listRow.dividendYield != '0'">{{ listRow.dividendYield | percent: '1.0-2' }}</span>
@@ -139,7 +141,7 @@
       </table>
     </div>
   </div>
-  <div *ngIf="!hideViewMoreBtn" class="view-more-div">
-    <button type="button" (click)="viewMoreFn()" class="btn btn-red mb-2">View More</button>
+  <div class="text-right p-2" *ngIf="!hideViewMoreBtn">
+    <button type="button" (click)="viewMoreFn()" class="btn btn-orange">View More</button>
   </div>
 </div>

@@ -58,7 +58,12 @@
             </thead>
             <tbody>
               <tr *ngFor="let uptrendingStock of tableData" class="table-row">
-                <td><app-single-quote-widget [symbol]="uptrendingStock.symbol"></app-single-quote-widget></td>
+                <td>
+                  <app-single-quote-widget
+                    [symbol]="uptrendingStock.symbol"
+                    [exchange]="uptrendingStock.exchange"
+                  ></app-single-quote-widget>
+                </td>
                 <!-- <td class="text-left company-name">
                   <a class="symbol" href="/symbolDetails/{{ uptrendingStock.symbol }}">{{ uptrendingStock.symbol }}</a>
                   <br />

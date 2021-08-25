@@ -26,6 +26,8 @@ export class SectorDetailsComponent implements OnInit {
   MIN_ROWS_TO_DISPLAY = 10;
   MAX_ROWS_TO_DISPLAY = 10000;
   hideViewMoreBtn = false;
+  totalListCount = 0;
+  currentTableCount = this.MIN_ROWS_TO_DISPLAY;
   tableData: any = [];
 
   constructor(
@@ -51,8 +53,10 @@ export class SectorDetailsComponent implements OnInit {
     this.sub = this.route.params.subscribe((params) => {
       // console.log(`params : ${JSON.stringify(params)}`);
       this.sectorSymbol = params['key']; // (+) converts string 'listId' to a number
-
       this.sectorDetails$ = this.sectorDetailsService.getSectorDetails(this.sectorSymbol, this.MIN_ROWS_TO_DISPLAY);
+      this.sectorDetails$.subscribe((data) => {
+        this.totalListCount = data.count;
+      });
     });
 
     // set user profile
@@ -88,8 +92,11 @@ export class SectorDetailsComponent implements OnInit {
   }
 
   viewMoreFn() {
-    this.hideViewMoreBtn = true;
-    this.sectorDetails$ = this.sectorDetailsService.getSectorDetails(this.sectorSymbol, this.MAX_ROWS_TO_DISPLAY);
+    this.currentTableCount = this.currentTableCount + this.MIN_ROWS_TO_DISPLAY;
+    this.sectorDetails$ = this.sectorDetailsService.getSectorDetails(this.sectorSymbol, this.currentTableCount);
+    if (this.currentTableCount >= this.totalListCount) {
+      this.hideViewMoreBtn = true;
+    }
   }
 
   getSymbolDetails(listRow: any) {
