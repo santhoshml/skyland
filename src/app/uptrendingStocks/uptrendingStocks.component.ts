@@ -31,6 +31,8 @@ export class UptrendingStocksComponent implements OnInit {
 
   MIN_ROWS_TO_DISPLAY = 10;
   MAX_ROWS_TO_DISPLAY = 10000;
+  totalListCount = 0;
+  currentTableCount = this.MIN_ROWS_TO_DISPLAY;
   hideViewMoreBtn = false;
   tableData: any = [];
 
@@ -80,12 +82,10 @@ export class UptrendingStocksComponent implements OnInit {
   }
 
   readUptrendStocks(rows: number) {
-    this.uptrendingStocks$ = this.service.getUptrendingStocks(rows).pipe(
-      map((body) => {
-        // console.log(`topStocks : ${JSON.stringify(body)}`);
-        return body;
-      })
-    );
+    this.uptrendingStocks$ = this.service.getUptrendingStocks(rows);
+    this.uptrendingStocks$.subscribe((data) => {
+      this.totalListCount = data.count;
+    });
   }
 
   isFavorite(symbol: string) {
@@ -125,7 +125,10 @@ export class UptrendingStocksComponent implements OnInit {
   }
 
   viewMoreFn() {
-    this.hideViewMoreBtn = true;
-    this.readUptrendStocks(this.MAX_ROWS_TO_DISPLAY);
+    this.currentTableCount = this.currentTableCount + this.MIN_ROWS_TO_DISPLAY;
+    if (this.currentTableCount >= this.totalListCount) {
+      this.hideViewMoreBtn = true;
+    }
+    this.readUptrendStocks(this.currentTableCount);
   }
 }

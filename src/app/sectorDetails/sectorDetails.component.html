@@ -70,7 +70,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let listRow of tableData" class="table-row">
-            <td><app-single-quote-widget [symbol]="listRow.symbol"></app-single-quote-widget></td>
+            <td>
+              <app-single-quote-widget
+                [symbol]="listRow.symbol"
+                [exchange]="listRow.exchange"
+              ></app-single-quote-widget>
+            </td>
             <!-- <td class="text-left company-name">
               <a class="symbol" href="/symbolDetails/{{ listRow.symbol }}">{{ listRow.symbol }}</a>
               <br />

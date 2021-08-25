@@ -11,6 +11,7 @@ import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 })
 export class SingleQuoteWidgetComponent implements OnInit, AfterViewInit {
   @Input() symbol: string = '';
+  @Input() exchange: string = '';
   widgetId: string;
   infoWidgetOptions = {
     showSymbolLogo: true,
@@ -32,20 +33,24 @@ export class SingleQuoteWidgetComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.symbolDetailsService.getExchangeData(this.symbol).subscribe((data) => {
-      this.googleAnalyticsService.eventEmitter(
-        'symbolDetails-init',
-        'symbolDetails',
-        'init',
-        'getExchangeData',
-        1,
-        this.credentialsService.credentials.email
-      );
-      let exchange = data['exchange'];
-      if (exchange) {
-        this.loadWidget(`${exchange}:${this.symbol}`);
-      }
-    });
+    if (this.exchange) {
+      this.loadWidget(`${this.exchange}:${this.symbol}`);
+    } else {
+      this.symbolDetailsService.getExchangeData(this.symbol).subscribe((data) => {
+        this.googleAnalyticsService.eventEmitter(
+          'symbolDetails-init',
+          'symbolDetails',
+          'init',
+          'getExchangeData',
+          1,
+          this.credentialsService.credentials.email
+        );
+        let exchange = data['exchange'];
+        if (exchange) {
+          this.loadWidget(`${exchange}:${this.symbol}`);
+        }
+      });
+    }
   }
 
   loadWidget(symbol: string) {

@@ -49,6 +49,8 @@ export class ListDetailsComponent implements OnInit {
   MIN_ROWS_TO_DISPLAY = 10;
   MAX_ROWS_TO_DISPLAY = 10000;
   hideViewMoreBtn = false;
+  totalListCount = 0;
+  currentTableCount = this.MIN_ROWS_TO_DISPLAY;
 
   constructor(
     private listDetailsService: ListDetailsService,
@@ -89,6 +91,9 @@ export class ListDetailsComponent implements OnInit {
           }
         })
       );
+      this.listDetails$.subscribe((data) => {
+        this.totalListCount = data.count;
+      });
     });
 
     // set user profile
@@ -96,8 +101,11 @@ export class ListDetailsComponent implements OnInit {
   }
 
   viewMoreFn() {
-    this.hideViewMoreBtn = true;
-    this.listDetails$ = this.listDetailsService.getListDetails(this.listId, this.MAX_ROWS_TO_DISPLAY).pipe(
+    this.currentTableCount = this.currentTableCount + this.MIN_ROWS_TO_DISPLAY;
+    if (this.currentTableCount >= this.totalListCount) {
+      this.hideViewMoreBtn = true;
+    }
+    this.listDetails$ = this.listDetailsService.getListDetails(this.listId, this.currentTableCount).pipe(
       map((body: any, headers: any) => {
         return body;
       }),
