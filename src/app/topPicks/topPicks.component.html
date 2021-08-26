@@ -796,7 +796,7 @@
   <div *ngIf="allSectorList$ | async as sectorList">
     <h2>By Sectors</h2>
     <p>
-      All the sectors in the market and number of stocks uptrending in each sector. Click on 'Get List' to see all the
+      All sectors in the market and number of stocks uptrending in each sector. Click on 'Get List' to see all the
       stocks.
     </p>
     <div class="mt-3 card-columns">
@@ -812,7 +812,7 @@
             [disabled]="card.count === 0"
             class="btn btn-outline-primary float-left"
           >
-            GET LIST - {{ card.count }}
+            VIEW LIST
           </button>
         </div>
       </div>

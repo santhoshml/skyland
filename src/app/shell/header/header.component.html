@@ -91,8 +91,8 @@
     <div class="row m-0 w-100">
       <div class="col-12 col-md-9 p-0">
         <small class="close-of-date">
-          Data & Analysis updates as of close of Market :
-          <span class="badge badge-secondary as-of-date">{{ webDisplayDateElement.value_str | date }}</span>
+          Data & Analysis updates as of close of Market : {{ webDisplayDateElement.value_str | date }}
+          <!-- <span class="badge badge-secondary as-of-date">{{ webDisplayDateElement.value_str | date }}</span> -->
           <span
             class="text-primary font-weight-bold d-md-none d-block text-center mt-2"
             (click)="openModal(mymodal)"
