@@ -41,6 +41,8 @@ export class TopPicksComponent implements OnInit {
   showOpenPositionSuccess = false;
   sellPrice: string;
   sellDate: string;
+  buyPrice: number;
+  qty: number;
   selectedPortfolioSymbol: any;
 
   // searchbar
@@ -122,7 +124,8 @@ export class TopPicksComponent implements OnInit {
     this.openPositionsForm = this.formBuilder.group({
       symbol: ['', Validators.required],
       buy_price: ['', Validators.required],
-      buy_date: [todayDate, Validators.required],
+      qty: ['', Validators.required],
+      buy_date: [todayDate],
     });
   }
 
@@ -213,6 +216,18 @@ export class TopPicksComponent implements OnInit {
     });
   }
 
+  updatePosition(id: number) {
+    let updatePositionData = {
+      buy_price: this.buyPrice,
+      qty: this.qty,
+      symbol: this.selectedPortfolioSymbol.symbol,
+    };
+    this.service.updatePosition(updatePositionData).subscribe((data) => {
+      this.readOpenPositions();
+      this.modalReference.close();
+    });
+  }
+
   readOpenPositions() {
     this.myOpenPositions$ = this.service.getOpenPositions().pipe(
       map((body) => {
@@ -267,12 +282,18 @@ export class TopPicksComponent implements OnInit {
   }
 
   enableClosePositionFlag(content: any, list: any) {
-    // console.log(`start enableClosePositionFlag, id:${id}`);
     this.selectedPortfolioSymbol = list;
     let openPosition = this.getOpenPositionById(list.id);
-    // console.log(`openPosition: ${JSON.stringify(openPosition)}`);
     this.sellPrice = openPosition.close;
     this.modalReference = this.modalService.open(content, { ariaLabelledBy: 'closePosition-modal-popup' });
+  }
+
+  updatePopupPosition(content: any, list: any) {
+    this.selectedPortfolioSymbol = list;
+    let openPosition = this.getOpenPositionById(list.id);
+    this.buyPrice = 0;
+    this.qty = 0;
+    this.modalReference = this.modalService.open(content, { ariaLabelledBy: 'updatePosition-modal-popup' });
   }
 
   getOpenPositionById(id: number) {

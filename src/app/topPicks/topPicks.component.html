@@ -471,15 +471,16 @@
             </div>
             <div class="col-md-6 col-lg-3 py-lg-0 py-1">
               <input
-                type="text"
+                type="number"
+                min="1"
                 class="form-control"
-                formControlName="buy_date"
-                autocomplete="buy_date"
-                placeholder="Buy Date (mm/dd/yyyy)"
+                formControlName="qty"
+                autocomplete="qty"
+                placeholder="Quantity"
                 required
               />
               <small
-                [hidden]="openPositionsForm.controls.buy_date.valid || openPositionsForm.controls.buy_date.untouched"
+                [hidden]="openPositionsForm.controls.qty.valid || openPositionsForm.controls.qty.untouched"
                 class="text-danger"
               >
                 Please provide a valid buy date in mm/dd/yyyy format.
@@ -555,8 +556,8 @@
                       <th class="text-center" scope="col">Action</th>
                       <!-- <th class="text-center" scope="col">Company Name</th> -->
                       <th class="text-center" scope="col">Trend</th>
-                      <!-- <th class="text-center" scope="col">Today's Close</th> -->
-                      <!-- <th class="text-center" scope="col">Volume</th> -->
+                      <th class="text-center" scope="col">Buy Price</th>
+                      <th class="text-center" scope="col">Buy Quantity</th>
                       <th class="text-center" scope="col">Gain (%)</th>
                       <th class="text-center" scope="col">
                         Stop Loss
@@ -568,7 +569,6 @@
                           ></i>
                         </a>
                       </th>
-                      <th class="text-center" scope="col"># of days</th>
                       <th class="text-center" scope="col">Industry</th>
                     </tr>
                   </thead>
@@ -588,13 +588,13 @@
                         >
                           Close position
                         </button>
-                        <button
-                          type="button"
-                          class="btn btn-warning btn-block mt-3 btn-open-actions"
-                          (click)="deleteOpenPosition(txn.id)"
-                        >
-                          Delete
-                        </button>
+                        <div class="d-flex justify-content-center mt-2">
+                          <i
+                            class="fa-plus fas mr-3 cursor-pointer"
+                            (click)="updatePopupPosition(updatePositionPopup, txn)"
+                          ></i>
+                          <i class="fa-trash fas cursor-pointer" (click)="deleteOpenPosition(txn.id)"></i>
+                        </div>
                       </td>
                       <!-- <td class="text-left company-name">
                         <a class="symbol" href="/symbolDetails/{{ txn.symbol }}">{{ txn.symbol }}</a>
@@ -624,6 +624,16 @@
                         </div>
                         <app-view-trend-details [symbol]="txn.symbol"></app-view-trend-details>
                       </td>
+                      <td class="price">
+                        <div>
+                          {{ txn.buy_price | currency }}
+                        </div>
+                      </td>
+                      <td>
+                        <div>
+                          {{ txn.buy_qty | number: '1.2-2' }}
+                        </div>
+                      </td>
                       <!-- <td class="text-right price">
                         <div>
                           {{ txn.close | currency }}
@@ -637,10 +647,6 @@
                       </td>
                       <td class="text-right price">
                         {{ txn.stop_loss | currency }}
-                      </td>
-                      <td class="text-right days">
-                        <span *ngIf="txn.hold_days > 0">{{ txn.hold_days }} days</span>
-                        <span *ngIf="txn.hold_days === -1">N/A</span>
                       </td>
                       <td class="text-left industry">
                         <div>
@@ -894,6 +900,59 @@
             type="button"
             class="btn btn-primary btn-block close-submit"
             (click)="closePosition(selectedPortfolioSymbol.id)"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #updatePositionPopup let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">{{ selectedPortfolioSymbol.symbol }}'s Add Position</h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="row mb-2">
+        <div class="col-6">Quantity</div>
+        <div class="col-6">
+          <input
+            name="qty"
+            #pickedNameQty="ngModel"
+            [(ngModel)]="qty"
+            type="number"
+            min="1"
+            autocomplete="qty"
+            placeholder="Quantity"
+            required
+            class="w-100"
+          />
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-6">Average Buy Price</div>
+        <div class="col-6">
+          <input
+            name="buyPrice"
+            #pickedNameSellPrice="ngModel"
+            [(ngModel)]="buyPrice"
+            type="number"
+            min="1"
+            placeholder="Buy Price"
+            required
+            class="w-100"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 offset-6">
+          <button
+            type="button"
+            class="btn btn-primary btn-block close-submit"
+            (click)="updatePosition(selectedPortfolioSymbol.id)"
           >
             Submit
           </button>

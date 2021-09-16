@@ -6,7 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 const routes = {
   topStocks: () => `/stocks/top`,
   yourBest: () => `/predictions/2/addLimit/1`,
-  addOpenPositions: () => `/user/txn/open`,
+  addOpenPositions: () => `/user/v2/txn/open`,
   getOpenPositions: () => `/user/txn/open`,
   closePositions: () => `/user/txn/close`,
   getClosePositions: () => `/user/txn/close`,
@@ -99,6 +99,22 @@ export class TopPicksService {
       );
   }
 
+  updatePosition(data: any): Observable<any> {
+    const dataList = {
+      list: [data],
+    };
+    return this.httpClient
+      .post(routes.addOpenPositions(), dataList, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          return throwError(err);
+        })
+      );
+  }
+
   getOpenPositions(): Observable<any> {
     return this.httpClient
       .get(routes.getOpenPositions(), {
@@ -114,8 +130,11 @@ export class TopPicksService {
   }
 
   addOpenPosition(data: any): Observable<any> {
+    const dataList = {
+      list: [data],
+    };
     return this.httpClient
-      .post(routes.addOpenPositions(), data, {
+      .post(routes.addOpenPositions(), dataList, {
         withCredentials: true,
       })
       .pipe(
