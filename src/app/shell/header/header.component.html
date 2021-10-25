@@ -89,25 +89,11 @@
     *ngIf="webDisplayDate$ | async as webDisplayDateElement"
   >
     <div class="row m-0 w-100">
-      <div class="col-12 col-md-9 p-0">
-        <small class="close-of-date">
-          Data & Analysis updates as of close of Market : {{ webDisplayDateElement.value_str | date }}
-          <!-- <span class="badge badge-secondary as-of-date">{{ webDisplayDateElement.value_str | date }}</span> -->
-          <span
-            class="text-primary font-weight-bold d-md-none d-block text-center mt-2"
-            (click)="openModal(mymodal)"
-            *ngIf="!showThankYouForFeedbackFlag"
-            >Leave us a comment</span
-          >
-        </small>
-      </div>
-      <div class="col-12 col-md-3 p-0">
-        <div class="navbar-nav ml-auto float-right">
-          <div *ngIf="!showThankYouForFeedbackFlag" class="d-md-block d-none">
-            <button type="button" (click)="openModal(mymodal)" class="btn btn-outline-primary btn-sm">
-              Leave us a comment
-            </button>
-          </div>
+      <div class="navbar-nav ml-auto float-right">
+        <div *ngIf="!showThankYouForFeedbackFlag" class="d-md-block d-none">
+          <button type="button" (click)="openModal(mymodal)" class="btn btn-outline-primary btn-sm">
+            Leave us a comment
+          </button>
         </div>
       </div>
     </div>
