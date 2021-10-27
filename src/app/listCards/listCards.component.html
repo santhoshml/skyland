@@ -45,7 +45,7 @@
               <span class="card-text step-text">Lists publiclity traded stocks from NASDAQ, NYSE and AMEX.</span>
             </li>
             <li style="list-style-type: lower-alpha" class="ml-3 mb-3 note">
-              <span class="card-text step-text">Click on "GET List" to see the list of stocks in each category.</span>
+              <span class="card-text step-text">Click on "View List" to see the list of stocks in each category.</span>
             </li>
             <li style="list-style-type: lower-alpha" class="ml-3 mb-3 note">
               <span class="card-text step-text"
@@ -64,7 +64,7 @@
               {{ card.desc }}
             </p>
             <div>
-              <button (click)="getList(card)" class="btn btn-outline-primary float-left">Get List</button>
+              <button (click)="getList(card)" class="btn btn-outline-primary float-left">View List</button>
               <span class="float-right" *ngIf="card.day_change && card.day_change > 0">
                 {{ card.day_change / 100 | percent: '1.0-2' }}
               </span>
