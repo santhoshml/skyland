@@ -6,6 +6,7 @@ import { CredentialsService } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import { AllUserListAdminService } from './allUserListAdmin.service';
 import { compare, SortEvent, TableSortableHeaderDirective } from '@app/@shared';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-allUserListAdmin',
@@ -18,6 +19,7 @@ export class AllUserListAdminComponent implements OnInit {
   isLoading = false;
   allUserList$: Observable<any>;
   tableData: any = [];
+  private addedRows = 0;
 
   constructor(
     private router: Router,
@@ -65,4 +67,39 @@ export class AllUserListAdminComponent implements OnInit {
   }
 
   ngOnDestroy() {}
+
+  enableUser(email: string) {
+    this.allUserListAdminService.enableUser({ email: email }).subscribe((rsp) => {
+      this.allUserList$ = this.allUserListAdminService.getAllUsers();
+    });
+  }
+
+  disableUser(email: string) {
+    this.allUserListAdminService.disableUser({ email: email }).subscribe((rsp) => {
+      this.allUserList$ = this.allUserListAdminService.getAllUsers();
+    });
+  }
+
+  enableViewComments(index: number, arr: string[]) {
+    let tableRef = document.getElementById('all-user-list') as HTMLTableElement;
+    let newRow = tableRef.insertRow(index + this.addedRows + 2);
+
+    let newCell = newRow.insertCell(0);
+    newCell.colSpan = 8;
+    for (let commentEle of arr) {
+      let formattedDt = moment(new Date(commentEle['insert_ts'])).format('MM/DD/YYYY hh:mm:ss A');
+      let ts = document.createTextNode(formattedDt);
+      newCell.appendChild(ts);
+
+      let tab = document.createTextNode(' --- ');
+      newCell.appendChild(tab);
+
+      let text = document.createTextNode(commentEle['comments']);
+      newCell.appendChild(text);
+
+      let linebreak = document.createElement('br');
+      newCell.appendChild(linebreak);
+    }
+    this.addedRows++;
+  }
 }
