@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { Location } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { AuthenticationService, CredentialsService } from '@app/auth';
@@ -26,6 +27,8 @@ export class HeaderComponent implements OnInit {
   keyword = 'name';
   allSymbolData = [];
   data = [];
+  history: string[] = [];
+  isBackClicked = false;
 
   constructor(
     private router: Router,
@@ -34,7 +37,8 @@ export class HeaderComponent implements OnInit {
     private credentialsService: CredentialsService,
     private userProfileService: UserProfileService,
     private service: HeaderService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -60,10 +64,31 @@ export class HeaderComponent implements OnInit {
     });
 
     this.userProfile$ = this.userProfileService.getUserDetails();
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        if (this.isBackClicked) {
+          this.isBackClicked = false;
+        } else {
+          this.history.push(event.urlAfterRedirects);
+        }
+      }
+    });
   }
 
   ngAfterContentInit() {
     console.log(`In ngAfterContentInit`);
+  }
+
+  backClicked() {
+    const url = this.history[this.history.length - 2];
+    this.history.pop();
+    this.isBackClicked = true;
+    if (this.history.length > 0) {
+      this.router.navigateByUrl(url);
+    } else {
+      this.router.navigateByUrl('/topPicks');
+    }
   }
 
   toggleMenu() {
