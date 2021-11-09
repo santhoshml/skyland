@@ -1,5 +1,5 @@
-<header *ngIf="userProfile$ | async as userProfile">
-  <nav class="navbar navbar-top navbar-expand-lg navbar-light bg-light">
+<header>
+  <nav *ngIf="userProfile$ | async as userProfile" class="navbar navbar-top navbar-expand-lg navbar-light bg-light">
     <!-- <a class="navbar-brand" href="https://www.liste.ai" translate>APP_NAME</a> -->
     <i *ngIf="this.history.length" (click)="backClicked()" class="fa-2x fa-arrow-left fas back-icon"></i>
 
@@ -87,20 +87,26 @@
       </div>
     </div>
   </nav>
-  <nav
-    class="navbar navbar-expand navbar-light py-2 sub-navbar"
-    *ngIf="webDisplayDate$ | async as webDisplayDateElement"
-  >
-    <div class="row m-0 w-100">
-      <div class="navbar-nav ml-auto float-right">
-        <div *ngIf="!showThankYouForFeedbackFlag" class="d-md-block d-none">
-          <button type="button" (click)="openModal(mymodal)" class="btn btn-outline-primary btn-sm">
-            Leave us a comment
-          </button>
+
+  <div>
+    <div class="tradingview-widget-container" id="tickerTapeWidgetHeader">
+      <div class="tradingview-widget-container__widget"></div>
+    </div>
+    <nav
+      class="navbar navbar-expand navbar-light py-2 sub-navbar"
+      *ngIf="webDisplayDate$ | async as webDisplayDateElement"
+    >
+      <div class="row m-0 w-100">
+        <div class="navbar-nav ml-auto float-right">
+          <div *ngIf="!showThankYouForFeedbackFlag" class="d-md-block d-none">
+            <button type="button" (click)="openModal(mymodal)" class="btn btn-outline-primary btn-sm">
+              Leave us a comment
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
 </header>
 
 <div

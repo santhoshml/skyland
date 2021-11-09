@@ -8,6 +8,41 @@ import { map, catchError } from 'rxjs/operators';
 import { HeaderService } from './header.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { UserProfileService } from '@app/userProfile/userProfile.service';
+import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
+
+let infoWidgetOptions = {
+  symbols: [
+    {
+      proName: 'FOREXCOM:SPXUSD',
+      title: 'S&P 500',
+    },
+    {
+      proName: 'FOREXCOM:NSXUSD',
+      title: 'Nasdaq 100',
+    },
+    {
+      description: 'DowJones',
+      proName: 'FOREXCOM:DJI',
+    },
+    {
+      description: 'TSLA',
+      proName: 'NASDAQ:TSLA',
+    },
+    {
+      description: 'MSFT',
+      proName: 'NASDAQ:MSFT',
+    },
+    {
+      description: 'FB',
+      proName: 'FB',
+    },
+  ],
+  showSymbolLogo: true,
+  colorTheme: 'light',
+  isTransparent: false,
+  displayMode: 'adaptive',
+  locale: 'en',
+};
 
 @Component({
   selector: 'app-header',
@@ -38,7 +73,8 @@ export class HeaderComponent implements OnInit {
     private userProfileService: UserProfileService,
     private service: HeaderService,
     private modalService: NgbModal,
-    private location: Location
+    private location: Location,
+    private symbolDetailsService: SymbolDetailsService
   ) {}
 
   ngOnInit() {
@@ -78,6 +114,11 @@ export class HeaderComponent implements OnInit {
 
   ngAfterContentInit() {
     console.log(`In ngAfterContentInit`);
+    this.symbolDetailsService.loadTradingViewScript(
+      'tickerTapeWidgetHeader',
+      'embed-widget-ticker-tape',
+      infoWidgetOptions
+    );
   }
 
   backClicked() {
