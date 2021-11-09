@@ -38,8 +38,12 @@
   border-width: 0 0 4px 0;
   border-bottom-color: transparent;
   &.active {
-    color: $primary;
+    color: $white;
+    background-color: $primary;
     border-bottom-color: $primary;
+    &:hover {
+      color: $primary;
+    }
   }
 
   &:hover {

@@ -4,6 +4,14 @@
   margin-bottom: $spacer;
 }
 
+.back-icon {
+  font-size: 20px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  padding: 8px;
+  color: #212529;
+}
+
 .accuracy-label {
   font-size: 100%;
   background: orange;
