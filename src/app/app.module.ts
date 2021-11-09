@@ -15,6 +15,7 @@ import { ShellModule } from './shell/shell.module';
 import { AboutModule } from './about/about.module';
 import { UploadPortfolioModule } from './uploadPortfolio/uploadPortfolio.module';
 import { ListCardsModule } from './listCards/listCards.module';
+import { IndustryListModule } from './industryList/industryList.module';
 import { ListDetailsModule } from './listDetails/listDetails.module';
 import { SubSectorDetailsModule } from './subSectorDetails/subSectorDetails.module';
 import { SectorDetailsModule } from './sectorDetails/sectorDetails.module';
@@ -25,6 +26,7 @@ import { AllUserListAdminModule } from './allUserListAdmin/allUserListAdmin.modu
 import { RecommendedStockListAdminModule } from './recommendedStockListAdmin/recommendedStockListAdmin.module';
 import { PageNotFoundModule } from './pageNotFound/pageNotFound.module';
 import { TopPicksModule } from './topPicks/topPicks.module';
+import { SectorListModule } from './sectorList/sectorList.module';
 import { UptrendingStocksModule } from './uptrendingStocks/uptrendingStocks.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -54,12 +56,14 @@ import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-logi
     AuthModule,
     UploadPortfolioModule,
     ListCardsModule,
+    IndustryListModule,
     ListDetailsModule,
     SymbolDetailsModule,
     UserProfileModule,
     DefinitionsModule,
     PageNotFoundModule,
     TopPicksModule,
+    SectorListModule,
     UptrendingStocksModule,
     SubSectorDetailsModule,
     SectorDetailsModule,

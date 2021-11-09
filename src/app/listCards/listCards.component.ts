@@ -81,53 +81,53 @@ export class ListCardsComponent implements OnInit {
       })
     );
 
-    this.subSectorList$ = this.listCardsService.getSubSectorList().pipe(
-      map((body: any, headers: any) => {
-        // console.log(`body: ${JSON.stringify(body)}`);
-        // console.log(`headers: ${JSON.stringify(headers)}`);
-        this.googleAnalyticsService.eventEmitter(
-          'listCards-response',
-          'listCards',
-          'response',
-          'getSubSectorList',
-          1,
-          this.credentialsService.credentials.email
-        );
-        return body;
-      }),
-      catchError((err) => {
-        if (err.status === 401) {
-          this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
-        } else {
-          return of(false);
-        }
-      })
-    );
+    // this.subSectorList$ = this.listCardsService.getSubSectorList().pipe(
+    //   map((body: any, headers: any) => {
+    //     // console.log(`body: ${JSON.stringify(body)}`);
+    //     // console.log(`headers: ${JSON.stringify(headers)}`);
+    //     this.googleAnalyticsService.eventEmitter(
+    //       'listCards-response',
+    //       'listCards',
+    //       'response',
+    //       'getSubSectorList',
+    //       1,
+    //       this.credentialsService.credentials.email
+    //     );
+    //     return body;
+    //   }),
+    //   catchError((err) => {
+    //     if (err.status === 401) {
+    //       this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
+    //     } else {
+    //       return of(false);
+    //     }
+    //   })
+    // );
   }
 
-  tableValue(data) {
-    this.tableData = data;
-  }
+  // tableValue(data) {
+  //   this.tableData = data;
+  // }
 
-  onSort({ column, direction }: SortEvent) {
-    // resetting other headers
-    this.headers.forEach((header) => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
-    });
+  // onSort({ column, direction }: SortEvent) {
+  //   // resetting other headers
+  //   this.headers.forEach((header) => {
+  //     if (header.sortable !== column) {
+  //       header.direction = '';
+  //     }
+  //   });
 
-    if (!direction) {
-      column = 'id';
-      direction = 'asc';
-    }
+  //   if (!direction) {
+  //     column = 'id';
+  //     direction = 'asc';
+  //   }
 
-    // sorting countries
-    this.tableData = [...this.tableData].sort((a, b) => {
-      const res = compare(a[column], b[column]);
-      return direction === 'asc' ? res : -res;
-    });
-  }
+  //   // sorting countries
+  //   this.tableData = [...this.tableData].sort((a, b) => {
+  //     const res = compare(a[column], b[column]);
+  //     return direction === 'asc' ? res : -res;
+  //   });
+  // }
 
   getList(selectedCard: ListCard) {
     // console.log(`In getList, selectedCard : ${JSON.stringify(selectedCard)} `);

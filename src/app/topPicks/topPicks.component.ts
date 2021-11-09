@@ -26,7 +26,6 @@ export class TopPicksComponent implements OnInit {
   yourBestStocks$: Observable<any>;
   favorites$: Observable<any>;
   watchlist$: Observable<any>;
-  allSectorList$: Observable<any>;
   myOpenPositions$: Observable<any>;
   myClosePositions$: Observable<any>;
   hasConfidenceScore = false;
@@ -111,8 +110,6 @@ export class TopPicksComponent implements OnInit {
       this.allSymbolData = data;
       this.data = data.slice(0, 15);
     });
-
-    this.allSectorList$ = this.service.getAllSectors();
 
     this.readFavorites();
     this.readOpenPositions();
@@ -371,19 +368,6 @@ export class TopPicksComponent implements OnInit {
   onFocused(e) {
     // do something when input is focused
     console.log(`In onFocused, ${JSON.stringify(e)}`);
-  }
-
-  gotoSectorList(card) {
-    // console.log(`navigate to SymbolDetails, ${JSON.stringify(listRow)}`);
-    this.googleAnalyticsService.eventEmitter(
-      'topPiicks-forwading',
-      'topPiicks',
-      'forwading',
-      'topPiicks',
-      1,
-      this.credentialsService.credentials.email
-    );
-    this.router.navigate([`sectorDetails`, card.symbol], { replaceUrl: true });
   }
 
   getPrunedValue(value: number) {

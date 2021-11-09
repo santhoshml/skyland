@@ -1,0 +1,147 @@
+@import "src/theme/_variables";
+
+.step-text {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  padding-left: 9px;
+  text-align: left;
+  color: #999;
+}
+
+.normal-card-footer {
+  font-size: 14px;
+}
+
+.tab-title {
+  font-size: 15px;
+  font-weight: 200;
+}
+
+.note {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.percent-change {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.company-name {
+  max-width: 160px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.symbol {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration-style: solid;
+  text-decoration-color: #0a66cc;
+  color: #0a66cc;
+}
+
+.industry {
+  max-width: 160px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.price {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.dividend {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.pe-ratio {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.roi {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.days {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.text-btn {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.btn-pading {
+  padding-top: 0;
+  padding-bottom: 0;
+  width: fit-content;
+}
+
+.table > tbody > tr > td {
+  border: 0;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.info-badge {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.volume {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.trend {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.note {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.btn-red {
+  background-color: #b95e04;
+  color: $white;
+}
+
+.view-more-div {
+  padding-left: 12px;
+}
+
+.table td.fit,
+.table th.fit {
+  white-space: nowrap;
+  width: 1%;
+}
+
+.tab-title {
+  font-size: 15px;
+  font-weight: 200;
+}
+
+.close-submit {
+  padding: 3px;
+}
+
+.btn-open-actions {
+  margin: 0 3px;
+  padding: 3px;
+  font-size: 10px;
+}
+
+.card-text {
+  font-size: 14px;
+  font-weight: 400;
+}
