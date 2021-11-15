@@ -40,27 +40,37 @@
 
   <!-- Trending Details Container -->
   <div class="mb-4" *ngIf="trendingDetails$ | async as trendingDetails">
-    <div class="card border-0 shadow-lg h-100 px-4 pt-4 pb-1 mb-4">
+    <div class="card border-0 shadow-lg h-100 px-4 pt-4 pb-1">
+      <div class="row pb-2 mb-3 border-bottom">
+        <div class="col-12 col-md-6 col-lg-6">
+          <div>
+            <span class="h4">{{ activeSymbol }}'s Trend Strength - </span>
+            <span class="font-weight-bold">{{ trendingDetails.trendStrength }}</span>
+          </div>
+        </div>
+      </div>
       <div class="row">
-        <div class="col-md-4 col-sm-6 col-12 mb-3">
-          <span>Today's Price Behavior - </span>
-          <span class="font-weight-bold">{{ trendingDetails.todaysPriceBehaviour }}</span>
-          <span *ngIf="trendingDetails.todaysPriceBehaviour">
-            <span *ngIf="trendingDetails.todaysPriceBehaviour.toLowerCase() === 'bullish'">
+        <div class="col-md-3 col-sm-6 col-12 mb-3">
+          <span>Overall Trend - </span>
+          <span *ngIf="trendingDetails.trend">
+            <span *ngIf="trendingDetails.trend == 1">
               <!-- <i class="fas fa-arrow-up"></i> -->
+              <span class="font-weight-bold">Uptrend</span>
               <img src="assets/bullish-trend-icon.png" style="height: 40px; width: 40px" alt="Bullish" />
             </span>
-            <span *ngIf="trendingDetails.todaysPriceBehaviour.toLowerCase() === 'bearish'">
+            <span *ngIf="trendingDetails.trend == -1">
               <!-- <i class="fas fa-arrow-down"></i> -->
+              <span class="font-weight-bold">Downtrend</span>
               <img src="assets/bearish-trend-icon.png" style="height: 40px; width: 40px" alt="Bearish" />
             </span>
-            <span *ngIf="trendingDetails.todaysPriceBehaviour.toLowerCase() === 'neutral'">
+            <span *ngIf="trendingDetails.trend == 0">
               <!-- <i class="fas fa-arrow-right"></i> -->
+              <span class="font-weight-bold">Sideways</span>
               <img src="assets/neutral-trend-icon.png" style="height: 40px; width: 40px" alt="Neutral" />
             </span>
           </span>
         </div>
-        <div class="col-md-4 col-sm-6 col-12 mb-3">
+        <div class="col-md-6 col-sm-6 col-12 mb-3">
           <span>Trend Indicators - </span>
           <span class="font-weight-bold">{{ trendingDetails.trendIndicators }}</span>
           <span *ngIf="trendingDetails.trendIndicators">
@@ -78,7 +88,7 @@
             </span>
           </span>
         </div>
-        <div class="col-md-4 col-sm-6 col-12 mb-3">
+        <div class="col-md-3 col-sm-6 col-12 mb-3">
           <span>Is now the time to buy ? - </span>
           <span *ngIf="trendingDetails.startNewPositionCandle === -1">
             <strong>No</strong>
@@ -95,90 +105,6 @@
           <span *ngIf="trendingDetails.startNewPositionCandle === 0">
             <strong>Neutral</strong>
             <img src="assets/maybe-icon.jpeg" style="height: 40px; width: 40px" alt="Is now the time to buy ?" />
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="card border-0 shadow-lg h-100 px-4 pt-4 pb-1">
-      <div class="row pb-2 mb-3 border-bottom">
-        <div class="col-12 col-md-6 col-lg-6">
-          <div>
-            <span class="h4">{{ activeSymbol }}'s Trend Strength - </span>
-            <span class="font-weight-bold">{{ trendingDetails.trendStrength }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-3 col-sm-6 col-12 mb-3">
-          <span>Daily - </span>
-          <span class="font-weight-bold">{{ trendingDetails.dailyTrendline }}</span>
-          <span *ngIf="trendingDetails.dailyTrendline">
-            <span *ngIf="trendingDetails.dailyTrendline.toLowerCase() === 'uptrend'">
-              <!-- <i class="fas fa-arrow-up"></i> -->
-              <img src="assets/bullish-trend-icon.png" style="height: 40px; width: 40px" alt="Bullish" />
-            </span>
-            <span *ngIf="trendingDetails.dailyTrendline.toLowerCase() === 'downtrend'">
-              <!-- <i class="fas fa-arrow-down"></i> -->
-              <img src="assets/bearish-trend-icon.png" style="height: 40px; width: 40px" alt="Bearish" />
-            </span>
-            <span *ngIf="trendingDetails.dailyTrendline.toLowerCase() === 'sideways trend'">
-              <!-- <i class="fas fa-arrow-right"></i> -->
-              <img src="assets/neutral-trend-icon.png" style="height: 40px; width: 40px" alt="Neutral" />
-            </span>
-          </span>
-        </div>
-        <div class="col-md-3 col-sm-6 col-12 mb-3">
-          <span>Monthly - </span>
-          <span class="font-weight-bold">{{ trendingDetails.monthlyTrendline }}</span>
-          <span *ngIf="trendingDetails.monthlyTrendline">
-            <span *ngIf="trendingDetails.monthlyTrendline.toLowerCase() === 'uptrend'">
-              <!-- <i class="fas fa-arrow-up"></i> -->
-              <img src="assets/bullish-trend-icon.png" style="height: 40px; width: 40px" alt="Bullish" />
-            </span>
-            <span *ngIf="trendingDetails.monthlyTrendline.toLowerCase() === 'downtrend'">
-              <!-- <i class="fas fa-arrow-down"></i> -->
-              <img src="assets/bearish-trend-icon.png" style="height: 40px; width: 40px" alt="Bearish" />
-            </span>
-            <span *ngIf="trendingDetails.monthlyTrendline.toLowerCase() === 'sideways trend'">
-              <!-- <i class="fas fa-arrow-right"></i> -->
-              <img src="assets/neutral-trend-icon.png" style="height: 40px; width: 40px" alt="Neutral" />
-            </span>
-          </span>
-        </div>
-        <div class="col-md-3 col-sm-6 col-12 mb-3">
-          <span>Quarterly - </span>
-          <span class="font-weight-bold">{{ trendingDetails.quaterlyTrendline }}</span>
-          <span *ngIf="trendingDetails.quaterlyTrendline">
-            <span *ngIf="trendingDetails.quaterlyTrendline.toLowerCase() === 'uptrend'">
-              <!-- <i class="fas fa-arrow-up"></i> -->
-              <img src="assets/bullish-trend-icon.png" style="height: 40px; width: 40px" alt="Bullish" />
-            </span>
-            <span *ngIf="trendingDetails.quaterlyTrendline.toLowerCase() === 'downtrend'">
-              <!-- <i class="fas fa-arrow-down"></i> -->
-              <img src="assets/bearish-trend-icon.png" style="height: 40px; width: 40px" alt="Bearish" />
-            </span>
-            <span *ngIf="trendingDetails.quaterlyTrendline.toLowerCase() === 'sideways trend'">
-              <!-- <i class="fas fa-arrow-right"></i> -->
-              <img src="assets/neutral-trend-icon.png" style="height: 40px; width: 40px" alt="Neutral" />
-            </span>
-          </span>
-        </div>
-        <div class="col-md-3 col-sm-6 col-12 mb-3">
-          <span>Yearly - </span>
-          <span class="font-weight-bold">{{ trendingDetails.yearlyTrendline }}</span>
-          <span *ngIf="trendingDetails.yearlyTrendline">
-            <span *ngIf="trendingDetails.yearlyTrendline.toLowerCase() === 'uptrend'">
-              <!-- <i class="fas fa-arrow-up"></i> -->
-              <img src="assets/bullish-trend-icon.png" style="height: 40px; width: 40px" alt="Bullish" />
-            </span>
-            <span *ngIf="trendingDetails.yearlyTrendline.toLowerCase() === 'downtrend'">
-              <!-- <i class="fas fa-arrow-down"></i> -->
-              <img src="assets/bearish-trend-icon.png" style="height: 40px; width: 40px" alt="Bearish" />
-            </span>
-            <span *ngIf="trendingDetails.yearlyTrendline.toLowerCase() === 'sideways trend'">
-              <!-- <i class="fas fa-arrow-right"></i> -->
-              <img src="assets/neutral-trend-icon.png" style="height: 40px; width: 40px" alt="Neutral" />
-            </span>
           </span>
         </div>
       </div>
