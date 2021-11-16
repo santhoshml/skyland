@@ -1,7 +1,11 @@
 <div class="container-fluid" *ngIf="allUserList$ | async as allUserList">
   <div class="w-100 row m-0">
     <div class="col-md-8 col-12 p-0 d-flex align-items-center">
-      <strong *ngIf="tableData" class="pb-2">Total Users Count: {{ tableData.length }}</strong>
+      <!-- <strong *ngIf="tableData" class="pb-2">Total Users Count: {{ tableData.length }}</strong> -->
+      <strong *ngIf="tableData" class="pb-2"
+        >Active Users: {{ getUserCount(tableData, true) }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disabled Users:
+        {{ getUserCount(tableData, false) }}</strong
+      >
     </div>
     <div class="align-items-center col-md-4 col-12 p-0 d-flex justify-content-end">
       <app-table-filter

@@ -19,7 +19,7 @@ export class AllUserListAdminComponent implements OnInit {
   isLoading = false;
   allUserList$: Observable<any>;
   tableData: any = [];
-  private addedRows = 0;
+  addedRowIndex = [];
 
   constructor(
     private router: Router,
@@ -82,7 +82,8 @@ export class AllUserListAdminComponent implements OnInit {
 
   enableViewComments(index: number, arr: string[]) {
     let tableRef = document.getElementById('all-user-list') as HTMLTableElement;
-    let newRow = tableRef.insertRow(index + this.addedRows + 2);
+    let numOfRowsExpanded = this.indexLessThan(index);
+    let newRow = tableRef.insertRow(index + numOfRowsExpanded + 2);
 
     let newCell = newRow.insertCell(0);
     newCell.colSpan = 8;
@@ -100,6 +101,27 @@ export class AllUserListAdminComponent implements OnInit {
       let linebreak = document.createElement('br');
       newCell.appendChild(linebreak);
     }
-    this.addedRows++;
+    this.addedRowIndex.push(index + 1);
+  }
+
+  indexLessThan(index: number) {
+    let count = 0;
+    if (this.addedRowIndex.length > 0) {
+      for (let idx of this.addedRowIndex) {
+        if (idx < index) count++;
+      }
+    }
+    return count;
+  }
+
+  getUserCount(tableData: any, value: boolean) {
+    // console.log(`tableData : ${JSON.stringify(tableData)}`);
+    let count = 0;
+    for (let rec of tableData) {
+      if (rec.isValid === value) {
+        count++;
+      }
+    }
+    return count;
   }
 }
