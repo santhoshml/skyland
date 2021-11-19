@@ -27,6 +27,7 @@ import { AdminControlsModule } from './adminControls/adminControls.module';
 import { RecommendedStockListAdminModule } from './recommendedStockListAdmin/recommendedStockListAdmin.module';
 import { PageNotFoundModule } from './pageNotFound/pageNotFound.module';
 import { TopPicksModule } from './topPicks/topPicks.module';
+import { MyPortfolioModule } from './myPortfolio/myPortfolio.module';
 import { SectorListModule } from './sectorList/sectorList.module';
 import { UptrendingStocksModule } from './uptrendingStocks/uptrendingStocks.module';
 import { AppComponent } from './app.component';
@@ -64,6 +65,7 @@ import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-logi
     DefinitionsModule,
     PageNotFoundModule,
     TopPicksModule,
+    MyPortfolioModule,
     SectorListModule,
     UptrendingStocksModule,
     SubSectorDetailsModule,
