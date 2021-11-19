@@ -148,6 +148,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/allUserListAdmin'], { replaceUrl: true });
   }
 
+  displayAdminControls() {
+    this.router.navigate(['/adminControls'], { replaceUrl: true });
+  }
+
   displayTopStocksFromPast() {
     this.router.navigate(['/recommendedStockListAdmin'], { replaceUrl: true });
   }

@@ -87,6 +87,14 @@
             >
               Admin - Top Stocks History
             </button>
+            <button
+              class="dropdown-item"
+              *ngIf="userProfile.user.profile.acct_type === 'ADMIN'"
+              (click)="displayAdminControls()"
+              translate
+            >
+              Admin Controls
+            </button>
             <button class="dropdown-item" (click)="logout()" translate>Logout</button>
           </div>
         </div>

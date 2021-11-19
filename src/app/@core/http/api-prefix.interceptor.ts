@@ -24,7 +24,7 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
       let userId: string = _credentials.id;
 
       // add token to the request
-      if (request.url.endsWith('/portfolio')) {
+      if (request.url.endsWith('/portfolio') || request.url.endsWith('file_upload')) {
         request = request.clone({
           setHeaders: {
             Authorization: `Bearer ${accessToken}`,

@@ -1,0 +1,109 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <form>
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="newMaxCurrDate"
+              >Update max_curr_date (current value : <span class="font-weight-bold">{{ maxCurrDateValue }}</span
+              >)</label
+            >
+            <p class="small">** DO NOT update unless you sure</p>
+            <p class="success-msg" *ngIf="maxCurrDateUpdateMsg">{{ maxCurrDateUpdateMsg }}</p>
+          </div>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" name="newMaxCurrDate" [(ngModel)]="nextMaxCurrDateValue" />
+          </div>
+          <div class="col-sm-3">
+            <button type="submit" (click)="updateMaxCurrDate()" class="btn btn-primary mb-2">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-6">
+          <button type="submit" (click)="updateTwelveData()" class="btn btn-primary mb-2">Update Twelve Data</button>
+          <p class="success-msg mt-3" *ngIf="updateTwelveDataMsg">{{ updateTwelveDataMsg }}</p>
+        </div>
+        <div class="col-sm-6">
+          <button type="submit" (click)="publishTodayData()" class="btn btn-primary mb-2">Publish Today's data</button>
+          <p class="success-msg mt-3" *ngIf="publishTodayDataMsg">{{ publishTodayDataMsg }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <form [formGroup]="myForm" (ngSubmit)="uploadIndustryFile()">
+        <div class="form-group row mt-3">
+          <div class="col-sm-6">
+            <input
+              formControlName="file"
+              id="file"
+              type="file"
+              class="form-control upload-btn-form"
+              (change)="onFileChange($event)"
+            />
+          </div>
+          <div class="col-sm-6 mt-3 mt-md-0 d-flex justify-content-end">
+            <div>
+              <button class="btn btn-primary" type="submit">Upload</button>
+            </div>
+          </div>
+        </div>
+        <p class="success-msg mt-3" *ngIf="industryFileUploadMsg">{{ industryFileUploadMsg }}</p>
+      </form>
+    </div>
+  </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <form>
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="newSymbol">Add symbol to selected stocks list</label>
+            <p class="small">** DO NOT update unless you sure</p>
+          </div>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" name="newSymbol" [(ngModel)]="newSymbol" />
+          </div>
+          <div class="col-sm-3">
+            <button type="submit" (click)="addSymbolToTopStocks()" class="btn btn-primary mb-2">Submit</button>
+          </div>
+        </div>
+        <p class="success-msg mt-3" *ngIf="addSymbolToTopStocksMsg">{{ addSymbolToTopStocksMsg }}</p>
+      </form>
+    </div>
+  </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <form>
+        <div class="row">
+          <div class="col-sm-9">
+            <label for="newSymbolJSONForAllSymbols"
+              >Add JSON body with the details of symbol to add to daily upload</label
+            >
+            <textarea
+              rows="7"
+              class="form-control"
+              name="newSymbolJSONForAllSymbols"
+              [(ngModel)]="newSymbolJSONForAllSymbols"
+            ></textarea>
+          </div>
+          <div class="col-sm-3">
+            <button
+              type="submit"
+              (click)="addNewSymbolToAllSymbols()"
+              class="btn btn-primary mb-2 justify-content-center align-self-center"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+        <p class="success-msg mt-3" *ngIf="newSymbolJSONForAllSymbolsMsg">{{ newSymbolJSONForAllSymbolsMsg }}</p>
+      </form>
+    </div>
+  </div>
+</div>
