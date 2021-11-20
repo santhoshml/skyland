@@ -23,10 +23,20 @@ export class TopPicksComponent implements OnInit {
   isLoading = false;
   userProfile$: Observable<any>;
   topStocks$: Observable<any>;
+  yourBestStocks$: Observable<any>;
+  favorites$: Observable<any>;
+  watchlist$: Observable<any>;
+  myOpenPositions$: Observable<any>;
+  myClosePositions$: Observable<any>;
+  indexSummary$: Observable<any>;
+  topIndustry$: Observable<any>;
+  hasConfidenceScore = false;
+  newOpenPositionSymbol: string;
+  openPositions: any = [];
   displayNotificationInTopStocks = false;
   topStocksNotificationMsg: string;
-  favorites$: Observable<any>;
   displayNotificationInFavorites = false;
+  isTopIndustry = false;
   favoritesSymbol: string;
 
   sellPrice: string;
@@ -75,6 +85,19 @@ export class TopPicksComponent implements OnInit {
 
     this.topStocks$ = this.service.getTopStocks().pipe(
       map((body) => {
+        return body;
+      })
+    );
+
+    this.indexSummary$ = this.service.getIndexSummary().pipe(
+      map((body) => {
+        return body;
+      })
+    );
+
+    this.topIndustry$ = this.service.getTopIndustry().pipe(
+      map((body) => {
+        this.isTopIndustry = true;
         return body;
       })
     );
@@ -164,6 +187,10 @@ export class TopPicksComponent implements OnInit {
 
   viewAllUptrendingStocks() {
     this.router.navigate(['/uptrendingStocks'], { replaceUrl: true });
+  }
+
+  viewIndustryDetails(id: number) {
+    this.router.navigate([`/subSectorDetails/${id}`], { replaceUrl: true });
   }
 
   onChangeSearch(val: string) {
