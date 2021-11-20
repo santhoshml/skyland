@@ -25,9 +25,9 @@ export class AdminControlsComponent implements OnInit {
   newSymbolJSONForAllSymbols = `{
     "source" : "twelve",
     "symbol" : "VXX12",
-    "exchange" : "CBOE",
-    "name" : "iPath Series B S&P 500 VIX Short-Term Futures ETN",
-    "type" : "Exchange-traded Note"
+    "exchange" : "NASDAQ",
+    "name" : "VXX",
+    "type" : "Common Stock"
   }`;
   maxCurrDateUpdateMsg = null;
   industryFileUploadMsg = null;
