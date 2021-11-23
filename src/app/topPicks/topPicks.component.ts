@@ -73,6 +73,8 @@ export class TopPicksComponent implements OnInit {
       })
     );
 
+    this.readFavorites();
+
     this.topStocks$ = this.service.getTopStocks().pipe(
       map((body) => {
         return body;
@@ -83,8 +85,6 @@ export class TopPicksComponent implements OnInit {
       this.allSymbolData = data;
       this.data = data.slice(0, 15);
     });
-
-    this.readFavorites();
   }
 
   isFavorite(symbol: string) {
@@ -124,15 +124,18 @@ export class TopPicksComponent implements OnInit {
   }
 
   readFavorites() {
-    this.favorites$ = this.service.getFavorites().pipe(
-      map((body) => {
-        // console.log(`yourBestStocks: ${JSON.stringify(body)}`);
-        if (body.list) {
-          this.credentialsService.setFavorites(this.getSymbolArr(body.list));
-          return body.list;
-        }
-      })
-    );
+    this.service
+      .getFavorites()
+      .pipe(
+        map((body) => {
+          // console.log(`yourBestStocks: ${JSON.stringify(body)}`);
+          if (body.list) {
+            this.credentialsService.setFavorites(this.getSymbolArr(body.list));
+            return body.list;
+          }
+        })
+      )
+      .subscribe();
   }
 
   getSymbolArr(list: any) {

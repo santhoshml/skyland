@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
 import { MyPortfolioService } from './myPortfolio.service';
@@ -18,6 +18,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./myPortfolio.component.scss'],
 })
 export class MyPortfolioComponent implements OnInit {
+  @ViewChild('auto') auto;
+
   modalReference: NgbModalRef;
   version: string | null = environment.version;
   isLoading = false;
@@ -162,6 +164,7 @@ export class MyPortfolioComponent implements OnInit {
         buy_date: todayDate,
       });
       this.readOpenPositions();
+      this.auto.clear();
     });
   }
 
@@ -206,7 +209,7 @@ export class MyPortfolioComponent implements OnInit {
   readOpenPositions() {
     this.myOpenPositions$ = this.service.getOpenPositions().pipe(
       map((body) => {
-        // console.log(`my open positions : ${JSON.stringify(body)}`);
+        console.log(`my open positions : ${JSON.stringify(body)}`);
         this.openPositions = body;
         return body;
       })
