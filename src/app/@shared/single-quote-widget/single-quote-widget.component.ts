@@ -12,6 +12,7 @@ import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 export class SingleQuoteWidgetComponent implements OnInit, AfterViewInit {
   @Input() symbol: string = '';
   @Input() exchange: string = '';
+  @Input() width: string = '';
   widgetId: string;
   infoWidgetOptions = {
     showSymbolLogo: true,
@@ -54,7 +55,10 @@ export class SingleQuoteWidgetComponent implements OnInit, AfterViewInit {
   }
 
   loadWidget(symbol: string) {
+    console.log(this.width, '----', this.symbol, '-----', this.exchange);
     this.infoWidgetOptions['symbol'] = symbol;
+    const widgetWidth = this.width ? this.width : 300;
+    this.infoWidgetOptions['width'] = Number(widgetWidth);
     this.symbolDetailsService.loadTradingViewScript(this.widgetId, 'embed-widget-single-quote', this.infoWidgetOptions);
   }
 

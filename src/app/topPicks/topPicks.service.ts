@@ -6,6 +6,8 @@ import { map, catchError } from 'rxjs/operators';
 const routes = {
   topStocks: () => `/stocks/top`,
   yourBest: () => `/predictions/2/addLimit/1`,
+  indexSummary: () => `/index/summary`,
+  topIndustry: () => `/industry/top`,
   addOpenPositions: () => `/user/v2/txn/open`,
   getOpenPositions: () => `/user/txn/open`,
   closePositions: () => `/user/txn/close`,
@@ -158,6 +160,49 @@ export class TopPicksService {
         map((body: any) => body),
         catchError((err) => {
           // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  // getIndexSummary(): Observable<any> {
+  //   debugger;
+  //   return this.httpClient
+  //     .get(routes.indexSummary(), {
+  //       withCredentials: true,
+  //     })
+  //     .pipe(
+  //       map((body: any) => {
+  //         debugger;
+  //         return body;
+  //       }),
+  //       catchError((err) => {
+  //         return throwError(err);
+  //       })
+  //     );
+  // }
+
+  getIndexSummary(): Observable<any> {
+    return this.httpClient
+      .get(routes.indexSummary(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          return throwError(err);
+        })
+      );
+  }
+
+  getTopIndustry(): Observable<any> {
+    return this.httpClient
+      .get(routes.topIndustry(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
           return throwError(err);
         })
       );

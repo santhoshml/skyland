@@ -25,16 +25,16 @@
           <span translate>Home</span>
         </a>
         <a class="nav-item nav-link mr-3" routerLink="/myPortfolio" routerLinkActive="active">
-          <span translate>My Portfolio</span>
+          <span translate>Portfolio</span>
         </a>
         <a class="nav-item nav-link mr-3" routerLink="/listCards" routerLinkActive="active">
           <span translate>Ideas</span>
         </a>
         <a class="nav-item nav-link mr-3" routerLink="/sectorList" routerLinkActive="active">
-          <span translate>Group-by-Sector</span>
+          <span translate>Sector</span>
         </a>
         <a class="nav-item nav-link mr-3" routerLink="/industryList" routerLinkActive="active">
-          <span translate>Group-by-Industry</span>
+          <span translate>Industry</span>
         </a>
         <!-- <a class="nav-item nav-link mr-3" routerLink="/uploadPortfolio" routerLinkActive="active">
           <span translate>Upload_history</span>
@@ -139,7 +139,7 @@
 
 <ng-template #mymodal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Thank you for the feedback !</h4>
+    <h4 class="modal-title" id="modal-basic-title">Please give us your thoughts.</h4>
   </div>
   <div class="modal-body">
     <textarea
@@ -154,6 +154,6 @@
     <button type="button" class="btn btn-secondary btn-sm" aria-label="Close" (click)="modal.dismiss('Cross click')">
       Close
     </button>
-    <button type="button" class="btn btn btn-primary btn-sm" (click)="modal.close('Save click')">Update</button>
+    <button type="button" class="btn btn btn-primary btn-sm" (click)="modal.close('Save click')">Send</button>
   </div>
 </ng-template>

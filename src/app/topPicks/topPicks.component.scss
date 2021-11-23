@@ -10,6 +10,22 @@
   color: #999;
 }
 
+.horizontal-scroll {
+  overflow-x: auto;
+  white-space: nowrap;
+  display: inherit;
+  .scroll-container {
+    display: inline-table;
+    float: none;
+    vertical-align: top;
+  }
+}
+
+.summary-card {
+  border-radius: 10px;
+  width: 300px;
+}
+
 .normal-card-footer {
   font-size: 14px;
 }
