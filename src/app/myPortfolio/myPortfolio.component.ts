@@ -64,7 +64,6 @@ export class MyPortfolioComponent implements OnInit {
   // pie chart
   pieTrendData = [];
   // options
-  pieView: any[] = [500, 400];
   pieGradient: boolean = true;
   pieShowLegend: boolean = true;
   pieShowLabels: boolean = true;
