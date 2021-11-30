@@ -270,29 +270,6 @@ export class MyPortfolioComponent implements OnInit {
     });
   }
 
-  // removeFromFavorites(symbol: string) {
-  //   this.googleAnalyticsService.eventEmitter(
-  //     'myPortfolio',
-  //     'favorites',
-  //     'removeFromFavorites',
-  //     'removeFromFavorites',
-  //     0,
-  //     this.credentialsService.credentials.email
-  //   );
-  //   this.symbolDetailsService.removeFromFavorites(symbol).subscribe(
-  //     (data)=>{
-  //     // remove from the list
-  //     let index = -1;
-  //     this.favorites.find((item, i)=> {
-  //       if(item.symbol === symbol){
-  //         index=i;
-  //       }
-  //     });
-  //     this.favorites.splice(index, 1);
-  //     this.credentialsService.setFavorites(this.getSymbolArr(this.favorites));
-  //   });
-  // }
-
   addOpenPositions() {
     let formvalue = this.openPositionsForm.value;
     // console.log(`formvalue: ${JSON.stringify(formvalue)}`);
@@ -363,19 +340,12 @@ export class MyPortfolioComponent implements OnInit {
   }
 
   readOpenPositions() {
-    this.service
-      .getOpenPositions()
-      .pipe(
-        map((body) => {
-          this.openPositions = body;
+    this.service.getOpenPositions().subscribe((body) => {
+      this.openPositions = body;
 
-          this.setPieChartData(body);
-          this.setTreeMapData(body);
-
-          return body;
-        })
-      )
-      .subscribe();
+      this.setPieChartData(body);
+      this.setTreeMapData(body);
+    });
   }
 
   private setTreeMapData(body: any) {
@@ -433,19 +403,14 @@ export class MyPortfolioComponent implements OnInit {
   }
 
   readFavorites() {
-    this.service
-      .getFavorites()
-      .pipe(
-        map((body) => {
-          // console.log(`yourBestStocks: ${JSON.stringify(body)}`);
-          if (body.list) {
-            this.credentialsService.setFavorites(this.getSymbolArr(body.list));
-            this.favorites = body.list;
-            return body.list;
-          }
-        })
-      )
-      .subscribe();
+    this.service.getFavorites().subscribe((body: any) => {
+      // console.log(`yourBestStocks: ${JSON.stringify(body)}`);
+      if (body.list) {
+        this.credentialsService.setFavorites(this.getSymbolArr(body.list));
+        this.favorites = body.list;
+        return body.list;
+      }
+    });
   }
 
   getSymbolArr(list: any) {
@@ -459,16 +424,11 @@ export class MyPortfolioComponent implements OnInit {
   }
 
   readClosedPositions() {
-    this.service
-      .getClosePositions()
-      .pipe(
-        map((body) => {
-          // console.log(`my close positions : ${JSON.stringify(body)}`);
-          this.closedPositions = body;
-          return body;
-        })
-      )
-      .subscribe();
+    this.service.getClosePositions().subscribe((body) => {
+      // console.log(`my close positions : ${JSON.stringify(body)}`);
+      this.closedPositions = body;
+      return body;
+    });
   }
 
   getClosePrice(event: any) {
