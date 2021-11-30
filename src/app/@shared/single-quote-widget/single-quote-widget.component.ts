@@ -55,7 +55,7 @@ export class SingleQuoteWidgetComponent implements OnInit, AfterViewInit {
   }
 
   loadWidget(symbol: string) {
-    console.log(this.width, '----', this.symbol, '-----', this.exchange);
+    // console.log(this.width, '----', this.symbol, '-----', this.exchange);
     this.infoWidgetOptions['symbol'] = symbol;
     const widgetWidth = this.width ? this.width : 300;
     this.infoWidgetOptions['width'] = Number(widgetWidth);

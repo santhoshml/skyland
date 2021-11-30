@@ -113,7 +113,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngAfterContentInit() {
-    console.log(`In ngAfterContentInit`);
+    // console.log(`In ngAfterContentInit`);
     this.symbolDetailsService.loadTradingViewScript(
       'tickerTapeWidgetHeader',
       'embed-widget-ticker-tape',

@@ -11,6 +11,8 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { MyPortfolioRoutingModule } from './myPortfolio-routing.module';
 import { MyPortfolioComponent } from './myPortfolio.component';
 import { SharedModule } from '@app/@shared';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   imports: [
@@ -21,10 +23,12 @@ import { SharedModule } from '@app/@shared';
     MyPortfolioRoutingModule,
     BrowserModule,
     NgbModule,
+    NgxChartsModule,
     TruncateModule,
     FileUploadModule,
     AutocompleteLibModule,
     SharedModule,
+    NgApexchartsModule,
   ],
   declarations: [MyPortfolioComponent],
 })

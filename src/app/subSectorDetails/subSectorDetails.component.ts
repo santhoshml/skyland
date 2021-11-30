@@ -172,7 +172,7 @@ export class SubSectorDetailsComponent implements OnInit {
   }
 
   addToFavorites(symbol: string) {
-    console.log(`addToFavorites : ${symbol}`);
+    // console.log(`addToFavorites : ${symbol}`);
     this.googleAnalyticsService.eventEmitter(
       'topPicks',
       'favorites',
@@ -189,7 +189,7 @@ export class SubSectorDetailsComponent implements OnInit {
   }
 
   removeFromFavorites(symbol: string) {
-    console.log(`removeFromFavorites : ${symbol}`);
+    // console.log(`removeFromFavorites : ${symbol}`);
     this.googleAnalyticsService.eventEmitter(
       'subSectorDetails',
       'favorites',

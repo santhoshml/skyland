@@ -115,7 +115,7 @@ export class TopPicksComponent implements OnInit {
   }
 
   addToFavorites(symbol: string) {
-    console.log(`addToFavorites : ${symbol}`);
+    // console.log(`addToFavorites : ${symbol}`);
     this.googleAnalyticsService.eventEmitter(
       'topPicks',
       'favorites',
@@ -125,7 +125,7 @@ export class TopPicksComponent implements OnInit {
       this.credentialsService.credentials.email
     );
     this.symbolDetailsService.addToFavorites(symbol).subscribe((body) => {
-      console.log(`Done addToFavorites`);
+      // console.log(`Done addToFavorites`);
       this.readFavorites();
     });
   }
@@ -199,14 +199,14 @@ export class TopPicksComponent implements OnInit {
   onChangeSearch(val: string) {
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.
-    console.log(`In onChangeSearch, ${JSON.stringify(val)}`);
+    // console.log(`In onChangeSearch, ${JSON.stringify(val)}`);
     let filteredList = [];
     if (!val || val.length === 0 || !this.allSymbolData) {
       return [];
     } else {
-      console.log(`this.allSymbolData length : ${this.allSymbolData.length}`);
+      // console.log(`this.allSymbolData length : ${this.allSymbolData.length}`);
       let str = val.toLowerCase();
-      console.log(`ste:${str}`);
+      // console.log(`ste:${str}`);
       for (let ele of this.allSymbolData) {
         if (ele.name.toLowerCase().includes(str)) {
           filteredList.push(ele);
@@ -221,7 +221,7 @@ export class TopPicksComponent implements OnInit {
 
   onFocused(e) {
     // do something when input is focused
-    console.log(`In onFocused, ${JSON.stringify(e)}`);
+    // console.log(`In onFocused, ${JSON.stringify(e)}`);
   }
 
   getPrunedValue(value: number) {

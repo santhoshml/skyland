@@ -92,11 +92,11 @@ export class UserProfileComponent implements OnInit {
 
     // set user profile
     this.userProfile = this.credentialsService.userProfileModel;
-    console.log(`this.userProfile : ${JSON.stringify(this.userProfile)}`);
+    // console.log(`this.userProfile : ${JSON.stringify(this.userProfile)}`);
 
     this.userDetails$ = this.userProfileService.getUserDetails().pipe(
       map((body: any, headers: any) => {
-        console.log(`In userDetails body: ${JSON.stringify(body)}`);
+        // console.log(`In userDetails body: ${JSON.stringify(body)}`);
         // console.log(`headers: ${JSON.stringify(headers)}`);
         this.googleAnalyticsService.eventEmitter(
           'userProfile-response',
@@ -114,7 +114,7 @@ export class UserProfileComponent implements OnInit {
           expertise: body.user.profile.expertise,
         });
         this.userProfileForm.controls['email'].disable();
-        console.log(`body: ${JSON.stringify(body)}`);
+        // console.log(`body: ${JSON.stringify(body)}`);
         return body;
       }),
       catchError((err) => {
@@ -181,7 +181,7 @@ export class UserProfileComponent implements OnInit {
 
   updateUserDetails() {
     let formvalue = this.userProfileForm.value;
-    console.log(`formvalue: ${JSON.stringify(formvalue)}`);
+    // console.log(`formvalue: ${JSON.stringify(formvalue)}`);
     this.userProfileService.updateUserDetails(formvalue).subscribe((data) => {
       this.displayUpdatNotif = true;
     });
