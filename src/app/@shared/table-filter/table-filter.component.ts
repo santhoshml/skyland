@@ -17,7 +17,7 @@ export class TableFilterComponent implements OnInit {
 
   constructor() {
     this.filter = new FormControl('');
-    this.filter$ = this.filter.valueChanges.pipe(debounceTime(1000), startWith(''));
+    this.filter$ = this.filter.valueChanges.pipe(debounceTime(10), startWith(''));
   }
 
   ngOnInit(): void {

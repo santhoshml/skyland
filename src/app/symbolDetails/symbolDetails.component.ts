@@ -223,6 +223,15 @@ export class SymbolDetailsComponent implements OnInit {
         if (exchange) {
           this.completeSymbol = `${exchange}:${this.activeSymbol}`;
         }
+
+        // init InfoWidget
+        this.loadInfoWidget(this.completeSymbol);
+
+        // load chart
+        this.loadChart(this.completeSymbol);
+
+        // technical info widget
+        this.loadTechnicalInfoWidget(this.completeSymbol);
       });
 
       this.symbolDetailsResp$ = this.symbolDetailsService.getListDetails(this.activeSymbol).pipe(
@@ -282,39 +291,6 @@ export class SymbolDetailsComponent implements OnInit {
         this.userNotes = data.notes;
       });
 
-      // init InfoWidget
-      let infoWidgetOptions = {
-        symbol: this.completeSymbol,
-        width: '100%',
-        locale: 'en',
-        colorTheme: 'light',
-        isTransparent: true,
-      };
-      this.symbolDetailsService.loadTradingViewScript(
-        'symbolInfoWidget',
-        'embed-widget-symbol-info',
-        infoWidgetOptions
-      );
-
-      // load chart
-      this.loadChart(this.completeSymbol);
-
-      // technical info widget
-      let technicalsInfoWIdget = {
-        interval: '1D',
-        isTransparent: true,
-        height: 410,
-        symbol: this.completeSymbol,
-        showIntervalTabs: true,
-        locale: 'en',
-        colorTheme: 'light',
-      };
-      this.symbolDetailsService.loadTradingViewScript(
-        'symbolTechnicalsWidget',
-        'embed-widget-technical-analysis',
-        technicalsInfoWIdget
-      );
-
       this.symbolIndustryDetailsResp$ = this.symbolDetailsService.getSymbolIndustryDetails(this.activeSymbol);
     });
 
@@ -322,6 +298,34 @@ export class SymbolDetailsComponent implements OnInit {
     this.userModelTags = this.credentialsService.userProfileModel
       ? this.credentialsService.userProfileModel.selected_params
       : [];
+  }
+
+  private loadTechnicalInfoWidget(symbol) {
+    let technicalsInfoWIdget = {
+      interval: '1D',
+      isTransparent: true,
+      height: 410,
+      symbol: symbol,
+      showIntervalTabs: true,
+      locale: 'en',
+      colorTheme: 'light',
+    };
+    this.symbolDetailsService.loadTradingViewScript(
+      'symbolTechnicalsWidget',
+      'embed-widget-technical-analysis',
+      technicalsInfoWIdget
+    );
+  }
+
+  private loadInfoWidget(symbol) {
+    let infoWidgetOptions = {
+      symbol: symbol,
+      width: '100%',
+      locale: 'en',
+      colorTheme: 'light',
+      isTransparent: true,
+    };
+    this.symbolDetailsService.loadTradingViewScript('symbolInfoWidget', 'embed-widget-symbol-info', infoWidgetOptions);
   }
 
   getAnalystReccomendationValue(name: string) {

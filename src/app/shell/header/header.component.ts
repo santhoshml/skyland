@@ -221,21 +221,33 @@ export class HeaderComponent implements OnInit {
       return [];
     } else {
       let filteredList = [];
+      let filteredNameStartsWithList = [];
       let filteredSymbol = [];
+      let filteredSymbolStartsWith = [];
       let filteredMatchingSymbol = [];
       let str = val.toLowerCase();
       for (let ele of this.allSymbolData) {
-        const symbol = ele.id.toLowerCase();
-        const name = ele.name.toLowerCase().split(symbol)[1];
+        const symbol = ele.id.toLowerCase().trim();
+        const name = ele.name.toLowerCase().split('-')[1].trim();
         if (symbol === str) {
           filteredSymbol.push(ele);
+        } else if (symbol.startsWith(str)) {
+          filteredSymbolStartsWith.push(ele);
         } else if (symbol.includes(str)) {
           filteredMatchingSymbol.push(ele);
+        } else if (name.startsWith(str)) {
+          filteredNameStartsWithList.push(ele);
         } else if (name.includes(str)) {
           filteredList.push(ele);
         }
       }
-      this.data = [...filteredSymbol, ...filteredMatchingSymbol, ...filteredList];
+      this.data = [
+        ...filteredSymbol,
+        ...filteredSymbolStartsWith,
+        ...filteredMatchingSymbol,
+        ...filteredNameStartsWithList,
+        ...filteredList,
+      ];
     }
   }
 
