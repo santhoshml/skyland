@@ -64,7 +64,6 @@ export class MyPortfolioComponent implements OnInit {
   // pie chart
   pieTrendData = [];
   // options
-  pieGradient: boolean = true;
   pieShowLegend: boolean = true;
   pieShowLabels: boolean = true;
   isPieDoughnut: boolean = false;
@@ -99,6 +98,7 @@ export class MyPortfolioComponent implements OnInit {
     private modalService: NgbModal
   ) {
     this.chartOptions = {
+      redrawOnWindowResize: true,
       series: [
         {
           data: [],
@@ -348,6 +348,7 @@ export class MyPortfolioComponent implements OnInit {
   }
 
   private setTreeMapData(body: any) {
+    debugger;
     console.log('In setTreeMapData');
     this.chartOptions.series[0].data = [];
     for (let row of body) {
@@ -469,7 +470,7 @@ export class MyPortfolioComponent implements OnInit {
 
   deleteOpenPosition(id: number) {
     console.log(`In deleteOpenPosition, id: ${id}`);
-
+    this.chartOptions.series[0].data = [];
     this.service.deleteOpenPosition(id).subscribe((data) => {
       let index = -1;
       this.openPositions.find((item, i) => {
@@ -479,6 +480,7 @@ export class MyPortfolioComponent implements OnInit {
       });
       this.openPositions.splice(index, 1);
       this.setPieChartData(this.openPositions);
+      //
       this.setTreeMapData(this.openPositions);
     });
   }
