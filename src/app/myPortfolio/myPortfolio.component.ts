@@ -64,6 +64,7 @@ export class MyPortfolioComponent implements OnInit {
   // pie chart
   pieTrendData = [];
   // options
+  pieGradient: boolean = true;
   pieShowLegend: boolean = true;
   pieShowLabels: boolean = true;
   isPieDoughnut: boolean = false;
@@ -275,6 +276,7 @@ export class MyPortfolioComponent implements OnInit {
     formvalue.symbol = this.newOpenPositionSymbol.toUpperCase();
     formvalue.buy_date = moment(formvalue.buy_date, 'MM/DD/YYYY').format('YYYY-MM-DD');
     this.newOpenPositionSymbol = formvalue.symbol;
+    this.chartOptions.series[0].data = [];
     this.service.addOpenPosition(formvalue).subscribe((data) => {
       let todayDate = moment().format('MM/DD/YYYY');
       // console.log(`In addOpenPositions: ${JSON.stringify(data)}`);
@@ -348,8 +350,6 @@ export class MyPortfolioComponent implements OnInit {
   }
 
   private setTreeMapData(body: any) {
-    debugger;
-    console.log('In setTreeMapData');
     this.chartOptions.series[0].data = [];
     for (let row of body) {
       let gainAmt = Math.round(this.getGainAmount(row));
@@ -361,7 +361,6 @@ export class MyPortfolioComponent implements OnInit {
   }
 
   private setPieChartData(list: any) {
-    console.log('In setPieChartData');
     let uptrendPositionList = list.filter((rec) => rec.trend == 1);
     let downtrendPositionList = list.filter((rec) => rec.trend == -1);
     let neutralPositionList = list.filter((rec) => rec.trend == 0);
@@ -469,7 +468,7 @@ export class MyPortfolioComponent implements OnInit {
   }
 
   deleteOpenPosition(id: number) {
-    console.log(`In deleteOpenPosition, id: ${id}`);
+    // console.log(`In deleteOpenPosition, id: ${id}`);
     this.chartOptions.series[0].data = [];
     this.service.deleteOpenPosition(id).subscribe((data) => {
       let index = -1;

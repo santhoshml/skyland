@@ -17,7 +17,6 @@ export class TrendDetailsComponent implements OnInit {
     this.symbolDetailsService.activeSymbol.subscribe({
       next: (symbol) => {
         this.activeSymbol = symbol;
-        console.log(`observerA: ${symbol}`);
         this.openTrendDetailsPopup(symbol);
       },
     });

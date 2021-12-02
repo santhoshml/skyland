@@ -66,7 +66,7 @@ export class AdminControlsComponent implements OnInit {
   getMaxCurrDate() {
     this.authenticationService.getConfigValue('max_curr_date').subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         this.maxCurrDateValue = data.value_str;
         this.nextMaxCurrDateValue = moment().format('YYYY-MM-DD');
       },
@@ -123,7 +123,7 @@ export class AdminControlsComponent implements OnInit {
 
     this.service.uploadIndustryFile(formData).subscribe((res) => {
       if (res.status === 'success') {
-        console.log(res);
+        // console.log(res);
         this.myForm.reset();
         this.industryFileUploadMsg = 'Industry File Uploaded succesfully';
       }
