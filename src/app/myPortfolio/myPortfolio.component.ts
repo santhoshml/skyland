@@ -52,7 +52,7 @@ export class MyPortfolioComponent implements OnInit {
   sellPrice: string;
   sellDate: string;
   buyPrice: number;
-  qty: number;
+  qty: number = 100;
   sellQty: number;
   selectedPortfolioSymbol: any;
 
@@ -444,6 +444,7 @@ export class MyPortfolioComponent implements OnInit {
 
   enableClosePositionFlag(content: any, list: any) {
     this.selectedPortfolioSymbol = list;
+    this.chartOptions.series[0].data = [];
     let openPosition = this.getOpenPositionById(list.id);
     this.sellPrice = openPosition.close;
     if (Math.round(openPosition.buy_qty) == openPosition.buy_qty) {
@@ -455,12 +456,21 @@ export class MyPortfolioComponent implements OnInit {
     this.modalReference = this.modalService.open(content, { ariaLabelledBy: 'closePosition-modal-popup' });
   }
 
-  updatePopupPosition(content: any, list: any) {
-    this.selectedPortfolioSymbol = list;
-    let openPosition = this.getOpenPositionById(list.id);
-    this.buyPrice = 0;
-    this.qty = 0;
+  updatePopupPosition(content: any, rec: any) {
+    // console.log(`In updatePopupPosition : ${JSON.stringify(rec)}`);
+    this.selectedPortfolioSymbol = rec;
+    let openPosition = this.getOpenPositionById(rec.id);
+    this.qty = 100;
+    this.getClosePriceForUpdatePopup(rec.symbol);
     this.modalReference = this.modalService.open(content, { ariaLabelledBy: 'updatePosition-modal-popup' });
+  }
+
+  getClosePriceForUpdatePopup(symbol: string) {
+    // console.log(`symbol: ${symbol}`);
+    this.service.getPriceObject(symbol).subscribe((data) => {
+      // console.log(`In getClosePrice, data:${JSON.stringify(data)}`);
+      this.buyPrice = data.close;
+    });
   }
 
   getOpenPositionById(id: number) {

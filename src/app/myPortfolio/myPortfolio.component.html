@@ -349,7 +349,7 @@
                       <th class="text-center" scope="col">Buy Price</th>
                       <th class="text-center" scope="col">Sell Price</th>
                       <th class="text-center" scope="col">Gain/Loss</th>
-                      <th class="text-center" scope="col"># days</th>
+                      <!-- <th class="text-center" scope="col"># days</th> -->
                     </tr>
                   </thead>
                   <tbody>
@@ -374,10 +374,10 @@
                       <td class="text-right roi">
                         {{ txn.roi / 100 | percent }}
                       </td>
-                      <td class="text-right days">
+                      <!-- <td class="text-right days">
                         <span *ngIf="txn.hold_days > 0">{{ txn.hold_days }}</span>
                         <span *ngIf="txn.hold_days === -1">N/A</span>
-                      </td>
+                      </td> -->
                     </tr>
                   </tbody>
                 </table>
