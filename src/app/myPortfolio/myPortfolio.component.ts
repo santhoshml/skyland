@@ -540,26 +540,83 @@ export class MyPortfolioComponent implements OnInit {
     }
   }
 
+  // onChangeSearch(val: string) {
+  //   // fetch remote data from here
+  //   // And reassign the 'data' which is binded to 'data' property.
+  //   // console.log(`In onChangeSearch, ${JSON.stringify(val)}`);
+  //   let filteredList = [];
+  //   if (!val || val.length === 0 || !this.allSymbolData) {
+  //     return [];
+  //   } else {
+  //     // console.log(`this.allSymbolData length : ${this.allSymbolData.length}`);
+  //     let str = val.toLowerCase();
+  //     // console.log(`ste:${str}`);
+  //     for (let ele of this.allSymbolData) {
+  //       if (ele.name.toLowerCase().includes(str)) {
+  //         filteredList.push(ele);
+  //       }
+  //       if (filteredList.length >= 15) {
+  //         this.data = filteredList;
+  //       }
+  //     }
+  //     this.data = filteredList;
+  //   }
+  // }
+
+  searchStr = '';
   onChangeSearch(val: string) {
+    let startTime = new Date().getTime();
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.
-    // console.log(`In onChangeSearch, ${JSON.stringify(val)}`);
-    let filteredList = [];
+    // console.log(`val : ${val}`);
+
     if (!val || val.length === 0 || !this.allSymbolData) {
+      this.searchStr = '';
       return [];
     } else {
-      // console.log(`this.allSymbolData length : ${this.allSymbolData.length}`);
       let str = val.toLowerCase();
-      // console.log(`ste:${str}`);
-      for (let ele of this.allSymbolData) {
-        if (ele.name.toLowerCase().includes(str)) {
-          filteredList.push(ele);
+      if (str != this.searchStr) {
+        let filteredList = [];
+        let filteredNameStartsWithList = [];
+        let filteredSymbol = [];
+        let filteredSymbolStartsWith = [];
+        let filteredMatchingSymbol = [];
+
+        let initialArr = this.data;
+        if (!this.searchStr || this.searchStr.length === 0 || (str && str.length < this.searchStr.length)) {
+          initialArr = this.allSymbolData;
         }
-        if (filteredList.length >= 15) {
-          this.data = filteredList;
+
+        for (let ele of initialArr) {
+          const len = str.length;
+          const symbol = len <= 6 ? ele.id.toLowerCase().trim() : null;
+          const name = ele.name.toLowerCase().split('-')[1].trim();
+
+          if (len <= 6 && symbol === str) {
+            filteredSymbol.push(ele);
+          } else if (len <= 6 && symbol.startsWith(str)) {
+            filteredSymbolStartsWith.push(ele);
+          } else if (len <= 6 && symbol.includes(str)) {
+            filteredMatchingSymbol.push(ele);
+          } else if (name.startsWith(str)) {
+            filteredNameStartsWithList.push(ele);
+          } else if (name.includes(str)) {
+            filteredList.push(ele);
+          }
         }
+        this.searchStr = str;
+
+        this.data = [
+          ...filteredSymbol,
+          ...filteredSymbolStartsWith,
+          ...filteredMatchingSymbol,
+          ...filteredNameStartsWithList,
+          ...filteredList,
+        ];
+
+        let endTime = new Date().getTime();
+        console.log(`time for search  : ${endTime - startTime} ms`);
       }
-      this.data = filteredList;
     }
   }
 

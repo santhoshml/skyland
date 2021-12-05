@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { AuthenticationService, CredentialsService } from '@app/auth';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, ignoreElements } from 'rxjs/operators';
 import { HeaderService } from './header.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { UserProfileService } from '@app/userProfile/userProfile.service';
@@ -97,6 +97,7 @@ export class HeaderComponent implements OnInit {
     this.service.getAllSymbols().subscribe((data) => {
       this.allSymbolData = data;
       this.data = data.slice(0, 15);
+      // this.data = data;
     });
 
     this.userProfile$ = this.userProfileService.getUserDetails();
@@ -214,40 +215,60 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  searchStr = '';
   onChangeSearch(val: string) {
+    let startTime = new Date().getTime();
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.
+    // console.log(`val : ${val}`);
+
     if (!val || val.length === 0 || !this.allSymbolData) {
+      this.searchStr = '';
       return [];
     } else {
-      let filteredList = [];
-      let filteredNameStartsWithList = [];
-      let filteredSymbol = [];
-      let filteredSymbolStartsWith = [];
-      let filteredMatchingSymbol = [];
       let str = val.toLowerCase();
-      for (let ele of this.allSymbolData) {
-        const symbol = ele.id.toLowerCase().trim();
-        const name = ele.name.toLowerCase().split('-')[1].trim();
-        if (symbol === str) {
-          filteredSymbol.push(ele);
-        } else if (symbol.startsWith(str)) {
-          filteredSymbolStartsWith.push(ele);
-        } else if (symbol.includes(str)) {
-          filteredMatchingSymbol.push(ele);
-        } else if (name.startsWith(str)) {
-          filteredNameStartsWithList.push(ele);
-        } else if (name.includes(str)) {
-          filteredList.push(ele);
+      if (str != this.searchStr) {
+        let filteredList = [];
+        let filteredNameStartsWithList = [];
+        let filteredSymbol = [];
+        let filteredSymbolStartsWith = [];
+        let filteredMatchingSymbol = [];
+
+        let initialArr = this.data;
+        if (!this.searchStr || this.searchStr.length === 0 || (str && str.length < this.searchStr.length)) {
+          initialArr = this.allSymbolData;
         }
+
+        for (let ele of initialArr) {
+          const len = str.length;
+          const symbol = len <= 6 ? ele.id.toLowerCase().trim() : null;
+          const name = ele.name.toLowerCase().split('-')[1].trim();
+
+          if (len <= 6 && symbol === str) {
+            filteredSymbol.push(ele);
+          } else if (len <= 6 && symbol.startsWith(str)) {
+            filteredSymbolStartsWith.push(ele);
+          } else if (len <= 6 && symbol.includes(str)) {
+            filteredMatchingSymbol.push(ele);
+          } else if (name.startsWith(str)) {
+            filteredNameStartsWithList.push(ele);
+          } else if (name.includes(str)) {
+            filteredList.push(ele);
+          }
+        }
+        this.searchStr = str;
+
+        this.data = [
+          ...filteredSymbol,
+          ...filteredSymbolStartsWith,
+          ...filteredMatchingSymbol,
+          ...filteredNameStartsWithList,
+          ...filteredList,
+        ];
+
+        let endTime = new Date().getTime();
+        console.log(`time for search  : ${endTime - startTime} ms`);
       }
-      this.data = [
-        ...filteredSymbol,
-        ...filteredSymbolStartsWith,
-        ...filteredMatchingSymbol,
-        ...filteredNameStartsWithList,
-        ...filteredList,
-      ];
     }
   }
 
