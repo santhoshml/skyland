@@ -194,11 +194,17 @@
                     {{ topStock.volume | number }}
                   </td> -->
                   <td class="text-right dividend">
-                    <span *ngIf="!topStock.dividendYield || topStock.dividendYield == '0'">-</span>
-                    <span *ngIf="topStock.dividendYield != '0'">{{ topStock.dividendYield | percent: '1.0-2' }}</span>
+                    <span
+                      *ngIf="!topStock.dividendYield || topStock.dividendYield == '0' || topStock.dividendYield == '-'"
+                      >-</span
+                    >
+                    <span *ngIf="topStock.dividendYield != '0' && topStock.dividendYield != '-'">{{
+                      topStock.dividendYield | percent: '1.0-2'
+                    }}</span>
                   </td>
                   <td class="text-right pe-ratio">
-                    {{ topStock.peRatio | number: '1.0-2' }}
+                    <span *ngIf="topStock.peRatio != '-'">{{ topStock.peRatio | number: '1.0-2' }}</span>
+                    <span *ngIf="topStock.peRatio == '-'">{{ topStock.peRatio }}</span>
                   </td>
                   <td class="text-right">
                     {{ getPrunedValue(topStock.marketcap) }}

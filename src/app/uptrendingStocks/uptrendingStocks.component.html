@@ -96,13 +96,21 @@
                   {{ uptrendingStock.volume | number }}
                 </td> -->
                 <td class="text-right dividend">
-                  <span *ngIf="!uptrendingStock.dividendYield || uptrendingStock.dividendYield == '0'">-</span>
-                  <span *ngIf="uptrendingStock.dividendYield != '0'">{{
+                  <span
+                    *ngIf="
+                      !uptrendingStock.dividendYield ||
+                      uptrendingStock.dividendYield == '0' ||
+                      uptrendingStock.dividendYield == '-'
+                    "
+                    >-</span
+                  >
+                  <span *ngIf="uptrendingStock.dividendYield != '0' && uptrendingStock.dividendYield != '0'">{{
                     uptrendingStock.dividendYield | percent: '1.0-2'
                   }}</span>
                 </td>
                 <td class="text-right pe-ratio">
-                  {{ uptrendingStock.peRatio | number: '1.0-2' }}
+                  <span *ngIf="uptrendingStock.peRatio != '-'">{{ uptrendingStock.peRatio | number: '1.0-2' }}</span>
+                  <span *ngIf="uptrendingStock.peRatio == '-'">{{ uptrendingStock.peRatio }}</span>
                 </td>
                 <td class="text-right">
                   {{ getPrunedValue(uptrendingStock.marketcap) }}

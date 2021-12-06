@@ -487,11 +487,17 @@
                     {{ favorite.volume | number }}
                   </td> -->
                   <td class="text-center dividend">
-                    <span *ngIf="!favorite.dividendYield || favorite.dividendYield == '0'">-</span>
-                    <span *ngIf="favorite.dividendYield != '0'">{{ favorite.dividendYield | percent: '1.0-2' }}</span>
+                    <span
+                      *ngIf="!favorite.dividendYield || favorite.dividendYield == '0' || favorite.dividendYield == '-'"
+                      >-</span
+                    >
+                    <span *ngIf="favorite.dividendYield != '0' && favorite.dividendYield != '-'">{{
+                      favorite.dividendYield | percent: '1.0-2'
+                    }}</span>
                   </td>
                   <td class="text-center pe-ratio">
-                    {{ favorite.peRatio | number: '1.0-2' }}
+                    <span *ngIf="favorite.peRatio != '-'">{{ favorite.peRatio | number: '1.0-2' }}</span>
+                    <span *ngIf="favorite.peRatio == '-'">-</span>
                   </td>
                   <td class="text-right market-cap">
                     {{ getPrunedValue(favorite.marketcap) }}
