@@ -9,6 +9,7 @@ import { HeaderService } from './header.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { UserProfileService } from '@app/userProfile/userProfile.service';
 import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
+import { MyPortfolioService } from '@app/myPortfolio/myPortfolio.service';
 
 let infoWidgetOptions = {
   symbols: [
@@ -64,6 +65,7 @@ export class HeaderComponent implements OnInit {
   data = [];
   history: string[] = [];
   isBackClicked = false;
+  portfolioValue = 0;
 
   constructor(
     private router: Router,
@@ -74,12 +76,14 @@ export class HeaderComponent implements OnInit {
     private service: HeaderService,
     private modalService: NgbModal,
     private location: Location,
-    private symbolDetailsService: SymbolDetailsService
+    private symbolDetailsService: SymbolDetailsService,
+    private portFolioService: MyPortfolioService
   ) {}
 
   ngOnInit() {
     // get UserModelProfile
     this.authenticationService.getUserModelProfile().subscribe();
+    this.getPortFolioValue();
 
     // get date from config
     this.webDisplayDate$ = this.authenticationService.getConfigValue('web_data_display_date').pipe(
@@ -120,6 +124,17 @@ export class HeaderComponent implements OnInit {
       'embed-widget-ticker-tape',
       infoWidgetOptions
     );
+  }
+
+  getPortFolioValue() {
+    this.portFolioService.getOpenPositions().subscribe((res) => {
+      let pfValue = 0;
+      res.forEach((val) => {
+        pfValue = pfValue + (val.buy_qty - val.sell_qty);
+        console.log(pfValue);
+      });
+      this.portfolioValue = pfValue;
+    });
   }
 
   backClicked() {
