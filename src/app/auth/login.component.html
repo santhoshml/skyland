@@ -100,6 +100,7 @@
                 formControlName="displayName"
                 autocomplete="name"
                 [placeholder]="'Display Name' | translate"
+                required
               />
               <span hidden translate>Email</span>
               <small
@@ -117,6 +118,7 @@
                 formControlName="email"
                 autocomplete="email"
                 [placeholder]="'Email' | translate"
+                required
               />
               <span hidden translate>Email</span>
               <small
@@ -134,9 +136,17 @@
                 formControlName="phone"
                 autocomplete="phone"
                 [placeholder]="'Phone' | translate"
+                required
               />
               <p class="std-msg-text">Standard call, messaging or data rates may apply.</p>
               <span hidden translate>Phone</span>
+              <small
+                [hidden]="accountForm.controls.phone.valid || accountForm.controls.phone.untouched"
+                class="text-danger"
+                translate
+              >
+                Phone number is required
+              </small>
             </label>
             <label class="d-block mt-3">
               <input
@@ -155,6 +165,30 @@
               >
                 Password is required
               </small>
+            </label>
+            <label class="d-block mt-3">
+              <div class="dropdown">
+                <button
+                  class="btn btn-info btn-block dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  {{ refferedByVal }}
+                </button>
+                <ul dropdownMenu class="dropdown-menu" role="menu">
+                  <li
+                    *ngFor="let refferedBy of refferedByList"
+                    value="{{ refferedBy }}"
+                    (click)="selectRefValue(refferedBy)"
+                    class="dropdown-item"
+                  >
+                    {{ refferedBy }}
+                  </li>
+                </ul>
+              </div>
             </label>
           </div>
           <button class="btn btn-primary btn-lg w-100 mb-1" type="submit" [disabled]="accountForm.invalid || isLoading">

@@ -182,13 +182,14 @@ export class AuthenticationService {
    * @param context The CreateAccountContext parameters.
    * @return The user credentials.
    */
-  createAccount(context: CreateAccountContext): Observable<Credentials | any> {
+  createAccount(context: CreateAccountContext, referredBy: string): Observable<Credentials | any> {
     // Replace by proper authentication call
     let createAccountData = {
       email: context.email,
       password: context.password,
       displayName: context.displayName,
       phone: context.phone,
+      referredBy: referredBy,
     };
     return this.httpClient.post(routes.createAccount(), createAccountData).pipe(
       map((body: any) => {

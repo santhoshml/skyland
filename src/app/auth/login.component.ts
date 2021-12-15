@@ -71,6 +71,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   };
   resetPasswordInfo = true;
 
+  refferedByList = ['Google', 'Facebook', 'Twitter', 'Instagram', 'Sacramento State University', 'UC Davis'];
+  referredByStr = 'Referred by';
+  refferedByVal = null;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -100,6 +104,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     //   console.log(`user: ${JSON.stringify(user)}`);
     // });
 
+    this.refferedByVal = this.referredByStr;
     this.symbolDetailsService.loadTradingViewScript('tickerTapeWidget', 'embed-widget-ticker-tape', infoWidgetOptions);
 
     this.route.params.subscribe((params) => {
@@ -182,7 +187,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     );
 
     this.isLoading = true;
-    const login$ = this.authenticationService.createAccount(this.accountForm.value);
+    let refVal = this.refferedByVal === this.referredByStr ? null : this.refferedByVal;
+    const login$ = this.authenticationService.createAccount(this.accountForm.value, refVal);
     login$
       .pipe(
         finalize(() => {
@@ -319,7 +325,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           displayName: ['', Validators.required],
           email: ['', Validators.required],
           password: ['', Validators.required],
-          phone: [''],
+          phone: ['', Validators.required],
           remember: true,
         });
         break;
@@ -341,5 +347,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
+
+  selectRefValue(val: string) {
+    this.refferedByVal = val;
   }
 }
