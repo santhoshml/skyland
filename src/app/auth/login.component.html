@@ -167,18 +167,34 @@
               </small>
             </label>
             <label class="d-block mt-3">
-              <div class="dropdown">
+              <div ngbDropdown>
+                <button type="button" class="btn btn-block btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+                  {{ refferedByVal }}
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button
+                    type="button"
+                    ngbDropdownItem
+                    *ngFor="let refferedBy of refferedByList"
+                    (click)="selectRefValue(refferedBy)"
+                  >
+                    {{ refferedBy }}
+                  </button>
+                </div>
+              </div>
+              <!-- <div class="dropdown">
                 <button
                   class="btn btn-info btn-block dropdown-toggle"
                   type="button"
                   id="dropdownMenuButton"
+                  ngbDropdownToggle
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
                   {{ refferedByVal }}
                 </button>
-                <ul dropdownMenu class="dropdown-menu" role="menu">
+                <ul ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <li
                     *ngFor="let refferedBy of refferedByList"
                     value="{{ refferedBy }}"
@@ -188,7 +204,7 @@
                     {{ refferedBy }}
                   </li>
                 </ul>
-              </div>
+              </div> -->
             </label>
           </div>
           <button class="btn btn-primary btn-lg w-100 mb-1" type="submit" [disabled]="accountForm.invalid || isLoading">
