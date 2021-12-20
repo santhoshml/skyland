@@ -20,6 +20,7 @@ export class AllUserListAdminComponent implements OnInit {
   allUserList$: Observable<any>;
   tableData: any = [];
   addedRowIndex = [];
+  msgObject = {};
 
   constructor(
     private router: Router,
@@ -38,7 +39,7 @@ export class AllUserListAdminComponent implements OnInit {
       1,
       this.credentialsService.credentials.email
     );
-
+    this.msgObject = {};
     this.allUserList$ = this.allUserListAdminService.getAllUsers();
   }
 
@@ -71,12 +72,23 @@ export class AllUserListAdminComponent implements OnInit {
   enableUser(email: string) {
     this.allUserListAdminService.enableUser({ email: email }).subscribe((rsp) => {
       this.allUserList$ = this.allUserListAdminService.getAllUsers();
+      this.msgObject = {};
     });
   }
 
   disableUser(email: string) {
     this.allUserListAdminService.disableUser({ email: email }).subscribe((rsp) => {
       this.allUserList$ = this.allUserListAdminService.getAllUsers();
+      this.msgObject = {};
+    });
+  }
+
+  sendDailyEmail(email: string) {
+    this.allUserListAdminService.sendDailyEmail(email).subscribe((rsp) => {
+      this.msgObject = {
+        email: email,
+        msg: 'Daily email sent.',
+      };
     });
   }
 
@@ -123,5 +135,12 @@ export class AllUserListAdminComponent implements OnInit {
       }
     }
     return count;
+  }
+
+  toggleDailyEmail(email: string) {
+    this.allUserListAdminService.toggleDailyEmail({ email: email }).subscribe((rsp) => {
+      this.allUserList$ = this.allUserListAdminService.getAllUsers();
+      this.msgObject = {};
+    });
   }
 }

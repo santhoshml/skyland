@@ -24,13 +24,19 @@
   <div class="card mt-3">
     <div class="card-body">
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <button type="submit" (click)="updateTwelveData()" class="btn btn-primary mb-2">Update Twelve Data</button>
           <p class="success-msg mt-3" *ngIf="updateTwelveDataMsg">{{ updateTwelveDataMsg }}</p>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <button type="submit" (click)="publishTodayData()" class="btn btn-primary mb-2">Publish Today's data</button>
           <p class="success-msg mt-3" *ngIf="publishTodayDataMsg">{{ publishTodayDataMsg }}</p>
+        </div>
+        <div class="col-sm-4">
+          <button type="submit" (click)="sendDailyEmailData()" class="btn btn-primary mb-2">
+            Send daily email to All
+          </button>
+          <p class="success-msg mt-3" *ngIf="dailyEmailDataMsg">{{ dailyEmailDataMsg }}</p>
         </div>
       </div>
     </div>

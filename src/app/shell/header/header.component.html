@@ -114,11 +114,11 @@
       *ngIf="webDisplayDate$ | async as webDisplayDateElement"
     >
       <div class="row m-0 w-100">
-        <div class="d-flex">
+        <!-- <div class="d-flex">
           <span class="align-items-center bg-primary d-flex px-3 rounded text-light"
             >Portfolio Value: {{ portfolioValue }}</span
           >
-        </div>
+        </div> -->
         <div class="navbar-nav ml-auto float-right">
           <div *ngIf="!showThankYouForFeedbackFlag" class="d-md-block d-none">
             <button type="button" (click)="openModal(mymodal)" class="btn btn-outline-primary btn-sm">

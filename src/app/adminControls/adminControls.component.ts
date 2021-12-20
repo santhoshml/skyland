@@ -35,6 +35,7 @@ export class AdminControlsComponent implements OnInit {
   addSymbolToTopStocksMsg = null;
   publishTodayDataMsg = null;
   updateTwelveDataMsg = null;
+  dailyEmailDataMsg = null;
 
   myForm = new FormGroup({
     file: new FormControl('', [Validators.required]),
@@ -154,6 +155,19 @@ export class AdminControlsComponent implements OnInit {
       next: (resp) => {
         if (resp) {
           this.newSymbolJSONForAllSymbolsMsg = `New Symbol added to Mongo`;
+        }
+      },
+    });
+  }
+
+  sendDailyEmailData() {
+    let data = {
+      returnImmediately: false,
+    };
+    this.service.sendDailyEmailData(data).subscribe({
+      next: (resp) => {
+        if (resp) {
+          this.dailyEmailDataMsg = `Daily Email sent to All`;
         }
       },
     });

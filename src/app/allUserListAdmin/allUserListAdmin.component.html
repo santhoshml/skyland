@@ -27,12 +27,20 @@
           <th style="width: 150px" scope="col" sortable="lastLogin" (sort)="onSort($event)">Last Login</th>
           <th style="width: 150px" scope="col" sortable="loginCount" (sort)="onSort($event)">Login Count</th>
           <th style="width: 150px" scope="col" sortable="created_dt" (sort)="onSort($event)">Create Date</th>
-          <th style="width: 150px" scope="col" sortable="created_dt" (sort)="onSort($event)">Create Date</th>
+          <th style="width: 150px" scope="col" sortable="created_dt" (sort)="onSort($event)">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of tableData; let i = index" class="table-row">
-          <td class="word-break">{{ row.email }}</td>
+        <tr
+          *ngFor="let row of tableData; let i = index"
+          [ngClass]="row.isValid ? 'table-row text-dark' : 'table-row text-info'"
+        >
+          <td class="word-break">
+            {{ row.email }}
+            <div class="success-msg" *ngIf="msgObject?.email == row.email">
+              {{ msgObject.msg }}
+            </div>
+          </td>
           <td class="word-break">{{ row.name }}</td>
           <td>{{ row.phone }}</td>
           <td>{{ row.expertise }}</td>
@@ -40,16 +48,50 @@
           <td>{{ row.loginCount }}</td>
           <td>{{ row.created_dt | date }}</td>
           <td>
-            <div *ngIf="row.isValid">
-              <button (click)="disableUser(row.email)" class="btn btn-primary float-left">Disable User</button>
+            <div>
+              <div class="dropdown">
+                <button
+                  class="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  id="dropdownMenu2"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Actions
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                  <a
+                    class="dropdown-item"
+                    *ngIf="row.isValid"
+                    href="javascript:void(0);"
+                    (click)="disableUser(row.email)"
+                  >
+                    Disable User
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    *ngIf="!row.isValid"
+                    href="javascript:void(0);"
+                    (click)="enableUser(row.email)"
+                  >
+                    Enable User
+                  </a>
+                  <a class="dropdown-item" href="javascript:void(0);" (click)="toggleDailyEmail(row.email)">
+                    <span *ngIf="row.isdailyEmailEnabled">Disable Daily Email</span>
+                    <span *ngIf="!row.isdailyEmailEnabled">Enable Daily Email</span>
+                  </a>
+                  <a class="dropdown-item" href="javascript:void(0);" (click)="sendDailyEmail(row.email)">
+                    Send Daily Email
+                  </a>
+                </div>
+              </div>
             </div>
-            <div *ngIf="!row.isValid">
-              <button (click)="enableUser(row.email)" class="btn btn-outline-secondary float-left">Enable User</button>
-            </div>
-            <div class="mt-5" *ngIf="row.commentsArr.length > 0">
-              <a href="javascript:void(0);" (click)="enableViewComments(i, row.commentsArr)"
-                >{{ row.commentsArr.length }} Comments</a
-              >
+            <br />
+            <div class="mb-3" *ngIf="row.commentsArr.length > 0">
+              <a href="javascript:void(0);" (click)="enableViewComments(i, row.commentsArr)">
+                {{ row.commentsArr.length }} Comments
+              </a>
             </div>
           </td>
         </tr>

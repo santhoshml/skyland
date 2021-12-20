@@ -13,6 +13,7 @@ const routes = {
   uploadIndustryFile: () => `/subSector/file_upload`,
   topStocks: (symbol) => `/stocks/top/${symbol}`,
   addNewSymbolToAllSymbols: () => `/symbol/new`,
+  dailyEmailToAll: () => `/recommendations/all`,
 };
 
 export interface RandomQuoteContext {
@@ -24,6 +25,20 @@ export interface RandomQuoteContext {
   providedIn: 'root',
 })
 export class AdminControlsService {
+  sendDailyEmailData(data: any) {
+    return this.httpClient
+      .post(routes.dailyEmailToAll(), data, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
   updateConfigValue(data: any) {
     return this.httpClient
       .post(routes.config(), data, {
