@@ -76,6 +76,7 @@ export class SymbolDetailsComponent implements OnInit {
   isLoading = false;
   symbolIndustryDetailsResp$: Observable<any>;
   trendingDetails$: Observable<ITrendingDetails>;
+  symbolEvaluation$: Observable<any>;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
   sentimentResp$: Observable<SentimentResp | string>;
   analystReccomendationResp$: Observable<AnalystRatingRecord[] | string>;
@@ -139,6 +140,18 @@ export class SymbolDetailsComponent implements OnInit {
     arcDelimiters: [10],
   };
 
+  public chartData = {
+    value: [],
+    view: [500, 200],
+    showXAxis: true,
+    showYAxis: true,
+    showXAxisLabel: true,
+    showYAxisLabel: true,
+    colorScheme: {
+      domain: [],
+    },
+  };
+
   constructor(
     private symbolDetailsService: SymbolDetailsService,
     private router: Router,
@@ -194,6 +207,8 @@ export class SymbolDetailsComponent implements OnInit {
     this.sub = this.route.params.subscribe((params) => {
       this.activeSymbol = params['symbol'].toUpperCase();
       this.completeSymbol = this.activeSymbol;
+
+      this.symbolEvaluation$ = this.symbolDetailsService.getSymbolEvaluation(this.activeSymbol);
 
       this.trendingDetails$ = this.symbolDetailsService.getTrendingDetails(this.activeSymbol).pipe(
         map((body: ITrendingDetails) => {
@@ -291,13 +306,54 @@ export class SymbolDetailsComponent implements OnInit {
         this.userNotes = data.notes;
       });
 
-      this.symbolIndustryDetailsResp$ = this.symbolDetailsService.getSymbolIndustryDetails(this.activeSymbol);
+      this.symbolIndustryDetailsResp$ = this.symbolDetailsService.getSymbolIndustryDetails(this.activeSymbol).pipe(
+        map((data: any) => {
+          this.IndustryDetailsChatData(data);
+          return data;
+        })
+      );
     });
 
     // load tags from userModelProfile
     this.userModelTags = this.credentialsService.userProfileModel
       ? this.credentialsService.userProfileModel.selected_params
       : [];
+  }
+
+  IndustryDetailsChatData(data) {
+    this.chartData.colorScheme.domain = [];
+    this.chartData.value = [
+      {
+        name: '1-Week Gain',
+        series: this.addChartColorValue('1-Week Gain', data.perf_week),
+      },
+      {
+        name: '1-Month Gain',
+        series: this.addChartColorValue('1-Month Gain', data.perf_month),
+      },
+      {
+        name: 'Quarterly Gain',
+        series: this.addChartColorValue('Quarterly Gain', data.perf_quart),
+      },
+      {
+        name: '6-Month Gain',
+        series: this.addChartColorValue('6-Month Gain', data.perf_half),
+      },
+      {
+        name: '1-Year gain',
+        series: this.addChartColorValue('1-Year Gain', data.perf_year),
+      },
+      {
+        name: 'YTD gain',
+        series: this.addChartColorValue('YTD gain', data.perf_ytd),
+      },
+    ];
+  }
+
+  private addChartColorValue(name, data) {
+    const value = Number(data);
+    this.chartData.colorScheme.domain.push(value < 0 ? '#ff0000' : '#008000');
+    return [{ name, value }];
   }
 
   private loadTechnicalInfoWidget(symbol) {
@@ -375,6 +431,13 @@ export class SymbolDetailsComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  filterEvaluation(type, data) {
+    var filteredArray = data.filter((item) => {
+      return item.type === type;
+    });
+    return filteredArray;
   }
 
   addToFavorites() {

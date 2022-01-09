@@ -23,6 +23,7 @@ const routes = {
   exchangeData: (symbol: string) => `/exchange/symbol/${symbol}`,
   symbolIndustryDetails: (symbol: string) => `/stocks/symbol/${symbol}/industryStats`,
   trendingDetails: (symbol: string) => `/trend/details/symbol/${symbol}`,
+  symbolEvaluation: (symbol: string) => `/symbol/${symbol}/proscons`,
 };
 
 export interface ITrendingDetails {
@@ -43,6 +44,13 @@ export class SymbolDetailsService {
   activeSymbol = new Subject<string>();
 
   constructor(private httpClient: HttpClient, private credentialsService: CredentialsService) {}
+
+  getSymbolEvaluation(symbol: string): Observable<ITrendingDetails | string> {
+    return this.httpClient.get(routes.symbolEvaluation(symbol)).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not GET tag details :-('))
+    );
+  }
 
   getSymbolIndustryDetails(symbol: string): Observable<any> {
     return this.httpClient.get(routes.symbolIndustryDetails(symbol)).pipe(

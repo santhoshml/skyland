@@ -88,6 +88,25 @@
   }
 }
 
+.new-table {
+  padding: 15px;
+  table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    thead {
+      th {
+        border: 0;
+      }
+    }
+    tbody {
+      tr {
+        border-radius: 5px;
+        box-shadow: 0 0.1rem 1rem rgb(0 0 0 / 15%);
+      }
+    }
+  }
+}
+
 .table-container {
   overflow-x: auto;
 }
