@@ -113,65 +113,76 @@
 
   <div class="mb-4">
     <div class="row">
-      <div class="col-6" *ngIf="symbolIndustryDetailsResp$ | async as symbolIndustryDetailsResp">
-        <div class="card border-0 shadow-lg h-100 p-4">
-          <div class="mb-3 border-bottom">
-            <div>
-              <span class="h4">{{ activeSymbol }}'s Industry </span> -
-              <a href="/subSectorDetails/{{ symbolIndustryDetailsResp.industryId }}">{{
-                symbolIndustryDetailsResp.industry
-              }}</a>
-            </div>
-            <div class="font-weight-bold small text-success">
-              Rank : {{ symbolIndustryDetailsResp.industryRank }} / 144
-            </div>
-            <div *ngIf="symbolIndustryDetailsResp.change">
-              <div class="mb-2">
-                Today's gain :
-                <span class="font-weight-bold">{{ symbolIndustryDetailsResp.change / 100 | percent: '1.0-2' }}</span>
-              </div>
-            </div>
-            <div class="text-md-right text-left">
-              <span *ngFor="let industryBadge of symbolIndustryDetailsResp.industryBadgeList">
-                <span class="badge badge-pill my-1 badge-info info-badge pill-wrap font-weight-normal px-3">{{
-                  industryBadge
-                }}</span>
-              </span>
-            </div>
-          </div>
-          <div style="height: 200px">
-            <ngx-charts-bar-horizontal-stacked
-              *ngIf="chartData.value.length"
-              [scheme]="chartData.colorScheme"
-              [results]="chartData.value"
-              [xAxis]="chartData.showXAxis"
-              [yAxis]="chartData.showYAxis"
-              [showXAxisLabel]="chartData.showXAxisLabel"
-              [showYAxisLabel]="chartData.showYAxisLabel"
-            >
-            </ngx-charts-bar-horizontal-stacked>
-          </div>
-        </div>
-      </div>
       <div class="col-6" *ngIf="symbolEvaluation$ | async as symbolEvaluation">
         <div class="card border-0 shadow-lg h-100 p-4">
-          <div class="h4 mb-2 border-bottom">{{ activeSymbol }}'s Evaluation</div>
+          <div class="h4 mb-2 border-bottom">{{ activeSymbol }}'s Pros</div>
           <div class="mb-3">
-            <div class="font-weight-bold">Pros</div>
             <ul>
               <li *ngFor="let evaluation of filterEvaluation('pros', symbolEvaluation)">
                 {{ evaluation.msg }}
               </li>
             </ul>
           </div>
-          <div>
-            <div class="font-weight-bold">Cons</div>
+        </div>
+      </div>
+      <div class="col-6" *ngIf="symbolEvaluation$ | async as symbolEvaluation">
+        <div class="card border-0 shadow-lg h-100 p-4">
+          <div class="h4 mb-2 border-bottom">{{ activeSymbol }}'s Cons</div>
+          <div class="mb-3">
             <ul>
               <li *ngFor="let evaluation of filterEvaluation('cons', symbolEvaluation)">
                 {{ evaluation.msg }}
               </li>
             </ul>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4" *ngIf="symbolIndustryDetailsResp$ | async as symbolIndustryDetailsResp">
+    <div class="card border-0 shadow-lg h-100 p-4">
+      <div class="row pb-2 mb-3 border-bottom">
+        <div class="col-12 col-md-6 col-lg-6">
+          <div>
+            <span class="h4">{{ activeSymbol }}'s Industry </span> -
+            <a href="/subSectorDetails/{{ symbolIndustryDetailsResp.industryId }}">{{
+              symbolIndustryDetailsResp.industry
+            }}</a>
+          </div>
+          <div class="font-weight-bold small text-success">
+            Rank : {{ symbolIndustryDetailsResp.industryRank }} / 144
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-6 text-md-right text-left">
+          <div *ngIf="symbolIndustryDetailsResp.change">
+            <div class="mb-2">
+              Today's gain :
+              <span class="font-weight-bold">{{ symbolIndustryDetailsResp.change / 100 | percent: '1.0-2' }}</span>
+              <!-- <span class="font-weight-bold">{{ symbolIndustryDetailsResp.change / 100 | percent: '1.0-2' }}</span> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-12 text-md-right text-left">
+          <span *ngFor="let industryBadge of symbolIndustryDetailsResp.industryBadgeList">
+            <span class="badge badge-pill my-1 badge-info info-badge pill-wrap font-weight-normal px-3">{{
+              industryBadge
+            }}</span>
+          </span>
+        </div>
+      </div>
+      <div class="row w-100">
+        <div style="height: 200px" class="w-100">
+          <ngx-charts-bar-horizontal-stacked
+            *ngIf="chartData.value.length"
+            [scheme]="chartData.colorScheme"
+            [results]="chartData.value"
+            [xAxis]="chartData.showXAxis"
+            [yAxis]="chartData.showYAxis"
+            [showXAxisLabel]="chartData.showXAxisLabel"
+            [showYAxisLabel]="chartData.showYAxisLabel"
+          >
+          </ngx-charts-bar-horizontal-stacked>
         </div>
       </div>
     </div>
