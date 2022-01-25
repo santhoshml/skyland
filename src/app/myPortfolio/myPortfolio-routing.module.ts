@@ -6,7 +6,7 @@ import { Shell } from '@app/shell/shell.service';
 import { MyPortfolioComponent } from './myPortfolio.component';
 
 const routes: Routes = [
-  Shell.childRoutes([
+  Shell.authChildRoutes([
     { path: 'myPortfolio', component: MyPortfolioComponent, data: { title: marker('Liste.AI - My Portfolio') } },
   ]),
 ];

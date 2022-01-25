@@ -65,7 +65,7 @@ export class SectorListComponent implements OnInit {
       'init',
       'sectorList',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     // set user profile
@@ -87,7 +87,7 @@ export class SectorListComponent implements OnInit {
       'forwading',
       'sectorList',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.router.navigate([`sectorDetails`, card.symbol], { replaceUrl: true });
   }

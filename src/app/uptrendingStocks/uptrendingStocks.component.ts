@@ -50,7 +50,7 @@ export class UptrendingStocksComponent implements OnInit {
       'init',
       'uptrendingStocks',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     this.readUptrendStocks(this.MIN_ROWS_TO_DISPLAY);
@@ -99,7 +99,7 @@ export class UptrendingStocksComponent implements OnInit {
       'addToFavorites',
       'addToFavorites',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.symbolDetailsService.addToFavorites(symbol).subscribe((data) => {
       // this.readUptrendStocks();
@@ -113,7 +113,7 @@ export class UptrendingStocksComponent implements OnInit {
       'removeFromFavorites',
       'removeFromFavorites',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.symbolDetailsService.removeFromFavorites(symbol).subscribe((data) => {
       // this.readUptrendStocks();

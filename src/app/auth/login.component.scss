@@ -1,5 +1,9 @@
 @import "src/theme/_variables";
 
+.display-none {
+  display: none;
+}
+
 .auth-container {
   min-height: 100vh;
   background-color: #ebeef7;

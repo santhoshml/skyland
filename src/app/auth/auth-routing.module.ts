@@ -5,7 +5,7 @@ import { marker } from '@biesbjerg/ngx-translate-extract-marker';
 import { LoginComponent } from './login.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/topPicks', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, data: { title: marker('Login') } },
   { path: 'signup', component: LoginComponent, data: { title: marker('Create Account') } },
   { path: 'forgotPassword', component: LoginComponent, data: { title: marker('Forgot Password') } },

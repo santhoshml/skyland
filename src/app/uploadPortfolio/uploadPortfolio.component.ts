@@ -54,7 +54,7 @@ export class UploadPortfolioComponent implements OnInit {
       'init',
       'init',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
   }
 
@@ -71,7 +71,7 @@ export class UploadPortfolioComponent implements OnInit {
       'onFileChange',
       'onFileChange',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     if (event.target.files.length > 0) {
@@ -90,7 +90,7 @@ export class UploadPortfolioComponent implements OnInit {
       'viewDistribution',
       'viewDistribution',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     this.router.navigate(['/distribution'], { replaceUrl: true });
@@ -110,7 +110,7 @@ export class UploadPortfolioComponent implements OnInit {
           'submit',
           'submit',
           1,
-          this.credentialsService.credentials.email
+          this.credentialsService.userEmail
         );
         this.myForm.reset();
         this.isUploadSuccess = true;
@@ -126,7 +126,7 @@ export class UploadPortfolioComponent implements OnInit {
       'onSelectPlatform-selected',
       selectedPlatform,
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     this.isPlatformSelected = true;

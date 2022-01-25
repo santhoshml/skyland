@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
@@ -11,6 +11,8 @@ import { Credentials } from './credentials.service';
 import { SymbolDetailsService } from '../symbolDetails/symbolDetails.service';
 import { SocialAuthService } from 'angularx-social-login';
 import { FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserProfileService } from '@app/userProfile/userProfile.service';
 
 const log = new Logger('Login');
 
@@ -54,6 +56,7 @@ let infoWidgetOptions = {
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  @Input() isModalLogin: boolean;
   version: string | null = environment.version;
 
   loginError: string | undefined;
@@ -70,6 +73,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     resetPassword: false,
   };
   resetPasswordInfo = true;
+  enableWidgetContainer = false;
 
   refferedByList = ['Google', 'Facebook', 'Twitter', 'Instagram', 'Sacramento State University', 'UC Davis'];
   referredByStr = 'Referred by';
@@ -82,7 +86,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authenticationService: AuthenticationService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private symbolDetailsService: SymbolDetailsService,
-    private socialAuthService: SocialAuthService
+    private socialAuthService: SocialAuthService,
+    private modalService: NgbModal,
+    private userProfileService: UserProfileService
   ) {
     if (this.router.url === '/signup') {
       this.containerView.signUp = true;
@@ -126,6 +132,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.router.navigate(['/listCards'], { replaceUrl: true });
       }
     });
+    this.enableWidgetContainer = this.isModalLogin || false;
   }
 
   signInWithGoogle(): void {
@@ -142,6 +149,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
+  closePopup() {
+    this.modalService.dismissAll();
+  }
+
   login() {
     this.isLoading = true;
     const login$ = this.authenticationService.login(this.accountForm.value);
@@ -155,6 +166,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (credentials: any) => {
+          this.closePopup();
+          this.userProfileService.triggerUserDetails.next(true);
           this.googleAnalyticsService.eventEmitter(
             'login-successful',
             'login',

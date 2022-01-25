@@ -42,6 +42,7 @@ export interface ITrendingDetails {
 })
 export class SymbolDetailsService {
   activeSymbol = new Subject<string>();
+  enableLoginPopup = new Subject<boolean>();
 
   constructor(private httpClient: HttpClient, private credentialsService: CredentialsService) {}
 
@@ -103,18 +104,23 @@ export class SymbolDetailsService {
 
   addToFavorites(symbol: string): Observable<any> {
     // add to localdb
-    let favArr: string[] = this.credentialsService.userFavorites;
-    favArr.push(symbol);
-    this.credentialsService.setFavorites(favArr);
+    if (this.credentialsService.credentials) {
+      let favArr: string[] = this.credentialsService.userFavorites;
+      favArr.push(symbol);
+      this.credentialsService.setFavorites(favArr);
 
-    // update the backend
-    return this.httpClient.post(routes.addToFavorites(symbol), {}).pipe(
-      map((body: any) => body),
-      catchError((err: any) => {
-        // console.log(`Error while adding to favorites, ${JSON.stringify(err)}`);
-        return throwError('Error, could not POST to favorites :-(');
-      })
-    );
+      // update the backend
+      return this.httpClient.post(routes.addToFavorites(symbol), {}).pipe(
+        map((body: any) => body),
+        catchError((err: any) => {
+          // console.log(`Error while adding to favorites, ${JSON.stringify(err)}`);
+          return throwError('Error, could not POST to favorites :-(');
+        })
+      );
+    } else {
+      this.enableLoginPopup.next(true);
+      return of({});
+    }
   }
 
   removeFromFavorites(symbol: string): Observable<any> {

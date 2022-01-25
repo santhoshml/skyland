@@ -68,7 +68,7 @@ export class TopPicksComponent implements OnInit {
       'init',
       'topPicks',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     // default close position date
@@ -122,7 +122,7 @@ export class TopPicksComponent implements OnInit {
       'addToFavorites',
       'addToFavorites',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.symbolDetailsService.addToFavorites(symbol).subscribe((body) => {
       // console.log(`Done addToFavorites`);
@@ -137,7 +137,7 @@ export class TopPicksComponent implements OnInit {
       'removeFromFavorites',
       'removeFromFavorites',
       0,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.symbolDetailsService.removeFromFavorites(symbol).subscribe();
   }

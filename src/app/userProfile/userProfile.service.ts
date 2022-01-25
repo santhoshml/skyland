@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, Subject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { TagDetails, TagCategories } from './userProfile.component';
 
@@ -14,6 +14,7 @@ const routes = {
   providedIn: 'root',
 })
 export class UserProfileService {
+  triggerUserDetails = new Subject<boolean>();
   constructor(private httpClient: HttpClient) {}
 
   getTagCategories(): Observable<TagCategories[] | string> {

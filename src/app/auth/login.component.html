@@ -1,14 +1,14 @@
-<div class="auth-container h-100">
-  <div class="tradingview-widget-container" id="tickerTapeWidget">
+<div [ngClass]="enableWidgetContainer ? 'py-4' : 'auth-container h-100'">
+  <div class="tradingview-widget-container" id="tickerTapeWidget" [ngClass]="enableWidgetContainer && 'display-none'">
     <div class="tradingview-widget-container__widget"></div>
   </div>
   <div class="card-container align-items-center justify-content-center m-0 row">
     <div class="auth-card shadow p-4">
-      <div class="text-center mb-3"><img class="logo" src="assets/logo-size.png" /></div>
+      <div class="text-center mb-3"><img class="logo" routerLink="" src="assets/logo-size.png" /></div>
       <div id="login" *ngIf="containerView.login">
         <h3 class="mb-2">Log in</h3>
         <div class="sub-title pb-2">
-          Don't have an account? <a class="text-primary" routerLink="/signup">Sign up</a>
+          Don't have an account? <a class="text-primary" routerLink="/signup" (click)="closePopup()">Sign up</a>
         </div>
         <form (ngSubmit)="login()" [formGroup]="accountForm" novalidate>
           <div class="alert alert-danger small" [hidden]="!loginError || isLoading" translate>
@@ -58,7 +58,7 @@
                 </label>
               </div>
               <div>
-                <a class="text-primary" routerLink="/forgotPassword">Forgot password?</a>
+                <a class="text-primary" routerLink="/forgotPassword" (click)="closePopup()">Forgot password?</a>
               </div>
             </div>
           </div>

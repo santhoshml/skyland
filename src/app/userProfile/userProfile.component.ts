@@ -65,7 +65,7 @@ export class UserProfileComponent implements OnInit {
         'init',
         'getTagCategories',
         1,
-        this.credentialsService.credentials.email
+        this.credentialsService.userEmail
       );
 
       this.tagCategories = data;
@@ -82,7 +82,7 @@ export class UserProfileComponent implements OnInit {
         'init',
         'getTagDetails',
         1,
-        this.credentialsService.credentials.email
+        this.credentialsService.userEmail
       );
       this.tagDetailsMap = data;
       for (const [key, value] of Object.entries(this.tagDetailsMap)) {
@@ -104,7 +104,7 @@ export class UserProfileComponent implements OnInit {
           'response',
           'getUserDetails',
           1,
-          this.credentialsService.credentials.email
+          this.credentialsService.userEmail
         );
 
         this.userProfileForm.patchValue({
