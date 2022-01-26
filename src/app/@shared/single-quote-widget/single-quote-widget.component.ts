@@ -44,7 +44,7 @@ export class SingleQuoteWidgetComponent implements OnInit, AfterViewInit {
           'init',
           'getExchangeData',
           1,
-          this.credentialsService.credentials.email
+          this.credentialsService.userEmail
         );
         let exchange = data['exchange'];
         if (exchange) {

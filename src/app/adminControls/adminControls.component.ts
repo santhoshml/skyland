@@ -59,7 +59,7 @@ export class AdminControlsComponent implements OnInit {
       'init',
       'adminControls',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.getMaxCurrDate();
   }

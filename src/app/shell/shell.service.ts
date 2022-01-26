@@ -17,6 +17,16 @@ export class Shell {
       path: '',
       component: ShellComponent,
       children: routes,
+      // Reuse ShellComponent instance when navigating between child views
+      data: { reuse: true },
+    };
+  }
+
+  static authChildRoutes(routes: Routes): Route {
+    return {
+      path: '',
+      component: ShellComponent,
+      children: routes,
       canActivate: [AuthenticationGuard],
       // Reuse ShellComponent instance when navigating between child views
       data: { reuse: true },

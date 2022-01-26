@@ -34,7 +34,7 @@ export class RecommendedStockListAdminComponent implements OnInit {
       'init',
       'recommendedStockListAdmin',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     this.topStocksList$ = this.recommendedStockListAdminService.getAllReccomendedStocksList();

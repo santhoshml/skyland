@@ -68,7 +68,7 @@ export class ListDetailsComponent implements OnInit {
       'init',
       'listDetails',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     // this.listDetails$ = this.listDetailsService.getListDetails();
@@ -131,7 +131,7 @@ export class ListDetailsComponent implements OnInit {
       'forwading',
       'symbolDetails',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.router.navigate([`symbolDetails`, listRow.symbol], { replaceUrl: true });
   }
@@ -151,7 +151,7 @@ export class ListDetailsComponent implements OnInit {
       'addToFavorites',
       'addToFavorites',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.symbolDetailsService.addToFavorites(symbol).subscribe();
   }
@@ -163,7 +163,7 @@ export class ListDetailsComponent implements OnInit {
       'removeFromFavorites',
       'removeFromFavorites',
       0,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.symbolDetailsService.removeFromFavorites(symbol).subscribe();
   }

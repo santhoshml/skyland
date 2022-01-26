@@ -47,7 +47,7 @@ export class IndustryListComponent implements OnInit {
       'init',
       'industryList',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     // set user profile
@@ -68,7 +68,7 @@ export class IndustryListComponent implements OnInit {
           'response',
           'getSubSectorList',
           1,
-          this.credentialsService.credentials.email
+          this.credentialsService.userEmail
         );
         return body;
       }),

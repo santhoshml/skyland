@@ -201,7 +201,7 @@ export class MyPortfolioComponent implements OnInit {
       'init',
       'myPortfolio',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     // setup the Add new positions form
@@ -259,7 +259,7 @@ export class MyPortfolioComponent implements OnInit {
       'addToFavorites',
       'addToFavorites',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.symbolDetailsService.addToFavorites(symbol).subscribe((body) => {
       // console.log(`Done addToFavorites`);

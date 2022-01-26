@@ -67,6 +67,10 @@ export class CredentialsService {
     return this._credentials;
   }
 
+  get userEmail(): string {
+    return this._credentials?.email || '';
+  }
+
   get userProfileModel(): UserProfileModel | null {
     return this._userProfileModel;
   }

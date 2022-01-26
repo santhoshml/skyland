@@ -169,7 +169,7 @@ export class SymbolDetailsComponent implements OnInit {
       'init',
       'init',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
     // get tag categories
@@ -180,7 +180,7 @@ export class SymbolDetailsComponent implements OnInit {
         'init',
         'getTagCategories',
         1,
-        this.credentialsService.credentials.email
+        this.credentialsService.userEmail
       );
       this.tagCategories = data;
       this.priceVolCategoryArr = data[0].tags;
@@ -196,7 +196,7 @@ export class SymbolDetailsComponent implements OnInit {
         'init',
         'getTagDetails',
         1,
-        this.credentialsService.credentials.email
+        this.credentialsService.userEmail
       );
       this.tagDetailsMap = data;
       for (const [key, value] of Object.entries(this.tagDetailsMap)) {
@@ -218,7 +218,7 @@ export class SymbolDetailsComponent implements OnInit {
             'init',
             'getTrendingDetails',
             1,
-            this.credentialsService.credentials.email
+            this.credentialsService.userEmail
           );
           return body;
         })
@@ -232,7 +232,7 @@ export class SymbolDetailsComponent implements OnInit {
           'init',
           'getExchangeData',
           1,
-          this.credentialsService.credentials.email
+          this.credentialsService.userEmail
         );
         let exchange = data['exchange'];
         if (exchange) {
@@ -257,7 +257,7 @@ export class SymbolDetailsComponent implements OnInit {
             'init',
             'getListDetails',
             1,
-            this.credentialsService.credentials.email
+            this.credentialsService.userEmail
           );
           if (body.symbol) {
             this.enableStockFeatures = true;
@@ -301,7 +301,7 @@ export class SymbolDetailsComponent implements OnInit {
           'init',
           'getUserNotes',
           1,
-          this.credentialsService.credentials.email
+          this.credentialsService.userEmail
         );
         this.userNotes = data.notes;
       });
@@ -404,7 +404,7 @@ export class SymbolDetailsComponent implements OnInit {
           'modalService-closed',
           result,
           0,
-          this.credentialsService.credentials.email
+          this.credentialsService.userEmail
         );
         this.closeResult = `Closed with: ${result}`;
         this.symbolDetailsService.saveUserNotes(this.activeSymbol, this.userNotes).subscribe();
@@ -416,7 +416,7 @@ export class SymbolDetailsComponent implements OnInit {
           'modalService-closed',
           reason,
           0,
-          this.credentialsService.credentials.email
+          this.credentialsService.userEmail
         );
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
@@ -447,7 +447,7 @@ export class SymbolDetailsComponent implements OnInit {
       'addToFavorites',
       'addToFavorites',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.isFavorite = true;
     this.symbolDetailsService.addToFavorites(this.activeSymbol).subscribe();
@@ -460,7 +460,7 @@ export class SymbolDetailsComponent implements OnInit {
       'removeFromFavorites',
       'removeFromFavorites',
       0,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.isFavorite = false;
     this.symbolDetailsService.removeFromFavorites(this.activeSymbol).subscribe();
@@ -473,7 +473,7 @@ export class SymbolDetailsComponent implements OnInit {
       'loadChart',
       symbol,
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     new TradingView.widget({
       symbol: this.activeSymbol,

@@ -40,7 +40,7 @@ export class AllUserListAdminComponent implements OnInit {
       'init',
       'subSectorDetails',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
     this.msgObject = {
       email: null,

@@ -115,6 +115,14 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+
+    this.userProfileService.triggerUserDetails.subscribe(() => {
+      this.userProfile$ = this.userProfileService.getUserDetails();
+    });
+  }
+
+  ngOnDestroy() {
+    this.userProfileService.triggerUserDetails.unsubscribe();
   }
 
   ngAfterContentInit() {
@@ -173,7 +181,8 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.authenticationService.logout().subscribe(() => this.router.navigate(['/login'], { replaceUrl: true }));
+    this.userProfileService.triggerUserDetails.next(true);
+    this.authenticationService.logout().subscribe(() => this.router.navigate([''], { replaceUrl: true }));
   }
 
   get email(): string | null {
