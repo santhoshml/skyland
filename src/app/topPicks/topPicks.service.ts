@@ -4,6 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 const routes = {
+  beatNasdaq: () => `/uptrendingStocks/beatInPerformance/index/QQQ`,
   topStocks: () => `/stocks/top`,
   yourBest: () => `/predictions/2/addLimit/1`,
   indexSummary: () => `/index/summary`,
@@ -144,6 +145,20 @@ export class TopPicksService {
           // console.log(`In addOpenPosition ${JSON.stringify(body)}`);
           return body;
         }),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  getBeatNasdaq(): Observable<any> {
+    return this.httpClient
+      .get(routes.beatNasdaq(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
         catchError((err) => {
           // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);

@@ -107,17 +107,130 @@
 
   <div class="mb-5">
     <!-- Top Picks-->
-    <h2>Top pick's for next day</h2>
+    <h2>Stocks outperforming NASDAQ and in Uptrend</h2>
+    <div class="card border-0" aria-labelledby="nav-topStocks-tab">
+      <div *ngIf="beatNasdaq$ | async as beatNasdaq">
+        <div>
+          <div class="py-3">
+            <ul class="mb-0 small">
+              <li>NASDAQ weekly performance : 10%</li>
+              <li>Click on the row to see more details.</li>
+            </ul>
+          </div>
+          <div class="table-container new-table">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="280" scope="col">Company</th>
+                  <th scope="col">Trend</th>
+                  <th scope="col">Weekly gains</th>
+                  <th scope="col">
+                    P/E
+                    <a href="https://www.investopedia.com/terms/p/price-earningsratio.asp" target="_blank">
+                      <i class="fa fa-info-circle" title="Current P/E ratio of the stock" aria-hidden="true"></i>
+                    </a>
+                  </th>
+                  <th scope="col">Market Cap</th>
+                  <th scope="col">
+                    Industry
+                    <a href="https://www.investopedia.com/terms/i/industry.asp" target="_blank">
+                      <i class="fa fa-info-circle" title="Industry of a stock" aria-hidden="true"></i>
+                    </a>
+                  </th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let beatNasdaqRec of beatNasdaq" class="table-row">
+                  <td>
+                    <app-single-quote-widget
+                      [symbol]="beatNasdaqRec.symbol"
+                      [exchange]="beatNasdaqRec.exchange"
+                    ></app-single-quote-widget>
+                  </td>
+                  <td class="text-left">
+                    <div *ngIf="beatNasdaqRec.trend == 1">
+                      <i class="fas fa-arrow-up"></i>
+                      <span class="trend">Uptrend</span>
+                    </div>
+                    <div *ngIf="beatNasdaqRec.trend == -1">
+                      <i class="fas fa-arrow-down"></i>
+                      <span class="trend">Downtrend</span>
+                    </div>
+                    <div *ngIf="beatNasdaqRec.trend == 0">
+                      <i class="fas fa-arrow-right"></i>
+                      <span class="trend">Neutral</span>
+                    </div>
+                  </td>
+                  <td class="text-left dividend">{{ beatNasdaqRec.weekly_gains }}%</td>
+                  <td class="text-left pe-ratio">
+                    <span *ngIf="beatNasdaqRec.peRatio != '-'">{{ beatNasdaqRec.peRatio | number: '1.0-2' }}</span>
+                    <span *ngIf="beatNasdaqRec.peRatio == '-'">{{ beatNasdaqRec.peRatio }}</span>
+                  </td>
+                  <td class="text-left">
+                    {{ getPrunedValue(beatNasdaqRec.marketcap) }}
+                  </td>
+                  <td
+                    class="text-left"
+                    style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 14px"
+                  >
+                    <div *ngIf="beatNasdaqRec.industry">
+                      <a
+                        *ngIf="beatNasdaqRec.industryId"
+                        class="industry"
+                        href="/subSectorDetails/{{ beatNasdaqRec.industryId }}"
+                      >
+                        {{ beatNasdaqRec.industry }}
+                      </a>
+                      <div *ngIf="!beatNasdaqRec.industryId" class="industry">
+                        {{ beatNasdaqRec.industry }}
+                      </div>
+                      <div *ngFor="let industryBadge of beatNasdaqRec.industryBadgeList">
+                        <span class="badge badge-pill my-1 badge-info info-badge pill-wrap">{{ industryBadge }}</span>
+                      </div>
+                    </div>
+                    <div *ngIf="!beatNasdaqRec.industry">N/A</div>
+                  </td>
+                  <td class="text-left note">
+                    <div class="action-btn-group" *ngIf="!isFavorite(beatNasdaqRec.symbol)">
+                      <a
+                        href="javascript:void(0);"
+                        (click)="addToFavorites(beatNasdaqRec.symbol)"
+                        class="btn-pading text-btn"
+                      >
+                        Add to Favorites
+                      </a>
+                    </div>
+                    <div class="action-btn-group" *ngIf="isFavorite(beatNasdaqRec.symbol)">
+                      <a
+                        href="javascript:void(0);"
+                        (click)="removeFromFavorites(beatNasdaqRec.symbol)"
+                        class="btn-pading text-btn"
+                      >
+                        Delete from Favorites
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="text-right p-2">
+          <button type="button" (click)="viewAllBetterPerformingStocks()" class="btn btn-orange">View More</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-5">
+    <!-- Top Picks-->
+    <h2>Stocks about to breakout/bounce-back</h2>
     <div class="card border-0" aria-labelledby="nav-topStocks-tab">
       <div *ngIf="topStocks$ | async as topStocks">
         <div>
           <div class="py-3">
             <ul class="mb-0 small">
-              <li>Stocks with best setups of the day.</li>
-              <li>
-                The bullish momentum is expected to continue for next few day's/weeks and stock is expected to rise.
-              </li>
-              <li>These stocks are in an ideal state to start a new position.</li>
               <li>Click on the symbol to get more detailed analysis about the stock.</li>
             </ul>
           </div>
@@ -126,10 +239,7 @@
               <thead>
                 <tr>
                   <th width="280" scope="col">Company</th>
-                  <!-- <th scope="col">Company</th> -->
                   <th scope="col">Trend</th>
-                  <!-- <th scope="col">Price</th> -->
-                  <!-- <th scope="col">Volume</th> -->
                   <th scope="col">
                     <div>
                       Dividend
@@ -156,11 +266,6 @@
               </thead>
               <tbody>
                 <tr *ngFor="let topStock of topStocks" class="table-row">
-                  <!-- <td class="text-left company-name">
-                    <a class="symbol" href="/symbolDetails/{{ topStock.symbol }}">{{ topStock.symbol }}</a>
-                    <br />
-                    {{ topStock.companyName | truncate: 40 | uppercase }}
-                  </td> -->
                   <td>
                     <app-single-quote-widget
                       [symbol]="topStock.symbol"
@@ -180,19 +285,7 @@
                       <i class="fas fa-arrow-right"></i>
                       <span class="trend">Neutral</span>
                     </div>
-                    <!-- <app-view-trend-details [symbol]="topStock.symbol"></app-view-trend-details> -->
                   </td>
-                  <!-- <td class="text-right price">
-                    {{ topStock.price | currency }}
-                    !-- <div *ngIf="topStock.bestBuy === 1">
-                      <span class="badge badge-pill my-1 badge-primary info-badge">
-                        <i class="far fa-flag" aria-hidden="true"></i> &nbsp;Bestbuy
-                      </span>
-                    </div> ---
-                  </td> -->
-                  <!-- <td class="text-right volume">
-                    {{ topStock.volume | number }}
-                  </td> -->
                   <td class="text-left dividend">
                     <span
                       *ngIf="!topStock.dividendYield || topStock.dividendYield == '0' || topStock.dividendYield == '-'"

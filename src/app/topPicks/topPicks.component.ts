@@ -30,6 +30,7 @@ export class TopPicksComponent implements OnInit {
   myClosePositions$: Observable<any>;
   indexSummary$: Observable<any>;
   topIndustry$: Observable<any>;
+  beatNasdaq$: Observable<any>;
   hasConfidenceScore = false;
   newOpenPositionSymbol: string;
   openPositions: any = [];
@@ -88,6 +89,14 @@ export class TopPicksComponent implements OnInit {
     this.topStocks$ = this.service.getTopStocks().pipe(
       map((body) => {
         return body;
+      })
+    );
+
+    this.beatNasdaq$ = this.service.getBeatNasdaq().pipe(
+      map((body) => {
+        if (body && body.length > 0) {
+          return body.slice(0, 5);
+        }
       })
     );
 
@@ -190,6 +199,10 @@ export class TopPicksComponent implements OnInit {
 
   viewAllUptrendingStocks() {
     this.router.navigate(['/uptrendingStocks'], { replaceUrl: true });
+  }
+
+  viewAllBetterPerformingStocks() {
+    this.router.navigate(['/betterPerforming'], { replaceUrl: true });
   }
 
   viewIndustryDetails(id: number) {

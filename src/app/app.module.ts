@@ -30,6 +30,7 @@ import { TopPicksModule } from './topPicks/topPicks.module';
 import { MyPortfolioModule } from './myPortfolio/myPortfolio.module';
 import { SectorListModule } from './sectorList/sectorList.module';
 import { UptrendingStocksModule } from './uptrendingStocks/uptrendingStocks.module';
+import { BetterPerformingModule } from './betterPerforming/betterPerforming.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TruncateModule } from '@yellowspot/ng-truncate';
@@ -68,6 +69,7 @@ import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-logi
     MyPortfolioModule,
     SectorListModule,
     UptrendingStocksModule,
+    BetterPerformingModule,
     SubSectorDetailsModule,
     SectorDetailsModule,
     RoiDistributionModule,
