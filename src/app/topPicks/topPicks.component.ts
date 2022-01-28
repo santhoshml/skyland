@@ -29,6 +29,7 @@ export class TopPicksComponent implements OnInit {
   myOpenPositions$: Observable<any>;
   myClosePositions$: Observable<any>;
   indexSummary$: Observable<any>;
+  indexWeeklyGains$: Observable<any>;
   topIndustry$: Observable<any>;
   beatNasdaq$: Observable<any>;
   hasConfidenceScore = false;
@@ -50,6 +51,9 @@ export class TopPicksComponent implements OnInit {
   allSymbolData = [];
   data = [];
 
+  qqqWklyGain = 0;
+  spyWklyGain = 0;
+
   constructor(
     private service: TopPicksService,
     private router: Router,
@@ -69,7 +73,7 @@ export class TopPicksComponent implements OnInit {
       'init',
       'topPicks',
       1,
-      this.credentialsService.userEmail
+      this.credentialsService.credentials?.email
     );
 
     // default close position date
@@ -112,6 +116,18 @@ export class TopPicksComponent implements OnInit {
         return body;
       })
     );
+
+    this.service.getIndexWeeklyGains().subscribe((list) => {
+      if (list && list.length > 0) {
+        for (let rec of list) {
+          if (rec.name === 'QQQ') {
+            this.qqqWklyGain = parseFloat(rec.gain_percent);
+          } else if (rec.name === 'SPY') {
+            this.spyWklyGain = parseFloat(rec.gain_percent);
+          }
+        }
+      }
+    });
 
     this.service.getAllSymbols().subscribe((data) => {
       this.allSymbolData = data;

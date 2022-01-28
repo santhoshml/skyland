@@ -4,6 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 const routes = {
+  indexWeeklyGains: () => `/indexes/weeklyGains`,
   beatNasdaq: () => `/uptrendingStocks/beatInPerformance/index/QQQ`,
   uptrendingStocks: () => `/stocks/uptrending`,
   addOpenPositions: () => `/user/txn/open`,
@@ -21,6 +22,20 @@ export interface RandomQuoteContext {
 })
 export class BetterPerformingService {
   constructor(private httpClient: HttpClient) {}
+
+  getIndexWeeklyGains(): Observable<any> {
+    return this.httpClient
+      .get(routes.indexWeeklyGains(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
 
   deleteFavorites(symbol: string): Observable<any> {
     return this.httpClient

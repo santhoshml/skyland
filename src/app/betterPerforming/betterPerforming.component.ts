@@ -36,6 +36,9 @@ export class BetterPerformingComponent implements OnInit {
   hideViewMoreBtn = false;
   tableData: any = [];
 
+  qqqWklyGain = 0;
+  spyWklyGain = 0;
+
   constructor(
     private service: BetterPerformingService,
     private credentialsService: CredentialsService,
@@ -50,11 +53,22 @@ export class BetterPerformingComponent implements OnInit {
       'init',
       'betterPerformance',
       1,
-      this.credentialsService.credentials.email
+      this.credentialsService.userEmail
     );
 
-    console.log(`Santhosh Iniit`);
     this.readUptrendStocks(this.MIN_ROWS_TO_DISPLAY);
+
+    this.service.getIndexWeeklyGains().subscribe((list) => {
+      if (list && list.length > 0) {
+        for (let rec of list) {
+          if (rec.name === 'QQQ') {
+            this.qqqWklyGain = parseFloat(rec.gain_percent);
+          } else if (rec.name === 'SPY') {
+            this.spyWklyGain = parseFloat(rec.gain_percent);
+          }
+        }
+      }
+    });
   }
 
   tableValue(data) {

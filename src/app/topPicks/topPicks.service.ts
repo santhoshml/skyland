@@ -4,6 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 const routes = {
+  indexWeeklyGains: () => `/indexes/weeklyGains`,
   beatNasdaq: () => `/uptrendingStocks/beatInPerformance/index/QQQ`,
   topStocks: () => `/stocks/top`,
   yourBest: () => `/predictions/2/addLimit/1`,
@@ -155,6 +156,20 @@ export class TopPicksService {
   getBeatNasdaq(): Observable<any> {
     return this.httpClient
       .get(routes.beatNasdaq(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  getIndexWeeklyGains(): Observable<any> {
+    return this.httpClient
+      .get(routes.indexWeeklyGains(), {
         withCredentials: true,
       })
       .pipe(

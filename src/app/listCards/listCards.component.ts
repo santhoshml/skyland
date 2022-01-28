@@ -47,7 +47,7 @@ export class ListCardsComponent implements OnInit {
       'init',
       'listCards',
       1,
-      this.credentialsService.userEmail
+      this.credentialsService.credentials?.email
     );
 
     // set user profile
@@ -68,7 +68,7 @@ export class ListCardsComponent implements OnInit {
           'response',
           'getAllCards',
           1,
-          this.credentialsService.userEmail
+          this.credentialsService.credentials?.email
         );
         return body;
       }),
@@ -80,54 +80,7 @@ export class ListCardsComponent implements OnInit {
         }
       })
     );
-
-    // this.subSectorList$ = this.listCardsService.getSubSectorList().pipe(
-    //   map((body: any, headers: any) => {
-    //     // console.log(`body: ${JSON.stringify(body)}`);
-    //     // console.log(`headers: ${JSON.stringify(headers)}`);
-    //     this.googleAnalyticsService.eventEmitter(
-    //       'listCards-response',
-    //       'listCards',
-    //       'response',
-    //       'getSubSectorList',
-    //       1,
-    //       this.credentialsService.userEmail
-    //     );
-    //     return body;
-    //   }),
-    //   catchError((err) => {
-    //     if (err.status === 401) {
-    //       this.router.navigate(['/login', { errMsg: 'Session expired. Login please.' }], { replaceUrl: true });
-    //     } else {
-    //       return of(false);
-    //     }
-    //   })
-    // );
   }
-
-  // tableValue(data) {
-  //   this.tableData = data;
-  // }
-
-  // onSort({ column, direction }: SortEvent) {
-  //   // resetting other headers
-  //   this.headers.forEach((header) => {
-  //     if (header.sortable !== column) {
-  //       header.direction = '';
-  //     }
-  //   });
-
-  //   if (!direction) {
-  //     column = 'id';
-  //     direction = 'asc';
-  //   }
-
-  //   // sorting countries
-  //   this.tableData = [...this.tableData].sort((a, b) => {
-  //     const res = compare(a[column], b[column]);
-  //     return direction === 'asc' ? res : -res;
-  //   });
-  // }
 
   getList(selectedCard: ListCard) {
     // console.log(`In getList, selectedCard : ${JSON.stringify(selectedCard)} `);
@@ -138,7 +91,7 @@ export class ListCardsComponent implements OnInit {
       'forwading',
       'getList',
       1,
-      this.credentialsService.userEmail
+      this.credentialsService.credentials?.email
     );
     this.router.navigate([`listDetails`, selectedCard.id], { replaceUrl: true });
   }
