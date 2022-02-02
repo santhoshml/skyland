@@ -28,7 +28,7 @@ export class ListCardsComponent implements OnInit {
   isLoading = false;
   listCard$: Observable<any>;
   subSectorList$: Observable<any>;
-  userProfile$: Observable<any>;
+  // userProfile$: Observable<any>;
   hasConfidenceScore = false;
   tableData: any = [];
 
@@ -51,12 +51,12 @@ export class ListCardsComponent implements OnInit {
     );
 
     // set user profile
-    this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
-      map((body) => {
-        this.credentialsService.setUserProfile(body);
-        return body;
-      })
-    );
+    // this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
+    //   map((body) => {
+    //     this.credentialsService.setUserProfile(body);
+    //     return body;
+    //   })
+    // );
 
     this.listCard$ = this.listCardsService.getAllCards().pipe(
       map((body: any, headers: any) => {

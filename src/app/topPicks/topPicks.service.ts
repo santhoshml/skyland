@@ -11,7 +11,6 @@ const routes = {
   indexSummary: () => `/index/summary`,
   topIndustry: () => `/industry/top`,
   addOpenPositions: () => `/user/v2/txn/open`,
-  getOpenPositions: () => `/user/txn/open`,
   closePositions: () => `/user/txn/close`,
   getClosePositions: () => `/user/txn/close`,
   getPriceObject: (symbol: string) => `/price/symbol/${symbol}`,
@@ -114,20 +113,6 @@ export class TopPicksService {
       .pipe(
         map((body: any) => body),
         catchError((err) => {
-          return throwError(err);
-        })
-      );
-  }
-
-  getOpenPositions(): Observable<any> {
-    return this.httpClient
-      .get(routes.getOpenPositions(), {
-        withCredentials: true,
-      })
-      .pipe(
-        map((body: any) => body),
-        catchError((err) => {
-          // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);
         })
       );

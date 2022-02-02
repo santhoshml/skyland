@@ -7,7 +7,6 @@ const routes = {
   indexWeeklyGains: () => `/indexes/weeklyGains`,
   beatNasdaq: () => `/uptrendingStocks/beatInPerformance/index/QQQ`,
   uptrendingStocks: () => `/stocks/uptrending`,
-  addOpenPositions: () => `/user/txn/open`,
   favorites: () => `/tradingIdeas/favorites`,
   deleteFavorites: (symbol: string) => `/favorites/symbol/${symbol}`,
 };
@@ -44,23 +43,6 @@ export class BetterPerformingService {
       })
       .pipe(
         map((body: any) => body),
-        catchError((err) => {
-          // console.log(`err: ${JSON.stringify(err)}`);
-          return throwError(err);
-        })
-      );
-  }
-
-  addOpenPosition(data: any): Observable<any> {
-    return this.httpClient
-      .post(routes.addOpenPositions(), data, {
-        withCredentials: true,
-      })
-      .pipe(
-        map((body: any) => {
-          // console.log(`In addOpenPosition ${JSON.stringify(body)}`);
-          return body;
-        }),
         catchError((err) => {
           // console.log(`err: ${JSON.stringify(err)}`);
           return throwError(err);

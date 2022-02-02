@@ -36,7 +36,7 @@ export class MyPortfolioComponent implements OnInit {
   modalReference: NgbModalRef;
   version: string | null = environment.version;
   isLoading = false;
-  userProfile$: Observable<any>;
+  // userProfile$: Observable<any>;
   yourBestStocks$: Observable<any>;
   hasConfidenceScore = false;
   newOpenPositionSymbol: string;
@@ -212,12 +212,12 @@ export class MyPortfolioComponent implements OnInit {
     this.sellDate = todayDate;
 
     // set user profile
-    this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
-      map((body) => {
-        this.credentialsService.setUserProfile(body);
-        return body;
-      })
-    );
+    // this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
+    //   map((body) => {
+    //     this.credentialsService.setUserProfile(body);
+    //     return body;
+    //   })
+    // );
 
     this.service.getAllSymbols().subscribe((data) => {
       this.allSymbolData = data;

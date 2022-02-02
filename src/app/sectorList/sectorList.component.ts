@@ -19,7 +19,7 @@ export class SectorListComponent implements OnInit {
   modalReference: NgbModalRef;
   version: string | null = environment.version;
   isLoading = false;
-  userProfile$: Observable<any>;
+  // userProfile$: Observable<any>;
   topStocks$: Observable<any>;
   yourBestStocks$: Observable<any>;
   favorites$: Observable<any>;
@@ -69,12 +69,12 @@ export class SectorListComponent implements OnInit {
     );
 
     // set user profile
-    this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
-      map((body) => {
-        this.credentialsService.setUserProfile(body);
-        return body;
-      })
-    );
+    // this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
+    //   map((body) => {
+    //     this.credentialsService.setUserProfile(body);
+    //     return body;
+    //   })
+    // );
 
     this.allSectorList$ = this.service.getAllSectors();
   }

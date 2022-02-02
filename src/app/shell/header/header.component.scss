@@ -93,3 +93,19 @@
     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
   }
 }
+
+.login-area {
+  background: #fe8c00;
+  border: 1px solid #fff;
+  color: #fff !important;
+
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 700;
+}
+
+a:hover {
+  background: none;
+  border: 2px solid #fe8c00;
+  color: #fe8c00 !important;
+}

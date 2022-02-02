@@ -107,12 +107,14 @@
 
   <div class="mb-3">
     <!-- Top Picks-->
-    <div class="h2">
-      Stocks outperforming NASDAQ and in Uptrend
-      <span class="h6"> <a href="javascript:void(0);" (click)="viewAllBetterPerformingStocks()">(View All)</a></span>
-    </div>
     <div class="card border-0" aria-labelledby="nav-topStocks-tab">
       <div *ngIf="beatNasdaq$ | async as beatNasdaq">
+        <div class="h2">
+          Stocks outperforming NASDAQ and in Uptrend
+          <span class="h6">
+            <a href="javascript:void(0);" (click)="viewAllBetterPerformingStocks()">(View All)</a></span
+          >
+        </div>
         <div>
           <div class="py-1">
             <ul class="mb-0 small">
@@ -227,12 +229,12 @@
 
   <div class="mb-3">
     <!-- Top Picks-->
-    <div class="h2">
-      Stocks about to breakout/bounce-back
-      <span class="h6"> <a href="javascript:void(0);" (click)="viewAllUptrendingStocks()">(View All)</a></span>
-    </div>
     <div class="card border-0" aria-labelledby="nav-topStocks-tab">
       <div *ngIf="topStocks$ | async as topStocks">
+        <div class="h2">
+          Stocks about to breakout/bounce-back
+          <span class="h6"> <a href="javascript:void(0);" (click)="viewAllUptrendingStocks()">(View All)</a></span>
+        </div>
         <div>
           <div class="py-1">
             <ul class="mb-0 small">

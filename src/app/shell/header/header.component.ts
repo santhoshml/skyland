@@ -82,7 +82,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     // get UserModelProfile
-    this.authenticationService.getUserModelProfile().subscribe();
+    // this.authenticationService.getUserModelProfile().subscribe();
     this.getPortFolioValue();
 
     // get date from config
@@ -104,7 +104,9 @@ export class HeaderComponent implements OnInit {
       // this.data = data;
     });
 
-    this.userProfile$ = this.userProfileService.getUserDetails();
+    if (this.credentialsService.credentials) {
+      this.userProfile$ = this.userProfileService.getUserDetails();
+    }
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -135,14 +137,16 @@ export class HeaderComponent implements OnInit {
   }
 
   getPortFolioValue() {
-    this.portFolioService.getOpenPositions().subscribe((res) => {
-      let pfValue = 0;
-      res.forEach((val) => {
-        pfValue = pfValue + (val.buy_qty - val.sell_qty);
-        console.log(pfValue);
+    if (this.credentialsService.credentials) {
+      this.portFolioService.getOpenPositions().subscribe((res) => {
+        let pfValue = 0;
+        res.forEach((val) => {
+          pfValue = pfValue + (val.buy_qty - val.sell_qty);
+          console.log(pfValue);
+        });
+        this.portfolioValue = pfValue;
       });
-      this.portfolioValue = pfValue;
-    });
+    }
   }
 
   backClicked() {
@@ -203,8 +207,8 @@ export class HeaderComponent implements OnInit {
         let email = credentials ? credentials.email : null;
         let data = {
           comments: this.userFeedback,
-          userId: userId,
-          email: email,
+          userId: userId || 'Anonymous',
+          email: email || 'Anonymous',
           url: this.router.url,
         };
         this.service.recordUserFeedback(data).subscribe((dt) => {

@@ -9,7 +9,6 @@ const routes = {
   login: () => `/login`,
   createAccount: () => `/signup`,
   userModelStats: () => `/model/info`,
-  userDetails: () => `/user/details`,
   getFavorites: () => `/favorites`,
   getConfigValue: (key: string) => `/config/key_str/${key}`,
   forgotPassword: () => `/forgot`,
@@ -82,7 +81,7 @@ export class AuthenticationService {
         map((body: any) => {
           // console.log(`In authentication.service.login body: ${JSON.stringify(body)}`);
           this.credentialsService.setCredentials(body, context.remember);
-          this.getUserModelProfile().subscribe();
+          // this.getUserModelProfile().subscribe();
           return of(body);
         }),
         catchError((err) => {
@@ -195,7 +194,7 @@ export class AuthenticationService {
       map((body: any) => {
         // console.log(`body: ${JSON.stringify(body)}`);
         this.credentialsService.setCredentials(body, false);
-        this.getUserModelProfile().subscribe();
+        // this.getUserModelProfile().subscribe();
         return of(body);
       }),
       catchError((err) => {
