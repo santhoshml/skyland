@@ -11,6 +11,7 @@ import { I18nModule } from '@app/i18n';
 import { AuthModule } from '@app/auth';
 import { ShellComponent } from './shell.component';
 import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 @NgModule({
@@ -26,6 +27,6 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     BrowserModule,
     AutocompleteLibModule,
   ],
-  declarations: [HeaderComponent, ShellComponent],
+  declarations: [HeaderComponent, FooterComponent, ShellComponent],
 })
 export class ShellModule {}

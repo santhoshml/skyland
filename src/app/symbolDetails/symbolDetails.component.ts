@@ -396,31 +396,35 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   open(content: any) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-      (result) => {
-        this.googleAnalyticsService.eventEmitter(
-          'symbolDetails',
-          'modalService.open',
-          'modalService-closed',
-          result,
-          0,
-          this.credentialsService.userEmail
-        );
-        this.closeResult = `Closed with: ${result}`;
-        this.symbolDetailsService.saveUserNotes(this.activeSymbol, this.userNotes).subscribe();
-      },
-      (reason) => {
-        this.googleAnalyticsService.eventEmitter(
-          'symbolDetails',
-          'modalService.open',
-          'modalService-closed',
-          reason,
-          0,
-          this.credentialsService.userEmail
-        );
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      }
-    );
+    if (!this.credentialsService.userEmail) {
+      this.symbolDetailsService.enableLoginPopup.next(true);
+    } else {
+      this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+        (result) => {
+          this.googleAnalyticsService.eventEmitter(
+            'symbolDetails',
+            'modalService.open',
+            'modalService-closed',
+            result,
+            0,
+            this.credentialsService.userEmail
+          );
+          this.closeResult = `Closed with: ${result}`;
+          this.symbolDetailsService.saveUserNotes(this.activeSymbol, this.userNotes).subscribe();
+        },
+        (reason) => {
+          this.googleAnalyticsService.eventEmitter(
+            'symbolDetails',
+            'modalService.open',
+            'modalService-closed',
+            reason,
+            0,
+            this.credentialsService.userEmail
+          );
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+    }
   }
 
   private getDismissReason(reason: any): string {
