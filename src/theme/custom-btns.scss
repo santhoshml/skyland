@@ -31,3 +31,33 @@
 .btn-outline-orange {
   @include button-outline-variant($orange, #fff, lighten($orange, 5%), $orange);
 }
+
+@include media-breakpoint-up(sm) {
+  .xl-modal {
+    .modal-dialog {
+      max-width: 90%;
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .xl-modal {
+    .modal-dialog {
+      max-width: 70%;
+    }
+  }
+}
+@include media-breakpoint-up(lg) {
+  .xl-modal {
+    .modal-dialog {
+      max-width: 80%;
+    }
+  }
+}
+@include media-breakpoint-up(xl) {
+  .xl-modal {
+    .modal-dialog {
+      max-width: 80%;
+    }
+  }
+}

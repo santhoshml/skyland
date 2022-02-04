@@ -8,6 +8,7 @@ const routes = {
   recordEmoji: () => `/feedback/emoji`,
   recordComments: () => `/feedback/comments`,
   getAllSymbols: () => `/stocks/all/symbolAndNames`,
+  signupWithoutPassword: () => `/signupWithoutPassword`,
 };
 
 export interface RandomQuoteContext {
@@ -38,6 +39,20 @@ export class HeaderService {
   recordUserFeedback(data: any): Observable<any> {
     return this.httpClient
       .post(routes.recordComments(), data, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  signupWithoutPassword(data: any): Observable<any> {
+    return this.httpClient
+      .post(routes.signupWithoutPassword(), data, {
         withCredentials: true,
       })
       .pipe(

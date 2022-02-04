@@ -3,3 +3,68 @@
   <router-outlet></router-outlet>
 </div>
 <app-footer></app-footer>
+<ng-template #content let-modal>
+  <div class="modal-header border-0 pb-0">
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')" tabindex="-1">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body px-4 pb-4 pt-0">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-5 py-3">
+        <h2 class="pb-4">20% OFF IN-STORE AND ONLINE—YOU'VE EARNED IT*</h2>
+        <h6 class="pb-4">You'll officially be in the loop for NEW arrivals, BIG deals, EXCLUSIVE sales AND MORE.</h6>
+
+        <form (ngSubmit)="login()" [formGroup]="welcomeForm" novalidate class="pb-4">
+          <div class="form-group mt-3 w-75">
+            <label class="d-block">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="email"
+                autocomplete="email"
+                placeholder="Email"
+                required
+                email
+                [ngClass]="{ error: submitted }"
+                (focus)="onBlurMethod()"
+              />
+            </label>
+            <label class="d-block mt-3">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="displayName"
+                placeholder="Display Name"
+                required
+                [ngClass]="{ error: submitted }"
+                (focus)="onBlurMethod()"
+              />
+            </label>
+          </div>
+          <div class="pb-3">
+            <small [hidden]="!accountAlreadyExist" class="text-success">
+              Account with that email address already exists. Please <a href="https://app.liste.ai/login">Login!</a>
+            </small>
+          </div>
+          <button class="btn btn-primary mb-1" type="submit">
+            <span translate>Submit</span>
+          </button>
+        </form>
+        <div class="text-center small">
+          <b class="small">*OFFER VALID FOR NEW SUBSCRIBERS ONLY</b>
+          <div class="small">
+            <a href="https://static.liste.ai/terms.html">Terms of Service</a>
+            <span> | </span>
+            <a href="https://static.liste.ai/privacy.html">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-7">
+        <div class="w-100 img-container">
+          <img src="assets/images/email-template.png" />
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
