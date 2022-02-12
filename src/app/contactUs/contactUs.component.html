@@ -1,0 +1,103 @@
+<div class="container mt-5">
+  <div class="tab-content mb-5" id="nav-tabContent">
+    <div
+      class="tab-pane fade show active card mt-5"
+      id="nav-userDetails"
+      role="tabpanel"
+      aria-labelledby="nav-userDetails-tab"
+    >
+      <div *ngIf="!displayThankYouMessage" class="form-group">
+        <div class="text-center mt-5">
+          <p class="h1" style="font-family: inherit">We'd Love to Hear From You</p>
+          <p class="small">
+            Whether you're curious about features, customization or even press-we're ready to answer any and all
+            questions.
+          </p>
+        </div>
+
+        <form class="p-3 mt-1 justify-content-center" [formGroup]="contactUsForm" (ngSubmit)="sendMessage()" novalidate>
+          <div class="row mt-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2 pt-2">
+              <label>Name</label>
+            </div>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                autocomplete="name"
+                placeholder="Full Name"
+              />
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2 pt-2">
+              <label>Email</label>
+            </div>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="email"
+                autocomplete="email"
+                placeholder="Best email to reach you"
+              />
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2 pt-2">
+              <label>Phone</label>
+            </div>
+            <div class="col-sm-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="phone"
+                autocomplete="phone"
+                placeholder="Mobile Phone Number"
+              />
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2 pt-2">
+              <label>Message</label>
+            </div>
+            <div class="col-sm-4">
+              <textarea
+                type="textarea"
+                class="form-control"
+                formControlName="message"
+                placeholder="Write your mesage here"
+                rows="3"
+              >
+              </textarea>
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2 pt-2"></div>
+            <div class="col-sm-4">
+              <button class="btn btn-primary" type="submit">Send</button>
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="displayThankYouMessage" class="text-center mt-5">
+        <p class="h3">Thank you for getting in touch!</p>
+        <p>
+          We appreciate you contacting us at Liste. One of our colleagues will get back in touch with you soon!Have a
+          great day!
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

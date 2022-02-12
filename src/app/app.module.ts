@@ -31,6 +31,8 @@ import { MyPortfolioModule } from './myPortfolio/myPortfolio.module';
 import { SectorListModule } from './sectorList/sectorList.module';
 import { UptrendingStocksModule } from './uptrendingStocks/uptrendingStocks.module';
 import { BetterPerformingModule } from './betterPerforming/betterPerforming.module';
+import { ContactUsModule } from './contactUs/contactUs.module';
+import { UnsubscribeModule } from './unsubscribe/unsubscribe.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TruncateModule } from '@yellowspot/ng-truncate';
@@ -81,6 +83,8 @@ import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-logi
     AllUserListAdminModule,
     AdminControlsModule,
     RecommendedStockListAdminModule,
+    ContactUsModule,
+    UnsubscribeModule,
     AppRoutingModule, // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],

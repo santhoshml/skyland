@@ -12,7 +12,7 @@
         class="w-100"
         [data]="allUserList"
         (tableData)="tableValue($event)"
-        [searchFields]="['email', 'name', 'phone', 'expertise', 'created_dt', 'loginCount']"
+        [searchFields]="['email', 'name', 'phone', 'expertise', 'created_dt', 'loginCount', 'apiCallCount']"
       ></app-table-filter>
     </div>
   </div>
@@ -25,7 +25,7 @@
           <th style="width: 200px" scope="col" sortable="phone" (sort)="onSort($event)">Name</th>
           <th style="width: 150px" scope="col" sortable="expertise" (sort)="onSort($event)">Expertise</th>
           <th style="width: 150px" scope="col" sortable="lastLogin" (sort)="onSort($event)">Last Login</th>
-          <th style="width: 150px" scope="col" sortable="loginCount" (sort)="onSort($event)">Login Count</th>
+          <th style="width: 150px" scope="col" sortable="apiCallCount" (sort)="onSort($event)">API Call Count</th>
           <th style="width: 150px" scope="col" sortable="created_dt" (sort)="onSort($event)">Create Date</th>
           <th style="width: 150px" scope="col" sortable="created_dt" (sort)="onSort($event)">Actions</th>
         </tr>
@@ -44,8 +44,8 @@
           <td class="word-break">{{ row.referredBy }}</td>
           <td class="word-break">{{ row.name }}<br />{{ row.phone }}</td>
           <td>{{ row.expertise }}</td>
-          <td>{{ row.lastLogin === 'Invalid date' ? '' : (row.lastLogin | date) }}</td>
-          <td>{{ row.loginCount }}</td>
+          <td>{{ row.lastLogin === 'Invalid date' ? '' : (row.lastLogin | date) }} / {{ row.loginCount }}</td>
+          <td>{{ row.apiCallCount }}</td>
           <td>{{ row.created_dt | date }}</td>
           <td>
             <div>

@@ -193,7 +193,7 @@ export class AuthenticationService {
     return this.httpClient.post(routes.createAccount(), createAccountData).pipe(
       map((body: any) => {
         // console.log(`body: ${JSON.stringify(body)}`);
-        this.credentialsService.setCredentials(body, false);
+        this.credentialsService.setCredentials(body, true);
         // this.getUserModelProfile().subscribe();
         return of(body);
       }),
