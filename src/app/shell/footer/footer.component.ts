@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
   currentDate: any;
-  constructor() {
+  constructor(private router: Router) {
     this.currentDate = new Date().getFullYear();
   }
 
   ngOnInit() {}
+
+  gotoContactus() {
+    this.router.navigate(['/contactUs'], { replaceUrl: true });
+  }
 }
