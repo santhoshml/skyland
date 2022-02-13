@@ -190,4 +190,8 @@ export class UserProfileComponent implements OnInit {
   closeUpdateNotif() {
     this.displayUpdatNotif = false;
   }
+
+  unsubscribe() {
+    this.router.navigate([`/unsubscribe`, this.credentialsService.credentials.id], { replaceUrl: true });
+  }
 }

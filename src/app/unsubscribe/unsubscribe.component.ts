@@ -17,12 +17,15 @@ import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 export class UnsubscribeComponent implements OnInit {
   unsubscribeForm: FormGroup;
   displayThankYouMessage: boolean;
+  private sub: any;
+  userId: string;
 
   constructor(
     private credentialsService: CredentialsService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private service: UnsubscribeService,
     private router: Router,
+    private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ) {}
 
@@ -40,13 +43,25 @@ export class UnsubscribeComponent implements OnInit {
       1,
       this.credentialsService.userEmail
     );
+
+    this.sub = this.route.params.subscribe((params) => {
+      this.userId = params['userId'];
+    });
   }
 
-  sendMessage() {
+  unsubscribe() {
     let formvalue = this.unsubscribeForm.value;
     console.log(`formvalue: ${JSON.stringify(formvalue)}`);
-    this.service.unsubscribe(formvalue).subscribe((data) => {
+    let data = {
+      userId: this.userId,
+      message: formvalue.message,
+    };
+    this.service.unsubscribe(data).subscribe((resp) => {
       this.displayThankYouMessage = true;
     });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

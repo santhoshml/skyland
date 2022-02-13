@@ -7,7 +7,7 @@ import { UnsubscribeComponent } from './unsubscribe.component';
 
 const routes: Routes = [
   Shell.childRoutes([
-    { path: 'unsubscribe', component: UnsubscribeComponent, data: { title: marker('Liste.AI - Unsubscribe') } },
+    { path: 'unsubscribe/:userId', component: UnsubscribeComponent, data: { title: marker('Liste.AI - Unsubscribe') } },
   ]),
 ];
 
