@@ -12,10 +12,10 @@
   <div class="modal-body px-4 pb-4 pt-0">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-5 py-3">
-        <h2 class="pb-4">End of day Market Report*</h2>
+        <h2 class="pb-4">End of Day Market Report*</h2>
         <h6 class="pb-4">
-          To receive daily email updates on the <strong>top</strong> stocks beating the NASDAQ, list of stocks ready to
-          <strong>break-out</strong>.
+          To receive daily email updates on the <strong>top</strong> stocks beating the NASDAQ and the list of stocks
+          ready to <strong>break-out</strong>.
         </h6>
 
         <form (ngSubmit)="login()" [formGroup]="welcomeForm" novalidate class="pb-4">
@@ -38,7 +38,7 @@
                 type="text"
                 class="form-control"
                 formControlName="displayName"
-                placeholder="Display Name"
+                placeholder="Name"
                 required
                 [ngClass]="{ error: submitted }"
                 (focus)="onBlurMethod()"
@@ -54,9 +54,9 @@
             <span translate>Submit</span>
           </button>
         </form>
-        <p>If you already, have an account,<a href="https://liste.ai/login">Click here to login!</a></p>
+        <p>If you already have an account,&nbsp;<a href="https://liste.ai/login">Click here to login!</a></p>
         <div class="text-center small">
-          <b class="small">*This will create a free account with your email on the LISTE platform.</b>
+          <b class="small">*This will create a free account with your email on the Liste Software.</b>
           <div class="small">
             <a href="https://static.liste.ai/terms.html">Terms of Service</a>
             <span> | </span>
@@ -66,7 +66,7 @@
       </div>
       <div class="col-sm-12 col-md-12 col-lg-7">
         <div class="w-100 img-container">
-          <img src="assets/images/email-template-2.png" />
+          <img src="assets/images/email-template-3.png" />
         </div>
       </div>
     </div>
