@@ -1,18 +1,16 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnsubscribeComponent } from './unsubscribe.component';
 
-describe('ContactUsComponent', () => {
+describe('UnsubscribeComponent', () => {
   let component: UnsubscribeComponent;
   let fixture: ComponentFixture<UnsubscribeComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [UnsubscribeComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [UnsubscribeComponent],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UnsubscribeComponent);

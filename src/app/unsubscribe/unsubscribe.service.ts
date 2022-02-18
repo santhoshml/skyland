@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, Subject, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 const routes = {
@@ -11,11 +11,18 @@ const routes = {
   providedIn: 'root',
 })
 export class UnsubscribeService {
-  unsubscribe(data: any) {
-    return this.httpClient.post(routes.unsubscribe(), data, { withCredentials: true }).pipe(
-      map((body: any) => body),
-      catchError(() => of('Error, could not POST unsubscribe details :-('))
-    );
-  }
   constructor(private httpClient: HttpClient) {}
+
+  unsubscribeEmail(data): Observable<any> {
+    return this.httpClient
+      .post(routes.unsubscribe(), data, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          return throwError(err);
+        })
+      );
+  }
 }

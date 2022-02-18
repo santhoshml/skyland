@@ -1,13 +1,7 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { finalize } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
-import { environment } from '@env/environment';
-import { Observable, of } from 'rxjs';
-import { CredentialsService, UserProfileModel } from '@app/auth';
-import { GoogleAnalyticsService } from '@app/@core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CredentialsService } from '@app/auth';
 import { UnsubscribeService } from './unsubscribe.service';
-import { map, catchError } from 'rxjs/operators';
-import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-unsubscribe',
@@ -15,53 +9,34 @@ import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
   styleUrls: ['./unsubscribe.component.scss'],
 })
 export class UnsubscribeComponent implements OnInit {
-  unsubscribeForm: FormGroup;
-  displayThankYouMessage: boolean;
-  private sub: any;
+  radioItems: Array<string>;
+  unsubscribeSuccess = false;
+  feedback: string = '';
+  model = { option: '' };
   userId: string;
-
   constructor(
+    private unsubscribe: UnsubscribeService,
     private credentialsService: CredentialsService,
-    private googleAnalyticsService: GoogleAnalyticsService,
-    private service: UnsubscribeService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder
-  ) {}
-
-  ngOnInit() {
-    // initialse the form
-    this.unsubscribeForm = this.formBuilder.group({
-      message: [''],
-    });
-
-    this.googleAnalyticsService.eventEmitter(
-      'unsubscribe-init',
-      'unsubscribe',
-      'init',
-      '',
-      1,
-      this.credentialsService.userEmail
-    );
-
-    this.sub = this.route.params.subscribe((params) => {
-      this.userId = params['userId'];
+    private route: ActivatedRoute
+  ) {
+    this.radioItems = ['The email has nothing to do with me.', 'For the time being, no.', 'It could be later.'];
+    this.route.params.subscribe((params) => {
+      this.userId = params['id'];
     });
   }
 
-  unsubscribe() {
-    let formvalue = this.unsubscribeForm.value;
-    console.log(`formvalue: ${JSON.stringify(formvalue)}`);
-    let data = {
-      userId: this.userId,
-      message: formvalue.message,
-    };
-    this.service.unsubscribe(data).subscribe((resp) => {
-      this.displayThankYouMessage = true;
-    });
-  }
+  ngOnInit(): void {}
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+  callUnsubscribe(): void {
+    // this.credentialsService.credentials.id
+    const reason = `Reason: ${this.model.option}, Feedback: ${this.feedback}`;
+    this.unsubscribe
+      .unsubscribeEmail({
+        userId: this.userId,
+        message: reason,
+      })
+      .subscribe((res) => {
+        this.unsubscribeSuccess = true;
+      });
   }
 }
