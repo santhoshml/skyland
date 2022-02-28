@@ -8,7 +8,7 @@
         <div class="pl-3">
           <div>
             <div class="mb-4">
-              <p class="font-weight-bold mb-2">Choose the reason</p>
+              <p class="font-weight-bold mb-2">Can you please give us the reason</p>
               <div *ngFor="let radiobutton of radioItems">
                 <label>
                   <input
@@ -20,14 +20,14 @@
                 </label>
               </div>
             </div>
-            <p class="font-weight-bold mb-2">Any Other Comments</p>
+            <p class="font-weight-bold mb-2">Any parting comments</p>
             <div class="mb-4">
               <textarea [(ngModel)]="feedback" rows="2" cols="40"> </textarea>
             </div>
 
             <button class="btn btn-orange mb-4" (click)="callUnsubscribe()">Unsubscribe</button>
             <p class="small">
-              * Please note that unsubscribe request can take 5-10 days to process..<br />
+              * Please note that unsubscribe request can take 1-2 days to process..<br />
               It’s not us we swear, it’s just how these unsubscribe list thingamajigs work.
             </p>
           </div>

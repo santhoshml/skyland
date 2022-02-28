@@ -15,11 +15,16 @@ export class UnsubscribeComponent implements OnInit {
   model = { option: '' };
   userId: string;
   constructor(
-    private unsubscribe: UnsubscribeService,
+    private service: UnsubscribeService,
     private credentialsService: CredentialsService,
     private route: ActivatedRoute
   ) {
-    this.radioItems = ['The email has nothing to do with me.', 'For the time being, no.', 'It could be later.'];
+    this.radioItems = [
+      'The email is not relevant to what I need.',
+      'I am not in the stock market anymore',
+      'For the time being, No.',
+      'It could be later.',
+    ];
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
     });
@@ -30,7 +35,7 @@ export class UnsubscribeComponent implements OnInit {
   callUnsubscribe(): void {
     // this.credentialsService.credentials.id
     const reason = `Reason: ${this.model.option}, Feedback: ${this.feedback}`;
-    this.unsubscribe
+    this.service
       .unsubscribeEmail({
         userId: this.userId,
         message: reason,
