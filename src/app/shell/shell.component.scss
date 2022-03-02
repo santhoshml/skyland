@@ -2,9 +2,14 @@ input.ng-invalid.ng-touched {
   border: 1px solid red;
 }
 
-.img-container {
+.scroll-container {
   max-height: 500px;
   overflow: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
   img {
     width: 100%;
   }

@@ -4,6 +4,19 @@
   margin-bottom: $spacer;
 }
 
+.social-links {
+  a {
+    font-size: 22px;
+    color: #212529;
+    border: none;
+    margin-right: 10px;
+    &:hover {
+      color: #212529 !important;
+      border: none;
+    }
+  }
+}
+
 .back-icon {
   font-size: 20px;
   border-radius: 50%;

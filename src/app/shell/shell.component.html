@@ -12,61 +12,66 @@
   <div class="modal-body px-4 pb-4 pt-0">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-5 py-3">
-        <h2 class="pb-4">End of Day Market Report*</h2>
-        <h6 class="pb-4">
-          To receive daily email updates on the <strong>top</strong> stocks beating the NASDAQ and the list of stocks
-          ready to <strong>break-out</strong>.
-        </h6>
-
-        <form (ngSubmit)="login()" [formGroup]="welcomeForm" novalidate class="pb-4">
-          <div class="form-group mt-3 w-75">
-            <label class="d-block">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="email"
-                autocomplete="email"
-                placeholder="Email"
-                required
-                email
-                [ngClass]="{ error: submitted }"
-                (focus)="onBlurMethod()"
-              />
-            </label>
-            <label class="d-block mt-3">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="displayName"
-                placeholder="Name"
-                required
-                [ngClass]="{ error: submitted }"
-                (focus)="onBlurMethod()"
-              />
-            </label>
-          </div>
-          <div class="pb-3">
-            <small [hidden]="!accountAlreadyExist" class="text-success">
-              Account with that email address already exists. Please <a href="https://liste.ai/login">Login!</a>
-            </small>
-          </div>
-          <button class="btn btn-primary mb-1" type="submit">
-            <span translate>Submit</span>
-          </button>
-        </form>
-        <p>If you already have an account,&nbsp;<a href="https://liste.ai/login">Click here to login!</a></p>
-        <div class="text-center small">
-          <b class="small">*This will create a free account with your email on the Liste Software.</b>
-          <div class="small">
-            <a href="https://static.liste.ai/terms.html">Terms of Service</a>
-            <span> | </span>
-            <a href="https://static.liste.ai/privacy.html">Privacy Policy</a>
+        <div class="scroll-container">
+          <h6 class="pb-2 font-weight-bold text-center">
+            Liste In <a href="https://www.producthunt.com/posts/liste">Producthunt</a>
+          </h6>
+          <img class="pb-4" src="assets/images/productHunt-1.png" />
+          <h6 class="pb-2 font-weight-bold">End of Day Market Report*</h6>
+          <h6 class="pb-4">
+            To receive daily email updates on the <strong>top</strong> stocks beating the NASDAQ and the list of stocks
+            ready to <strong>break-out</strong>.
+          </h6>
+          <form (ngSubmit)="login()" [formGroup]="welcomeForm" novalidate class="pb-4">
+            <div class="form-group mt-3 w-75">
+              <label class="d-block">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="email"
+                  autocomplete="email"
+                  placeholder="Email"
+                  required
+                  email
+                  [ngClass]="{ error: submitted }"
+                  (focus)="onBlurMethod()"
+                />
+              </label>
+              <label class="d-block mt-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="displayName"
+                  placeholder="Name"
+                  required
+                  [ngClass]="{ error: submitted }"
+                  (focus)="onBlurMethod()"
+                />
+              </label>
+            </div>
+            <div class="pb-3">
+              <small [hidden]="!accountAlreadyExist" class="text-success">
+                Account with that email address already exists. Please <a href="https://liste.ai/login">Login!</a>
+              </small>
+            </div>
+            <button class="btn btn-primary mb-1" type="submit">
+              <span translate>Submit</span>
+            </button>
+          </form>
+          <p>If you already have an account,&nbsp;<a href="https://liste.ai/login">Click here to login!</a></p>
+          <div class="text-center small">
+            <b class="small">*This will create a free account with your email on the Liste Software.</b>
+            <div class="small">
+              <a href="https://static.liste.ai/terms.html">Terms of Service</a>
+              <span> | </span>
+              <a href="https://static.liste.ai/privacy.html">Privacy Policy</a>
+            </div>
           </div>
         </div>
       </div>
       <div class="col-sm-12 col-md-12 col-lg-7">
-        <div class="w-100 img-container">
-          <img src="assets/images/email-template-3.png" />
+        <div class="w-100 scroll-container">
+          <img src="assets/images/email-template-4.jpg" />
         </div>
       </div>
     </div>
