@@ -11,6 +11,7 @@ import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 import { compare, SortEvent, TableSortableHeaderDirective } from '@app/@shared';
 
 import { UptrendingStocksService } from './uptrendingStocks.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-uptrendingStocks',
@@ -40,7 +41,8 @@ export class UptrendingStocksComponent implements OnInit {
     private service: UptrendingStocksService,
     private credentialsService: CredentialsService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private symbolDetailsService: SymbolDetailsService
+    private symbolDetailsService: SymbolDetailsService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -130,5 +132,9 @@ export class UptrendingStocksComponent implements OnInit {
       this.hideViewMoreBtn = true;
     }
     this.readUptrendStocks(this.currentTableCount);
+  }
+
+  gotoDetails(symbol) {
+    this.router.navigate([`/symbolDetails/${symbol}`], { replaceUrl: true });
   }
 }

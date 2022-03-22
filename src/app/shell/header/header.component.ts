@@ -58,6 +58,7 @@ export class HeaderComponent implements OnInit {
   closeResult: string;
   userFeedback: string;
   showThankYouForFeedbackFlag = false;
+  isUserLoggedIn: boolean;
 
   // searchbar in the header
   keyword = 'name';
@@ -106,6 +107,7 @@ export class HeaderComponent implements OnInit {
 
     if (this.credentialsService.credentials) {
       this.userProfile$ = this.userProfileService.getUserDetails();
+      this.isUserLoggedIn = true;
     }
 
     this.router.events.subscribe((event) => {

@@ -24,6 +24,7 @@ const routes = {
   symbolIndustryDetails: (symbol: string) => `/stocks/symbol/${symbol}/industryStats`,
   trendingDetails: (symbol: string) => `/trend/details/symbol/${symbol}`,
   symbolEvaluation: (symbol: string) => `/symbol/${symbol}/proscons`,
+  earningsList: (symbol: string) => `/earnings/symbol/${symbol}`,
 };
 
 export interface ITrendingDetails {
@@ -45,6 +46,13 @@ export class SymbolDetailsService {
   enableLoginPopup = new Subject<boolean>();
 
   constructor(private httpClient: HttpClient, private credentialsService: CredentialsService) {}
+
+  getEarnings(symbol: string): Observable<any> {
+    return this.httpClient.get(routes.earningsList(symbol)).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not GET earnings details :-('))
+    );
+  }
 
   getSymbolEvaluation(symbol: string): Observable<ITrendingDetails | string> {
     return this.httpClient.get(routes.symbolEvaluation(symbol)).pipe(

@@ -143,4 +143,8 @@ export class SectorDetailsComponent implements OnInit {
     );
     this.symbolDetailsService.removeFromFavorites(symbol).subscribe((data) => {});
   }
+
+  gotoDetails(symbol) {
+    this.router.navigate([`/symbolDetails/${symbol}`], { replaceUrl: true });
+  }
 }

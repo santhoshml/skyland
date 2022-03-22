@@ -39,11 +39,9 @@
       <table class="mt-20 table table-striped table-hover">
         <thead>
           <tr>
+            <th scope="col" class="table-header">Action</th>
             <th width="380" class="text-center" scope="col">Company</th>
-            <!-- <th class="text-center" scope="col">Company</th> -->
             <th class="text-center" style="width: 7%" scope="col">Trend</th>
-            <!-- <th class="text-center" style="width: 7%" scope="col">Price</th>
-            <th class="text-center" style="width: 7%" scope="col">Volume</th> -->
             <th class="text-center" style="width: 7%" scope="col">
               Dividend
               <a href="https://www.investopedia.com/terms/d/dividendyield.asp" target="_blank">
@@ -63,11 +61,16 @@
                 <i class="fa fa-info-circle" title="Industry of a stock" aria-hidden="true"></i>
               </a>
             </th>
-            <th class="text-center" style="width: 10%" scope="col">Action</th>
+            <th class="text-center" scope="col">Earnings</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let listRow of listDetails.list" class="table-row">
+            <td class="text-left">
+              <a href="javascript:void(0);" (click)="gotoDetails(listRow.symbol)">
+                <img src="assets/view-details-icon.jpeg" width="20px" class="icon" alt="View details" />
+              </a>
+            </td>
             <app-single-quote-widget [symbol]="listRow.symbol" [exchange]="listRow.exchange"></app-single-quote-widget>
             <td class="text-left trend">
               <div *ngIf="listRow.trend == 1">
@@ -113,16 +116,9 @@
               <div *ngIf="!listRow.industry">N/A</div>
             </td>
             <td class="text-left note">
-              <div class="action-btn-group" *ngIf="!isFavorite(listRow.symbol)">
-                <a href="javascript:void(0);" (click)="addToFavorites(listRow.symbol)" class="btn-pading text-btn">
-                  Add to Favorites
-                </a>
-              </div>
-              <div class="action-btn-group" *ngIf="isFavorite(listRow.symbol)">
-                <a href="javascript:void(0);" (click)="removeFromFavorites(listRow.symbol)" class="btn-pading text-btn">
-                  Delete from Favorites
-                </a>
-              </div>
+              <ul *ngIf="listRow.earnings_comment">
+                <li *ngFor="let earningStr of listRow.earnings_comment.split('|')" [innerHTML]="earningStr"></li>
+              </ul>
             </td>
           </tr>
         </tbody>

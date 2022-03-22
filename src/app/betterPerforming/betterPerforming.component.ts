@@ -11,6 +11,7 @@ import { SymbolDetailsService } from '@app/symbolDetails/symbolDetails.service';
 import { compare, SortEvent, TableSortableHeaderDirective } from '@app/@shared';
 
 import { BetterPerformingService } from './betterPerforming.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-betterPerforming',
@@ -43,7 +44,8 @@ export class BetterPerformingComponent implements OnInit {
     private service: BetterPerformingService,
     private credentialsService: CredentialsService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private symbolDetailsService: SymbolDetailsService
+    private symbolDetailsService: SymbolDetailsService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -147,5 +149,9 @@ export class BetterPerformingComponent implements OnInit {
       this.hideViewMoreBtn = true;
     }
     this.readUptrendStocks(this.currentTableCount);
+  }
+
+  gotoDetails(symbol) {
+    this.router.navigate([`/symbolDetails/${symbol}`], { replaceUrl: true });
   }
 }

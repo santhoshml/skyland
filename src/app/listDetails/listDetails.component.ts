@@ -167,4 +167,8 @@ export class ListDetailsComponent implements OnInit {
     );
     this.symbolDetailsService.removeFromFavorites(symbol).subscribe();
   }
+
+  gotoDetails(symbol) {
+    this.router.navigate([`/symbolDetails/${symbol}`], { replaceUrl: true });
+  }
 }

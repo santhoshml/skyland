@@ -32,6 +32,7 @@
           <table class="table table-striped table-hover table-bordered" *ngIf="tableData">
             <thead>
               <tr>
+                <th scope="col" class="table-header">Action</th>
                 <th width="380" class="text-center" scope="col" sortable="symbol" (sort)="onSort($event)">Company</th>
                 <th class="text-center" scope="col" sortable="trend" (sort)="onSort($event)">Trend</th>
                 <th class="text-center" scope="col" sortable="dividendYield" (sort)="onSort($event)">Weekly gains</th>
@@ -48,11 +49,16 @@
                     <i class="fa fa-info-circle" title="Industry of a stock" aria-hidden="true"></i>
                   </a>
                 </th>
-                <th class="text-center" scope="col">Action</th>
+                <th class="text-center" scope="col">Earnings</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let uptrendingStock of tableData" class="table-row">
+                <td class="text-left">
+                  <a href="javascript:void(0);" (click)="gotoDetails(uptrendingStock.symbol)">
+                    <img src="assets/view-details-icon.jpeg" width="20px" class="icon" alt="View details" />
+                  </a>
+                </td>
                 <td>
                   <app-single-quote-widget
                     [symbol]="uptrendingStock.symbol"
@@ -103,24 +109,12 @@
                   <div *ngIf="!uptrendingStock.industry">N/A</div>
                 </td>
                 <td class="text-left">
-                  <div class="action-btn-group" *ngIf="!isFavorite(uptrendingStock.symbol)">
-                    <a
-                      href="javascript:void(0);"
-                      (click)="addToFavorites(uptrendingStock.symbol)"
-                      class="btn-pading text-btn"
-                    >
-                      Add to Favorites
-                    </a>
-                  </div>
-                  <div class="action-btn-group" *ngIf="isFavorite(uptrendingStock.symbol)">
-                    <a
-                      href="javascript:void(0);"
-                      (click)="removeFromFavorites(uptrendingStock.symbol)"
-                      class="btn-pading text-btn"
-                    >
-                      Delete from Favorites
-                    </a>
-                  </div>
+                  <ul *ngIf="uptrendingStock.earnings_comment">
+                    <li
+                      *ngFor="let earningStr of uptrendingStock.earnings_comment.split('|')"
+                      [innerHTML]="earningStr"
+                    ></li>
+                  </ul>
                 </td>
               </tr>
             </tbody>

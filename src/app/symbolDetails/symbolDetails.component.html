@@ -140,6 +140,42 @@
     </div>
   </div>
 
+  <div class="mb-4 row">
+    <div class="col-12" *ngIf="earningsList$ | async as earningsList">
+      <div class="card border-0 shadow-lg h-100 p-4">
+        <div class="h4 mb-2 border-bottom">{{ activeSymbol }}'s Earnings List</div>
+        <ul *ngIf="earningsList.comments">
+          <li *ngFor="let earningStr of earningsList.comments.split('|')" [innerHTML]="earningStr"></li>
+        </ul>
+        <table class="table table-bordered">
+          <tr>
+            <td *ngFor="let list of earningsList.list">
+              <div class="row">
+                <div class="col-md-12 text-center font-weight-bold">{{ list.date | date }}</div>
+              </div>
+              <div class="row" [ngStyle]="list.eps_actual < 0 ? { 'background-color': '#E97451' } : ''">
+                <div class="col-md-6">Earnings</div>
+                <div class="col-md-6 text-center">
+                  <span *ngIf="list.eps_actual > 0"><i class="fas fa-arrow-up"></i></span>
+                  <span *ngIf="list.eps_actual < 0"><i class="fas fa-arrow-down"></i></span>
+                  {{ list.eps_actual | currency }}
+                </div>
+              </div>
+              <div class="row" [ngStyle]="list.eps_actual < 0 ? { 'background-color': '#E97451' } : ''">
+                <div class="col-md-6">Surprise</div>
+                <div class="col-md-6 text-center">
+                  <span *ngIf="list.surprise_prc > 0"><i class="fas fa-arrow-up"></i></span>
+                  <span *ngIf="list.surprise_prc < 0"><i class="fas fa-arrow-down"></i></span>
+                  {{ list.surprise_prc }}%
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <div class="mb-4" *ngIf="symbolIndustryDetailsResp$ | async as symbolIndustryDetailsResp">
     <div class="card border-0 shadow-lg h-100 p-4">
       <div class="row pb-2 mb-3 border-bottom">

@@ -225,6 +225,10 @@ export class TopPicksComponent implements OnInit {
     this.router.navigate([`/subSectorDetails/${id}`], { replaceUrl: true });
   }
 
+  gotoDetails(symbol) {
+    this.router.navigate([`/symbolDetails/${symbol}`], { replaceUrl: true });
+  }
+
   onChangeSearch(val: string) {
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.

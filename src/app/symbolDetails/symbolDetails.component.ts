@@ -77,6 +77,7 @@ export class SymbolDetailsComponent implements OnInit {
   symbolIndustryDetailsResp$: Observable<any>;
   trendingDetails$: Observable<ITrendingDetails>;
   symbolEvaluation$: Observable<any>;
+  earningsList$: Observable<any>;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
   sentimentResp$: Observable<SentimentResp | string>;
   analystReccomendationResp$: Observable<AnalystRatingRecord[] | string>;
@@ -312,6 +313,9 @@ export class SymbolDetailsComponent implements OnInit {
           return data;
         })
       );
+
+      // get earnings deatils
+      this.earningsList$ = this.symbolDetailsService.getEarnings(this.activeSymbol);
     });
 
     // load tags from userModelProfile

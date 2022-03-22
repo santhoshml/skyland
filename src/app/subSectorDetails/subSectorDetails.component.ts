@@ -200,4 +200,8 @@ export class SubSectorDetailsComponent implements OnInit {
     );
     this.symbolDetailsService.removeFromFavorites(symbol).subscribe((body) => {});
   }
+
+  gotoDetails(symbol) {
+    this.router.navigate([`/symbolDetails/${symbol}`], { replaceUrl: true });
+  }
 }

@@ -128,6 +128,7 @@
             <table class="table">
               <thead>
                 <tr>
+                  <th scope="col" class="table-header">Action</th>
                   <th width="280" scope="col" class="table-header">Company</th>
                   <th scope="col" class="table-header">Trend</th>
                   <th scope="col" class="table-header">Weekly gains</th>
@@ -144,11 +145,16 @@
                       <i class="fa fa-info-circle" title="Industry of a stock" aria-hidden="true"></i>
                     </a>
                   </th>
-                  <th scope="col" class="table-header">Action</th>
+                  <th scope="col" class="table-header">Earnings</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let beatNasdaqRec of beatNasdaq" class="table-row">
+                  <td class="text-left">
+                    <a href="javascript:void(0);" (click)="gotoDetails(beatNasdaqRec.symbol)">
+                      <img src="assets/view-details-icon.jpeg" width="20px" class="icon" alt="View details" />
+                    </a>
+                  </td>
                   <td>
                     <app-single-quote-widget
                       [symbol]="beatNasdaqRec.symbol"
@@ -199,24 +205,12 @@
                     <div *ngIf="!beatNasdaqRec.industry">N/A</div>
                   </td>
                   <td class="text-left note">
-                    <div class="action-btn-group" *ngIf="!isFavorite(beatNasdaqRec.symbol)">
-                      <a
-                        href="javascript:void(0);"
-                        (click)="addToFavorites(beatNasdaqRec.symbol)"
-                        class="btn-pading text-btn"
-                      >
-                        Add to Favorites
-                      </a>
-                    </div>
-                    <div class="action-btn-group" *ngIf="isFavorite(beatNasdaqRec.symbol)">
-                      <a
-                        href="javascript:void(0);"
-                        (click)="removeFromFavorites(beatNasdaqRec.symbol)"
-                        class="btn-pading text-btn"
-                      >
-                        Delete from Favorites
-                      </a>
-                    </div>
+                    <ul *ngIf="beatNasdaqRec.earnings_comment">
+                      <li
+                        *ngFor="let earningStr of beatNasdaqRec.earnings_comment.split('|')"
+                        [innerHTML]="earningStr"
+                      ></li>
+                    </ul>
                   </td>
                 </tr>
               </tbody>
@@ -245,6 +239,7 @@
             <table class="table">
               <thead>
                 <tr>
+                  <th scope="col" class="table-header">Action</th>
                   <th width="280" scope="col" class="table-header">Company</th>
                   <th scope="col" class="table-header">Trend</th>
                   <th scope="col" class="table-header">
@@ -268,11 +263,16 @@
                       <i class="fa fa-info-circle" title="Industry of a stock" aria-hidden="true"></i>
                     </a>
                   </th>
-                  <th scope="col" class="table-header">Action</th>
+                  <th scope="col" class="table-header">Earnings</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let topStock of topStocks" class="table-row">
+                  <td class="text-left">
+                    <a href="javascript:void(0);" (click)="gotoDetails(topStock.symbol)">
+                      <img src="assets/view-details-icon.jpeg" width="20px" class="icon" alt="View details" />
+                    </a>
+                  </td>
                   <td>
                     <app-single-quote-widget
                       [symbol]="topStock.symbol"
@@ -331,24 +331,9 @@
                     <div *ngIf="!topStock.industry">N/A</div>
                   </td>
                   <td class="text-left note">
-                    <div class="action-btn-group" *ngIf="!isFavorite(topStock.symbol)">
-                      <a
-                        href="javascript:void(0);"
-                        (click)="addToFavorites(topStock.symbol)"
-                        class="btn-pading text-btn"
-                      >
-                        Add to Favorites
-                      </a>
-                    </div>
-                    <div class="action-btn-group" *ngIf="isFavorite(topStock.symbol)">
-                      <a
-                        href="javascript:void(0);"
-                        (click)="removeFromFavorites(topStock.symbol)"
-                        class="btn-pading text-btn"
-                      >
-                        Delete from Favorites
-                      </a>
-                    </div>
+                    <ul *ngIf="topStock.earnings_comment">
+                      <li *ngFor="let earningStr of topStock.earnings_comment.split('|')" [innerHTML]="earningStr"></li>
+                    </ul>
                   </td>
                 </tr>
               </tbody>
