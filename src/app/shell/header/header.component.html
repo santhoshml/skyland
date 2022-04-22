@@ -65,6 +65,12 @@
             <div [innerHTML]="notFound"></div>
           </ng-template>
         </div>
+        <div class="nav-item pl-4">
+          <a class="btn btn-primary" target="_blank" href="https://www.liste.ai" role="button">
+            <img src="assets/box-arrow-in-up-left.svg" alt="Bootstrap" width="32" height="32" />
+            Liste Corporate
+          </a>
+        </div>
         <ng-container *ngIf="userProfile$ | async as userProfile; else showLoginLink">
           <div class="nav-item" ngbDropdown *ngIf="userProfile.user?.profile; else showLoginLink">
             <a id="user-dropdown" class="nav-link p-0 pl-4" ngbDropdownToggle>
