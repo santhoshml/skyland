@@ -158,4 +158,14 @@ export class AllUserListAdminComponent implements OnInit {
       };
     });
   }
+
+  getDailyEmailDisabledUserCount(tableData: any) {
+    let count = 0;
+    for (let rec of tableData) {
+      if (!rec.isdailyEmailEnabled) {
+        count++;
+      }
+    }
+    return count;
+  }
 }
