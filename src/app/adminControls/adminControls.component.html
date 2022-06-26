@@ -39,6 +39,26 @@
           <p class="success-msg mt-3" *ngIf="dailyEmailDataMsg">{{ dailyEmailDataMsg }}</p>
         </div>
       </div>
+      <div class="row mt-3">
+        <div class="col-sm-4">
+          <button type="submit" (click)="sendNoPortfolioData()" class="btn btn-primary mb-2">
+            Send No Portfolio Msg to All
+          </button>
+          <p class="success-msg mt-3" *ngIf="noPortfolioDataMsg">{{ noPortfolioDataMsg }}</p>
+        </div>
+        <div class="col-sm-4">
+          <button type="submit" (click)="updateIndustryPerfData()" class="btn btn-primary mb-2">
+            Update Industry Performance Data
+          </button>
+          <p class="success-msg mt-3" *ngIf="industryPerfDataMsg">{{ industryPerfDataMsg }}</p>
+        </div>
+        <div class="col-sm-4">
+          <button type="submit" (click)="updateEarningsData()" class="btn btn-primary mb-2">
+            Update Earnings Data
+          </button>
+          <p class="success-msg mt-3" *ngIf="earningsDataMsg">{{ earningsDataMsg }}</p>
+        </div>
+      </div>
     </div>
   </div>
   <div class="card mt-3">
@@ -110,6 +130,57 @@
         </div>
         <p class="success-msg mt-3" *ngIf="newSymbolJSONForAllSymbolsMsg">{{ newSymbolJSONForAllSymbolsMsg }}</p>
       </form>
+    </div>
+  </div>
+  <div class="card mt-3" *ngIf="commSummary$ | async as commSummary">
+    <h2 class="mb=3">Communication Log Summary</h2>
+    <div>
+      <h3>Errors</h3>
+      <div *ngIf="commSummary.error">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Template</th>
+              <th scope="col">Count</th>
+              <th scope="col">Last seen on</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of commSummary.error">
+              <td>{{ row.tag }}</td>
+              <td>{{ row.count }}</td>
+              <td>{{ row.maxDt }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="!commSummary.error">
+        <p>No Errors in communications log</p>
+      </div>
+    </div>
+    <div>
+      <h3>Success Msgs</h3>
+      <div *ngIf="commSummary.success">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Template</th>
+              <th scope="col">Count</th>
+              <th scope="col">Last sent on</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of commSummary.success">
+              <td>{{ row.tag }}</td>
+              <td>{{ row.count }}</td>
+              <td>{{ row.maxDt }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="!commSummary.success">
+        <p>No Success msgs in communications log</p>
+      </div>
     </div>
   </div>
 </div>

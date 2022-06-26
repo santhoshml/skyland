@@ -24,6 +24,7 @@ import { DefinitionsModule } from './definitions/definitions.module';
 import { UserProfileModule } from './userProfile/userProfile.module';
 import { AllUserListAdminModule } from './allUserListAdmin/allUserListAdmin.module';
 import { AdminControlsModule } from './adminControls/adminControls.module';
+import { AdminUsersDetailsModule } from './adminUsersDetails/adminUsersDetails.module';
 import { RecommendedStockListAdminModule } from './recommendedStockListAdmin/recommendedStockListAdmin.module';
 import { PageNotFoundModule } from './pageNotFound/pageNotFound.module';
 import { TopPicksModule } from './topPicks/topPicks.module';
@@ -85,6 +86,7 @@ import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-logi
     RecommendedStockListAdminModule,
     ContactUsModule,
     UnsubscribeModule,
+    AdminUsersDetailsModule,
     AppRoutingModule, // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],

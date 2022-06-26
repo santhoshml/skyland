@@ -1,0 +1,143 @@
+<div class="container-fluid">
+  <h1 class="mb-3">User Admin Level Details</h1>
+  <p class="success-msg mt-3" *ngIf="msgDisplay">{{ msgDisplay }}</p>
+
+  <div class="mb-3" *ngIf="userDetailsAdmin$ | async as userDetailsAdmin" class="form-group">
+    <h2>Actions</h2>
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <button
+              *ngIf="userDetailsAdmin.isdailyEmailEnabled"
+              type="submit"
+              (click)="sendDailyEmail(userDetailsAdmin.email)"
+              class="btn btn-primary mb-2"
+            >
+              Send Daily Market Update
+            </button>
+            <button
+              *ngIf="!userDetailsAdmin.isdailyEmailEnabled"
+              disabled
+              type="submit"
+              (click)="sendDailyEmail(userDetailsAdmin.email)"
+              class="btn btn-primary mb-2"
+            >
+              Send Daily Market Update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Details</h2>
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th scope="row">Id</th>
+          <td>{{ userDetailsAdmin.id }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Name</th>
+          <td>{{ userDetailsAdmin.name }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Email</th>
+          <td>{{ userDetailsAdmin.email }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Phone</th>
+          <td>{{ userDetailsAdmin.phone }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Login Count</th>
+          <td>{{ userDetailsAdmin.loginCount }}</td>
+        </tr>
+        <tr>
+          <th scope="row">API Call count</th>
+          <td>{{ userDetailsAdmin.apiCallCount }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Last Login</th>
+          <td>{{ userDetailsAdmin.lastLogin }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Account enabled ?</th>
+          <td>
+            {{ userDetailsAdmin.isValid }}
+            <button *ngIf="userDetailsAdmin.isValid" class="ml-5 btn btn-primary" (click)="disableUser()">
+              Disable
+            </button>
+            <button *ngIf="!userDetailsAdmin.isValid" class="ml-5 btn btn-primary" (click)="enableUser()">
+              Enable
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Market Update Email enabled ?</th>
+          <td>
+            {{ userDetailsAdmin.isdailyEmailEnabled }}
+            <button
+              *ngIf="userDetailsAdmin.isdailyEmailEnabled"
+              class="ml-5 btn btn-primary"
+              (click)="toggleDailyEmail()"
+            >
+              Disable
+            </button>
+            <button
+              *ngIf="!userDetailsAdmin.isdailyEmailEnabled"
+              class="ml-5 btn btn-primary"
+              (click)="toggleDailyEmail()"
+            >
+              Enable
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Referred By</th>
+          <td>{{ userDetailsAdmin.referredBy }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>User Comments</h2>
+    <div *ngIf="userDetailsAdmin.commentsArr as commentsArr">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">url</th>
+            <th scope="col">Comments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of commentsArr">
+            <td>{{ row.insert_ts }}</td>
+            <td>{{ row.url }}</td>
+            <td>{{ row.comments }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Communications Info</h2>
+    <div *ngIf="userDetailsAdmin.commLogArr as commLogArr">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Template</th>
+            <th scope="col">Count</th>
+            <th scope="col">Last sent on</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of commLogArr">
+            <td>{{ row.tag }}</td>
+            <td>{{ row.count }}</td>
+            <td>{{ row.maxDt }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

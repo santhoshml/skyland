@@ -14,6 +14,10 @@ const routes = {
   topStocks: (symbol) => `/stocks/top/${symbol}`,
   addNewSymbolToAllSymbols: () => `/symbol/new`,
   dailyEmailToAll: () => `/recommendations/all`,
+  noPortfolioToAll: () => `/marketing/reminder/noPortfolio`,
+  industryPerf: () => `/industry/performance`,
+  earningsData: () => `/earnings/update`,
+  commSummary: () => `/communication/summary`,
 };
 
 export interface RandomQuoteContext {
@@ -25,6 +29,55 @@ export interface RandomQuoteContext {
   providedIn: 'root',
 })
 export class AdminControlsService {
+  getCommSummary(): Observable<any> {
+    return this.httpClient.get(routes.commSummary()).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not GET comm summary :-('))
+    );
+  }
+
+  updateEarningsData(data: any) {
+    return this.httpClient
+      .post(routes.earningsData(), data, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  updateIndustryPerfData(data: any) {
+    return this.httpClient
+      .post(routes.industryPerf(), data, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  sendNoPortfolioData(data: any) {
+    return this.httpClient
+      .post(routes.noPortfolioToAll(), data, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
   sendDailyEmailData(data: any) {
     return this.httpClient
       .post(routes.dailyEmailToAll(), data, {

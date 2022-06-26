@@ -36,6 +36,10 @@ export class AdminControlsComponent implements OnInit {
   publishTodayDataMsg = null;
   updateTwelveDataMsg = null;
   dailyEmailDataMsg = null;
+  noPortfolioDataMsg = null;
+  industryPerfDataMsg = null;
+  earningsDataMsg = null;
+  commSummary$: Observable<any>;
 
   myForm = new FormGroup({
     file: new FormControl('', [Validators.required]),
@@ -62,6 +66,7 @@ export class AdminControlsComponent implements OnInit {
       this.credentialsService.userEmail
     );
     this.getMaxCurrDate();
+    this.commSummary$ = this.service.getCommSummary();
   }
 
   getMaxCurrDate() {
@@ -168,6 +173,45 @@ export class AdminControlsComponent implements OnInit {
       next: (resp) => {
         if (resp) {
           this.dailyEmailDataMsg = `Daily Email sent to All`;
+        }
+      },
+    });
+  }
+
+  sendNoPortfolioData() {
+    let data = {
+      returnImmediately: false,
+    };
+    this.service.sendNoPortfolioData(data).subscribe({
+      next: (resp) => {
+        if (resp) {
+          this.noPortfolioDataMsg = `No Portfolio msg sent to All`;
+        }
+      },
+    });
+  }
+
+  updateIndustryPerfData() {
+    let data = {
+      returnImmediately: false,
+    };
+    this.service.updateIndustryPerfData(data).subscribe({
+      next: (resp) => {
+        if (resp) {
+          this.noPortfolioDataMsg = `Industry Perf Data Updated`;
+        }
+      },
+    });
+  }
+
+  updateEarningsData() {
+    let data = {
+      returnImmediately: false,
+    };
+    this.service.updateEarningsData(data).subscribe({
+      next: (resp) => {
+        if (resp) {
+          this.noPortfolioDataMsg = `Earnings data updated`;
         }
       },
     });

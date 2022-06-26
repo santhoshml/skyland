@@ -99,7 +99,7 @@ export class BetterPerformingComponent implements OnInit {
   }
 
   readUptrendStocks(rows: number) {
-    console.log(`Santhosh readUptrendStocks`);
+    // console.log(`Santhosh readUptrendStocks`);
     this.uptrendingStocks$ = this.service.getBeatNasdaq(rows);
     this.uptrendingStocks$.subscribe((data) => {
       this.totalListCount = data.count;

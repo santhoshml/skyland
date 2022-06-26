@@ -168,4 +168,8 @@ export class AllUserListAdminComponent implements OnInit {
     }
     return count;
   }
+
+  gotoUserDetailsAdmin(email: any) {
+    this.router.navigate([`adminUsersDetails`, email], { replaceUrl: true });
+  }
 }

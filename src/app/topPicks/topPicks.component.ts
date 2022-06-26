@@ -69,7 +69,7 @@ export class TopPicksComponent implements OnInit {
   ngOnInit() {
     this.googleAnalyticsService.eventEmitter(
       'topPicks-init',
-      'topPicks',
+      'view',
       'init',
       'topPicks',
       1,
@@ -79,14 +79,6 @@ export class TopPicksComponent implements OnInit {
     // default close position date
     let todayDate = moment().format('MM/DD/YYYY');
     this.sellDate = todayDate;
-
-    // set user profile
-    // this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
-    //   map((body) => {
-    //     this.credentialsService.setUserProfile(body);
-    //     return body;
-    //   })
-    // );
 
     this.readFavorites();
 
@@ -143,7 +135,7 @@ export class TopPicksComponent implements OnInit {
     // console.log(`addToFavorites : ${symbol}`);
     this.googleAnalyticsService.eventEmitter(
       'topPicks',
-      'favorites',
+      'click',
       'addToFavorites',
       'addToFavorites',
       1,
@@ -158,7 +150,7 @@ export class TopPicksComponent implements OnInit {
   removeFromFavorites(symbol: string) {
     this.googleAnalyticsService.eventEmitter(
       'topPicks',
-      'favorites',
+      'click',
       'removeFromFavorites',
       'removeFromFavorites',
       0,

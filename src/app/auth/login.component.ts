@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   resetPasswordInfo = true;
   enableWidgetContainer = false;
 
-  refferedByList = ['Google', 'Facebook', 'Twitter', 'Instagram', 'Sacramento State University', 'UC Davis'];
+  refferedByList = ['Google', 'Facebook', 'Twitter', 'Instagram', 'Sacramento State University', 'UC Davis', 'Reditt'];
   referredByStr = 'Referred by';
   refferedByVal = null;
 

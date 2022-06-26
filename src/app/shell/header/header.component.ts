@@ -144,7 +144,7 @@ export class HeaderComponent implements OnInit {
         let pfValue = 0;
         res.forEach((val) => {
           pfValue = pfValue + (val.buy_qty - val.sell_qty);
-          console.log(pfValue);
+          // console.log(pfValue);
         });
         this.portfolioValue = pfValue;
       });

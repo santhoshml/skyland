@@ -50,49 +50,19 @@
           <td>{{ row.created_dt | date }}</td>
           <td>
             <div>
-              <div class="dropdown">
+              <div>
                 <button
-                  class="btn btn-secondary dropdown-toggle"
+                  class="btn btn-primary"
                   type="button"
                   id="dropdownMenu2"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
+                  (click)="gotoUserDetailsAdmin(row.email)"
                 >
-                  Actions
+                  Details
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                  <a
-                    class="dropdown-item"
-                    *ngIf="row.isValid"
-                    href="javascript:void(0);"
-                    (click)="disableUser(row.email)"
-                  >
-                    Disable User
-                  </a>
-                  <a
-                    class="dropdown-item"
-                    *ngIf="!row.isValid"
-                    href="javascript:void(0);"
-                    (click)="enableUser(row.email)"
-                  >
-                    Enable User
-                  </a>
-                  <a class="dropdown-item" href="javascript:void(0);" (click)="toggleDailyEmail(row.email)">
-                    <span *ngIf="row.isdailyEmailEnabled">Disable Daily Email</span>
-                    <span *ngIf="!row.isdailyEmailEnabled">Enable Daily Email</span>
-                  </a>
-                  <a class="dropdown-item" href="javascript:void(0);" (click)="sendDailyEmail(row.email)">
-                    Send Daily Email
-                  </a>
-                </div>
               </div>
-            </div>
-            <br />
-            <div class="mb-3" *ngIf="row.commentsArr.length > 0">
-              <a href="javascript:void(0);" (click)="enableViewComments(i, row.commentsArr)">
-                {{ row.commentsArr.length }} Comments
-              </a>
             </div>
           </td>
         </tr>
