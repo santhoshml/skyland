@@ -40,6 +40,9 @@ export class AdminControlsComponent implements OnInit {
   industryPerfDataMsg = null;
   earningsDataMsg = null;
   commSummary$: Observable<any>;
+  marketingTemplateName: string;
+  userEmail: string;
+  marketingEmailSentToUserDataMsg = null;
 
   myForm = new FormGroup({
     file: new FormControl('', [Validators.required]),
@@ -212,6 +215,21 @@ export class AdminControlsComponent implements OnInit {
       next: (resp) => {
         if (resp) {
           this.noPortfolioDataMsg = `Earnings data updated`;
+        }
+      },
+    });
+  }
+
+  sendMarketingEmailToUser() {
+    let data = {
+      returnImmediately: false,
+      templateName: this.marketingTemplateName,
+      email: this.userEmail,
+    };
+    this.service.sendMarketingEmailToUser(data).subscribe({
+      next: (resp) => {
+        if (resp) {
+          this.marketingEmailSentToUserDataMsg = resp.status;
         }
       },
     });

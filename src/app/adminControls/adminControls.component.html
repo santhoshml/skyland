@@ -132,6 +132,33 @@
       </form>
     </div>
   </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <form>
+        <div class="row">
+          <div class="col-sm-3">
+            <label>Send Marketing Email template To User</label>
+          </div>
+          <div class="col-sm-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Marketing Template Name"
+              name="marketingTemplateName"
+              [(ngModel)]="marketingTemplateName"
+            />
+          </div>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" placeholder="user Email" name="userEmail" [(ngModel)]="userEmail" />
+          </div>
+          <div class="col-sm-3">
+            <button type="submit" (click)="sendMarketingEmailToUser()" class="btn btn-primary mb-2">Submit</button>
+          </div>
+          <p class="success-msg mt-3" *ngIf="marketingEmailSentToUserDataMsg">{{ marketingEmailSentToUserDataMsg }}</p>
+        </div>
+      </form>
+    </div>
+  </div>
   <div class="card mt-3" *ngIf="commSummary$ | async as commSummary">
     <h2 class="mb=3">Communication Log Summary</h2>
     <div>

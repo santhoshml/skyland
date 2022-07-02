@@ -18,6 +18,7 @@ const routes = {
   industryPerf: () => `/industry/performance`,
   earningsData: () => `/earnings/update`,
   commSummary: () => `/communication/summary`,
+  marketingEmailToUser: (templateName, email) => `/communication/marketing/templateName/${templateName}/email/${email}`,
 };
 
 export interface RandomQuoteContext {
@@ -182,5 +183,18 @@ export class AdminControlsService {
       map((body: any) => body),
       catchError(() => of('Error, could not GET list details :-('))
     );
+  }
+
+  sendMarketingEmailToUser(data: any) {
+    return this.httpClient
+      .post(routes.marketingEmailToUser(data.templateName, data.email), null, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          return throwError(err);
+        })
+      );
   }
 }
