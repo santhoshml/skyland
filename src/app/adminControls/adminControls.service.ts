@@ -11,6 +11,7 @@ const routes = {
   twelveData: () => `/data/updateTwelveData`,
   publishTodayData: () => `/predictions/truncate`,
   uploadIndustryFile: () => `/subSector/file_upload`,
+  uploadRedditFile: () => `/symbols/refreshReditt`,
   topStocks: (symbol) => `/stocks/top/${symbol}`,
   addNewSymbolToAllSymbols: () => `/symbol/new`,
   dailyEmailToAll: () => `/recommendations/all`,
@@ -166,6 +167,19 @@ export class AdminControlsService {
   uploadIndustryFile(data: any) {
     return this.httpClient
       .post(routes.uploadIndustryFile(), data, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          return throwError(err);
+        })
+      );
+  }
+
+  uploadRedditFile(data: any) {
+    return this.httpClient
+      .post(routes.uploadRedditFile(), data, {
         withCredentials: true,
       })
       .pipe(

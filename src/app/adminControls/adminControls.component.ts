@@ -31,6 +31,7 @@ export class AdminControlsComponent implements OnInit {
   }`;
   maxCurrDateUpdateMsg = null;
   industryFileUploadMsg = null;
+  redditFileUploadMsg = null;
   newSymbolJSONForAllSymbolsMsg = null;
   addSymbolToTopStocksMsg = null;
   publishTodayDataMsg = null;
@@ -45,6 +46,11 @@ export class AdminControlsComponent implements OnInit {
   marketingEmailSentToUserDataMsg = null;
 
   myForm = new FormGroup({
+    file: new FormControl('', [Validators.required]),
+    fileSource: new FormControl('', [Validators.required]),
+  });
+
+  RedditForm = new FormGroup({
     file: new FormControl('', [Validators.required]),
     fileSource: new FormControl('', [Validators.required]),
   });
@@ -135,6 +141,19 @@ export class AdminControlsComponent implements OnInit {
         // console.log(res);
         this.myForm.reset();
         this.industryFileUploadMsg = 'Industry File Uploaded succesfully';
+      }
+    });
+  }
+
+  uploadRedditFile() {
+    const formData = new FormData();
+    formData.append('list', this.RedditForm.get('fileSource').value);
+
+    this.service.uploadRedditFile(formData).subscribe((res) => {
+      if (res.status === 'success') {
+        // console.log(res);
+        this.RedditForm.reset();
+        this.redditFileUploadMsg = 'Reddit File Uploaded succesfully';
       }
     });
   }

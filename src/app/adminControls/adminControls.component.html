@@ -76,11 +76,34 @@
           </div>
           <div class="col-sm-6 mt-3 mt-md-0 d-flex justify-content-end">
             <div>
-              <button class="btn btn-primary" type="submit">Upload</button>
+              <button class="btn btn-primary" type="submit">Upload Industry CSV</button>
             </div>
           </div>
         </div>
         <p class="success-msg mt-3" *ngIf="industryFileUploadMsg">{{ industryFileUploadMsg }}</p>
+      </form>
+    </div>
+  </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <form [formGroup]="RedditForm" (ngSubmit)="uploadRedditFile()">
+        <div class="form-group row mt-3">
+          <div class="col-sm-6">
+            <input
+              formControlName="file"
+              id="file"
+              type="file"
+              class="form-control upload-btn-form"
+              (change)="onFileChange($event)"
+            />
+          </div>
+          <div class="col-sm-6 mt-3 mt-md-0 d-flex justify-content-end">
+            <div>
+              <button class="btn btn-primary" type="submit">Upload Reddit CSV</button>
+            </div>
+          </div>
+        </div>
+        <p class="success-msg mt-3" *ngIf="redditFileUploadMsg">{{ redditFileUploadMsg }}</p>
       </form>
     </div>
   </div>

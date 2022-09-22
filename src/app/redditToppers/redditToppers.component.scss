@@ -1,14 +1,5 @@
 @import "src/theme/_variables";
 
-// .nav-tabs .nav-item .nav-link {
-//   background-color: #999;
-// }
-
-.nav-tabs .nav-item .nav-link.active {
-  background-color: #fff5ee;
-  color: #0080ff;
-}
-
 .step-text {
   font-size: 14px;
   font-style: normal;
@@ -17,22 +8,6 @@
   padding-left: 9px;
   text-align: left;
   color: #999;
-}
-
-.horizontal-scroll {
-  overflow-x: auto;
-  white-space: nowrap;
-  display: inherit;
-  .scroll-container {
-    display: inline-table;
-    float: none;
-    vertical-align: top;
-  }
-}
-
-.summary-card {
-  border-radius: 10px;
-  width: 300px;
 }
 
 .normal-card-footer {
@@ -74,11 +49,6 @@
 }
 
 .price {
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.market-cap {
   font-size: 14px;
   font-weight: 400;
 }
@@ -140,41 +110,11 @@
   font-weight: 400;
 }
 
-.btn-red {
-  background-color: #b95e04;
-  color: $white;
-}
-
-.table td.fit,
-.table th.fit {
-  white-space: nowrap;
-  width: 1%;
-}
-
-.tab-title {
-  font-size: 15px;
-  font-weight: 200;
-}
-
-.close-submit {
-  padding: 3px;
-}
-
-.btn-open-actions {
-  margin: 0 3px;
-  padding: 3px;
-  font-size: 10px;
-}
-
-.card-text {
-  font-size: 14px;
-  font-weight: 400;
-}
-
 .pill-wrap {
   white-space: normal !important;
 }
 
-.table-header {
-  font-size: 12px;
+.btn-red {
+  background-color: #b95e04;
+  color: $white;
 }

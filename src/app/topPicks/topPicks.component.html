@@ -106,24 +106,45 @@
   </div>
 
   <div class="mb-3">
-    <!-- Top Picks-->
-    <div class="card border-0" aria-labelledby="nav-topStocks-tab">
-      <div *ngIf="beatNasdaq$ | async as beatNasdaq">
-        <div class="h2">
-          Stocks Outperforming NASDAQ and In Uptrend
-          <span class="h6">
-            <a href="javascript:void(0);" (click)="viewAllBetterPerformingStocks()">(View All)</a></span
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          id="reddit-tab"
+          data-toggle="tab"
+          href="#reddit"
+          role="tab"
+          aria-controls="reddit"
+          aria-selected="true"
+        >
+          <img src="assets/reddit-logo.png" width="30px" class="icon" />
+          <span style="font-weight: Bold; font-size: 18px" class="ml-2">Reddit Hotties</span>
+          <span class="h6 ml-2"
+            ><a href="javascript:void(0);" (click)="viewAllBetterPerformingStocks()">(View All)</a></span
           >
-        </div>
-        <div>
-          <div class="py-1">
-            <ul class="mb-0 small">
-              <li>
-                NASDAQ weekly performance : <strong>{{ qqqWklyGain }}%</strong>
-              </li>
-              <li>Click on the row to see more details.</li>
-            </ul>
-          </div>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="nasdaq-tab"
+          data-toggle="tab"
+          href="#nasdaq"
+          role="tab"
+          aria-controls="nasdaq"
+          aria-selected="false"
+        >
+          <img src="assets/nasdaq-logo.png" width="50px" class="icon" />
+          <span style="font-weight: Bold; font-size: 18px" class="ml-2">Stocks Outperforming NASDAQ</span>
+          <span class="h6 ml-2"
+            ><a href="javascript:void(0);" (click)="viewAllBetterPerformingStocks()">(View All)</a></span
+          >
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="reddit" role="tabpanel" aria-labelledby="reddit-tab">
+        <div *ngIf="redditStocks$ | async as redditStocks">
           <div class="table-container new-table pt-1 pb-1 pl-1">
             <table class="table">
               <thead>
@@ -132,13 +153,8 @@
                   <th width="280" scope="col" class="table-header">Company</th>
                   <th scope="col" class="table-header">Trend</th>
                   <th scope="col" class="table-header">Weekly gains</th>
-                  <th scope="col" class="table-header">
-                    P/E
-                    <a href="https://www.investopedia.com/terms/p/price-earningsratio.asp" target="_blank">
-                      <i class="fa fa-info-circle" title="Current P/E ratio of the stock" aria-hidden="true"></i>
-                    </a>
-                  </th>
-                  <th scope="col" class="table-header">Market Cap</th>
+                  <th scope="col" class="table-header">Upvotes</th>
+                  <th scope="col" class="table-header">Mentions</th>
                   <th scope="col" class="table-header">
                     Industry
                     <a href="https://www.investopedia.com/terms/i/industry.asp" target="_blank">
@@ -149,65 +165,60 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let beatNasdaqRec of beatNasdaq" class="table-row">
+                <tr *ngFor="let redditStocksRec of redditStocks" class="table-row">
                   <td class="text-left">
-                    <a href="javascript:void(0);" (click)="gotoDetails(beatNasdaqRec.symbol)">
+                    <a href="javascript:void(0);" (click)="gotoDetails(redditStocksRec.symbol)">
                       <img src="assets/view-details-icon.jpeg" width="20px" class="icon" alt="View details" />
                     </a>
                   </td>
                   <td>
                     <app-single-quote-widget
-                      [symbol]="beatNasdaqRec.symbol"
-                      [exchange]="beatNasdaqRec.exchange"
+                      [symbol]="redditStocksRec.symbol"
+                      [exchange]="redditStocksRec.exchange"
                     ></app-single-quote-widget>
                   </td>
                   <td class="text-left">
-                    <div *ngIf="beatNasdaqRec.trend == 1">
+                    <div *ngIf="redditStocksRec.trend == 1">
                       <i class="fas fa-arrow-up"></i>
                       <span class="trend">Uptrend</span>
                     </div>
-                    <div *ngIf="beatNasdaqRec.trend == -1">
+                    <div *ngIf="redditStocksRec.trend == -1">
                       <i class="fas fa-arrow-down"></i>
                       <span class="trend">Downtrend</span>
                     </div>
-                    <div *ngIf="beatNasdaqRec.trend == 0">
+                    <div *ngIf="redditStocksRec.trend == 0">
                       <i class="fas fa-arrow-right"></i>
                       <span class="trend">Neutral</span>
                     </div>
                   </td>
-                  <td class="text-left dividend">{{ beatNasdaqRec.weekly_gains }}%</td>
-                  <td class="text-left pe-ratio">
-                    <span *ngIf="beatNasdaqRec.peRatio != '-'">{{ beatNasdaqRec.peRatio | number: '1.0-2' }}</span>
-                    <span *ngIf="beatNasdaqRec.peRatio == '-'">{{ beatNasdaqRec.peRatio }}</span>
-                  </td>
-                  <td class="text-left">
-                    {{ getPrunedValue(beatNasdaqRec.marketcap) }}
-                  </td>
+                  <td class="text-left dividend">{{ redditStocksRec.weekly_gains }}%</td>
+                  <td class="text-left pe-ratio">{{ redditStocksRec.upvotes | number }}</td>
+                  <td class="text-left">{{ redditStocksRec.mentions | number }}</td>
                   <td
                     class="text-left"
                     style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 14px"
                   >
-                    <div *ngIf="beatNasdaqRec.industry">
+                    <div *ngIf="redditStocksRec.industry">
                       <a
-                        *ngIf="beatNasdaqRec.industryId"
+                        *ngIf="redditStocksRec.industryId"
                         class="industry"
-                        href="/subSectorDetails/{{ beatNasdaqRec.industryId }}"
+                        href="/subSectorDetails/{{ redditStocksRec.industryId }}"
                       >
-                        {{ beatNasdaqRec.industry }}
+                        {{ redditStocksRec.industry }}
                       </a>
-                      <div *ngIf="!beatNasdaqRec.industryId" class="industry">
-                        {{ beatNasdaqRec.industry }}
+                      <div *ngIf="!redditStocksRec.industryId" class="industry">
+                        {{ redditStocksRec.industry }}
                       </div>
-                      <div *ngFor="let industryBadge of beatNasdaqRec.industryBadgeList">
+                      <div *ngFor="let industryBadge of redditStocksRec.industryBadgeList">
                         <span class="badge badge-pill my-1 badge-info info-badge pill-wrap">{{ industryBadge }}</span>
                       </div>
                     </div>
-                    <div *ngIf="!beatNasdaqRec.industry">N/A</div>
+                    <div *ngIf="!redditStocksRec.industry">N/A</div>
                   </td>
                   <td class="text-left note">
-                    <ul *ngIf="beatNasdaqRec.earnings_comment">
+                    <ul *ngIf="redditStocksRec.earnings_comment">
                       <li
-                        *ngFor="let earningStr of beatNasdaqRec.earnings_comment.split('|')"
+                        *ngFor="let earningStr of redditStocksRec.earnings_comment.split('|')"
                         [innerHTML]="earningStr"
                       ></li>
                     </ul>
@@ -215,6 +226,104 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="nasdaq" role="tabpanel" aria-labelledby="nasdaq-tab">
+        <div class="card border-0" aria-labelledby="nav-topStocks-tab">
+          <div *ngIf="beatNasdaq$ | async as beatNasdaq">
+            <div class="table-container new-table pt-1 pb-1 pl-1">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col" class="table-header">Action</th>
+                    <th width="280" scope="col" class="table-header">Company</th>
+                    <th scope="col" class="table-header">Trend</th>
+                    <th scope="col" class="table-header">Weekly gains</th>
+                    <th scope="col" class="table-header">
+                      P/E
+                      <a href="https://www.investopedia.com/terms/p/price-earningsratio.asp" target="_blank">
+                        <i class="fa fa-info-circle" title="Current P/E ratio of the stock" aria-hidden="true"></i>
+                      </a>
+                    </th>
+                    <th scope="col" class="table-header">Market Cap</th>
+                    <th scope="col" class="table-header">
+                      Industry
+                      <a href="https://www.investopedia.com/terms/i/industry.asp" target="_blank">
+                        <i class="fa fa-info-circle" title="Industry of a stock" aria-hidden="true"></i>
+                      </a>
+                    </th>
+                    <th scope="col" class="table-header">Earnings</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let beatNasdaqRec of beatNasdaq" class="table-row">
+                    <td class="text-left">
+                      <a href="javascript:void(0);" (click)="gotoDetails(beatNasdaqRec.symbol)">
+                        <img src="assets/view-details-icon.jpeg" width="20px" class="icon" alt="View details" />
+                      </a>
+                    </td>
+                    <td>
+                      <app-single-quote-widget
+                        [symbol]="beatNasdaqRec.symbol"
+                        [exchange]="beatNasdaqRec.exchange"
+                      ></app-single-quote-widget>
+                    </td>
+                    <td class="text-left">
+                      <div *ngIf="beatNasdaqRec.trend == 1">
+                        <i class="fas fa-arrow-up"></i>
+                        <span class="trend">Uptrend</span>
+                      </div>
+                      <div *ngIf="beatNasdaqRec.trend == -1">
+                        <i class="fas fa-arrow-down"></i>
+                        <span class="trend">Downtrend</span>
+                      </div>
+                      <div *ngIf="beatNasdaqRec.trend == 0">
+                        <i class="fas fa-arrow-right"></i>
+                        <span class="trend">Neutral</span>
+                      </div>
+                    </td>
+                    <td class="text-left dividend">{{ beatNasdaqRec.weekly_gains }}%</td>
+                    <td class="text-left pe-ratio">
+                      <span *ngIf="beatNasdaqRec.peRatio != '-'">{{ beatNasdaqRec.peRatio | number: '1.0-2' }}</span>
+                      <span *ngIf="beatNasdaqRec.peRatio == '-'">{{ beatNasdaqRec.peRatio }}</span>
+                    </td>
+                    <td class="text-left">
+                      {{ getPrunedValue(beatNasdaqRec.marketcap) }}
+                    </td>
+                    <td
+                      class="text-left"
+                      style="word-wrap: break-word; min-width: 160px; max-width: 160px; font-size: 14px"
+                    >
+                      <div *ngIf="beatNasdaqRec.industry">
+                        <a
+                          *ngIf="beatNasdaqRec.industryId"
+                          class="industry"
+                          href="/subSectorDetails/{{ beatNasdaqRec.industryId }}"
+                        >
+                          {{ beatNasdaqRec.industry }}
+                        </a>
+                        <div *ngIf="!beatNasdaqRec.industryId" class="industry">
+                          {{ beatNasdaqRec.industry }}
+                        </div>
+                        <div *ngFor="let industryBadge of beatNasdaqRec.industryBadgeList">
+                          <span class="badge badge-pill my-1 badge-info info-badge pill-wrap">{{ industryBadge }}</span>
+                        </div>
+                      </div>
+                      <div *ngIf="!beatNasdaqRec.industry">N/A</div>
+                    </td>
+                    <td class="text-left note">
+                      <ul *ngIf="beatNasdaqRec.earnings_comment">
+                        <li
+                          *ngFor="let earningStr of beatNasdaqRec.earnings_comment.split('|')"
+                          [innerHTML]="earningStr"
+                        ></li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -226,7 +335,7 @@
     <div class="card border-0" aria-labelledby="nav-topStocks-tab">
       <div *ngIf="topStocks$ | async as topStocks">
         <div class="h2">
-          Stocks about to break-out / start a new run up.
+          Stocks on the rise.
           <span class="h6"> <a href="javascript:void(0);" (click)="viewAllUptrendingStocks()">(View All)</a></span>
         </div>
         <div>

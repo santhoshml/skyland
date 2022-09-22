@@ -19,6 +19,7 @@ const routes = {
   deleteFavorites: (symbol: string) => `/favorites/symbol/${symbol}`,
   getAllSymbols: () => `/stocks/all/symbolAndNames`,
   getAllSectors: () => `/sectors/all/info`,
+  getRedditList: () => `/redittStocks/list/5`,
 };
 
 export interface RandomQuoteContext {
@@ -169,6 +170,20 @@ export class TopPicksService {
   getTopStocks(): Observable<any> {
     return this.httpClient
       .get(routes.topStocks(), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  getRedditStocks(): Observable<any> {
+    return this.httpClient
+      .get(routes.getRedditList(), {
         withCredentials: true,
       })
       .pipe(

@@ -23,6 +23,7 @@ export class TopPicksComponent implements OnInit {
   isLoading = false;
   // userProfile$: Observable<any>;
   topStocks$: Observable<any>;
+  redditStocks$: Observable<any>;
   yourBestStocks$: Observable<any>;
   favorites$: Observable<any>;
   watchlist$: Observable<any>;
@@ -83,6 +84,12 @@ export class TopPicksComponent implements OnInit {
     this.readFavorites();
 
     this.topStocks$ = this.service.getTopStocks().pipe(
+      map((body) => {
+        return body;
+      })
+    );
+
+    this.redditStocks$ = this.service.getRedditStocks().pipe(
       map((body) => {
         return body;
       })
@@ -210,7 +217,7 @@ export class TopPicksComponent implements OnInit {
   }
 
   viewAllBetterPerformingStocks() {
-    this.router.navigate(['/betterPerforming'], { replaceUrl: true });
+    this.router.navigate(['/redditToppers'], { replaceUrl: true });
   }
 
   viewIndustryDetails(id: number) {

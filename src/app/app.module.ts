@@ -31,6 +31,7 @@ import { TopPicksModule } from './topPicks/topPicks.module';
 import { MyPortfolioModule } from './myPortfolio/myPortfolio.module';
 import { SectorListModule } from './sectorList/sectorList.module';
 import { UptrendingStocksModule } from './uptrendingStocks/uptrendingStocks.module';
+import { RedditToppersModule } from './redditToppers/redditToppers.module';
 import { BetterPerformingModule } from './betterPerforming/betterPerforming.module';
 import { ContactUsModule } from './contactUs/contactUs.module';
 import { UnsubscribeModule } from './unsubscribe/unsubscribe.module';
@@ -72,6 +73,7 @@ import { GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-logi
     MyPortfolioModule,
     SectorListModule,
     UptrendingStocksModule,
+    RedditToppersModule,
     BetterPerformingModule,
     SubSectorDetailsModule,
     SectorDetailsModule,
