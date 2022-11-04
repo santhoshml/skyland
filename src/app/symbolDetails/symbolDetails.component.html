@@ -39,7 +39,7 @@
   </div>
 
   <!-- Trending Details Container -->
-  <div class="mb-4" *ngIf="trendingDetails$ | async as trendingDetails">
+  <div class="mb-4" *ngIf="displayTrendSection && trendingDetails$ | async as trendingDetails">
     <div class="card border-0 shadow-lg h-100 px-4 pt-4 pb-1">
       <div class="row pb-2 mb-3 border-bottom">
         <div class="col-12 col-md-6 col-lg-6">
@@ -54,17 +54,14 @@
           <span>Overall Trend - </span>
           <span *ngIf="trendingDetails.trend">
             <span *ngIf="trendingDetails.trend == 1">
-              <!-- <i class="fas fa-arrow-up"></i> -->
               <span class="font-weight-bold">Uptrend</span>
               <img src="assets/bullish-trend-icon.png" style="height: 40px; width: 40px" alt="Bullish" />
             </span>
             <span *ngIf="trendingDetails.trend == -1">
-              <!-- <i class="fas fa-arrow-down"></i> -->
               <span class="font-weight-bold">Downtrend</span>
               <img src="assets/bearish-trend-icon.png" style="height: 40px; width: 40px" alt="Bearish" />
             </span>
             <span *ngIf="trendingDetails.trend == 0">
-              <!-- <i class="fas fa-arrow-right"></i> -->
               <span class="font-weight-bold">Sideways</span>
               <img src="assets/neutral-trend-icon.png" style="height: 40px; width: 40px" alt="Neutral" />
             </span>
@@ -75,15 +72,12 @@
           <span class="font-weight-bold">{{ trendingDetails.trendIndicators }}</span>
           <span *ngIf="trendingDetails.trendIndicators">
             <span *ngIf="trendingDetails.trendIndicators.toLowerCase() === 'bullish'">
-              <!-- <i class="fas fa-arrow-up"></i> -->
               <img src="assets/bullish-trend-icon.png" style="height: 40px; width: 40px" alt="Bullish" />
             </span>
             <span *ngIf="trendingDetails.trendIndicators.toLowerCase() === 'bearish'">
-              <!-- <i class="fas fa-arrow-down"></i> -->
               <img src="assets/bearish-trend-icon.png" style="height: 40px; width: 40px" alt="Bearish" />
             </span>
             <span *ngIf="trendingDetails.trendIndicators.toLowerCase() === 'neutral'">
-              <!-- <i class="fas fa-arrow-right"></i> -->
               <img src="assets/neutral-trend-icon.png" style="height: 40px; width: 40px" alt="Neutral" />
             </span>
           </span>
@@ -111,7 +105,125 @@
     </div>
   </div>
 
-  <div class="mb-4">
+  <div class="mb-4" *ngIf="adviceData$ | async as adviceData">
+    <div class="row">
+      <div class="col-10" style="padding-right: 3px">
+        <div class="card border-0 shadow-lg h-100 p-4">
+          <div>
+            <div class="h4 mb-2 border-bottom">
+              <span>Insights from your profile and current Stock state</span>
+              <span *ngIf="trendingDetails$ | async as trendingDetails" style="float: right; font-size: 16px">
+                <span style="font-weight: 400">Overall Trend:</span>
+                <span *ngIf="trendingDetails.trend" style="font-weight: 700">
+                  {{ trendingDetails.trendStrength }}
+                  <span *ngIf="trendingDetails.trend == 1">
+                    <span class="font-weight-bold">Uptrend</span>
+                    <img src="assets/bullish-trend-icon.png" style="height: 30px; width: 30px" alt="Bullish" />
+                  </span>
+                  <span *ngIf="trendingDetails.trend == -1">
+                    <span class="font-weight-bold">Downtrend</span>
+                    <img src="assets/bearish-trend-icon.png" style="height: 30px; width: 30px" alt="Bearish" />
+                  </span>
+                  <span *ngIf="trendingDetails.trend == 0">
+                    <span class="font-weight-bold">Sideways</span>
+                    <img src="assets/neutral-trend-icon.png" style="height: 30px; width: 30px" alt="Neutral" />
+                  </span>
+                </span>
+              </span>
+            </div>
+            <div>
+              <div>
+                <div class="row">
+                  <div class="col-6 text-center insights-header">
+                    <div class="insights-header-label">In your favor</div>
+                  </div>
+                  <div class="col-6 text-center pl-1 insights-header">
+                    <div class="insights-header-label">Not-in your favor</div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div *ngIf="adviceData.positiveSentimentList && adviceData.positiveSentimentList.length > 0">
+                      <div *ngFor="let adviceElement of adviceData.positiveSentimentList">
+                        <div class="mt-2 mb-2" *ngIf="(!showMoreAdvice && adviceElement.display) || showMoreAdvice">
+                          <i class="fa fa-check" aria-hidden="true"></i>
+                          <span class="ml-2" style="font-size: 18px" [innerHTML]="adviceElement.stmt"></span>
+                          <div
+                            style="margin-top: 5px"
+                            *ngIf="adviceElement.type === 'TECHNICAL_INDICATORS' && adviceElement.list.length > 0"
+                          >
+                            <ul style="margin-bottom: 0" *ngFor="let tElement of adviceElement.list">
+                              <li>{{ tElement }}</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div *ngIf="adviceData.negativeSentimentList && adviceData.negativeSentimentList.length > 0">
+                      <div *ngFor="let adviceElement of adviceData.negativeSentimentList">
+                        <div class="mt-2 mb-2" *ngIf="(!showMoreAdvice && adviceElement.display) || showMoreAdvice">
+                          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                          <span class="ml-2" style="font-size: 18px" [innerHTML]="adviceElement.stmt"></span>
+                          <div
+                            style="margin-top: 5px"
+                            *ngIf="adviceElement.type === 'TECHNICAL_INDICATORS' && adviceElement.list.length > 0"
+                          >
+                            <ul style="margin-bottom: 0" *ngFor="let tElement of adviceElement.list">
+                              <li>{{ tElement }}</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="javascript:void(0);" (click)="toggleShowMoreAdvice()">
+              <span *ngIf="!showMoreAdvice">... show more</span>
+              <span *ngIf="showMoreAdvice">... show less</span>
+            </a>
+            <div class="mt-5">
+              <small>
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                Expected return and days are calculated based on your past transaction history and current market
+                conditions.
+              </small>
+              <br />
+              <small>
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                Use of above analysis and any data on this platform for Education and research only.
+              </small>
+              <br />
+              <small>
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                <a href="https://static.liste.ai/terms.html" target="_blank">Terms & conditions </a> apply
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="card border-0 shadow-lg h-100 p-4">
+          <div *ngIf="adviceData.predictionRec">
+            <div class="mb-2 border-bottom">
+              <span style="font-size: 24px; font-weight: 500" class="mb-2 border-bottom">Expected return</span>
+            </div>
+            <div>
+              <div class="roi-value">{{ adviceData.predictionRec.gain | number: '1.0-2' }}%</div>
+              <div style="text-align: center; margin-top: 20px">
+                in <span style="font-size: 30px; font-weight: 500"> {{ adviceData.predictionRec.days }} days</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-4" *ngIf="displayProsAndCons">
     <div class="row">
       <div class="col-6" *ngIf="symbolEvaluation$ | async as symbolEvaluation">
         <div class="card border-0 shadow-lg h-100 p-4">

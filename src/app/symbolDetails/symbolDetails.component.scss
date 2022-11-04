@@ -1,5 +1,29 @@
 @import "src/theme/_variables";
 
+.roi-value {
+  font-size: 50px;
+  font-weight: 700;
+  padding: 40px 0px;
+  border-width: medium;
+  border-style: solid;
+  border-color: chocolate;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.insights-header {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: 600;
+  // background-color: aquamarine;
+}
+
+.insights-header-label {
+  margin: 0 2px;
+  background-color: aquamarine;
+}
+
 .table {
   table-layout: fixed;
 }

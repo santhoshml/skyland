@@ -174,6 +174,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/distribution'], { replaceUrl: true });
   }
 
+  uploadPortfolio() {
+    this.router.navigate(['/uploadPortfolio'], { replaceUrl: true });
+  }
+
   displayAllUsers() {
     this.router.navigate(['/allUserListAdmin'], { replaceUrl: true });
   }

@@ -83,7 +83,15 @@
               <div class="small text-center px-3 email-container">{{ email }}</div>
               <div class="dropdown-divider"></div>
               <button class="dropdown-item" (click)="profile()" translate>Profile</button>
-              <button class="dropdown-item" (click)="distributions()" translate>ROI distribution</button>
+              <!-- <button class="dropdown-item" (click)="distributions()" translate>ROI distribution</button> -->
+              <button
+                class="dropdown-item"
+                *ngIf="userProfile.user.profile.displayPortfolioUpload"
+                (click)="uploadPortfolio()"
+                translate
+              >
+                Upload Portfolio
+              </button>
 
               <button
                 class="dropdown-item"

@@ -78,6 +78,7 @@ export class SymbolDetailsComponent implements OnInit {
   trendingDetails$: Observable<ITrendingDetails>;
   symbolEvaluation$: Observable<any>;
   earningsList$: Observable<any>;
+  adviceData$: Observable<any>;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
   sentimentResp$: Observable<SentimentResp | string>;
   analystReccomendationResp$: Observable<AnalystRatingRecord[] | string>;
@@ -97,6 +98,9 @@ export class SymbolDetailsComponent implements OnInit {
   technicalCategoryArr: string[];
   enableStockFeatures = false;
   completeSymbol: string = null;
+  showMoreAdvice = false;
+  displayProsAndCons = false;
+  displayTrendSection = false;
 
   view: any[] = [350, 200];
   // options
@@ -172,6 +176,9 @@ export class SymbolDetailsComponent implements OnInit {
       1,
       this.credentialsService.userEmail
     );
+
+    this.displayProsAndCons = true;
+    this.displayTrendSection = true;
 
     // get tag categories
     this.symbolDetailsService.getTagCategories().subscribe((data: TagCategories[]) => {
@@ -316,6 +323,14 @@ export class SymbolDetailsComponent implements OnInit {
 
       // get earnings deatils
       this.earningsList$ = this.symbolDetailsService.getEarnings(this.activeSymbol);
+
+      this.adviceData$ = this.symbolDetailsService.getAdviceData(this.activeSymbol).pipe(
+        map((data: any) => {
+          this.displayProsAndCons = false;
+          this.displayTrendSection = false;
+          return data;
+        })
+      );
     });
 
     // load tags from userModelProfile
@@ -574,5 +589,9 @@ export class SymbolDetailsComponent implements OnInit {
 
   onDeactivate(data: any): void {
     // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+
+  toggleShowMoreAdvice() {
+    this.showMoreAdvice = !this.showMoreAdvice;
   }
 }
