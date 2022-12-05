@@ -25,7 +25,10 @@ const routes = {
   trendingDetails: (symbol: string) => `/trend/details/symbol/${symbol}`,
   symbolEvaluation: (symbol: string) => `/symbol/${symbol}/proscons`,
   earningsList: (symbol: string) => `/earnings/symbol/${symbol}`,
-  adviceData: (symbol: string) => `/profileAdvice/symbol/${symbol}`,
+  buyAdviceData: (symbol: string) => `/profileAdvice/buy/symbol/${symbol}`,
+  sellAdviceData: (symbol: string) => `/profileAdvice/sell/symbol/${symbol}`,
+  openTxnData: (symbol: string) => `/user/txn/symbol/${symbol}/open`,
+  addOpenPositions: () => `/user/v2/txn/open`,
 };
 
 export interface ITrendingDetails {
@@ -48,10 +51,40 @@ export class SymbolDetailsService {
 
   constructor(private httpClient: HttpClient, private credentialsService: CredentialsService) {}
 
-  getAdviceData(symbol: string): Observable<any> {
-    return this.httpClient.get(routes.adviceData(symbol)).pipe(
+  addPosition(data: any): Observable<any> {
+    const dataList = {
+      list: [data],
+    };
+    return this.httpClient
+      .post(routes.addOpenPositions(), dataList, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          return throwError(err);
+        })
+      );
+  }
+
+  getOpenTxnData(symbol: string): Observable<any> {
+    return this.httpClient.get(routes.openTxnData(symbol)).pipe(
       map((body: any) => body),
-      catchError(() => of('Error, could not GET advice details :-('))
+      catchError(() => of('Error, could not GET getOpenTxnData :-('))
+    );
+  }
+
+  getSellAdviceData(symbol: string): Observable<any> {
+    return this.httpClient.get(routes.sellAdviceData(symbol)).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not GET sell advice details :-('))
+    );
+  }
+
+  getBuyAdviceData(symbol: string): Observable<any> {
+    return this.httpClient.get(routes.buyAdviceData(symbol)).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not GET buy advice details :-('))
     );
   }
 

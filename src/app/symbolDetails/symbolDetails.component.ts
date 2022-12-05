@@ -8,6 +8,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { CredentialsService, UserProfileModel } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
 import { ITrendingDetails, SymbolDetailsService } from './symbolDetails.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 declare const TradingView: any;
 
@@ -78,7 +79,9 @@ export class SymbolDetailsComponent implements OnInit {
   trendingDetails$: Observable<ITrendingDetails>;
   symbolEvaluation$: Observable<any>;
   earningsList$: Observable<any>;
-  adviceData$: Observable<any>;
+  buyAdviceData$: Observable<any>;
+  sellAdviceData$: Observable<any>;
+  openTxnData$: Observable<any>;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
   sentimentResp$: Observable<SentimentResp | string>;
   analystReccomendationResp$: Observable<AnalystRatingRecord[] | string>;
@@ -101,6 +104,15 @@ export class SymbolDetailsComponent implements OnInit {
   showMoreAdvice = false;
   displayProsAndCons = false;
   displayTrendSection = false;
+  displayBuyInsights = true;
+  isUserLoggedIn = false;
+  enableSellInsights = false;
+
+  newPositionForm = new FormGroup({
+    newBuyPrice: new FormControl('', [Validators.required]),
+    newBuyQty: new FormControl('', [Validators.required]),
+    newBuyDate: new FormControl('', [Validators.required]),
+  });
 
   view: any[] = [350, 200];
   // options
@@ -176,6 +188,9 @@ export class SymbolDetailsComponent implements OnInit {
       1,
       this.credentialsService.userEmail
     );
+
+    this.isUserLoggedIn = this.credentialsService.userEmail ? true : false;
+    console.log(`this.isUserLoggedIn: ${this.isUserLoggedIn}`);
 
     this.displayProsAndCons = true;
     this.displayTrendSection = true;
@@ -324,10 +339,29 @@ export class SymbolDetailsComponent implements OnInit {
       // get earnings deatils
       this.earningsList$ = this.symbolDetailsService.getEarnings(this.activeSymbol);
 
-      this.adviceData$ = this.symbolDetailsService.getAdviceData(this.activeSymbol).pipe(
+      // this.buyAdviceData$ = this.symbolDetailsService.getBuyAdviceData(this.activeSymbol).pipe(
+      //   map((data: any) => {
+      //     this.displayProsAndCons = false;
+      //     this.displayTrendSection = false;
+      //     return data;
+      //   })
+      // );
+      this.setupBuyAdvice();
+
+      // this.sellAdviceData$ = this.symbolDetailsService.getSellAdviceData(this.activeSymbol).pipe(
+      //   map((data: any) => {
+      //     this.displayProsAndCons = false;
+      //     this.displayTrendSection = false;
+      //     return data;
+      //   })
+      // );
+      this.setupSellAdvice();
+
+      this.openTxnData$ = this.symbolDetailsService.getOpenTxnData(this.activeSymbol).pipe(
         map((data: any) => {
-          this.displayProsAndCons = false;
-          this.displayTrendSection = false;
+          if (data && data.length > 0) {
+            this.enableSellInsights = true;
+          }
           return data;
         })
       );
@@ -337,6 +371,27 @@ export class SymbolDetailsComponent implements OnInit {
     this.userModelTags = this.credentialsService.userProfileModel
       ? this.credentialsService.userProfileModel.selected_params
       : [];
+  }
+
+  setupBuyAdvice() {
+    this.buyAdviceData$ = this.symbolDetailsService.getBuyAdviceData(this.activeSymbol).pipe(
+      map((data: any) => {
+        this.displayProsAndCons = false;
+        this.displayTrendSection = false;
+        return data;
+      })
+    );
+  }
+
+  setupSellAdvice() {
+    this.sellAdviceData$ = this.symbolDetailsService.getSellAdviceData(this.activeSymbol).pipe(
+      map((data: any) => {
+        this.displayProsAndCons = false;
+        this.displayTrendSection = false;
+
+        return data;
+      })
+    );
   }
 
   IndustryDetailsChatData(data) {
@@ -593,5 +648,32 @@ export class SymbolDetailsComponent implements OnInit {
 
   toggleShowMoreAdvice() {
     this.showMoreAdvice = !this.showMoreAdvice;
+  }
+
+  showSellInsights() {
+    this.displayBuyInsights = !this.displayBuyInsights;
+  }
+
+  showBuyInsights() {
+    this.displayBuyInsights = !this.displayBuyInsights;
+  }
+
+  addOpenPositions() {
+    let newPosition = {
+      buy_price: this.newPositionForm.get('newBuyPrice').value,
+      qty: this.newPositionForm.get('newBuyQty').value,
+      buy_date: this.newPositionForm.get('newBuyDate').value,
+      symbol: this.activeSymbol,
+    };
+    this.symbolDetailsService.addPosition(newPosition).subscribe((data) => {
+      this.newPositionForm.reset();
+      this.setupSellAdvice();
+      this.setupBuyAdvice();
+      this.openTxnData$ = this.symbolDetailsService.getOpenTxnData(this.activeSymbol);
+    });
+  }
+
+  closePositions() {
+    this.router.navigate(['/myPortfolio'], { replaceUrl: true });
   }
 }

@@ -351,13 +351,19 @@ export class MyPortfolioComponent implements OnInit {
 
   private setTreeMapData(body: any) {
     this.chartOptions.series[0].data = [];
+    let rawSeries = [];
     for (let row of body) {
       let gainAmt = Math.round(this.getGainAmount(row));
-      this.chartOptions.series[0].data.push({
-        x: row.symbol,
-        y: gainAmt,
-      });
+      if (gainAmt) {
+        let position = rawSeries.find((ele) => ele.x === row.symbol);
+        if (position) {
+          position.y = position.y + gainAmt;
+        } else {
+          rawSeries.push({ x: row.symbol, y: gainAmt });
+        }
+      }
     }
+    this.chartOptions.series[0].data = rawSeries;
   }
 
   private setPieChartData(list: any) {
@@ -379,9 +385,9 @@ export class MyPortfolioComponent implements OnInit {
     let close = parseFloat(row.close);
     let buy = parseFloat(row.buy_price);
     let buyQty = parseFloat(row.buy_qty);
-    let sellQty = parseFloat(row.sell_qty);
+    // let sellQty = parseFloat(row.sell_qty);
 
-    return (close - buy) * (buyQty - sellQty);
+    return (close - buy) * buyQty;
   }
 
   getGainPct(row): number {
@@ -394,9 +400,11 @@ export class MyPortfolioComponent implements OnInit {
   getPieChartLabel(list: any) {
     let str = '';
     if (list && list.length > 0) {
+      const mySet1 = new Set();
       for (let rec of list) {
-        str += rec.symbol + ',';
+        mySet1.add(rec.symbol);
       }
+      str = Array.from(mySet1).toString();
     }
     return str;
   }
@@ -654,5 +662,9 @@ export class MyPortfolioComponent implements OnInit {
     }
 
     return returnValue;
+  }
+
+  getDollarGain(sellPrice, buyPrice, qty): number {
+    return (parseFloat(sellPrice) - parseFloat(buyPrice)) * parseInt(qty);
   }
 }
