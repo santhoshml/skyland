@@ -84,7 +84,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     // get UserModelProfile
     // this.authenticationService.getUserModelProfile().subscribe();
-    this.getPortFolioValue();
+    // this.getPortFolioValue();
 
     // get date from config
     this.webDisplayDate$ = this.authenticationService.getConfigValue('web_data_display_date').pipe(

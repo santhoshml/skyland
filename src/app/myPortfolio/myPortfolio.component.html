@@ -21,6 +21,16 @@
         aria-selected="false"
         >Favorites</a
       >
+
+      <span *ngIf="totalGain" style="margin-left: auto">
+        <a href="javascript:void(0);" (click)="updatePrices()">
+          <i class="fa fa-sync" aria-hidden="true"></i>
+        </a>
+
+        <span class="font-weight-bold ml-2">
+          Total Gain : {{ totalGain | currency }} ({{ totalGainPercent | percent: '1.0-2' }})
+        </span>
+      </span>
     </div>
   </nav>
   <div class="tab-content mb-5" id="nav-tabContent">
@@ -215,18 +225,19 @@
                       <th class="text-center" scope="col">Action</th>
                       <!-- <th class="text-center" scope="col">Company Name</th> -->
                       <th class="text-center" scope="col">Trend</th>
-                      <th class="text-center" scope="col">Buy Price</th>
-                      <th class="text-center" scope="col">Buy Quantity</th>
-                      <th class="text-center" scope="col">Gain (%)</th>
+                      <th class="text-center" scope="col">Price</th>
+                      <th class="text-center" scope="col">Quantity</th>
+                      <th class="text-center" scope="col">Gain(%)</th>
                       <th class="text-center" scope="col">
-                        Stop Loss
+                        Gain($)
+                        <!-- Stop Loss
                         <a href="https://www.investopedia.com/articles/stocks/09/use-stop-loss.asp" target="_blank">
                           <i
                             class="fa fa-info-circle"
                             title="Sell if the price reaches this price point, to limit loss"
                             aria-hidden="true"
                           ></i>
-                        </a>
+                        </a> -->
                       </th>
                       <th class="text-center" scope="col">Industry</th>
                     </tr>
@@ -255,19 +266,6 @@
                           <i class="fa-trash fas cursor-pointer" (click)="deleteOpenPosition(txn.id)"></i>
                         </div>
                       </td>
-                      <!-- <td class="text-left company-name">
-                        <a class="symbol" href="/symbolDetails/{{ txn.symbol }}">{{ txn.symbol }}</a>
-                        <br />
-                        {{ txn.companyName | truncate: 40 | uppercase }}
-                        <br />
-                        <span
-                          title="Stop-loss alert triggered to sell"
-                          *ngIf="txn.stopLossAlert === 1"
-                          class="badge badge-danger info"
-                        >
-                          SELL ALERT
-                        </span>
-                      </td> -->
                       <td class="text-left trend">
                         <div *ngIf="txn.trend == 1">
                           <i class="fas fa-arrow-up"></i>
@@ -293,19 +291,11 @@
                           {{ txn.buy_qty | number }}
                         </div>
                       </td>
-                      <!-- <td class="text-right price">
-                        <div>
-                          {{ txn.close | currency }}
-                        </div>
-                      </td> -->
-                      <!-- <td class="text-right volume">
-                        {{ txn.volume | number }}
-                      </td>-->
                       <td class="text-right roi">
                         {{ txn.roi / 100 | percent: '1.0-2' }}
                       </td>
                       <td class="text-right price">
-                        {{ txn.stop_loss | currency }}
+                        {{ txn.roiDollar | currency }}
                       </td>
                       <td class="text-left industry">
                         <div>

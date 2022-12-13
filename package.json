@@ -46,6 +46,7 @@
     "moment": "^2.29.1",
     "ng-apexcharts": "^1.6.0",
     "ng2-file-upload": "^1.4.0",
+    "percent": "^2.2.0",
     "popper.js": "^1.16.1",
     "pruned": "^0.1.1",
     "rxjs": "^6.6.2",

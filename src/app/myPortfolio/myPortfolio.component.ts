@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
 import { MyPortfolioService } from './myPortfolio.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthenticationService, CredentialsService } from '@app/auth';
 import { GoogleAnalyticsService } from '@app/@core';
@@ -13,6 +13,7 @@ import pruned from 'pruned';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { getTokenSourceMapRange } from 'typescript';
+import percent from 'percent';
 
 import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle } from 'ng-apexcharts';
 
@@ -46,6 +47,11 @@ export class MyPortfolioComponent implements OnInit {
   displayNotificationInTopStocks = false;
   displayNotificationInFavorites = false;
   favoritesSymbol: string;
+  updatedPricesMap: any;
+  allSymbolsSubscription: Subscription;
+  getUpdatedPricesSubscription: Subscription;
+  totalGain = 0;
+  totalGainPercent = 0;
 
   openPositionsForm!: FormGroup;
   showOpenPositionSuccess = false;
@@ -211,15 +217,7 @@ export class MyPortfolioComponent implements OnInit {
     let todayDate = moment().format('MM/DD/YYYY');
     this.sellDate = todayDate;
 
-    // set user profile
-    // this.userProfile$ = this.authenticationService.getUserModelProfile().pipe(
-    //   map((body) => {
-    //     this.credentialsService.setUserProfile(body);
-    //     return body;
-    //   })
-    // );
-
-    this.service.getAllSymbols().subscribe((data) => {
+    this.allSymbolsSubscription = this.service.getAllSymbols().subscribe((data) => {
       this.allSymbolData = data;
       this.data = data.slice(0, 15);
     });
@@ -227,6 +225,15 @@ export class MyPortfolioComponent implements OnInit {
     this.readFavorites();
     this.readOpenPositions();
     this.readClosedPositions();
+
+    this.getUpdatedPricesSubscription = this.service.getUpdatedPrices().subscribe((data) => {
+      this.updatedPricesMap = data;
+    });
+  }
+
+  ngOnDestroy() {
+    this.allSymbolsSubscription.unsubscribe();
+    this.getUpdatedPricesSubscription.unsubscribe();
   }
 
   private initOpenPositionsForm() {
@@ -342,10 +349,70 @@ export class MyPortfolioComponent implements OnInit {
 
   readOpenPositions() {
     this.service.getOpenPositions().subscribe((body) => {
-      this.openPositions = body;
+      // calculate total gain
+      let gain = 0;
+      let buyPrice = 0;
+      for (let rec of body) {
+        gain = gain + rec.roiDollar;
+        buyPrice = buyPrice + parseFloat(rec.buy_price) * parseInt(rec.buy_qty);
+      }
+      this.totalGain = gain;
+      this.totalGainPercent = gain / buyPrice;
 
+      this.openPositions = body;
       this.setPieChartData(body);
       this.setTreeMapData(body);
+    });
+  }
+
+  roiCalculate(buyPrice, sellPrice) {
+    try {
+      let numBuy = parseFloat(buyPrice);
+      let numSell = parseFloat(sellPrice);
+      return percent.calc(numSell - numBuy, numBuy, 2);
+    } catch (ex) {
+      console.error(`Exception while calcualting the percent`);
+    }
+    return null;
+  }
+
+  roiDollarsCalculate(buyPrice, sellPrice, qty) {
+    try {
+      let numBuy = parseFloat(buyPrice);
+      let numSell = parseFloat(sellPrice);
+      return (numSell - numBuy) * parseInt(qty);
+    } catch (ex) {
+      console.error(`error while calculating roiDollarsCalculate, buyPrice:${buyPrice} 
+        sellPrice:${sellPrice}, ex:${JSON.stringify(ex)}`);
+    }
+    return null;
+  }
+
+  updatePrices() {
+    this.service.getUpdatedPrices().subscribe((data) => {
+      if (this.openPositions && this.openPositions.length > 0) {
+        let gain = 0;
+        let buyPrice = 0;
+        for (let openPosition of this.openPositions) {
+          let symbol = openPosition.symbol;
+          if (data[symbol]) {
+            openPosition.close = data[symbol][0].close;
+            openPosition.roi = this.roiCalculate(openPosition.buy_price, openPosition.close);
+            openPosition.roiDollarsCalculate = this.roiDollarsCalculate(
+              openPosition.buy_price,
+              openPosition.close,
+              openPosition.buy_qty
+            );
+
+            buyPrice = buyPrice + parseFloat(openPosition.buy_price) * parseInt(openPosition.buy_qty);
+            gain = gain + openPosition.roiDollarsCalculate;
+          }
+        }
+        this.totalGain = gain;
+        this.totalGainPercent = gain / buyPrice;
+        this.setPieChartData(this.openPositions);
+        this.setTreeMapData(this.openPositions);
+      }
     });
   }
 

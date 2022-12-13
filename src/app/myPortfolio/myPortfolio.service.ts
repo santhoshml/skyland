@@ -16,6 +16,7 @@ const routes = {
   deleteFavorites: (symbol: string) => `/favorites/symbol/${symbol}`,
   getAllSymbols: () => `/stocks/all/symbolAndNames`,
   getAllSectors: () => `/sectors/all/info`,
+  getUpdatedPrices: () => `/user/txn/price/open`,
 };
 
 export interface RandomQuoteContext {
@@ -60,6 +61,20 @@ export class MyPortfolioService {
   getPriceObject(symbol: string): Observable<any> {
     return this.httpClient
       .get(routes.getPriceObject(symbol), {
+        withCredentials: true,
+      })
+      .pipe(
+        map((body: any) => body),
+        catchError((err) => {
+          // console.log(`err: ${JSON.stringify(err)}`);
+          return throwError(err);
+        })
+      );
+  }
+
+  getUpdatedPrices(): Observable<any> {
+    return this.httpClient
+      .get(routes.getUpdatedPrices(), {
         withCredentials: true,
       })
       .pipe(

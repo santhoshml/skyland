@@ -81,7 +81,7 @@ export class SymbolDetailsComponent implements OnInit {
   earningsList$: Observable<any>;
   buyAdviceData$: Observable<any>;
   sellAdviceData$: Observable<any>;
-  openTxnData$: Observable<any>;
+  openTxnData: any;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
   sentimentResp$: Observable<SentimentResp | string>;
   analystReccomendationResp$: Observable<AnalystRatingRecord[] | string>;
@@ -189,6 +189,8 @@ export class SymbolDetailsComponent implements OnInit {
       this.credentialsService.userEmail
     );
 
+    this.displayBuyInsights = true;
+    this.enableSellInsights = false;
     this.isUserLoggedIn = this.credentialsService.userEmail ? true : false;
     console.log(`this.isUserLoggedIn: ${this.isUserLoggedIn}`);
 
@@ -357,20 +359,28 @@ export class SymbolDetailsComponent implements OnInit {
       // );
       this.setupSellAdvice();
 
-      this.openTxnData$ = this.symbolDetailsService.getOpenTxnData(this.activeSymbol).pipe(
-        map((data: any) => {
-          if (data && data.length > 0) {
-            this.enableSellInsights = true;
-          }
-          return data;
-        })
-      );
+      this.symbolDetailsService.getOpenTxnData(this.activeSymbol).subscribe((data) => {
+        this.openTxnData = data;
+        if (data && data.list && data.list.length > 0) {
+          this.enableSellInsights = true;
+        }
+      });
     });
 
     // load tags from userModelProfile
     this.userModelTags = this.credentialsService.userProfileModel
       ? this.credentialsService.userProfileModel.selected_params
       : [];
+  }
+
+  updatePrices() {
+    // console.log(`I am in updatePrices`);
+    this.symbolDetailsService.getOpenTxnData(this.activeSymbol).subscribe((data) => {
+      this.openTxnData = data;
+      if (data && data.list && data.list.length > 0) {
+        this.enableSellInsights = true;
+      }
+    });
   }
 
   setupBuyAdvice() {
@@ -669,7 +679,7 @@ export class SymbolDetailsComponent implements OnInit {
       this.newPositionForm.reset();
       this.setupSellAdvice();
       this.setupBuyAdvice();
-      this.openTxnData$ = this.symbolDetailsService.getOpenTxnData(this.activeSymbol);
+      this.openTxnData = this.symbolDetailsService.getOpenTxnData(this.activeSymbol);
     });
   }
 

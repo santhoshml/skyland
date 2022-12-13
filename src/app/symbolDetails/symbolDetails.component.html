@@ -25,7 +25,7 @@
       </div>
     </div>
     <button
-      *ngIf="displayBuyInsights"
+      *ngIf="isUserLoggedIn && displayBuyInsights"
       [disabled]="!enableSellInsights"
       type="button"
       class="ml-2 btn btn-info"
@@ -121,8 +121,8 @@
 
   <div class="mb-4" *ngIf="isUserLoggedIn">
     <div class="card border-0 shadow-lg h-100 p-4">
-      <div *ngIf="openTxnData$ | async as adviceData">
-        <div *ngIf="adviceData && adviceData.length > 0">
+      <div *ngIf="openTxnData as adviceData">
+        <div *ngIf="adviceData && adviceData.list && adviceData.list.length > 0">
           <div class="h5">
             <span
               >Current open positions for this symbol <span class="font-weight-bold">{{ activeSymbol }}</span> :
@@ -134,7 +134,7 @@
             </span>
           </div>
           <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
+            <thead>
               <th scope="col">Buy Date</th>
               <th scope="col">Buy Price</th>
               <th scope="col">Qty</th>
@@ -142,12 +142,26 @@
               <th scope="col"># of days</th>
             </thead>
             <tbody>
-              <tr *ngFor="let currOpenTxnList of adviceData">
+              <tr *ngFor="let currOpenTxnList of adviceData.list">
                 <td>{{ currOpenTxnList.buy_date | date }}</td>
                 <td>{{ currOpenTxnList.buy_price | currency }}</td>
                 <td>{{ currOpenTxnList.buy_qty | number: '1.0-0' }}</td>
                 <td>{{ currOpenTxnList.roi / 100 | percent: '1.2-2' }}</td>
                 <td>{{ currOpenTxnList.hold_days | number: '1.0-0' }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table table-dark table-bordered">
+            <tbody>
+              <tr>
+                <td>Total Gain</td>
+                <td>
+                  {{ adviceData.totalGain | currency }} ({{ adviceData.totalGainPercent | percent: '1.0-2' }})
+                  &nbsp;&nbsp;
+                  <a href="javascript:void(0);" (click)="updatePrices()">
+                    <i class="fa fa-sync" aria-hidden="true"></i>
+                  </a>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -319,7 +333,7 @@
   <div class="mb-4" *ngIf="!displayBuyInsights">
     <div *ngIf="sellAdviceData$ | async as adviceData">
       <div class="row">
-        <div class="col-10" style="padding-right: 3px">
+        <div class="col-12" style="padding-right: 3px">
           <div class="card border-0 shadow-lg h-100 p-4">
             <div>
               <div class="h4 mb-2 border-bottom">
@@ -423,21 +437,6 @@
                   <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                   <a href="https://static.liste.ai/terms.html" target="_blank">Terms & conditions </a> apply
                 </small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-2">
-          <div class="card border-0 shadow-lg h-100 p-4">
-            <div *ngIf="adviceData.predictionRec">
-              <div class="mb-2 border-bottom">
-                <span style="font-size: 24px; font-weight: 500" class="mb-2 border-bottom">Expected return</span>
-              </div>
-              <div>
-                <div class="roi-value">{{ adviceData.predictionRec.gain | number: '1.0-2' }}%</div>
-                <div style="text-align: center; margin-top: 20px">
-                  in <span style="font-size: 30px; font-weight: 500"> {{ adviceData.predictionRec.days }} days</span>
-                </div>
               </div>
             </div>
           </div>
