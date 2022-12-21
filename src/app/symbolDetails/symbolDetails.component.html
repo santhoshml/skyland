@@ -510,6 +510,37 @@
     </div>
   </div>
 
+  <div class="mb-4" *ngIf="eventPerformanceData$ | async as eventPerformanceData">
+    <div class="card border-0 shadow-lg h-150 p-4">
+      <div class="row pb-2 mb-3 border-bottom">
+        <div class="col-12 col-md-6 col-lg-6">
+          <div>
+            <span class="h4">{{ activeSymbol }}'s reaction to Events </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 p-3" *ngFor="let eventData of eventPerformanceData">
+          <div *ngIf="eventData.list && eventData.list.length > 0">
+            <h5 class="text-center">{{ eventData.eventName }}</h5>
+            <p class="p-2" style="font-size: 14px">{{ eventData.desc }}</p>
+            <ngx-charts-bar-vertical
+              [view]="[300, 200]"
+              [results]="eventChartData[eventData.key]"
+              [xAxis]="true"
+              [yAxis]="true"
+              gradient="true"
+              [noBarWhenZero]="false"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+            >
+            </ngx-charts-bar-vertical>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="mb-4" *ngIf="symbolIndustryDetailsResp$ | async as symbolIndustryDetailsResp">
     <div class="card border-0 shadow-lg h-100 p-4">
       <div class="row pb-2 mb-3 border-bottom">
@@ -561,42 +592,6 @@
   <div class="tab-content">
     <div class="tab-pane fade show active" id="nav-analysis" role="tabpanel" aria-labelledby="nav-analysis-tab">
       <div class="row">
-        <!-- <div class="col-md-6 col-sm-12 mb-4" *ngIf="symbolDetailsResp$ | async as symbolDetailsResp">
-          <div class="card border-0 shadow-lg h-100 p-4">
-            <div class="card-body">
-              <div class="card-title mb-4">
-                <h4>Investing style</h4>
-              </div>
-              <div *ngIf="symbolDetailsResp.symbol; else noModelDiv">
-                <div *ngIf="symbolDetailsResp.gain_flag === 1" class="ml-2">
-                  <img class="card-img-top" src="assets/gain.png" style="height: 150px" alt="Card image cap" />
-                  <div class="card-body mb-5">
-                    <h5 class="card-title p-3">Prediction - Gain</h5>
-                  </div>
-                </div>
-                <div *ngIf="symbolDetailsResp.gain_flag === 0">
-                  <img class="card-img-top" src="assets/loss.png" style="height: 150px" alt="Card image cap" />
-                  <div class="card-body mb-5">
-                    <h5 class="card-title p-3">Prediction - Loss</h5>
-                  </div>
-                </div>
-                <hr />
-                <div>
-                  <div class="card-body mb-5">
-                    <h5 class="card-title">Confidence Score</h5>
-                    <h1 class="card-subtitle text-center mb-3 p-3">
-                      {{ symbolDetailsResp.confidence | percent: '1.0-2' }}
-                    </h1>
-                    <small class="card-text text-muted"
-                      >Percent match of {{ symbolDetailsResp.symbol }}'s today pattern with your past succesful
-                      transactions</small
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
         <div class="col-md-6 col-lg-4 col-sm-12 mb-4" *ngIf="analystReccomendationResp$ | async as anaReccoResp">
           <div class="card border-0 shadow-lg h-100 p-4">
             <div class="card-body">

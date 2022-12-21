@@ -29,6 +29,8 @@ const routes = {
   sellAdviceData: (symbol: string) => `/profileAdvice/sell/symbol/${symbol}`,
   openTxnData: (symbol: string) => `/user/txn/symbol/${symbol}/open`,
   addOpenPositions: () => `/user/v2/txn/open`,
+  getTargetPrice: (symbol: string) => `/symbol/${symbol}/targetPrice`,
+  getEventData: (symbol: string) => `/symbol/${symbol}/eventPerformance`,
 };
 
 export interface ITrendingDetails {
@@ -65,6 +67,20 @@ export class SymbolDetailsService {
           return throwError(err);
         })
       );
+  }
+
+  getEventData(symbol: string): Observable<any> {
+    return this.httpClient.get(routes.getEventData(symbol)).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not GET getEventData :-('))
+    );
+  }
+
+  getTargetPrice(symbol: string): Observable<any> {
+    return this.httpClient.get(routes.getTargetPrice(symbol)).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not GET getTargetPrice :-('))
+    );
   }
 
   getOpenTxnData(symbol: string): Observable<any> {

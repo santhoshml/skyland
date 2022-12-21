@@ -80,7 +80,9 @@ export class SymbolDetailsComponent implements OnInit {
   symbolEvaluation$: Observable<any>;
   earningsList$: Observable<any>;
   buyAdviceData$: Observable<any>;
+  targetPriceData$: Observable<any>;
   sellAdviceData$: Observable<any>;
+  eventPerformanceData$: Observable<any>;
   openTxnData: any;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
   sentimentResp$: Observable<SentimentResp | string>;
@@ -107,6 +109,7 @@ export class SymbolDetailsComponent implements OnInit {
   displayBuyInsights = true;
   isUserLoggedIn = false;
   enableSellInsights = false;
+  eventChartData = {};
 
   newPositionForm = new FormGroup({
     newBuyPrice: new FormControl('', [Validators.required]),
@@ -193,6 +196,8 @@ export class SymbolDetailsComponent implements OnInit {
     this.enableSellInsights = false;
     this.isUserLoggedIn = this.credentialsService.userEmail ? true : false;
     console.log(`this.isUserLoggedIn: ${this.isUserLoggedIn}`);
+
+    this.targetPriceData$ = this.symbolDetailsService.getTargetPrice('MSFT');
 
     this.displayProsAndCons = true;
     this.displayTrendSection = true;
@@ -306,6 +311,16 @@ export class SymbolDetailsComponent implements OnInit {
       this.sentimentResp$.subscribe((data: any) => {
         this.options = { ...this.options, arcDelimiters: [data.negative * 100] };
       });
+
+      this.eventPerformanceData$ = this.symbolDetailsService.getEventData(this.activeSymbol).pipe(
+        map((body: any) => {
+          this.eventChartData = body;
+          for (let ele of body) {
+            this.eventChartData[ele.key] = this.getVerticalDataJSON(ele.list);
+          }
+          return body;
+        })
+      );
 
       // AnalystReccomendation data
       this.analystReccomendationResp$ = this.symbolDetailsService.getAnalystReccomendationData(this.activeSymbol).pipe(
@@ -685,5 +700,18 @@ export class SymbolDetailsComponent implements OnInit {
 
   closePositions() {
     this.router.navigate(['/myPortfolio'], { replaceUrl: true });
+  }
+
+  getVerticalDataJSON(list) {
+    let arr = [];
+    if (list && list.length > 0) {
+      for (let row of list) {
+        arr.push({
+          name: row.displayLabel,
+          value: row.change ? row.change : 0,
+        });
+      }
+    }
+    return arr;
   }
 }
