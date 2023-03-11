@@ -31,6 +31,7 @@ const routes = {
   addOpenPositions: () => `/user/v2/txn/open`,
   getTargetPrice: (symbol: string) => `/symbol/${symbol}/targetPrice`,
   getEventData: (symbol: string) => `/symbol/${symbol}/eventPerformance`,
+  getPastAnalysisData: (symbol: string) => `/symbol/${symbol}/pastAnalysis`,
 };
 
 export interface ITrendingDetails {
@@ -67,6 +68,13 @@ export class SymbolDetailsService {
           return throwError(err);
         })
       );
+  }
+
+  getPastAnalysisData(symbol: string): Observable<any> {
+    return this.httpClient.get(routes.getPastAnalysisData(symbol)).pipe(
+      map((body: any) => body),
+      catchError(() => of('Error, could not GET getPastAnalysisData :-('))
+    );
   }
 
   getEventData(symbol: string): Observable<any> {

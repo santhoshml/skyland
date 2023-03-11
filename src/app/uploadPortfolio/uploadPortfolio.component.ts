@@ -36,6 +36,7 @@ export class UploadPortfolioComponent implements OnInit {
     { key: 'etrade', value: 'E-Trade' },
     { key: 'ts', value: 'Trade Station' },
     { key: 'ib', value: 'Interactive Brokers' },
+    { key: 'fidelity', value: 'Fidelity' },
   ];
 
   constructor(

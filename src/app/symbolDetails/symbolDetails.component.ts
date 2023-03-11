@@ -83,6 +83,7 @@ export class SymbolDetailsComponent implements OnInit {
   targetPriceData$: Observable<any>;
   sellAdviceData$: Observable<any>;
   eventPerformanceData$: Observable<any>;
+  pastAnalysis$: Observable<any>;
   openTxnData: any;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
   sentimentResp$: Observable<SentimentResp | string>;
@@ -380,6 +381,8 @@ export class SymbolDetailsComponent implements OnInit {
           this.enableSellInsights = true;
         }
       });
+
+      this.pastAnalysis$ = this.symbolDetailsService.getPastAnalysisData(this.activeSymbol);
     });
 
     // load tags from userModelProfile

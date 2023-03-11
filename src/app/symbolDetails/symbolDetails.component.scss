@@ -1,5 +1,18 @@
 @import "src/theme/_variables";
 
+.sup {
+  vertical-align: super;
+  position: relative;
+  font-size: 50%;
+  line-height: 0;
+  top: -1em;
+}
+
+.px-0 {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 .roi-value {
   font-size: 50px;
   font-weight: 700;
