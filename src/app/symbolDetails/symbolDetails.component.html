@@ -213,7 +213,7 @@
   <div class="mb-4" *ngIf="displayBuyInsights">
     <div *ngIf="buyAdviceData$ | async as adviceData">
       <div class="row">
-        <div class="col-10" style="padding-right: 3px">
+        <div [ngClass]="adviceData.predictionRec ? 'col-10' : 'col-12'" style="padding-right: 3px">
           <div class="card border-0 shadow-lg h-100 p-4">
             <div>
               <div class="h4 mb-2 border-bottom">
@@ -252,7 +252,7 @@
                   </div>
                   <div class="row">
                     <div class="col-4">
-                      <div *ngIf="pastAnalysis$ | async as pastAnalysis">
+                      <div *ngIf="pastAnalysis && !isLoading">
                         <div class="mt-2" *ngIf="pastAnalysis.changeObject">
                           <span>Expected next day opening gap :</span>
                           <span class="font-weight-bold">{{
@@ -297,6 +297,9 @@
                           <span class="sup">&#9313;</span> Based on trend, moving averages and behaviour since 2020.
                         </div>
                       </div>
+                      <div *ngIf="isLoading">
+                        <img src="assets/please-wait.gif" alt="Loading" />
+                      </div>
                     </div>
                     <div class="col-4">
                       <div *ngIf="adviceData.positiveSentimentList && adviceData.positiveSentimentList.length > 0">
@@ -337,10 +340,18 @@
                   </div>
                 </div>
               </div>
-              <a href="javascript:void(0);" (click)="toggleShowMoreAdvice()">
-                <span *ngIf="!showMoreAdvice">... show more</span>
-                <span *ngIf="showMoreAdvice">... show less</span>
-              </a>
+              <div
+                *ngIf="
+                  adviceData &&
+                  ((adviceData.positiveSentimentList && adviceData.positiveSentimentList.length > 3) ||
+                    (adviceData.negativeSentimentList && adviceData.negativeSentimentList.length > 3))
+                "
+              >
+                <a href="javascript:void(0);" (click)="toggleShowMoreAdvice()">
+                  <span *ngIf="!showMoreAdvice">... show more</span>
+                  <span *ngIf="showMoreAdvice">... show less</span>
+                </a>
+              </div>
               <div class="mt-5">
                 <small>
                   <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
@@ -361,7 +372,7 @@
             </div>
           </div>
         </div>
-        <div class="col-2">
+        <div class="col-2" *ngIf="adviceData.predictionRec">
           <div class="card border-0 shadow-lg h-100 p-4">
             <div *ngIf="adviceData.predictionRec">
               <div class="mb-2 border-bottom">
@@ -467,10 +478,18 @@
                   </div>
                 </div>
               </div>
-              <a href="javascript:void(0);" (click)="toggleShowMoreAdvice()">
-                <span *ngIf="!showMoreAdvice">... show more</span>
-                <span *ngIf="showMoreAdvice">... show less</span>
-              </a>
+              <div
+                *ngIf="
+                  adviceData &&
+                  ((adviceData.positiveSentimentList && adviceData.positiveSentimentList.length > 3) ||
+                    (adviceData.negativeSentimentList && adviceData.negativeSentimentList.length > 3))
+                "
+              >
+                <a href="javascript:void(0);" (click)="toggleShowMoreAdvice()">
+                  <span *ngIf="!showMoreAdvice">... show more</span>
+                  <span *ngIf="showMoreAdvice">... show less</span>
+                </a>
+              </div>
               <div class="mt-5">
                 <small>
                   <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
@@ -497,7 +516,7 @@
 
   <div class="mb-4" *ngIf="displayProsAndCons">
     <div class="row">
-      <div class="col-6" *ngIf="symbolEvaluation$ | async as symbolEvaluation">
+      <div class="col-6" *ngIf="symbolEvaluation">
         <div class="card border-0 shadow-lg h-100 p-4">
           <div class="h4 mb-2 border-bottom">{{ activeSymbol }}'s Pros</div>
           <div class="mb-3">
@@ -509,7 +528,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6" *ngIf="symbolEvaluation$ | async as symbolEvaluation">
+      <div class="col-6" *ngIf="symbolEvaluation">
         <div class="card border-0 shadow-lg h-100 p-4">
           <div class="h4 mb-2 border-bottom">{{ activeSymbol }}'s Cons</div>
           <div class="mb-3">

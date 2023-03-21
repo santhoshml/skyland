@@ -77,13 +77,13 @@ export class SymbolDetailsComponent implements OnInit {
   isLoading = false;
   symbolIndustryDetailsResp$: Observable<any>;
   trendingDetails$: Observable<ITrendingDetails>;
-  symbolEvaluation$: Observable<any>;
+  symbolEvaluation: any;
   earningsList$: Observable<any>;
   buyAdviceData$: Observable<any>;
   targetPriceData$: Observable<any>;
   sellAdviceData$: Observable<any>;
   eventPerformanceData$: Observable<any>;
-  pastAnalysis$: Observable<any>;
+  pastAnalysis: any;
   openTxnData: any;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
   sentimentResp$: Observable<SentimentResp | string>;
@@ -193,6 +193,7 @@ export class SymbolDetailsComponent implements OnInit {
       this.credentialsService.userEmail
     );
 
+    this.isLoading = true;
     this.displayBuyInsights = true;
     this.enableSellInsights = false;
     this.isUserLoggedIn = this.credentialsService.userEmail ? true : false;
@@ -239,7 +240,9 @@ export class SymbolDetailsComponent implements OnInit {
       this.activeSymbol = params['symbol'].toUpperCase();
       this.completeSymbol = this.activeSymbol;
 
-      this.symbolEvaluation$ = this.symbolDetailsService.getSymbolEvaluation(this.activeSymbol);
+      this.symbolDetailsService.getSymbolEvaluation(this.activeSymbol).subscribe((data) => {
+        this.symbolEvaluation = data;
+      });
 
       this.trendingDetails$ = this.symbolDetailsService.getTrendingDetails(this.activeSymbol).pipe(
         map((body: ITrendingDetails) => {
@@ -357,22 +360,7 @@ export class SymbolDetailsComponent implements OnInit {
       // get earnings deatils
       this.earningsList$ = this.symbolDetailsService.getEarnings(this.activeSymbol);
 
-      // this.buyAdviceData$ = this.symbolDetailsService.getBuyAdviceData(this.activeSymbol).pipe(
-      //   map((data: any) => {
-      //     this.displayProsAndCons = false;
-      //     this.displayTrendSection = false;
-      //     return data;
-      //   })
-      // );
       this.setupBuyAdvice();
-
-      // this.sellAdviceData$ = this.symbolDetailsService.getSellAdviceData(this.activeSymbol).pipe(
-      //   map((data: any) => {
-      //     this.displayProsAndCons = false;
-      //     this.displayTrendSection = false;
-      //     return data;
-      //   })
-      // );
       this.setupSellAdvice();
 
       this.symbolDetailsService.getOpenTxnData(this.activeSymbol).subscribe((data) => {
@@ -382,7 +370,10 @@ export class SymbolDetailsComponent implements OnInit {
         }
       });
 
-      this.pastAnalysis$ = this.symbolDetailsService.getPastAnalysisData(this.activeSymbol);
+      this.symbolDetailsService.getPastAnalysisData(this.activeSymbol).subscribe((data) => {
+        this.pastAnalysis = data;
+        this.isLoading = false;
+      });
     });
 
     // load tags from userModelProfile
