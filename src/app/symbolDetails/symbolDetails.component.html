@@ -217,7 +217,7 @@
           <div class="card border-0 shadow-lg h-100 p-4">
             <div>
               <div class="h4 mb-2 border-bottom">
-                <span>Buy insights from your profile and current Stock state</span>
+                <span>Insights from the past</span>
                 <span *ngIf="trendingDetails$ | async as trendingDetails" style="float: right; font-size: 16px">
                   <span style="font-weight: 400">Overall Trend:</span>
                   <span *ngIf="trendingDetails.trend" style="font-weight: 700">
@@ -252,24 +252,29 @@
                   </div>
                   <div class="row">
                     <div class="col-4">
-                      <div *ngIf="pastAnalysis && !isLoading">
-                        <div class="mt-2" *ngIf="pastAnalysis.changeObject">
-                          <span>Predicted opening price for next day:</span>
-                          <span class="font-weight-bold">{{ pastAnalysis.changeObject }}</span>
+                      <ul *ngIf="pastAnalysis && !isLoading">
+                        <li class="mt-2" *ngIf="pastAnalysis.changeObject">
                           <span class="sup">&#9312;</span>
-                        </div>
-                        <div class="mt-2" *ngIf="pastAnalysis.maxGainRec">
-                          <span>Expected swing in next 10 days:</span>
-                          <span class="font-weight-bold">{{
-                            pastAnalysis.maxGainRec.roi_negative / 100 | percent: '1.0-2'
-                          }}</span>
-                          to
-                          <span class="font-weight-bold">{{
-                            pastAnalysis.maxGainRec.roi_positive / 100 | percent: '1.0-2'
-                          }}</span>
+                          <span>Anticipated opening price for the following day:</span>
+                          <span class="font-weight-bold">{{ pastAnalysis.changeObject }}</span>
+                        </li>
+                        <li class="mt-2" *ngIf="pastAnalysis.maxGainRec && pastAnalysis.maxGainRec.roi_positive">
                           <span class="sup">&#9313;</span>
-                        </div>
-                        <div class="mt-2" *ngIf="pastAnalysis.bestInIndustry">
+                          <span>
+                            In the past, under similar conditions, this stock moved
+                            <span class="font-weight-bold">{{
+                              pastAnalysis.maxGainRec.roi_positive / 100 | percent: '1.0-2'
+                            }}</span>
+                            on average in the next 10 days
+                            <span class="font-weight-bold">{{
+                              pastAnalysis.maxGainRec.positive_count /
+                                (pastAnalysis.maxGainRec.negative_count + pastAnalysis.maxGainRec.positive_count)
+                                | percent: '1.0-0'
+                            }}</span>
+                            of the time.
+                          </span>
+                        </li>
+                        <li class="mt-2" *ngIf="pastAnalysis.bestInIndustry">
                           <span>Top performing stocks in the same industry</span>
                           <table class="table table-striped table-bordered">
                             <thead>
@@ -287,14 +292,14 @@
                               </tr>
                             </tbody>
                           </table>
-                        </div>
+                        </li>
                         <div class="small">
-                          <span class="sup">&#9312;</span> Based on the price action for last one week and behaviour
-                          since 2020.
+                          <span class="sup">&#9312;</span> Based on the todays' price action and historical
+                          scenariossince 2020.
                           <br />
                           <span class="sup">&#9313;</span> Based on trend, moving averages and behaviour since 2020.
                         </div>
-                      </div>
+                      </ul>
                       <div *ngIf="isLoading">
                         <img src="assets/please-wait.gif" alt="Loading" />
                       </div>
@@ -608,58 +613,10 @@
     </div>
   </div>
 
-  <div class="mb-4" *ngIf="symbolIndustryDetailsResp$ | async as symbolIndustryDetailsResp">
-    <div class="card border-0 shadow-lg h-100 p-4">
-      <div class="row pb-2 mb-3 border-bottom">
-        <div class="col-12 col-md-6 col-lg-6">
-          <div>
-            <span class="h4">{{ activeSymbol }}'s Industry </span> -
-            <a href="/subSectorDetails/{{ symbolIndustryDetailsResp.industryId }}">{{
-              symbolIndustryDetailsResp.industry
-            }}</a>
-          </div>
-          <div class="font-weight-bold small text-success">
-            Rank : {{ symbolIndustryDetailsResp.industryRank }} / 144
-          </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-6 text-md-right text-left">
-          <div *ngIf="symbolIndustryDetailsResp.change">
-            <div class="mb-2">
-              Today's gain :
-              <span class="font-weight-bold">{{ symbolIndustryDetailsResp.change / 100 | percent: '1.0-2' }}</span>
-              <!-- <span class="font-weight-bold">{{ symbolIndustryDetailsResp.change / 100 | percent: '1.0-2' }}</span> -->
-            </div>
-          </div>
-        </div>
-        <div class="col-12 text-md-right text-left">
-          <span *ngFor="let industryBadge of symbolIndustryDetailsResp.industryBadgeList">
-            <span class="badge badge-pill my-1 badge-info info-badge pill-wrap font-weight-normal px-3">{{
-              industryBadge
-            }}</span>
-          </span>
-        </div>
-      </div>
-      <div class="row w-100">
-        <div style="height: 200px" class="w-100">
-          <ngx-charts-bar-horizontal-stacked
-            *ngIf="chartData.value.length"
-            [scheme]="chartData.colorScheme"
-            [results]="chartData.value"
-            [xAxis]="chartData.showXAxis"
-            [yAxis]="chartData.showYAxis"
-            [showXAxisLabel]="chartData.showXAxisLabel"
-            [showYAxisLabel]="chartData.showYAxisLabel"
-          >
-          </ngx-charts-bar-horizontal-stacked>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="tab-content">
     <div class="tab-pane fade show active" id="nav-analysis" role="tabpanel" aria-labelledby="nav-analysis-tab">
       <div class="row">
-        <div class="col-md-6 col-lg-4 col-sm-12 mb-4" *ngIf="analystReccomendationResp$ | async as anaReccoResp">
+        <div class="col-md-6 col-lg-3 col-sm-12 mb-4" *ngIf="analystReccomendationResp$ | async as anaReccoResp">
           <div class="card border-0 shadow-lg h-100 p-4">
             <div class="card-body">
               <div class="card-title mb-4">
@@ -740,7 +697,67 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6 col-lg-4 col-sm-12 mb-4" *ngIf="sentimentResp$ | async as sentimentResp">
+        <div
+          class="col-md-12 col-lg-3 col-sm-12 mb-4"
+          *ngIf="symbolIndustryDetailsResp$ | async as symbolIndustryDetailsResp"
+        >
+          <div class="card border-0 shadow-lg h-100 p-4">
+            <div class="row pb-2 mb-3 border-bottom">
+              <div class="col-12 col-md-12 col-lg-12">
+                <div>
+                  <div class="h4">Industry Analysis</div>
+                  <a href="/subSectorDetails/{{ symbolIndustryDetailsResp.industryId }}">{{
+                    symbolIndustryDetailsResp.industry
+                  }}</a>
+                  <span *ngFor="let industryBadge of symbolIndustryDetailsResp.industryBadgeList">
+                    <span class="badge badge-pill my-1 badge-info info-badge pill-wrap font-weight-normal px-3">{{
+                      industryBadge
+                    }}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row pb-2 mb-3">
+              <div class="col-12 col-md-6 col-lg-6 text-md-right text-left">
+                <div *ngIf="symbolIndustryDetailsResp.change">
+                  <div class="mb-2">
+                    Today's gain :
+                    <span class="font-weight-bold">{{
+                      symbolIndustryDetailsResp.change / 100 | percent: '1.0-2'
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-6 text-md-right text-left">
+                <div class="font-weight-bold small text-success">
+                  Rank : {{ symbolIndustryDetailsResp.industryRank }} / 144
+                </div>
+              </div>
+            </div>
+            <div class="row w-100">
+              <div style="height: 200px" class="w-100">
+                <ngx-charts-bar-horizontal-stacked
+                  *ngIf="chartData.value.length"
+                  [scheme]="chartData.colorScheme"
+                  [results]="chartData.value"
+                  [xAxis]="chartData.showXAxis"
+                  [yAxis]="chartData.showYAxis"
+                  [showXAxisLabel]="chartData.showXAxisLabel"
+                  [showYAxisLabel]="chartData.showYAxisLabel"
+                >
+                </ngx-charts-bar-horizontal-stacked>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-3 col-sm-12 mb-4">
+          <div class="card border-0 shadow-lg h-100">
+            <div class="tradingview-widget-container mx-auto" id="symbolTechnicalsWidget">
+              <div class="tradingview-widget-container__widget"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 col-sm-12 mb-4" *ngIf="sentimentResp$ | async as sentimentResp">
           <div class="card border-0 shadow-lg h-100 p-4">
             <div class="card-body">
               <div class="card-title mb-4">
@@ -781,13 +798,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12 col-lg-4 col-sm-12 mb-4">
-          <div class="card border-0 shadow-lg h-100">
-            <div class="tradingview-widget-container mx-auto" id="symbolTechnicalsWidget">
-              <div class="tradingview-widget-container__widget"></div>
             </div>
           </div>
         </div>
