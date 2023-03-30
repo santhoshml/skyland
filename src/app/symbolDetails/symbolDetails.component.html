@@ -253,10 +253,10 @@
                   <div class="row">
                     <div class="col-4">
                       <ul *ngIf="pastAnalysis && !isLoading">
-                        <li class="mt-2" *ngIf="pastAnalysis.changeObject">
+                        <li class="mt-2" *ngIf="pastAnalysis.changeObject.avg">
                           <span class="sup">&#9312;</span>
                           <span>Anticipated opening price for the following day:</span>
-                          <span class="font-weight-bold">{{ pastAnalysis.changeObject }}</span>
+                          <span class="font-weight-bold">{{ pastAnalysis.changeObject.avg | currency }}</span>
                         </li>
                         <li class="mt-2" *ngIf="pastAnalysis.maxGainRec && pastAnalysis.maxGainRec.roi_positive">
                           <span class="sup">&#9313;</span>
