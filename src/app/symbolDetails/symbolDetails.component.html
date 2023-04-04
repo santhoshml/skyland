@@ -2,56 +2,6 @@
   <div class="tradingview-widget-container" id="symbolInfoWidget">
     <div class="tradingview-widget-container__widget"></div>
   </div>
-  <div class="btn-group mt-3 mb-3">
-    <div class="dropdown show ml-2">
-      <a
-        class="btn btn-primary dropdown-toggle"
-        href="#"
-        role="button"
-        id="dropdownMenuLink"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        Buy with your trading platform
-      </a>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="https://schwab.com" target="_blank">Schwab</a>
-        <a class="dropdown-item" href="https://etrade.com" target="_blank">E-Trade</a>
-        <a class="dropdown-item" href="https://webtrading.tradestation.com" target="_blank">Trade Station</a>
-        <a class="dropdown-item" href="https://ndcdyn.interactivebrokers.com/sso/Login?RL=1" target="_blank"
-          >Interactive Brokers</a
-        >
-      </div>
-    </div>
-    <button
-      *ngIf="isUserLoggedIn && displayBuyInsights"
-      [disabled]="!enableSellInsights"
-      type="button"
-      class="ml-2 btn btn-info"
-      (click)="showSellInsights()"
-    >
-      <i class="fas fa-money-bill" aria-hidden="true"></i>
-      &nbsp;Show SELL insights
-    </button>
-    <button *ngIf="!displayBuyInsights" ng-dis type="button" class="ml-2 btn btn-info" (click)="showBuyInsights()">
-      <i class="fas fa-money-bill" aria-hidden="true"></i>
-      &nbsp;Show BUY insights
-    </button>
-    <button *ngIf="!isFavorite" type="button" class="ml-2 btn btn-secondary" (click)="addToFavorites()">
-      <i class="fas fa-heart"></i>
-      Add to Favorite List & track everyday
-    </button>
-    <button *ngIf="isFavorite" type="button" class="ml-2 btn btn-secondary" (click)="removeFromFavorites()">
-      <i class="far fa-heart"></i>
-      Remove from Favorite List
-    </button>
-    <button type="button" class="ml-2 btn btn-secondary" (click)="open(mymodal)">
-      <i class="fas fa-sticky-note"></i>
-      Add Notes
-    </button>
-  </div>
-
   <!-- Trending Details Container -->
   <div class="mb-4" *ngIf="displayTrendSection && trendingDetails$ | async as trendingDetails">
     <div class="card border-0 shadow-lg h-100 px-4 pt-4 pb-1">
@@ -252,7 +202,7 @@
                   </div>
                   <div class="row">
                     <div class="col-4">
-                      <ul *ngIf="pastAnalysis && !isLoading">
+                      <ul *ngIf="pastAnalysisObserver$ | async as pastAnalysis; else display_loading_image">
                         <li class="mt-2" *ngIf="pastAnalysis.changeObject.avg">
                           <span class="sup">&#9312;</span>
                           <span>Anticipated opening price for the following day:</span>
@@ -300,9 +250,6 @@
                           <span class="sup">&#9313;</span> Based on trend, moving averages and behaviour since 2020.
                         </div>
                       </ul>
-                      <div *ngIf="isLoading">
-                        <img src="assets/please-wait.gif" alt="Loading" />
-                      </div>
                     </div>
                     <div class="col-4">
                       <div *ngIf="adviceData.positiveSentimentList && adviceData.positiveSentimentList.length > 0">
@@ -518,7 +465,7 @@
   </div>
 
   <div class="mb-4" *ngIf="displayProsAndCons">
-    <div class="row">
+    <div class="row" *ngIf="symbolEvaluation$ | async as symbolEvaluation">
       <div class="col-6" *ngIf="symbolEvaluation">
         <div class="card border-0 shadow-lg h-100 p-4">
           <div class="h4 mb-2 border-bottom">{{ activeSymbol }}'s Pros</div>
@@ -613,187 +560,75 @@
     </div>
   </div>
 
-  <div class="tab-content">
-    <div class="tab-pane fade show active" id="nav-analysis" role="tabpanel" aria-labelledby="nav-analysis-tab">
-      <div class="row">
-        <div class="col-md-6 col-lg-3 col-sm-12 mb-4" *ngIf="analystReccomendationResp$ | async as anaReccoResp">
-          <div class="card border-0 shadow-lg h-100 p-4">
-            <div class="card-body">
-              <div class="card-title mb-4">
-                <h4>Analyst Analysis</h4>
-              </div>
-              <div>
-                <div *ngIf="anaReccoResp.length > 0; else noDataDiv" class="row">
-                  <div class="col-12 d-flex justify-content-center p-0">
-                    <ngx-charts-pie-chart
-                      [view]="view"
-                      [scheme]="colorScheme"
-                      [results]="anaReccoResp"
-                      [gradient]="pieGradient"
-                      [legend]="pieShowLegend"
-                      [legendPosition]="legendPosition"
-                      [labels]="pieShowLabels"
-                      [doughnut]="isDoughnut"
-                      (select)="onSelect($event)"
-                      (activate)="onActivate($event)"
-                      (deactivate)="onDeactivate($event)"
-                    >
-                    </ngx-charts-pie-chart>
-                  </div>
-                  <div class="col-12">
-                    <div class="row">
-                      <div class="col-6 p-0">
-                        <div
-                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
-                        >
-                          Buy
-                          <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Buy') }}</span>
-                        </div>
-                      </div>
-                      <div class="col-6 p-0">
-                        <div
-                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
-                        >
-                          Overweight
-                          <span class="badge badge-primary badge-pill">{{
-                            getAnalystReccomendationValue('Overweight')
-                          }}</span>
-                        </div>
-                      </div>
-                      <div class="col-6 p-0">
-                        <div
-                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
-                        >
-                          Hold
-                          <span class="badge badge-primary badge-pill">{{
-                            getAnalystReccomendationValue('Hold')
-                          }}</span>
-                        </div>
-                      </div>
-                      <div class="col-6 p-0">
-                        <div
-                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
-                        >
-                          Underweight
-                          <span class="badge badge-primary badge-pill">{{
-                            getAnalystReccomendationValue('Underweight')
-                          }}</span>
-                        </div>
-                      </div>
-                      <div class="col-6 p-0">
-                        <div
-                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
-                        >
-                          Sell
-                          <span class="badge badge-primary badge-pill">{{
-                            getAnalystReccomendationValue('Sell')
-                          }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <div class="row">
+    <div class="col-md-6 col-lg-3 col-sm-12 mb-4" *ngIf="analystReccomendationResp$ | async as anaReccoResp">
+      <div class="card border-0 shadow-lg h-100 p-4">
+        <div class="card-body">
+          <div class="card-title mb-4">
+            <h4>Analyst Analysis</h4>
           </div>
-        </div>
-        <div
-          class="col-md-12 col-lg-3 col-sm-12 mb-4"
-          *ngIf="symbolIndustryDetailsResp$ | async as symbolIndustryDetailsResp"
-        >
-          <div class="card border-0 shadow-lg h-100 p-4">
-            <div class="row pb-2 mb-3 border-bottom">
-              <div class="col-12 col-md-12 col-lg-12">
-                <div>
-                  <div class="h4">Industry Analysis</div>
-                  <a href="/subSectorDetails/{{ symbolIndustryDetailsResp.industryId }}">{{
-                    symbolIndustryDetailsResp.industry
-                  }}</a>
-                  <span *ngFor="let industryBadge of symbolIndustryDetailsResp.industryBadgeList">
-                    <span class="badge badge-pill my-1 badge-info info-badge pill-wrap font-weight-normal px-3">{{
-                      industryBadge
-                    }}</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="row pb-2 mb-3">
-              <div class="col-12 col-md-6 col-lg-6 text-md-right text-left">
-                <div *ngIf="symbolIndustryDetailsResp.change">
-                  <div class="mb-2">
-                    Today's gain :
-                    <span class="font-weight-bold">{{
-                      symbolIndustryDetailsResp.change / 100 | percent: '1.0-2'
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-6 text-md-right text-left">
-                <div class="font-weight-bold small text-success">
-                  Rank : {{ symbolIndustryDetailsResp.industryRank }} / 144
-                </div>
-              </div>
-            </div>
-            <div class="row w-100">
-              <div style="height: 200px" class="w-100">
-                <ngx-charts-bar-horizontal-stacked
-                  *ngIf="chartData.value.length"
-                  [scheme]="chartData.colorScheme"
-                  [results]="chartData.value"
-                  [xAxis]="chartData.showXAxis"
-                  [yAxis]="chartData.showYAxis"
-                  [showXAxisLabel]="chartData.showXAxisLabel"
-                  [showYAxisLabel]="chartData.showYAxisLabel"
+          <div>
+            <div *ngIf="anaReccoResp.length > 0; else noDataDiv" class="row">
+              <div class="col-12 d-flex justify-content-center p-0">
+                <ngx-charts-pie-chart
+                  [view]="view"
+                  [scheme]="colorScheme"
+                  [results]="anaReccoResp"
+                  [gradient]="pieGradient"
+                  [legend]="pieShowLegend"
+                  [legendPosition]="legendPosition"
+                  [labels]="pieShowLabels"
+                  [doughnut]="isDoughnut"
+                  (select)="onSelect($event)"
+                  (activate)="onActivate($event)"
+                  (deactivate)="onDeactivate($event)"
                 >
-                </ngx-charts-bar-horizontal-stacked>
+                </ngx-charts-pie-chart>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12 col-lg-3 col-sm-12 mb-4">
-          <div class="card border-0 shadow-lg h-100">
-            <div class="tradingview-widget-container mx-auto" id="symbolTechnicalsWidget">
-              <div class="tradingview-widget-container__widget"></div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3 col-sm-12 mb-4" *ngIf="sentimentResp$ | async as sentimentResp">
-          <div class="card border-0 shadow-lg h-100 p-4">
-            <div class="card-body">
-              <div class="card-title mb-4">
-                <h4>Social Sentiment</h4>
-              </div>
-              <div>
-                <div *ngIf="sentimentResp.value; else noDataDiv" class="row">
-                  <div class="col-12 d-flex justify-content-center">
-                    <rg-gauge-chart
-                      [canvasWidth]="canvasWidth"
-                      [needleValue]="sentimentResp.value"
-                      [centralLabel]="centralLabel"
-                      [options]="options"
-                    ></rg-gauge-chart>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-6 p-0">
+                    <div
+                      class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      Buy
+                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Buy') }}</span>
+                    </div>
                   </div>
-                  <div class="gauge-chart-label w-100 text-center font-weight-bold">
-                    Sentiment value - {{ sentimentResp.value }}
+                  <div class="col-6 p-0">
+                    <div
+                      class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      Overweight
+                      <span class="badge badge-primary badge-pill">{{
+                        getAnalystReccomendationValue('Overweight')
+                      }}</span>
+                    </div>
                   </div>
-                  <div class="col-12 mt-3">
-                    <div class="row">
-                      <div class="col-12 p-0">
-                        <div
-                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
-                        >
-                          <span>% of Bulls</span>
-                          <span class="badge badge-primary badge-pill">{{ sentimentResp.positive | percent }}</span>
-                        </div>
-                      </div>
-                      <div class="col-12 p-0">
-                        <div
-                          class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
-                        >
-                          <span>% of Bears</span>
-                          <span class="badge badge-primary badge-pill">{{ sentimentResp.negative | percent }}</span>
-                        </div>
-                      </div>
+                  <div class="col-6 p-0">
+                    <div
+                      class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      Hold
+                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Hold') }}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 p-0">
+                    <div
+                      class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      Underweight
+                      <span class="badge badge-primary badge-pill">{{
+                        getAnalystReccomendationValue('Underweight')
+                      }}</span>
+                    </div>
+                  </div>
+                  <div class="col-6 p-0">
+                    <div
+                      class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      Sell
+                      <span class="badge badge-primary badge-pill">{{ getAnalystReccomendationValue('Sell') }}</span>
                     </div>
                   </div>
                 </div>
@@ -801,72 +636,124 @@
             </div>
           </div>
         </div>
-        <ng-template #noModelDiv>
-          <div class="ml-2 div-noModel">
-            <p class="p-noModel">
-              Want to know if this stock suit your investment style ? You are 1-step away from it.
-            </p>
-            <p class="p-noModel">Click the below button to upload your old transactions from any brokerages.</p>
-            <a class="btn btn-warning d-block" href="/uploadPortfolio" role="button"> Upload Transactions </a>
-          </div>
-        </ng-template>
-        <ng-template #noDataDiv>
-          <div class="ml-2 div-noData">
-            <p class="p-noModel">No data available for {{ activeSymbol }}</p>
-          </div>
-        </ng-template>
       </div>
     </div>
-    <div class="tab-pane fade" id="nav-features" role="tabpanel" aria-labelledby="nav-features-tab">
-      <div class="mt-5">
-        <hr />
-        <div class="mb-2">
-          <label class="h5">Technical / Fundamental Features for this Symbol</label>
-        </div>
-        <div class="card-group" *ngIf="symbolDetailsResp$ | async as symbolDetailsResp">
-          <div class="card" style="max-width: 20%">
-            <div class="card-body">
-              <h6 class="p-2 mb-3 card-title text-center">Price/Volume</h6>
-              <ng-container *ngFor="let tag of getArray(symbolDetailsResp.tags)">
-                <div class="card-text m-2 text-center" *ngIf="isExistsInPriceVol(tag)">
-                  <a role="button" (click)="gotoTagLink(tag)" [ngClass]="getClassForPills(tag)">
-                    {{ getTagDisplayText(tag) }}
-                  </a>
-                </div>
-              </ng-container>
-            </div>
-          </div>
-          <div class="card" style="max-width: 20%">
-            <div class="card-body">
-              <h6 class="card-title mb-3 text-center p-2">Classification</h6>
-              <ng-container *ngFor="let tag of getArray(symbolDetailsResp.tags)">
-                <div class="card-text m-2 text-center" *ngIf="isExistsInClassification(tag)">
-                  <a role="button" (click)="gotoTagLink(tag)" [ngClass]="getClassForPills(tag)">
-                    {{ getTagDisplayText(tag) }}
-                  </a>
-                </div>
-              </ng-container>
-            </div>
-          </div>
-          <div class="card" style="max-width: 80%">
-            <div class="card-body mb-5">
-              <h6 class="m-2 card-title text-center">Technical</h6>
-              <ng-container *ngFor="let tag of getArray(symbolDetailsResp.tags)">
-                <span class="card-text m-2 text-center" *ngIf="isExistsInTechnical(tag)">
-                  <a role="button" (click)="gotoTagLink(tag)" [ngClass]="getClassForPills(tag)">
-                    {{ getTagDisplayText(tag) }}
-                  </a>
-                </span>
-              </ng-container>
+    <div
+      class="col-md-12 col-lg-3 col-sm-12 mb-4"
+      *ngIf="symbolIndustryDetailsResp$ | async as symbolIndustryDetailsResp"
+    >
+      <div class="card border-0 shadow-lg h-100 p-4">
+        <div class="row pb-2 mb-3 border-bottom">
+          <div class="col-12 col-md-12 col-lg-12">
+            <div>
+              <div class="h4">Industry Analysis</div>
+              <a href="/subSectorDetails/{{ symbolIndustryDetailsResp.industryId }}">{{
+                symbolIndustryDetailsResp.industry
+              }}</a>
+              <span *ngFor="let industryBadge of symbolIndustryDetailsResp.industryBadgeList">
+                <span class="badge badge-pill my-1 badge-info info-badge pill-wrap font-weight-normal px-3">{{
+                  industryBadge
+                }}</span>
+              </span>
             </div>
           </div>
         </div>
-        <div>
-          <small class="text-muted">** Highlighted features where user showed substantial gains in the past </small>
+        <div class="row pb-2 mb-3">
+          <div class="col-12 col-md-6 col-lg-6 text-md-right text-left">
+            <div *ngIf="symbolIndustryDetailsResp.change">
+              <div class="mb-2">
+                Today's gain :
+                <span class="font-weight-bold">{{ symbolIndustryDetailsResp.change / 100 | percent: '1.0-2' }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-6 text-md-right text-left">
+            <div class="font-weight-bold small text-success">
+              Rank : {{ symbolIndustryDetailsResp.industryRank }} / 144
+            </div>
+          </div>
+        </div>
+        <div class="row w-100">
+          <div style="height: 200px" class="w-100">
+            <ngx-charts-bar-horizontal-stacked
+              *ngIf="chartData.value.length"
+              [scheme]="chartData.colorScheme"
+              [results]="chartData.value"
+              [xAxis]="chartData.showXAxis"
+              [yAxis]="chartData.showYAxis"
+              [showXAxisLabel]="chartData.showXAxisLabel"
+              [showYAxisLabel]="chartData.showYAxisLabel"
+            >
+            </ngx-charts-bar-horizontal-stacked>
+          </div>
         </div>
       </div>
     </div>
+    <div class="col-md-12 col-lg-3 col-sm-12 mb-4">
+      <div class="card border-0 shadow-lg h-100">
+        <div class="tradingview-widget-container mx-auto" id="symbolTechnicalsWidget">
+          <div class="tradingview-widget-container__widget"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3 col-sm-12 mb-4" *ngIf="sentimentResp$ | async as sentimentResp">
+      <div class="card border-0 shadow-lg h-100 p-4">
+        <div class="card-body">
+          <div class="card-title mb-4">
+            <h4>Social Sentiment</h4>
+          </div>
+          <div>
+            <div *ngIf="sentimentResp.value; else noDataDiv" class="row">
+              <div class="col-12 d-flex justify-content-center">
+                <rg-gauge-chart
+                  [canvasWidth]="canvasWidth"
+                  [needleValue]="sentimentResp.value"
+                  [centralLabel]="centralLabel"
+                  [options]="options"
+                ></rg-gauge-chart>
+              </div>
+              <div class="gauge-chart-label w-100 text-center font-weight-bold">
+                Sentiment value - {{ sentimentResp.value }}
+              </div>
+              <div class="col-12 mt-3">
+                <div class="row">
+                  <div class="col-12 p-0">
+                    <div
+                      class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      <span>% of Bulls</span>
+                      <span class="badge badge-primary badge-pill">{{ sentimentResp.positive | percent }}</span>
+                    </div>
+                  </div>
+                  <div class="col-12 p-0">
+                    <div
+                      class="bg-light m-1 p-2 border-0 list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      <span>% of Bears</span>
+                      <span class="badge badge-primary badge-pill">{{ sentimentResp.negative | percent }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noModelDiv>
+      <div class="ml-2 div-noModel">
+        <p class="p-noModel">Want to know if this stock suit your investment style ? You are 1-step away from it.</p>
+        <p class="p-noModel">Click the below button to upload your old transactions from any brokerages.</p>
+        <a class="btn btn-warning d-block" href="/uploadPortfolio" role="button"> Upload Transactions </a>
+      </div>
+    </ng-template>
+    <ng-template #noDataDiv>
+      <div class="ml-2 div-noData">
+        <p class="p-noModel">No data available for {{ activeSymbol }}</p>
+      </div>
+    </ng-template>
   </div>
+
   <div class="col-md-12 col-lg-12 p-0">
     <div class="shadow-lg" id="tradingview_73abe"></div>
   </div>
@@ -891,4 +778,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Update</button>
   </div>
+</ng-template>
+<ng-template #display_loading_image>
+  <img src="assets/please-wait.gif" alt="Loading" />
 </ng-template>

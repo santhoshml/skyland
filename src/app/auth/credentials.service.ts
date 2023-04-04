@@ -150,6 +150,14 @@ export class CredentialsService {
     }
   }
 
+  setValueInSession(key, value) {
+    sessionStorage.setItem(key, value);
+  }
+
+  getValueFromSession(key) {
+    return sessionStorage.getItem(key);
+  }
+
   /**
    * Sets the user notes.
    */

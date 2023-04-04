@@ -260,14 +260,14 @@ export class SymbolDetailsService {
     );
   }
 
-  isFavorite(symbol: string): boolean {
+  isFavorite(symbol: string) {
     let favArr: string[] = this.credentialsService.userFavorites;
     for (let fSym of favArr) {
       if (fSym.toLowerCase() == symbol.toLowerCase()) {
-        return true;
+        return of(true);
       }
     }
-    return false;
+    return of(false);
   }
 
   getTagDetails() {

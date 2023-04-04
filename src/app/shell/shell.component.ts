@@ -24,7 +24,8 @@ export class ShellComponent implements OnInit {
 
   ngOnInit() {
     const credentials = this.credentialsService.credentials;
-    if (!credentials) {
+    const isPopupDisplayed = Boolean(this.credentialsService.getValueFromSession('popup_displayed'));
+    if (!credentials && !isPopupDisplayed) {
       setTimeout(() => {
         this.openModal();
       }, 2000);
@@ -37,6 +38,7 @@ export class ShellComponent implements OnInit {
   }
 
   openModal() {
+    this.credentialsService.setValueInSession('popup_displayed', true);
     this.modalService.open(this.content, { centered: true, size: 'xl', windowClass: 'xl-modal' });
   }
 

@@ -2,6 +2,12 @@ input.ng-invalid.ng-touched {
   border: 1px solid red;
 }
 
+.one-month-free {
+  font-size: 40px;
+  font-weight: 700;
+  color: cornflowerblue;
+}
+
 .scroll-container {
   max-height: 500px;
   overflow: auto;
@@ -13,4 +19,24 @@ input.ng-invalid.ng-touched {
   img {
     width: 100%;
   }
+}
+
+ul {
+  list-style: none;
+  padding-left: 0px;
+  margin-top: 10px;
+}
+
+ul li:before {
+  content: "✓";
+}
+
+.liste-advantage-caption {
+  font-size: 28px;
+  font-weight: 600;
+  color: cornflowerblue;
+}
+
+.event-label {
+  color: blue;
 }

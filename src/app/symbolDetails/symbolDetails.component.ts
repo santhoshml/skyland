@@ -77,12 +77,15 @@ export class SymbolDetailsComponent implements OnInit {
   isLoading = false;
   symbolIndustryDetailsResp$: Observable<any>;
   trendingDetails$: Observable<ITrendingDetails>;
-  symbolEvaluation: any;
+  symbolEvaluation$: Observable<any>;
   earningsList$: Observable<any>;
   buyAdviceData$: Observable<any>;
   targetPriceData$: Observable<any>;
   sellAdviceData$: Observable<any>;
+  exchangeService$: Observable<any>;
   eventPerformanceData$: Observable<any>;
+  isFavoriteObservable$: Observable<any>;
+  pastAnalysisObserver$: Observable<any>;
   pastAnalysis: any;
   openTxnData: any;
   symbolDetailsResp$: Observable<SymbolDetailsResp | string>;
@@ -98,10 +101,10 @@ export class SymbolDetailsComponent implements OnInit {
   closeResult: string;
   title = 'appBootstrap';
   userNotes: string;
-  tagCategories: TagCategories[];
-  priceVolCategoryArr: string[];
-  classificationCategoryArr: string[];
-  technicalCategoryArr: string[];
+  // tagCategories: TagCategories[];
+  // priceVolCategoryArr: string[];
+  // classificationCategoryArr: string[];
+  // technicalCategoryArr: string[];
   enableStockFeatures = false;
   completeSymbol: string = null;
   showMoreAdvice = false;
@@ -197,52 +200,18 @@ export class SymbolDetailsComponent implements OnInit {
     this.displayBuyInsights = true;
     this.enableSellInsights = false;
     this.isUserLoggedIn = this.credentialsService.userEmail ? true : false;
-    console.log(`this.isUserLoggedIn: ${this.isUserLoggedIn}`);
+    // console.log(`this.isUserLoggedIn: ${this.isUserLoggedIn}`);
 
     this.targetPriceData$ = this.symbolDetailsService.getTargetPrice('MSFT');
 
     this.displayProsAndCons = true;
     this.displayTrendSection = true;
 
-    // get tag categories
-    this.symbolDetailsService.getTagCategories().subscribe((data: TagCategories[]) => {
-      this.googleAnalyticsService.eventEmitter(
-        'symbolDetails-init',
-        'symbolDetails',
-        'init',
-        'getTagCategories',
-        1,
-        this.credentialsService.userEmail
-      );
-      this.tagCategories = data;
-      this.priceVolCategoryArr = data[0].tags;
-      this.classificationCategoryArr = data[1].tags;
-      this.technicalCategoryArr = data[2].tags;
-    });
-
-    // get tag details
-    this.symbolDetailsService.getTagDetails().subscribe((data: Map<string, TagDetails[]>) => {
-      this.googleAnalyticsService.eventEmitter(
-        'symbolDetails-init',
-        'symbolDetails',
-        'init',
-        'getTagDetails',
-        1,
-        this.credentialsService.userEmail
-      );
-      this.tagDetailsMap = data;
-      for (const [key, value] of Object.entries(this.tagDetailsMap)) {
-        this.tagDetailsArr = this.tagDetailsArr.concat(value);
-      }
-    });
-
     this.sub = this.route.params.subscribe((params) => {
       this.activeSymbol = params['symbol'].toUpperCase();
       this.completeSymbol = this.activeSymbol;
 
-      this.symbolDetailsService.getSymbolEvaluation(this.activeSymbol).subscribe((data) => {
-        this.symbolEvaluation = data;
-      });
+      this.symbolEvaluation$ = this.symbolDetailsService.getSymbolEvaluation(this.activeSymbol);
 
       this.trendingDetails$ = this.symbolDetailsService.getTrendingDetails(this.activeSymbol).pipe(
         map((body: ITrendingDetails) => {
@@ -260,6 +229,7 @@ export class SymbolDetailsComponent implements OnInit {
 
       //get exchange data
       this.symbolDetailsService.getExchangeData(this.activeSymbol).subscribe((data) => {
+        // console.log(`data : ${JSON.stringify(data)}`);
         this.googleAnalyticsService.eventEmitter(
           'symbolDetails-init',
           'symbolDetails',
@@ -269,8 +239,10 @@ export class SymbolDetailsComponent implements OnInit {
           this.credentialsService.userEmail
         );
         let exchange = data['exchange'];
+        // console.log(`exchange: ${exchange}`);
         if (exchange) {
           this.completeSymbol = `${exchange}:${this.activeSymbol}`;
+          // console.log(`this.completeSymbol: ${this.completeSymbol}`);
         }
 
         // init InfoWidget
@@ -308,7 +280,12 @@ export class SymbolDetailsComponent implements OnInit {
       );
 
       // set Favorite flag
-      this.isFavorite = this.symbolDetailsService.isFavorite(this.activeSymbol);
+      this.isFavoriteObservable$ = this.symbolDetailsService.isFavorite(this.activeSymbol).pipe(
+        map((data) => {
+          // console.log(`In favorite data : ${data}`);
+          this.isFavorite = data;
+        })
+      );
 
       // getSentiment data
       this.sentimentResp$ = this.symbolDetailsService.getSentimentData(this.activeSymbol);
@@ -337,19 +314,6 @@ export class SymbolDetailsComponent implements OnInit {
         })
       );
 
-      // get notes
-      this.symbolDetailsService.getUserNotes(this.activeSymbol).subscribe((data) => {
-        this.googleAnalyticsService.eventEmitter(
-          'symbolDetails-init',
-          'symbolDetails',
-          'init',
-          'getUserNotes',
-          1,
-          this.credentialsService.userEmail
-        );
-        this.userNotes = data.notes;
-      });
-
       this.symbolIndustryDetailsResp$ = this.symbolDetailsService.getSymbolIndustryDetails(this.activeSymbol).pipe(
         map((data: any) => {
           this.IndustryDetailsChatData(data);
@@ -370,10 +334,7 @@ export class SymbolDetailsComponent implements OnInit {
         }
       });
 
-      this.symbolDetailsService.getPastAnalysisData(this.activeSymbol).subscribe((data) => {
-        this.pastAnalysis = data;
-        this.isLoading = false;
-      });
+      this.pastAnalysisObserver$ = this.symbolDetailsService.getPastAnalysisData(this.activeSymbol);
     });
 
     // load tags from userModelProfile
@@ -393,6 +354,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   setupBuyAdvice() {
+    // console.log(`I am in setupBuyAdvice`);
     this.buyAdviceData$ = this.symbolDetailsService.getBuyAdviceData(this.activeSymbol).pipe(
       map((data: any) => {
         this.displayProsAndCons = false;
@@ -403,6 +365,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   setupSellAdvice() {
+    // console.log(`I am in setupSellAdvice`);
     this.sellAdviceData$ = this.symbolDetailsService.getSellAdviceData(this.activeSymbol).pipe(
       map((data: any) => {
         this.displayProsAndCons = false;
@@ -414,6 +377,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   IndustryDetailsChatData(data) {
+    // console.log(`I am in IndustryDetailsChatData`);
     this.chartData.colorScheme.domain = [];
     this.chartData.value = [
       {
@@ -444,12 +408,14 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   private addChartColorValue(name, data) {
+    // console.log(`I am in addChartColorValue`);
     const value = Number(data);
     this.chartData.colorScheme.domain.push(value < 0 ? '#ff0000' : '#008000');
     return [{ name, value }];
   }
 
   private loadTechnicalInfoWidget(symbol) {
+    // console.log(`I am in loadTechnicalInfoWidget`);
     let technicalsInfoWIdget = {
       interval: '1D',
       isTransparent: true,
@@ -467,6 +433,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   private loadInfoWidget(symbol) {
+    // console.log(`I am in loadInfoWidget : ${symbol}`);
     let infoWidgetOptions = {
       symbol: symbol,
       width: '100%',
@@ -478,6 +445,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   getAnalystReccomendationValue(name: string) {
+    // // console.log(`I am in getAnalystReccomendationValue`);
     if (this.analystReccomendationList && this.analystReccomendationList.length > 0) {
       for (let ele of this.analystReccomendationList) {
         if (ele.name.toUpperCase() == name.toUpperCase()) {
@@ -489,6 +457,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   open(content: any) {
+    // console.log(`I am in open`);
     if (!this.credentialsService.userEmail) {
       this.symbolDetailsService.enableLoginPopup.next(true);
     } else {
@@ -521,6 +490,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   private getDismissReason(reason: any): string {
+    // console.log(`I am in getDismissReason`);
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
@@ -531,6 +501,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   filterEvaluation(type, data) {
+    // console.log(`I am in filterEvaluation`);
     var filteredArray = data.filter((item) => {
       return item.type === type;
     });
@@ -538,6 +509,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   addToFavorites() {
+    // console.log(`I am in addToFavorites`);
     this.googleAnalyticsService.eventEmitter(
       'symbolDetails',
       'favorites',
@@ -551,6 +523,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   removeFromFavorites() {
+    // console.log(`I am in removeFromFavorites`);
     this.googleAnalyticsService.eventEmitter(
       'symbolDetails',
       'favorites',
@@ -564,6 +537,7 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   loadChart(symbol: string) {
+    // console.log(`I am in loadChart`);
     this.googleAnalyticsService.eventEmitter(
       'symbolDetails',
       'chart',
@@ -591,10 +565,12 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    // console.log(`I am in ngOnDestroy`);
     this.sub.unsubscribe();
   }
 
   getArray(str: string) {
+    // // console.log(`I am in getArray`);
     if (str) {
       let sortedArr = JSON.parse(str).sort((a: string, b: string) => a.length - b.length);
       return sortedArr;
@@ -603,50 +579,56 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   getTagDisplayText(str: string) {
+    // console.log(`I am in getTagDisplayText`);
     let ele: TagDetails = this.tagDetailsArr.find((element: TagDetails) => element.key === str);
     return ele ? ele.display : str;
   }
 
   gotoTagLink(str: string) {
+    // console.log(`I am in gotoTagLink`);
     let ele: TagDetails = this.tagDetailsArr.find((element: TagDetails) => element.key === str);
     let retVal = ele ? ele.link : '#';
     window.open(retVal, '_blank');
   }
 
-  isExistsInPriceVol(val: string): boolean {
-    if (this.priceVolCategoryArr) {
-      for (let tag of this.priceVolCategoryArr) {
-        if (tag.toLowerCase() == val.toLowerCase()) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+  // isExistsInPriceVol(val: string): boolean {
+  //   console.log(`I am in isExistsInPriceVol`);
+  //   if (this.priceVolCategoryArr) {
+  //     for (let tag of this.priceVolCategoryArr) {
+  //       if (tag.toLowerCase() == val.toLowerCase()) {
+  //         return true;
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // }
 
-  isExistsInClassification(val: string): boolean {
-    if (this.classificationCategoryArr) {
-      for (let tag of this.classificationCategoryArr) {
-        if (tag.toLowerCase() == val.toLowerCase()) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+  // isExistsInClassification(val: string): boolean {
+  //   console.log(`I am in isExistsInClassification`);
+  //   if (this.classificationCategoryArr) {
+  //     for (let tag of this.classificationCategoryArr) {
+  //       if (tag.toLowerCase() == val.toLowerCase()) {
+  //         return true;
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // }
 
-  isExistsInTechnical(val: string): boolean {
-    if (this.technicalCategoryArr) {
-      for (let tag of this.technicalCategoryArr) {
-        if (tag.toLowerCase() == val.toLowerCase()) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+  // isExistsInTechnical(val: string): boolean {
+  //   // console.log(`I am in isExistsInTechnical`);
+  //   if (this.technicalCategoryArr) {
+  //     for (let tag of this.technicalCategoryArr) {
+  //       if (tag.toLowerCase() == val.toLowerCase()) {
+  //         return true;
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // }
 
   getClassForPills(tag: string): string {
+    // console.log(`I am in getClassForPills`);
     if (this.userModelTags.find((str) => str === tag)) {
       return 'badge badge-pill badge-primary';
     }
@@ -654,15 +636,15 @@ export class SymbolDetailsComponent implements OnInit {
   }
 
   onSelect(data: any): void {
-    // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    // // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
 
   onActivate(data: any): void {
-    // console.log('Activate', JSON.parse(JSON.stringify(data)));
+    // // console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
   onDeactivate(data: any): void {
-    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    // // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
   toggleShowMoreAdvice() {
